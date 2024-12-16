@@ -2,11 +2,10 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    batch_shape = '(10,3)'
-    output_batch_tensor_names = 'state/internal/slip_strengths'
-    output_batch_tensor_values = 'strengths'
-    input_scalar_names = 'state/internal/slip_hardening'
-    input_scalar_values = 'hardening'
+    output_Tensor_names = 'state/internal/slip_strengths'
+    output_Tensor_values = 'strengths'
+    input_Scalar_names = 'state/internal/slip_hardening'
+    input_Scalar_values = 'hardening'
   []
 []
 

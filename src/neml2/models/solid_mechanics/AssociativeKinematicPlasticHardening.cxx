@@ -40,12 +40,11 @@ AssociativeKinematicPlasticHardening::expected_options()
       "strain, \\f$ \\dot{\\gamma} \\f$ is the flow rate, \\f$ f \\f$ is the yield function, and "
       "\\f$ \\boldsymbol{X} \\f$ is the kinematic hardening.";
 
-  options.set_input("kinematic_hardening_direction") = VariableName("state", "internal", "NX");
+  options.set_input("kinematic_hardening_direction") = VariableName(STATE, "internal", "NX");
   options.set("kinematic_hardening_direction").doc() =
       "Direction of associative kinematic hardening which can be calculated using Normality.";
 
-  options.set_output("kinematic_plastic_strain_rate") =
-      VariableName("state", "internal", "Kp_rate");
+  options.set_output("kinematic_plastic_strain_rate") = VariableName(STATE, "internal", "Kp_rate");
   options.set("kinematic_plastic_strain_rate").doc() = "Rate of kinematic plastic strain";
 
   return options;
@@ -74,7 +73,7 @@ AssociativeKinematicPlasticHardening::set_value(bool out, bool dout_din, bool d2
 
   if (dout_din)
   {
-    auto I = SR2::identity_map(options());
+    auto I = SR2::identity_map(_gamma_dot.options());
 
     if (_gamma_dot.is_dependent())
       _Kp_dot.d(_gamma_dot) = -_NX;

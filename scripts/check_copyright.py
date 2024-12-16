@@ -35,13 +35,13 @@ def should_check(path):
         if Path(rootdir) / Path(exclude_dir) in path.parents:
             return False
 
-    if path.name in exclude_files:
+    if str(path) in exclude_files:
         return False
 
     if path.suffix in extensions:
         return True
 
-    if path.name in additional_files:
+    if str(path) in additional_files:
         return True
 
     return False
@@ -67,9 +67,7 @@ def get_first_comment_block(path, prefix):
             if state == 0 and (line.startswith(prefix + " ") or line == prefix + "\n"):
                 lineno_start = i
                 state = 1
-            elif state == 1 and not (
-                line.startswith(prefix + " ") or line == prefix + "\n"
-            ):
+            elif state == 1 and not (line.startswith(prefix + " ") or line == prefix + "\n"):
                 lineno_end = i
                 break
 

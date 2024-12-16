@@ -72,16 +72,12 @@ def _yield_missing_reqs(req: Requirement, current_extra: str = ""):
         yield req
     else:
         if req.specifier.contains(version):
-            for child_req in (
-                importlib.metadata.metadata(req.name).get_all("Requires-Dist") or []
-            ):
+            for child_req in importlib.metadata.metadata(req.name).get_all("Requires-Dist") or []:
                 child_req_obj = Requirement(child_req)
 
                 need_check, ext = False, None
                 for extra in req.extras:
-                    if child_req_obj.marker and child_req_obj.marker.evaluate(
-                        {"extra": extra}
-                    ):
+                    if child_req_obj.marker and child_req_obj.marker.evaluate({"extra": extra}):
                         need_check = True
                         ext = extra
                         break

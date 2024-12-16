@@ -34,9 +34,9 @@ class R2;
 class Rot;
 
 /**
- * @brief The (logical) vector.
+ * @brief 3-vector.
  *
- * The logical storage space is (3).
+ * The storage space is (3).
  */
 class Vec : public VecBase<Vec>, public Transformable<Vec>
 {
@@ -50,6 +50,6 @@ public:
   identity_map(const torch::TensorOptions & options = default_tensor_options());
 
   // Transform by a crystal symmetry operator
-  virtual Vec transform(const R2 & op) const;
+  Vec transform(const R2 & op) const override;
 };
 } // namespace neml2

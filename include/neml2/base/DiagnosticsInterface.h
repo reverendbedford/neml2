@@ -46,7 +46,14 @@ void diagnose(const DiagnosticsInterface &);
 class DiagnosticsInterface
 {
 public:
+  DiagnosticsInterface() = delete;
   DiagnosticsInterface(NEML2Object * object);
+
+  DiagnosticsInterface(DiagnosticsInterface &&) = delete;
+  DiagnosticsInterface(const DiagnosticsInterface &) = delete;
+  DiagnosticsInterface & operator=(const DiagnosticsInterface &) = delete;
+  DiagnosticsInterface & operator=(DiagnosticsInterface &&) = delete;
+  virtual ~DiagnosticsInterface() = default;
 
   /**
    * @brief Check for common problems
@@ -101,6 +108,6 @@ DiagnosticsInterface::diagnostic_assert(std::vector<Diagnosis> & diagnoses,
                        _object->type(),
                        ": ",
                        std::forward<Args>(args)...);
-  return diagnoses.push_back(Diagnosis(oss.str().data()));
+  diagnoses.emplace_back(Diagnosis(oss.str()));
 }
 }

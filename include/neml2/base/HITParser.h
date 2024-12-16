@@ -38,8 +38,14 @@ class HITParser : public Parser
 public:
   HITParser() = default;
 
-  virtual OptionCollection parse(const std::filesystem::path & filename,
-                                 const std::string & additional_input = "") const override;
+  HITParser(const HITParser &) = default;
+  HITParser(HITParser &&) noexcept = default;
+  HITParser & operator=(const HITParser &) = default;
+  HITParser & operator=(HITParser &&) noexcept = default;
+  ~HITParser() override = default;
+
+  OptionCollection parse(const std::filesystem::path & filename,
+                         const std::string & additional_input = "") const override;
 
   /**
    * @brief Extract options for a specific object.

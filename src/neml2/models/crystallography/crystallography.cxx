@@ -27,9 +27,7 @@
 #include "neml2/tensors/Transformable.h"
 #include "neml2/tensors/tensors.h"
 
-namespace neml2
-{
-namespace crystallography
+namespace neml2::crystallography
 {
 namespace crystal_symmetry_operators
 {
@@ -79,7 +77,8 @@ cubic(const torch::TensorOptions & options)
 } // namespace crystal_symmetry_operators
 
 R2
-symmetry_operations_from_orbifold(std::string orbifold, const torch::TensorOptions & options)
+symmetry_operations_from_orbifold(const std::string & orbifold,
+                                  const torch::TensorOptions & options)
 {
   if (orbifold == "432")
     return transform_from_quaternion(Quaternion(crystal_symmetry_operators::cubic(options)));
@@ -138,7 +137,7 @@ unique_bidirectional(const R2 & ops, const Vec & inp)
   // list of Vecs aren't convertable into a TensorList
   std::vector<torch::Tensor> unique{torch::Tensor(options.batch_index({0}))};
   Vec unique_vecs = Vec(torch::stack(unique));
-  for (Size i = 1; i < options.batch_sizes()[0]; i++)
+  for (Size i = 1; i < options.batch_size(0).concrete(); i++)
   {
     auto vi = options.batch_index({i});
     // Compares list of vectors to vector to figure out if any are the same
@@ -146,7 +145,7 @@ unique_bidirectional(const R2 & ops, const Vec & inp)
     { return torch::any(torch::all(torch::isclose(a, b), 1)); };
     if (!(same(unique_vecs, vi).item<bool>() || same(unique_vecs, -vi).item<bool>()))
     {
-      unique.push_back(torch::Tensor(vi));
+      unique.emplace_back(vi);
       unique_vecs = Vec(torch::stack(unique));
     }
   }
@@ -154,5 +153,4 @@ unique_bidirectional(const R2 & ops, const Vec & inp)
   return unique_vecs;
 }
 
-} // namespace crystallography
 } // namespace neml2

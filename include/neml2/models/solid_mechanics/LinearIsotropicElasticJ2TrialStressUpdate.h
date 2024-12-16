@@ -44,7 +44,7 @@ public:
 
 protected:
   /// compute updated trial stress
-  virtual void set_value(bool out, bool dout_din, bool d2out_din2) override;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
   /// input trial stress (i.e., assuming a purely elastic step)
   const Variable<Scalar> & _elastic_trial_stress;

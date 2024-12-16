@@ -47,7 +47,7 @@ ArrheniusParameter::expected_options()
   options.set<Real>("ideal_gas_constant");
   options.set("ideal_gas_constant").doc() = "The ideal gas constant";
 
-  options.set_input("temperature") = VariableName("forces", "T");
+  options.set_input("temperature") = VariableName(FORCES, "T");
   options.set("temperature").doc() = "Temperature";
 
   return options;

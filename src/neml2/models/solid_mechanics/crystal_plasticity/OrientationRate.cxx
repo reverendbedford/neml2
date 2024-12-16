@@ -43,20 +43,20 @@ OrientationRate::expected_options()
       "plastic vorticity, \\f$ d^p \\f$ is the plastic deformation rate, and \\f$ \\varepsilon "
       "\\f$ is the elastic stretch.";
 
-  options.set_output("orientation_rate") = VariableName("state", "orientation_rate");
+  options.set_output("orientation_rate") = VariableName(STATE, "orientation_rate");
   options.set("orientation_rate").doc() = "The name of the orientation rate (spin)";
 
-  options.set_input("elastic_strain") = VariableName("state", "elastic_strain");
+  options.set_input("elastic_strain") = VariableName(STATE, "elastic_strain");
   options.set("elastic_strain").doc() = "The name of the elastic strain tensor";
 
-  options.set_input("vorticity") = VariableName("forces", "vorticity");
+  options.set_input("vorticity") = VariableName(FORCES, "vorticity");
   options.set("vorticity").doc() = "The name of the voriticty tensor";
 
   options.set_input("plastic_deformation_rate") =
-      VariableName("state", "internal", "plastic_deformation_rate");
+      VariableName(STATE, "internal", "plastic_deformation_rate");
   options.set("plastic_deformation_rate").doc() = "The name of the plastic deformation rate";
 
-  options.set_input("plastic_vorticity") = VariableName("state", "internal", "plastic_vorticity");
+  options.set_input("plastic_vorticity") = VariableName(STATE, "internal", "plastic_vorticity");
   options.set("plastic_vorticity").doc() = "The name of the plastic vorticity";
   return options;
 }
@@ -81,7 +81,7 @@ OrientationRate::set_value(bool out, bool dout_din, bool d2out_din2)
 
   if (dout_din)
   {
-    const auto I = WWR4::identity(options());
+    const auto I = WWR4::identity(_w.options());
 
     if (_e.is_dependent())
       _R_dot.d(_e) = math::d_multiply_and_make_skew_d_second(SR2(_dp));

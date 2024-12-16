@@ -42,19 +42,19 @@ KocksMeckingFlowSwitch::expected_options()
   options.set_parameter<CrossRef<Scalar>>("g0");
   options.set("g0").doc() = "Critical value of activation energy";
 
-  options.set_input("activation_energy") = VariableName("forces", "g");
+  options.set_input("activation_energy") = VariableName(FORCES, "g");
   options.set("activation_energy").doc() = "The input name of the activation energy";
 
   options.set<Real>("sharpness") = 1.0;
   options.set("sharpness").doc() = "A steepness parameter that controls the tanh mixing of the "
                                    "models.  Higher values gives a sharper transition.";
 
-  options.set_input("rate_independent_flow_rate") = VariableName("state", "internal", "ri_rate");
+  options.set_input("rate_independent_flow_rate") = VariableName(STATE, "internal", "ri_rate");
   options.set("rate_independent_flow_rate").doc() = "Input name of the rate independent flow rate";
-  options.set_input("rate_dependent_flow_rate") = VariableName("state", "internal", "rd_rate");
+  options.set_input("rate_dependent_flow_rate") = VariableName(STATE, "internal", "rd_rate");
   options.set("rate_dependent_flow_rate").doc() = "Input name of the rate dependent flow rate";
 
-  options.set_output("flow_rate") = VariableName("state", "internal", "gamma_rate");
+  options.set_output("flow_rate") = VariableName(STATE, "internal", "gamma_rate");
   options.set("flow_rate").doc() = "Output name for the mixed flow rate";
   return options;
 }

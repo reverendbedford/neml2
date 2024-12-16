@@ -48,9 +48,7 @@ class StereographicProjection:
         Args:
             v (torch.tensor): tensor of shape (..., 3)
         """
-        return torch.stack(
-            [v[..., 0] / (1.0 + v[..., 2]), v[..., 1] / (1.0 + v[..., 2])], dim=-1
-        )
+        return torch.stack([v[..., 0] / (1.0 + v[..., 2]), v[..., 1] / (1.0 + v[..., 2])], dim=-1)
 
 
 class LambertProjection:
@@ -152,9 +150,7 @@ def cart2polar(v):
     Args:
         v (torch.tensor): tensor of shape (...,2)
     """
-    return torch.stack(
-        [torch.atan2(v[..., 1], v[..., 0]), torch.norm(v, dim=-1)], dim=-1
-    )
+    return torch.stack([torch.atan2(v[..., 1], v[..., 0]), torch.norm(v, dim=-1)], dim=-1)
 
 
 def pretty_plot_pole_figure(
@@ -178,9 +174,7 @@ def pretty_plot_pole_figure(
         sample_symmetry (str): string giving the orbifold notation for the sample symmetry to apply to the projected points, default "1"
         point_size (float): size of matplotlib points to plot
     """
-    points = pole_figure_points(
-        orientations, pole, projection, crystal_symmetry, sample_symmetry
-    )
+    points = pole_figure_points(orientations, pole, projection, crystal_symmetry, sample_symmetry)
     projection = available_projections[projection]
 
     polar = cart2polar(points)
@@ -271,9 +265,7 @@ def inverse_pole_figure_points(
         sample_symmetry, device=orientations.device
     )
     sample_directions = sample_symmetry_operators * direction
-    crystal_directions = sample_directions.rotate(
-        orientations.inverse().batch.unsqueeze(-1)
-    )
+    crystal_directions = sample_directions.rotate(orientations.inverse().batch.unsqueeze(-1))
     crystal_symmetry_operators = symmetry_operators_as_R2(
         crystal_symmetry, device=orientations.device
     )

@@ -23,11 +23,11 @@
 // THE SOFTWARE.
 
 #include "neml2/models/crystallography/MillerIndex.h"
-
 #include "neml2/tensors/Vec.h"
 
 namespace neml2
 {
+
 MillerIndex
 MillerIndex::fill(Integer a, Integer b, Integer c, const torch::TensorOptions & options)
 {

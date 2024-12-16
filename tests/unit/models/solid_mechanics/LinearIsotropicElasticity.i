@@ -2,11 +2,10 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    batch_shape = '(10)'
-    input_symr2_names = 'state/internal/Ee'
-    input_symr2_values = 'Ee'
-    output_symr2_names = 'state/S'
-    output_symr2_values = 'S'
+    input_SR2_names = 'state/internal/Ee'
+    input_SR2_values = 'Ee'
+    output_SR2_names = 'state/S'
+    output_SR2_values = 'S'
   []
 []
 

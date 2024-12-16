@@ -37,7 +37,7 @@ public:
 
   WR2ExplicitExponentialTimeIntegration(const OptionSet & options);
 
-  virtual void diagnose(std::vector<Diagnosis> & diagnoses) const override;
+  void diagnose(std::vector<Diagnosis> & diagnoses) const override;
 
 private:
   /// Variable name

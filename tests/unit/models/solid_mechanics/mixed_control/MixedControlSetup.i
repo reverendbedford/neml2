@@ -2,11 +2,10 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    batch_shape = '()'
-    input_symr2_names = 'state/mixed_state forces/fixed_values forces/control'
-    input_symr2_values = 'mvals vals control'
-    output_symr2_names = 'state/S state/E'
-    output_symr2_values = 'stress strain'
+    input_SR2_names = 'state/mixed_state forces/fixed_values forces/control'
+    input_SR2_values = 'mvals vals control'
+    output_SR2_names = 'state/S state/E'
+    output_SR2_values = 'stress strain'
   []
 []
 

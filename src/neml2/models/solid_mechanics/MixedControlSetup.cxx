@@ -38,7 +38,7 @@ MixedControlSetup::expected_options()
       "fixed_values (the input strain or stress) and the mixed_state (the conjugate stress or "
       "strain values) into the stress and strain tensors used by the model.";
 
-  options.set_input("control") = VariableName("forces", "control");
+  options.set_input("control") = VariableName(FORCES, "control");
   options.set("control").doc() =
       "The name of the control signal.  Values less than the threshold are "
       "strain control, greater are stress control";
@@ -46,18 +46,18 @@ MixedControlSetup::expected_options()
   options.set<CrossRef<Tensor>>("threshold") = "0.5";
   options.set("threshold").doc() = "The threshold to switch between strain and stress control";
 
-  options.set_input("mixed_state") = VariableName("state", "mixed_state");
+  options.set_input("mixed_state") = VariableName(STATE, "mixed_state");
   options.set("mixed_state").doc() = "The name of the mixed state tensor. This holds the conjugate "
                                      "values to those being controlled";
 
-  options.set_input("fixed_values") = VariableName("forces", "fixed_values");
+  options.set_input("fixed_values") = VariableName(FORCES, "fixed_values");
   options.set("fixed_values").doc() = "The name of the fixed values, i.e. the actual strain or "
                                       "stress values being imposed on the model";
 
-  options.set_output("cauchy_stress") = VariableName("state", "S");
+  options.set_output("cauchy_stress") = VariableName(STATE, "S");
   options.set("cauchy_stress").doc() = "The name of the Cauchy stress tensor";
 
-  options.set_output("strain") = VariableName("state", "E");
+  options.set_output("strain") = VariableName(STATE, "E");
   options.set("strain").doc() = "The name of the strain tensor";
 
   return options;
@@ -77,7 +77,7 @@ MixedControlSetup::MixedControlSetup(const OptionSet & options)
 void
 MixedControlSetup::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-  auto [dstrain, dstress] = make_operators(_control.tensor());
+  auto [dstrain, dstress] = make_operators(_control);
 
   if (out)
   {
@@ -112,10 +112,9 @@ MixedControlSetup::make_operators(const SR2 & control) const
   auto stress_select = control > _threshold;
 
   // This also converts these to floats
-  auto ones_stress = Tensor(strain_select.to(_stress.tensor().options()), control.batch_dim());
+  auto ones_stress = Tensor(strain_select.to(control.options()), control.batch_sizes());
   auto ones_strain = Tensor::ones_like(control) - ones_stress;
 
-  // auto dstrain = SSR4(Tensor(torch::diag_embed(ones_stress), batch_dim()));
   auto dstrain = math::base_diag_embed(ones_stress);
   auto dstress = math::base_diag_embed(ones_strain);
 

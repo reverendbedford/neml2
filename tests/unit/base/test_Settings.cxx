@@ -42,8 +42,8 @@ TEST_CASE("Settings", "[Settings]")
   REQUIRE(machine_precision() == Catch::Approx(1e-15));
   REQUIRE(tolerance() == Catch::Approx(1e-6));
   REQUIRE(tighter_tolerance() == Catch::Approx(1e-12));
-  REQUIRE(buffer_name_separator() == ".");
-  REQUIRE(parameter_name_separator() == ".");
+  REQUIRE(buffer_name_separator() == "_");
+  REQUIRE(parameter_name_separator() == "_");
 
   // Apply the global settings
   Settings(all_options.settings());

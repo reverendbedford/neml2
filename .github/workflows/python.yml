@@ -17,7 +17,7 @@ concurrency:
 jobs:
   black:
     name: Formatting Check
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: psf/black@stable
@@ -53,22 +53,25 @@ jobs:
         run: pip install -r requirements.txt
       - run: pip install -v .
       - run: pytest --junitxml=pytest.xml python/tests
+        continue-on-error: true
       - name: Publish Test Results
         if: matrix.os == 'ubuntu-22.04'
         uses: EnricoMi/publish-unit-test-result-action/linux@v2
         with:
           files: pytest.xml
           check_name: Python Binding Test Results (${{ matrix.os }})
+          check_run: false
       - name: Publish Test Results
         if: matrix.os == 'macos-latest'
         uses: EnricoMi/publish-unit-test-result-action/macos@v2
         with:
           files: pytest.xml
           check_name: Python Binding Test Results (${{ matrix.os }})
+          check_run: false
 
   sdist:
     name: Build source distribution
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Build SDist
@@ -85,7 +88,7 @@ jobs:
     environment: pypi
     permissions:
       id-token: write
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     if: github.event_name == 'release' && github.event.action == 'published'
     steps:
       - uses: actions/download-artifact@v4

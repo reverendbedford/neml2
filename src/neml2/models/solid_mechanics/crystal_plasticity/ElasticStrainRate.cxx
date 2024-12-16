@@ -42,20 +42,20 @@ ElasticStrainRate::expected_options()
                   "deformation rate, \\f$ w \\f$ is the vorticity, and \\f$ \\varepsilon \\f$ is "
                   "the elastic strain.";
 
-  options.set_output("elastic_strain_rate") = VariableName("state", "elastic_strain_rate");
+  options.set_output("elastic_strain_rate") = VariableName(STATE, "elastic_strain_rate");
   options.set("elastic_strain_rate").doc() = "Name of the elastic strain rate";
 
-  options.set_input("elastic_strain") = VariableName("state", "elastic_strain");
+  options.set_input("elastic_strain") = VariableName(STATE, "elastic_strain");
   options.set("elastic_strain").doc() = "Name of the elastic strain";
 
-  options.set_input("deformation_rate") = VariableName("forces", "deformation_rate");
+  options.set_input("deformation_rate") = VariableName(FORCES, "deformation_rate");
   options.set("deformation_rate").doc() = "Name of the deformation rate";
 
-  options.set_input("vorticity") = VariableName("forces", "vorticity");
+  options.set_input("vorticity") = VariableName(FORCES, "vorticity");
   options.set("vorticity").doc() = "Name of the vorticity";
 
   options.set_input("plastic_deformation_rate") =
-      VariableName("state", "internal", "plastic_deformation_rate");
+      VariableName(STATE, "internal", "plastic_deformation_rate");
   options.set("plastic_deformation_rate").doc() = "Name of the plastic deformation rate";
 
   return options;
@@ -81,7 +81,7 @@ ElasticStrainRate::set_value(bool out, bool dout_din, bool d2out_din2)
 
   if (dout_din)
   {
-    const auto I = SSR4::identity_sym(options());
+    const auto I = SSR4::identity_sym(_d.options());
 
     if (_e.is_dependent())
       _e_dot.d(_e) = math::d_skew_and_sym_to_sym_d_sym(WR2(_w));

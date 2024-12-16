@@ -116,9 +116,7 @@ if __name__ == "__main__":
         sections = get_sections(syntax)
         for section in sections:
             with open((outdir / section.lower()).with_suffix(".md"), "w") as stream:
-                stream.write(
-                    "# [{}] {{#{}}}\n\n".format(section, "syntax-" + section.lower())
-                )
+                stream.write("# [{}] {{#{}}}\n\n".format(section, "syntax-" + section.lower()))
                 stream.write("[TOC]\n\n")
                 stream.write(section_prologue(section))
                 stream.write("\n")
@@ -132,9 +130,7 @@ if __name__ == "__main__":
                     if params["section"] != section:
                         continue
                     input_type = demangle(params["type"]["value"])
-                    stream.write(
-                        "### {} {{#{}}}\n\n".format(input_type, input_type.lower())
-                    )
+                    stream.write("### {} {{#{}}}\n\n".format(input_type, input_type.lower()))
                     if params["doc"]:
                         stream.write("{}\n".format(params["doc"]))
                     else:
@@ -161,9 +157,7 @@ if __name__ == "__main__":
                         param_value = postprocess(info["value"], param_type)
                         stream.write("<details>\n")
                         if not info["doc"]:
-                            stream.write(
-                                "  <summary>`{}`</summary>\n\n".format(param_name)
-                            )
+                            stream.write("  <summary>`{}`</summary>\n\n".format(param_name))
                             missing += 1
                             log.write(
                                 "  * '{}/{}/{}' is missing option description\n".format(
@@ -188,9 +182,7 @@ if __name__ == "__main__":
                             stream.write("  - <u>Default</u>: {}\n".format(param_value))
                         stream.write("</details>\n")
                     stream.write("\n")
-                    stream.write(
-                        "Detailed documentation [link](@ref {})\n\n".format(type)
-                    )
+                    stream.write("Detailed documentation [link](@ref {})\n\n".format(type))
 
         if missing == 0:
             log.write("No syntax error, good job! :purple_heart:")

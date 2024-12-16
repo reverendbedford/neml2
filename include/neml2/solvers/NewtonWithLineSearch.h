@@ -25,6 +25,7 @@
 #pragma once
 
 #include "neml2/solvers/Newton.h"
+#include "neml2/tensors/Scalar.h"
 
 namespace neml2
 {
@@ -43,10 +44,16 @@ public:
 
 protected:
   /// Update trial solution
-  virtual void update(NonlinearSystem & system, Tensor & x) override;
+  void update(NonlinearSystem & system,
+              NonlinearSystem::Sol<true> & x,
+              const NonlinearSystem::Res<true> & r,
+              const NonlinearSystem::Jac<true> & J) override;
 
   /// Perform Armijo linesearch
-  virtual void linesearch(NonlinearSystem & system, const Tensor & x, const Tensor & dx);
+  virtual Scalar linesearch(NonlinearSystem & system,
+                            const NonlinearSystem::Sol<true> & x,
+                            const NonlinearSystem::Sol<true> & dx,
+                            const NonlinearSystem::Res<true> & R0) const;
 
   /// Linesearch maximum iterations
   unsigned int _linesearch_miter;
@@ -56,8 +63,5 @@ protected:
 
   /// Stopping criteria for linesearch
   Real _linesearch_c;
-
-  /// The line search parameter
-  Scalar _alpha;
 };
 } // namespace neml2

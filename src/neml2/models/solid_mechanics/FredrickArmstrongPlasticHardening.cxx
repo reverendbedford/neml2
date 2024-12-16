@@ -43,13 +43,13 @@ FredrickArmstrongPlasticHardening::expected_options()
       "direction, \\f$ \\dot{\\gamma} \\f$ is the flow rate, and \\f$ C \\f$ and \\f$ g \\f$ are "
       "material parameters.";
 
-  options.set_input("back_stress") = VariableName("state", "internal", "X");
+  options.set_input("back_stress") = VariableName(STATE, "internal", "X");
   options.set("back_stress").doc() = "Back stress";
 
   options.set_output("back_stress_rate");
   options.set("back_stress_rate").doc() = "Back stress rate, defaults to back_stress + _rate";
 
-  options.set_input("flow_direction") = VariableName("state", "internal", "NM");
+  options.set_input("flow_direction") = VariableName(STATE, "internal", "NM");
   options.set("flow_direction").doc() = "Flow direction";
 
   options.set_parameter<CrossRef<Scalar>>("C");
@@ -89,7 +89,7 @@ FredrickArmstrongPlasticHardening::set_value(bool out, bool dout_din, bool d2out
 
   if (dout_din)
   {
-    auto I = SR2::identity_map(options());
+    auto I = SR2::identity_map(_X.options());
 
     if (_gamma_dot.is_dependent())
       _X_dot.d(_gamma_dot) = g_term;

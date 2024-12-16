@@ -59,12 +59,12 @@
 
 [Drivers]
   [driver]
-    type = SolidMechanicsDriver
+    type = SDTSolidMechanicsDriver
     model = 'model'
-    times = 'times'
-    prescribed_strains = 'strains'
-    ic_scalar_names = 'state/internal/f'
-    ic_scalar_values = 'f0'
+    prescribed_time = 'times'
+    prescribed_strain = 'strains'
+    ic_Scalar_names = 'state/internal/f'
+    ic_Scalar_values = 'f0'
     save_as = 'result.pt'
   []
   [regression]

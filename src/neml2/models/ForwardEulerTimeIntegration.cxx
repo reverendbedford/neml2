@@ -48,7 +48,7 @@ ForwardEulerTimeIntegration<T>::expected_options()
   options.set_input("rate");
   options.set("rate").doc() = "Variable rate of change";
 
-  options.set_input("time") = VariableName("forces", "t");
+  options.set_input("time") = VariableName(FORCES, "t");
   options.set("time").doc() = "Time";
 
   return options;
@@ -88,7 +88,7 @@ ForwardEulerTimeIntegration<T>::set_value(bool out, bool dout_din, bool d2out_di
 
   if (dout_din)
   {
-    auto I = T::identity_map(options());
+    auto I = T::identity_map(_ds_dt.options());
 
     _s.d(_ds_dt) = I * (_t - _tn);
 

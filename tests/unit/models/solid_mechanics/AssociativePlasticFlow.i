@@ -2,13 +2,12 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    batch_shape = '(10)'
-    input_scalar_names = 'state/internal/gamma_rate'
-    input_scalar_values = '0.0015'
-    input_symr2_names = 'state/internal/NM'
-    input_symr2_values = 'NX'
-    output_symr2_names = 'state/internal/Ep_rate'
-    output_symr2_values = 'Ep_rate'
+    input_Scalar_names = 'state/internal/gamma_rate'
+    input_Scalar_values = '0.0015'
+    input_SR2_names = 'state/internal/NM'
+    input_SR2_values = 'NX'
+    output_SR2_names = 'state/internal/Ep_rate'
+    output_SR2_values = 'Ep_rate'
   []
 []
 

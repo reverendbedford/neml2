@@ -57,7 +57,7 @@ TwoStageThermalAnnealing<T>::expected_options()
   options.set_output("modified_rate");
   options.set("modified_rate").doc() = "Output for the modified hardening rate.";
 
-  options.set_input("temperature") = VariableName("forces", "T");
+  options.set_input("temperature") = VariableName(FORCES, "T");
   options.set("temperature").doc() = "Temperature";
 
   options.set_parameter<CrossRef<Scalar>>("T1");
@@ -102,7 +102,7 @@ TwoStageThermalAnnealing<T>::set_value(bool out, bool dout_din, bool d2out_din2)
 
   if (dout_din)
   {
-    auto I = T::identity_map(options());
+    auto I = T::identity_map(_T.options());
 
     if (_base_rate.is_dependent())
       _modified_rate.d(_base_rate) = base_region * I;

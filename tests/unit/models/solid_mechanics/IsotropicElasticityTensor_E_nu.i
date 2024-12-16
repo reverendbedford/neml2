@@ -2,14 +2,10 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    batch_shape = '()'
-    input_scalar_names = 'params/E params/nu'
-    input_scalar_values = '100000.0 0.3'
-    output_ssr4_names = 'parameters/p'
-    output_ssr4_values = 'p_correct'
-    check_AD_first_derivatives = false
-    check_AD_second_derivatives = false
-    check_AD_derivatives = false
+    input_Scalar_names = 'params/E params/nu'
+    input_Scalar_values = '100000.0 0.3'
+    output_SSR4_names = 'parameters/p'
+    output_SSR4_values = 'p_correct'
   []
 []
 

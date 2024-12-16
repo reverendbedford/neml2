@@ -55,8 +55,8 @@ IsotropicElasticityTensor::set_value(bool out, bool dout_din, bool d2out_din2)
   const auto [lambda, dl_dp1, dl_dp2] = convert_to_lambda();
   const auto [mu, dm_dp1, dm_dp2] = convert_to_mu();
 
-  auto Iv = SSR4::identity_vol(options());
-  auto Is = SSR4::identity_sym(options());
+  auto Iv = SSR4::identity_vol(lambda.options());
+  auto Is = SSR4::identity_sym(mu.options());
 
   if (out)
     _p = 3.0 * lambda * Iv + 2.0 * mu * Is;

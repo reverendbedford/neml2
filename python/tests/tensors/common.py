@@ -64,9 +64,7 @@ def tensor_options(dtype, device, requires_grad):
 
 
 def assert_binary_op(func, x, y):
-    assert torch.allclose(
-        func(x, y).torch(), func(x.torch(), y.torch()), equal_nan=True
-    )
+    assert torch.allclose(func(x, y).torch(), func(x.torch(), y.torch()), equal_nan=True)
 
 
 def assert_unary_op(func, x):

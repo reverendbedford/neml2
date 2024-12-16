@@ -27,9 +27,7 @@
 #include "neml2/models/crystallography/crystallography.h"
 #include "neml2/tensors/tensors.h"
 
-namespace neml2
-{
-namespace crystallography
+namespace neml2::crystallography
 {
 
 register_NEML2_object(CubicCrystal);
@@ -58,5 +56,4 @@ CubicCrystal::CubicCrystal(const OptionSet & options)
 {
 }
 
-} // namespace crystallography
 } // namespace neml2

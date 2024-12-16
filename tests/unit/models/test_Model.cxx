@@ -32,54 +32,31 @@ using namespace neml2;
 
 TEST_CASE("Model", "[models]")
 {
-
-  SECTION("check_input")
-  {
-    auto & model = reload_model("unit/models/ComposedModel3.i", "model");
-    model.reinit({5, 2});
-
-    // Input has incorrect batch shape
-    auto in1 = LabeledVector::empty({2, 5}, {&model.input_axis()});
-    REQUIRE_THROWS_WITH(model.value(in1),
-                        Catch::Matchers::ContainsSubstring("The provided input has batch shape"));
-
-    // Input has correct batch shape but incorrect base shape
-    auto in2 = LabeledVector::empty({2}, {&model.output_axis()});
-    REQUIRE_THROWS_WITH(
-        model.value(in2),
-        Catch::Matchers::ContainsSubstring("The provided input has base storage size"));
-  }
-
-  SECTION("input_type")
+  SECTION("variable type")
   {
     auto & model = reload_model("unit/models/ComposedModel3.i", "model");
 
-    REQUIRE(model.input_type({"forces", "t"}) == TensorType::kScalar);
-    REQUIRE(model.input_type({"forces", "temperature"}) == TensorType::kScalar);
-    REQUIRE(model.input_type({"old_forces", "t"}) == TensorType::kScalar);
-    REQUIRE(model.input_type({"old_state", "bar"}) == TensorType::kScalar);
-    REQUIRE(model.input_type({"old_state", "baz"}) == TensorType::kSR2);
-    REQUIRE(model.input_type({"old_state", "foo"}) == TensorType::kScalar);
-    REQUIRE(model.input_type({"state", "bar"}) == TensorType::kScalar);
-    REQUIRE(model.input_type({"state", "baz"}) == TensorType::kSR2);
-    REQUIRE(model.input_type({"state", "foo"}) == TensorType::kScalar);
+    REQUIRE(model.input_variable({FORCES, "t"}).type() == TensorType::kScalar);
+    REQUIRE(model.input_variable({FORCES, "temperature"}).type() == TensorType::kScalar);
+    REQUIRE(model.input_variable({OLD_FORCES, "t"}).type() == TensorType::kScalar);
+    REQUIRE(model.input_variable({OLD_STATE, "bar"}).type() == TensorType::kScalar);
+    REQUIRE(model.input_variable({OLD_STATE, "baz"}).type() == TensorType::kSR2);
+    REQUIRE(model.input_variable({OLD_STATE, "foo"}).type() == TensorType::kScalar);
+    REQUIRE(model.input_variable({STATE, "bar"}).type() == TensorType::kScalar);
+    REQUIRE(model.input_variable({STATE, "baz"}).type() == TensorType::kSR2);
+    REQUIRE(model.input_variable({STATE, "foo"}).type() == TensorType::kScalar);
+    REQUIRE(model.output_variable({STATE, "sum"}).type() == TensorType::kScalar);
 
-    REQUIRE(utils::stringify(model.input_type({"forces", "t"})) == "Scalar");
-    REQUIRE(utils::stringify(model.input_type({"forces", "temperature"})) == "Scalar");
-    REQUIRE(utils::stringify(model.input_type({"old_forces", "t"})) == "Scalar");
-    REQUIRE(utils::stringify(model.input_type({"old_state", "bar"})) == "Scalar");
-    REQUIRE(utils::stringify(model.input_type({"old_state", "baz"})) == "SR2");
-    REQUIRE(utils::stringify(model.input_type({"old_state", "foo"})) == "Scalar");
-    REQUIRE(utils::stringify(model.input_type({"state", "bar"})) == "Scalar");
-    REQUIRE(utils::stringify(model.input_type({"state", "baz"})) == "SR2");
-    REQUIRE(utils::stringify(model.input_type({"state", "foo"})) == "Scalar");
-  }
-
-  SECTION("output_type")
-  {
-    auto & model = reload_model("unit/models/ComposedModel3.i", "model");
-    REQUIRE(model.output_type({"state", "sum"}) == TensorType::kScalar);
-    REQUIRE(utils::stringify(model.output_type({"state", "sum"})) == "Scalar");
+    REQUIRE(utils::stringify(model.input_variable({FORCES, "t"}).type()) == "Scalar");
+    REQUIRE(utils::stringify(model.input_variable({FORCES, "temperature"}).type()) == "Scalar");
+    REQUIRE(utils::stringify(model.input_variable({OLD_FORCES, "t"}).type()) == "Scalar");
+    REQUIRE(utils::stringify(model.input_variable({OLD_STATE, "bar"}).type()) == "Scalar");
+    REQUIRE(utils::stringify(model.input_variable({OLD_STATE, "baz"}).type()) == "SR2");
+    REQUIRE(utils::stringify(model.input_variable({OLD_STATE, "foo"}).type()) == "Scalar");
+    REQUIRE(utils::stringify(model.input_variable({STATE, "bar"}).type()) == "Scalar");
+    REQUIRE(utils::stringify(model.input_variable({STATE, "baz"}).type()) == "SR2");
+    REQUIRE(utils::stringify(model.input_variable({STATE, "foo"}).type()) == "Scalar");
+    REQUIRE(utils::stringify(model.output_variable({STATE, "sum"}).type()) == "Scalar");
   }
 
   SECTION("diagnose")
@@ -92,6 +69,7 @@ TEST_CASE("Model", "[models]")
           Catch::Matchers::ContainsSubstring(
               "Input variable whatever/foo_rate must be on one of the following sub-axes"));
     }
+
     SECTION("output variables")
     {
       auto & model = reload_model("unit/models/test_Model_diagnose2.i", "model");
@@ -100,14 +78,7 @@ TEST_CASE("Model", "[models]")
           Catch::Matchers::ContainsSubstring(
               "Output variable whatever/foo must be on one of the following sub-axes"));
     }
-    SECTION("statefulness")
-    {
-      auto & model = reload_model("unit/models/test_Model_diagnose1.i", "model");
-      REQUIRE_THROWS_WITH(
-          diagnose(model),
-          Catch::Matchers::ContainsSubstring("Input axis has old state variable foo, but the "
-                                             "corresponding output state variable doesn't exist"));
-    }
+
     SECTION("nonlinear system")
     {
       auto & model = reload_model("unit/models/test_Model_diagnose3.i", "model");

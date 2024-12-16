@@ -2,13 +2,12 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    batch_shape = '(10,3)'
-    input_symr2_names = 'state/elastic_strain forces/deformation_rate state/internal/plastic_deformation_rate'
-    input_symr2_values = 'e d dp'
-    input_skewr2_names = 'forces/vorticity'
-    input_skewr2_values = 'w'
-    output_symr2_names = 'state/elastic_strain_rate'
-    output_symr2_values = 'e_rate'
+    input_SR2_names = 'state/elastic_strain forces/deformation_rate state/internal/plastic_deformation_rate'
+    input_SR2_values = 'e d dp'
+    input_WR2_names = 'forces/vorticity'
+    input_WR2_values = 'w'
+    output_SR2_names = 'state/elastic_strain_rate'
+    output_SR2_values = 'e_rate'
   []
 []
 

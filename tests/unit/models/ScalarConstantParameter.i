@@ -2,10 +2,8 @@
   [unit]
     type = ModelUnitTest
     model = 'E'
-    batch_shape = '(10)'
-    output_scalar_names = 'parameters/E'
-    output_scalar_values = 'T'
-    check_second_derivatives = true
+    output_Scalar_names = 'parameters/E'
+    output_Scalar_values = 'T'
   []
 []
 

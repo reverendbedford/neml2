@@ -32,7 +32,7 @@ AnisotropicElasticity::expected_options()
   OptionSet options = Elasticity::expected_options();
   options.doc() = "Relates elastic strain to stress with some non-isotropic tensor.";
 
-  options.set_input("orientation") = VariableName("state", "orientation");
+  options.set_input("orientation") = VariableName(STATE, "orientation");
   options.set("orientation").doc() = "Active convention orientation from reference to current";
 
   return options;

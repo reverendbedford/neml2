@@ -26,11 +26,8 @@
 
 #include "neml2/models/crystallography/CrystalGeometry.h"
 
-namespace neml2
+namespace neml2::crystallography
 {
-namespace crystallography
-{
-
 /// @brief Specialized crystal geometry for cubic crystals
 class CubicCrystal : public CrystalGeometry
 {
@@ -41,5 +38,4 @@ public:
   /// Input options
   static OptionSet expected_options();
 };
-} // namespace crystallography
 } // namespace neml2

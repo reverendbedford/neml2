@@ -51,7 +51,7 @@ torch::Tensor cubic(const torch::TensorOptions & options = default_tensor_option
 
 /// Helper function to return the symmetry operators given the Orbifold notation
 R2
-symmetry_operations_from_orbifold(std::string orbifold,
+symmetry_operations_from_orbifold(const std::string & orbifold,
                                   const torch::TensorOptions & options = default_tensor_options());
 
 /// Helper to return all symmetrically-equivalent directions from a cartesian vector

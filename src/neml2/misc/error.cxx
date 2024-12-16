@@ -27,7 +27,7 @@
 namespace neml2
 {
 const char *
-NEMLException::what() const throw()
+NEMLException::what() const noexcept
 {
   return _msg.c_str();
 }

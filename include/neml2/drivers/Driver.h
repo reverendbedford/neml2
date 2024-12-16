@@ -54,7 +54,7 @@ public:
    */
   Driver(const OptionSet & options);
 
-  virtual void diagnose(std::vector<Diagnosis> &) const override {}
+  void diagnose(std::vector<Diagnosis> &) const override {}
 
   /// Let the driver run, return \p true upon successful completion, and return \p false otherwise.
   virtual bool run() = 0;

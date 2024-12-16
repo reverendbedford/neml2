@@ -2,10 +2,8 @@
   [unit]
     type = ModelUnitTest
     model = 'E'
-    batch_shape = '(10)'
-    output_symr2_names = 'parameters/E'
-    output_symr2_values = 'T'
-    check_second_derivatives = true
+    output_SR2_names = 'parameters/E'
+    output_SR2_values = 'T'
   []
 []
 

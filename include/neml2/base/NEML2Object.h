@@ -39,14 +39,19 @@ class NEML2Object
 public:
   static OptionSet expected_options();
 
+  NEML2Object() = delete;
+  NEML2Object(NEML2Object &&) = delete;
+  NEML2Object(const NEML2Object &) = delete;
+  NEML2Object & operator=(const NEML2Object &) = delete;
+  NEML2Object & operator=(NEML2Object &&) = delete;
+  virtual ~NEML2Object() = default;
+
   /**
    * @brief Construct a new NEML2Object object
    *
    * @param options The set of options extracted from the input file
    */
   NEML2Object(const OptionSet & options);
-
-  virtual ~NEML2Object() = default;
 
   const OptionSet & input_options() const { return _input_options; }
 

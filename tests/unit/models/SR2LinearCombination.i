@@ -17,11 +17,10 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    batch_shape = '(10)'
-    input_symr2_names = 'state/A state/substate/B'
-    input_symr2_values = 'foo bar'
-    output_symr2_names = 'state/outsub/C'
-    output_symr2_values = 'baz'
+    input_SR2_names = 'state/A state/substate/B'
+    input_SR2_values = 'foo bar'
+    output_SR2_names = 'state/outsub/C'
+    output_SR2_values = 'baz'
   []
 []
 

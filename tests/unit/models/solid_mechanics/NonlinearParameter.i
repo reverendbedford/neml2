@@ -2,18 +2,14 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    batch_shape = '(2,2)'
-    input_symr2_names = 'state/internal/M'
-    input_symr2_values = 'M'
-    input_scalar_names = 'forces/T'
-    input_scalar_values = '550'
-    output_scalar_names = 'state/internal/fp'
-    output_scalar_values = '102.5057'
-    derivatives_abs_tol = 1e-06
+    input_SR2_names = 'state/internal/M'
+    input_SR2_values = 'M'
+    input_Scalar_names = 'forces/T'
+    input_Scalar_values = '550'
+    output_Scalar_names = 'state/internal/fp'
+    output_Scalar_values = '102.5057'
+    derivative_abs_tol = 1e-06
     check_second_derivatives = true
-    check_AD_first_derivatives = false
-    check_AD_second_derivatives = false
-    check_AD_derivatives = false
     check_AD_parameter_derivatives = false
   []
 []

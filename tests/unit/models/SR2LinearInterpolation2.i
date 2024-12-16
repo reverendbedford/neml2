@@ -2,11 +2,10 @@
   [unit]
     type = ModelUnitTest
     model = 'D'
-    batch_shape = '(2,3)'
-    input_scalar_names = 'forces/T'
-    input_scalar_values = '300'
-    output_symr2_names = 'parameters/D'
-    output_symr2_values = 'DT'
+    input_Scalar_names = 'forces/T'
+    input_Scalar_values = '300'
+    output_SR2_names = 'parameters/D'
+    output_SR2_values = 'DT'
     check_second_derivatives = true
     check_AD_parameter_derivatives = false
   []

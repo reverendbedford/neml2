@@ -37,12 +37,12 @@ class MultiEnumSelection;
 class ParserException : public std::exception
 {
 public:
-  ParserException(const std::string & msg)
-    : _msg(msg)
+  ParserException(std::string msg)
+    : _msg(std::move(msg))
   {
   }
 
-  virtual const char * what() const noexcept;
+  const char * what() const noexcept override;
 
 private:
   std::string _msg;
@@ -52,6 +52,8 @@ namespace utils
 {
 /// This is a dummy to prevent compilers whining about not know how to >> torch::Tensor
 std::stringstream & operator>>(std::stringstream & in, torch::Tensor &);
+
+std::string join(const std::vector<std::string> & strs, const std::string & delim);
 
 std::vector<std::string> split(const std::string & str, const std::string & delims);
 

@@ -37,7 +37,7 @@ public:
 
   WR2ImplicitExponentialTimeIntegration(const OptionSet & options);
 
-  virtual void diagnose(std::vector<Diagnosis> & diagnoses) const override;
+  void diagnose(std::vector<Diagnosis> & diagnoses) const override;
 
 private:
   /// Variable name
@@ -66,6 +66,6 @@ protected:
   const Variable<Scalar> & _tn;
 
   /// Nonlinear residual
-  Variable<Vec> & _r;
+  Variable<Rot> & _r;
 };
 } // namespace neml2

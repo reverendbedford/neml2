@@ -106,9 +106,7 @@ def find_critical_batch_size(data, device1, device2):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "devices", nargs="+", help="Device on which to run the benchmark"
-    )
+    parser.add_argument("devices", nargs="+", help="Device on which to run the benchmark")
     parser.add_argument(
         "-o",
         "--output",

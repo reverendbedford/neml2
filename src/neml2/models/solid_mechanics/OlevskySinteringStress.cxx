@@ -38,10 +38,10 @@ OlevskySinteringStress::expected_options()
                   "\\f$ \\gamma \\f$ is the surface tension, \\f$ r \\f$ is the size of the "
                   "particles/powders, and \\f$ \\phi \\f$ is the void fraction.";
 
-  options.set_output("sintering_stress") = VariableName("state", "internal", "ss");
+  options.set_output("sintering_stress") = VariableName(STATE, "internal", "ss");
   options.set("sintering_stress").doc() = "Sintering stress";
 
-  options.set_input("void_fraction") = VariableName("state", "internal", "f");
+  options.set_input("void_fraction") = VariableName(STATE, "internal", "f");
   options.set("void_fraction").doc() = "Void fraction";
 
   options.set_parameter<CrossRef<Scalar>>("surface_tension");

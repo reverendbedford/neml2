@@ -46,7 +46,7 @@ VariableRate<T>::expected_options()
   options.set_input("variable");
   options.set("variable").doc() = "The variable to take time derivative with";
 
-  options.set_input("time") = VariableName("forces", "t");
+  options.set_input("time") = VariableName(FORCES, "t");
   options.set("time").doc() = "Time";
 
   return options;
@@ -87,7 +87,7 @@ VariableRate<T>::set_value(bool out, bool dout_din, bool d2out_din2)
 
   if (dout_din)
   {
-    auto I = T::identity_map(options());
+    auto I = T::identity_map(_v.options());
 
     if (_v.is_dependent())
       _dv_dt.d(_v) = I / dt;

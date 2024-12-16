@@ -32,10 +32,10 @@ MandelStress::expected_options()
   OptionSet options = Model::expected_options();
   options.doc() = "Map Cauchy stress to Mandel stress";
 
-  options.set_input("cauchy_stress") = VariableName("state", "S");
+  options.set_input("cauchy_stress") = VariableName(STATE, "S");
   options.set("cauchy_stress").doc() = "Cauchy stress";
 
-  options.set_output("mandel_stress") = VariableName("state", "internal", "M");
+  options.set_output("mandel_stress") = VariableName(STATE, "internal", "M");
   options.set("mandel_stress").doc() = "Mandel stress";
 
   return options;

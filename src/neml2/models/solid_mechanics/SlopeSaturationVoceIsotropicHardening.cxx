@@ -42,7 +42,7 @@ SlopeSaturationVoceIsotropicHardening::expected_options()
                   "non-assocative manner.  This is sometimes handy, for example in supplementing "
                   "the model with static recovery.";
 
-  options.set_input("isotropic_hardening") = VariableName("state", "internal", "k");
+  options.set_input("isotropic_hardening") = VariableName(STATE, "internal", "k");
   options.set("isotropic_hardening").doc() = "Isotropic hardening variable";
 
   options.set_input("isotropic_hardening_rate");

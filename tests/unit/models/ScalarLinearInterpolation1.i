@@ -2,11 +2,10 @@
   [unit]
     type = ModelUnitTest
     model = 'E'
-    batch_shape = '(1)'
-    input_scalar_names = 'forces/T'
-    input_scalar_values = '300'
-    output_scalar_names = 'parameters/E'
-    output_scalar_values = '188911.6020499754'
+    input_Scalar_names = 'forces/T'
+    input_Scalar_values = '300'
+    output_Scalar_names = 'parameters/E'
+    output_Scalar_values = '188911.6020499754'
     check_second_derivatives = true
     check_AD_parameter_derivatives = false
   []

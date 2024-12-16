@@ -2,11 +2,10 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    batch_shape = '()'
-    input_rot_names = 'state/orientation'
-    input_rot_values = 'R_in'
-    output_rot_names = 'state/output_orientation'
-    output_rot_values = 'R_out'
+    input_Rot_names = 'state/orientation'
+    input_Rot_values = 'R_in'
+    output_Rot_names = 'state/output_orientation'
+    output_Rot_values = 'R_out'
   []
 []
 

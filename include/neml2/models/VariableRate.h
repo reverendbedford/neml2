@@ -36,7 +36,7 @@ public:
 
   VariableRate(const OptionSet & options);
 
-  virtual void diagnose(std::vector<Diagnosis> & diagnoses) const override;
+  void diagnose(std::vector<Diagnosis> & diagnoses) const override;
 
 protected:
   void set_value(bool out, bool dout_din, bool d2out_din2) override;

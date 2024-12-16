@@ -52,9 +52,11 @@ CubicElasticityTensor::set_value(bool out, bool dout_din, bool d2out_din2)
   const auto [C1, dC1_dp1, dC1_dp2, dC1_dp3] = convert_to_C1();
   const auto [C2, dC2_dp1, dC2_dp2, dC2_dp3] = convert_to_C2();
   const auto [C3, dC3_dp1, dC3_dp2, dC3_dp3] = convert_to_C3();
-  auto I1 = SSR4::identity_C1(options());
-  auto I2 = SSR4::identity_C2(options());
-  auto I3 = SSR4::identity_C3(options());
+
+  auto I1 = SSR4::identity_C1(C1.options());
+  auto I2 = SSR4::identity_C2(C2.options());
+  auto I3 = SSR4::identity_C3(C3.options());
+
   if (out)
     _p = C1 * I1 + C2 * I2 + C3 * I3;
   if (dout_din)

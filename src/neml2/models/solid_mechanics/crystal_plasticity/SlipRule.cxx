@@ -38,13 +38,13 @@ SlipRule::expected_options()
   options.doc() = "Parent class for all slip rules, which define the slip rate in terms of the "
                   "resolved shear and the slip system strength";
 
-  options.set_output("slip_rates") = VariableName("state", "internal", "slip_rates");
+  options.set_output("slip_rates") = VariableName(STATE, "internal", "slip_rates");
   options.set("slip_rates").doc() = "Name of the slip rate tensor";
 
-  options.set_input("resolved_shears") = VariableName("state", "internal", "resolved_shears");
+  options.set_input("resolved_shears") = VariableName(STATE, "internal", "resolved_shears");
   options.set("resolved_shears").doc() = "Name of the resolved shear tensor";
 
-  options.set_input("slip_strengths") = VariableName("state", "internal", "slip_strengths");
+  options.set_input("slip_strengths") = VariableName(STATE, "internal", "slip_strengths");
   options.set("slip_strengths").doc() = "Name of the tensor containing the slip system strengths";
 
   options.set<std::string>("crystal_geometry_name") = "crystal_geometry";
@@ -58,9 +58,9 @@ SlipRule::SlipRule(const OptionSet & options)
   : Model(options),
     _crystal_geometry(register_data<crystallography::CrystalGeometry>(
         options.get<std::string>("crystal_geometry_name"))),
-    _g(declare_output_variable_list<Scalar>(_crystal_geometry.nslip(), "slip_rates")),
-    _rss(declare_input_variable_list<Scalar>(_crystal_geometry.nslip(), "resolved_shears")),
-    _tau(declare_input_variable_list<Scalar>(_crystal_geometry.nslip(), "slip_strengths"))
+    _g(declare_output_variable<Scalar>("slip_rates", _crystal_geometry.nslip())),
+    _rss(declare_input_variable<Scalar>("resolved_shears", _crystal_geometry.nslip())),
+    _tau(declare_input_variable<Scalar>("slip_strengths", _crystal_geometry.nslip()))
 {
 }
 } // namespace neml2

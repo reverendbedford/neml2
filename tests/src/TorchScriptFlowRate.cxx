@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #include "TorchScriptFlowRate.h"
+#include "neml2/misc/math.h"
 
 using namespace neml2;
 
@@ -33,19 +34,16 @@ TorchScriptFlowRate::expected_options()
 {
   auto options = Model::expected_options();
   // Model inputs
-  options.set<VariableName>("von_mises_stress") = VariableName("state", "s");
-  options.set<VariableName>("temperature") = VariableName("forces", "T");
-  options.set<VariableName>("internal_state_1") = VariableName("state", "G");
-  options.set<VariableName>("internal_state_2") = VariableName("state", "C");
+  options.set<VariableName>("von_mises_stress") = VariableName(STATE, "s");
+  options.set<VariableName>("temperature") = VariableName(FORCES, "T");
+  options.set<VariableName>("internal_state_1") = VariableName(STATE, "G");
+  options.set<VariableName>("internal_state_2") = VariableName(STATE, "C");
   // Model outputs
-  options.set<VariableName>("equivalent_plastic_strain_rate") = VariableName("state", "ep_rate");
-  options.set<VariableName>("internal_state_1_rate") = VariableName("state", "G_rate");
-  options.set<VariableName>("internal_state_2_rate") = VariableName("state", "C_rate");
+  options.set<VariableName>("equivalent_plastic_strain_rate") = VariableName(STATE, "ep_rate");
+  options.set<VariableName>("internal_state_1_rate") = VariableName(STATE, "G_rate");
+  options.set<VariableName>("internal_state_2_rate") = VariableName(STATE, "C_rate");
   // The machine learning model
   options.set<std::string>("torch_script");
-  // Use AD
-  options.set<bool>("_use_AD_first_derivative") = true;
-  options.set<bool>("_use_AD_second_derivative") = true;
   return options;
 }
 
@@ -64,14 +62,12 @@ TorchScriptFlowRate::TorchScriptFlowRate(const OptionSet & options)
 }
 
 void
-TorchScriptFlowRate::reinit(TensorShapeRef batch_shape,
-                            int deriv_order,
-                            const torch::Device & device,
-                            const torch::Dtype & dtype)
+TorchScriptFlowRate::request_AD()
 {
-  Model::reinit(batch_shape, deriv_order, device, dtype);
-  _surrogate->to(device);
-  _surrogate->to(dtype);
+  std::vector<const VariableBase *> inputs = {&_s, &_T, &_G, &_C};
+  _ep_dot.request_AD(inputs);
+  _G_dot.request_AD(inputs);
+  _C_dot.request_AD(inputs);
 }
 
 void
@@ -82,6 +78,12 @@ TorchScriptFlowRate::set_value(bool out, bool dout_din, bool d2out_din2)
 
   if (out)
   {
+    // Broadcast and expand batch shape
+    std::vector<Tensor> inputs = {_s, _T, _G, _C};
+    const auto batch_sizes = utils::broadcast_batch_sizes(inputs);
+    for (std::size_t i = 0; i < inputs.size(); ++i)
+      inputs[i] = inputs[i].batch_expand(batch_sizes);
+
     // This example model has 4 input variables:
     //
     //   von Mises stress
@@ -90,7 +92,7 @@ TorchScriptFlowRate::set_value(bool out, bool dout_din, bool d2out_din2)
     //   internal state 2
     //
     // First concatenate them together and unsqueeze to shape (...; 4)
-    auto x = torch::stack({Scalar(_s), Scalar(_T), Scalar(_G), Scalar(_C)}, /*dim=*/-1);
+    auto x = math::base_stack(inputs, /*dim=*/-1);
 
     // Send it through the surrogate model loaded from torch script
     auto y = _surrogate->forward({x}).toTensor();

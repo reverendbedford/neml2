@@ -2,18 +2,16 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    batch_shape = '()'
-    input_symr2_names = 'state/S'
-    input_symr2_values = 'S'
-    input_rot_names = 'state/orientation'
-    input_rot_values = 'R'
-    output_symr2_names = 'state/internal/Ee'
-    output_symr2_values = 'Ee'
-    input_ssr4_names = 'params/C'
-    input_ssr4_values = 'C_values'
-    derivatives_abs_tol = 1e-6
-    derivatives_rel_tol = 1e-4
-    check_AD_first_derivatives = false
+    input_SR2_names = 'state/S'
+    input_SR2_values = 'S'
+    input_Rot_names = 'state/orientation'
+    input_Rot_values = 'R'
+    output_SR2_names = 'state/internal/Ee'
+    output_SR2_values = 'Ee'
+    input_SSR4_names = 'params/C'
+    input_SSR4_values = 'C_values'
+    derivative_abs_tol = 1e-6
+    derivative_rel_tol = 1e-4
   []
 []
 

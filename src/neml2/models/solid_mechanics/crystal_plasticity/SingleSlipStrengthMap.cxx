@@ -39,7 +39,7 @@ SingleSlipStrengthMap::expected_options()
       "i, \\f$ \\bar{\\tau} \\f$ is an evolving slip system strength (one value of all systems), "
       "defined by another object, and \\f$ \\tau_0 \\f$ is a constant strength.";
 
-  options.set_input("slip_hardening") = VariableName("state", "internal", "slip_hardening");
+  options.set_input("slip_hardening") = VariableName(STATE, "internal", "slip_hardening");
   options.set("slip_hardening").doc() = "The name of the evovling, scalar strength";
 
   options.set_parameter<CrossRef<Scalar>>("constant_strength");
@@ -61,10 +61,10 @@ SingleSlipStrengthMap::set_value(bool out, bool dout_din, bool d2out_din2)
   neml_assert_dbg(!d2out_din2, "Second derivative not implemented.");
 
   if (out)
-    _tau = (_tau_bar + _tau_const).base_unsqueeze(0).base_expand_as(_tau.value());
+    _tau = (_tau_bar + _tau_const).batch_unsqueeze(-1).batch_expand(_crystal_geometry.nslip(), -1);
 
   if (dout_din)
     if (_tau_bar.is_dependent())
-      _tau.d(_tau_bar) = Scalar::ones(options()).base_expand_as(_tau.d(_tau_bar).value());
+      _tau.d(_tau_bar) = Tensor::ones(_crystal_geometry.nslip(), _tau_bar.options());
 }
 } // namespace neml2

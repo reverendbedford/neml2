@@ -28,9 +28,7 @@
 
 #include "neml2/tensors/R2.h"
 
-namespace neml2
-{
-namespace crystallography
+namespace neml2::crystallography
 {
 /**
  * @brief Provide the correct symmetry operators for a given crystal class
@@ -47,5 +45,4 @@ public:
    */
   SymmetryFromOrbifold(const OptionSet & options);
 };
-} // namespace crystallography
 } // namespace neml2

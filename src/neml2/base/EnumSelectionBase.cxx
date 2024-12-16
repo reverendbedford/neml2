@@ -27,11 +27,6 @@
 
 namespace neml2
 {
-EnumSelectionBase::EnumSelectionBase(const EnumSelectionBase & other)
-  : _candidate_map(other._candidate_map)
-{
-}
-
 EnumSelectionBase::EnumSelectionBase(const std::vector<std::string> & candidates)
 {
   std::set<std::string> candidates_set(candidates.begin(), candidates.end());
@@ -58,13 +53,6 @@ EnumSelectionBase::EnumSelectionBase(const std::vector<std::string> & candidates
 
   for (size_t i = 0; i < candidates.size(); i++)
     _candidate_map.emplace(candidates[i], values[i]);
-}
-
-EnumSelectionBase &
-EnumSelectionBase::operator=(const EnumSelectionBase & other)
-{
-  _candidate_map = other._candidate_map;
-  return *this;
 }
 
 std::string

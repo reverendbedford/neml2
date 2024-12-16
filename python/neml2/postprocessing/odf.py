@@ -67,9 +67,7 @@ def spherical_quadrature(deg, device=torch.device("cpu")):
     ).reshape(-1, 3)
     wts = (
         torch.prod(
-            torch.stack(torch.meshgrid(owts, owts, owts, indexing="ij"), -1).reshape(
-                -1, 3
-            ),
+            torch.stack(torch.meshgrid(owts, owts, owts, indexing="ij"), -1).reshape(-1, 3),
             -1,
         )
         * np.pi**2.0
@@ -157,9 +155,7 @@ def split(X, sf):
     vset = inds[:nv]
     tset = inds[nv:]
 
-    return neml2.tensors.Rot(X.torch()[vset].clone()), neml2.tensors.Rot(
-        X.torch()[tset].clone()
-    )
+    return neml2.tensors.Rot(X.torch()[vset].clone()), neml2.tensors.Rot(X.torch()[tset].clone())
 
 
 class KDEODF(ODF):
@@ -268,7 +264,5 @@ def beta(z1, z2):
         z2 (torch.tensor): second input
     """
     return torch.exp(
-        torch.special.gammaln(z1)
-        + torch.special.gammaln(z2)
-        - torch.special.gammaln(z1 + z2)
+        torch.special.gammaln(z1) + torch.special.gammaln(z2) - torch.special.gammaln(z1 + z2)
     )

@@ -26,10 +26,9 @@
 
 #include "neml2/models/crystallography/crystallography.h"
 
-namespace neml2
+namespace neml2::crystallography
 {
-namespace crystallography
-{
+
 register_NEML2_object(SymmetryFromOrbifold);
 
 OptionSet
@@ -51,5 +50,5 @@ SymmetryFromOrbifold::SymmetryFromOrbifold(const OptionSet & options)
     UserTensorBase(options)
 {
 }
-}
+
 } // namespace neml2

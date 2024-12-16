@@ -40,6 +40,12 @@ class Parser
 public:
   Parser() = default;
 
+  Parser(const Parser &) = default;
+  Parser(Parser &&) noexcept = default;
+  Parser & operator=(const Parser &) = default;
+  Parser & operator=(Parser &&) noexcept = default;
+  virtual ~Parser() = default;
+
   /// Known top-level sections in the input file
   static const std::vector<std::string> sections;
 

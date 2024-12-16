@@ -6,11 +6,6 @@ on:
   pull_request:
     branches: [main]
 
-permissions:
-  contents: read # Required when overriding permissions
-  pull-requests: write # For posting coverage report
-  checks: write
-
 # Newer commits should cancel old runs
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -40,7 +35,6 @@ jobs:
               return 0;\n\
             }\
             " > main.cxx
-      - run: cat main.cxx
       - name: Create a CMakeLists.txt file for testing purposes
         run: |
           echo -e "\
@@ -51,7 +45,6 @@ jobs:
             add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=0)\n\
             target_link_libraries(foo neml2)\n\
             " > CMakeLists.txt
-      - run: cat CMakeLists.txt
       - name: Configure with CMake
         run: cmake -DNEML2_TESTS=OFF -B build .
       - name: Compile

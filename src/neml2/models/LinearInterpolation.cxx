@@ -50,15 +50,18 @@ template <typename T>
 void
 LinearInterpolation<T>::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-  const auto X0 = this->_X.batch_index({indexing::Ellipsis, indexing::Slice(indexing::None, -1)});
-  const auto X1 = this->_X.batch_index({indexing::Ellipsis, indexing::Slice(1, indexing::None)});
-  const auto Y0 = this->_Y.batch_index({indexing::Ellipsis, indexing::Slice(indexing::None, -1)});
   const auto slope = math::diff(this->_Y, 1, this->_Y.batch_dim() - 1) /
                      math::diff(this->_X, 1, this->_X.batch_dim() - 1);
+  const auto X0 = this->_X.batch_index({indexing::Ellipsis, indexing::Slice(indexing::None, -1)})
+                      .batch_expand_as(slope);
+  const auto X1 = this->_X.batch_index({indexing::Ellipsis, indexing::Slice(1, indexing::None)})
+                      .batch_expand_as(slope);
+  const auto Y0 = this->_Y.batch_index({indexing::Ellipsis, indexing::Slice(indexing::None, -1)})
+                      .batch_expand_as(slope);
 
   const auto x = Scalar(this->_x);
-  const auto loc = torch::logical_and(torch::gt(x.batch_unsqueeze(-1), X0),
-                                      torch::le(x.batch_unsqueeze(-1), X1));
+  const auto loc = Scalar(torch::logical_and(torch::gt(x.batch_unsqueeze(-1), X0),
+                                             torch::le(x.batch_unsqueeze(-1), X1)));
   const auto si = mask<T>(slope, loc);
 
   if (out)

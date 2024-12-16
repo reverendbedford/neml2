@@ -35,6 +35,7 @@
 
 namespace neml2
 {
+
 R4::R4(const SSR4 & T)
   : R4(math::mandel_to_full(math::mandel_to_full(T, 1)))
 {

@@ -37,6 +37,7 @@
 
 namespace neml2
 {
+
 SR2::SR2(const R2 & T)
   : SR2(math::full_to_mandel((T + T.transpose()) / 2.0))
 {
@@ -52,7 +53,7 @@ SR2
 SR2::fill(const Scalar & a)
 {
   auto zero = torch::zeros_like(a);
-  return SR2(torch::stack({a, a, a, zero, zero, zero}, -1), a.batch_dim());
+  return SR2(torch::stack({a, a, a, zero, zero, zero}, -1), a.batch_sizes());
 }
 
 SR2
@@ -68,7 +69,7 @@ SR2
 SR2::fill(const Scalar & a11, const Scalar & a22, const Scalar & a33)
 {
   auto zero = torch::zeros_like(a11);
-  return SR2(torch::stack({a11, a22, a33, zero, zero, zero}, -1), a11.batch_dim());
+  return SR2(torch::stack({a11, a22, a33, zero, zero, zero}, -1), a11.batch_sizes());
 }
 
 SR2
@@ -103,7 +104,7 @@ SR2::fill(const Scalar & a11,
                            math::mandel_factor(4) * a13,
                            math::mandel_factor(5) * a12},
                           -1),
-             a11.batch_dim());
+             a11.batch_sizes());
 }
 
 SR2
@@ -154,7 +155,7 @@ SR2::operator()(Size i, Size j) const
 Scalar
 SR2::tr() const
 {
-  return Scalar(torch::sum(base_index({torch::indexing::Slice(0, 3)}), {-1}), batch_dim());
+  return Scalar(torch::sum(base_index({torch::indexing::Slice(0, 3)}), {-1}), batch_sizes());
 }
 
 SR2
