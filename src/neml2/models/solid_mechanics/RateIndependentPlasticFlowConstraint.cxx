@@ -37,10 +37,10 @@ RateIndependentPlasticFlowConstraint::expected_options()
                   "complementarity condition \\f[ r = \\dot{\\gamma} - f^p - "
                   "\\sqrt{{\\dot{\\gamma}}^2 + {f^p}^2} \\f]";
 
-  options.set_input("yield_function") = VariableName("state", "internal", "fp");
+  options.set_input("yield_function") = VariableName(STATE, "internal", "fp");
   options.set("yield_function").doc() = "Yield function";
 
-  options.set_input("flow_rate") = VariableName("state", "internal", "gamma_rate");
+  options.set_input("flow_rate") = VariableName(STATE, "internal", "gamma_rate");
   options.set("flow_rate").doc() = "Flow rate";
 
   return options;
@@ -51,7 +51,7 @@ RateIndependentPlasticFlowConstraint::RateIndependentPlasticFlowConstraint(
   : Model(options),
     _fp(declare_input_variable<Scalar>("yield_function")),
     _gamma_dot(declare_input_variable<Scalar>("flow_rate")),
-    _r(declare_output_variable<Scalar>(_gamma_dot.name().remount("residual")))
+    _r(declare_output_variable<Scalar>(_gamma_dot.name().remount(RESIDUAL)))
 {
 }
 

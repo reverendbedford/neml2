@@ -40,13 +40,13 @@ YieldFunction::expected_options()
   options.set_parameter<CrossRef<Scalar>>("yield_stress");
   options.set("yield_stress").doc() = "Yield stress";
 
-  options.set_input("effective_stress") = VariableName("state", "internal", "s");
+  options.set_input("effective_stress") = VariableName(STATE, "internal", "s");
   options.set("effective_stress").doc() = "Effective stress";
 
   options.set_input("isotropic_hardening");
   options.set("isotropic_hardening").doc() = "Isotropic hardening";
 
-  options.set_output("yield_function") = VariableName("state", "internal", "fp");
+  options.set_output("yield_function") = VariableName(STATE, "internal", "fp");
   options.set("yield_function").doc() = "Yield function";
 
   return options;

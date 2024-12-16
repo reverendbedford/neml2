@@ -39,7 +39,7 @@ SingleSlipStrengthMap::expected_options()
       "i, \\f$ \\bar{\\tau} \\f$ is an evolving slip system strength (one value of all systems), "
       "defined by another object, and \\f$ \\tau_0 \\f$ is a constant strength.";
 
-  options.set_input("slip_hardening") = VariableName("state", "internal", "slip_hardening");
+  options.set_input("slip_hardening") = VariableName(STATE, "internal", "slip_hardening");
   options.set("slip_hardening").doc() = "The name of the evovling, scalar strength";
 
   options.set_parameter<CrossRef<Scalar>>("constant_strength");

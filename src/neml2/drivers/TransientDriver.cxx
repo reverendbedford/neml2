@@ -50,7 +50,7 @@ set_ic(ValueMap & storage,
               " respectively.");
   for (std::size_t i = 0; i < names.size(); i++)
   {
-    neml_assert(names[i].start_with("state"),
+    neml_assert(names[i].is_state(),
                 "Initial condition names should start with 'state' but instead got ",
                 names[i]);
     storage[names[i]] = T(vals[i]).to(device);
@@ -65,7 +65,7 @@ TransientDriver::expected_options()
   options.set<std::string>("model");
   options.set("model").doc() = "The material model to be updated by the driver";
 
-  options.set<VariableName>("time") = VariableName("forces", "t");
+  options.set<VariableName>("time") = VariableName(FORCES, "t");
   options.set("time").doc() = "Time";
   options.set<CrossRef<Scalar>>("prescribed_time");
   options.set("prescribed_time").doc() =
@@ -139,8 +139,8 @@ TransientDriver::diagnose(std::vector<Diagnosis> & diagnoses) const
       _time.batch_dim());
 
   // Check for statefulness
-  const auto & input_old_state = _model.input_axis().subaxis("old_state");
-  const auto & output_state = _model.output_axis().subaxis("state");
+  const auto & input_old_state = _model.input_axis().subaxis(OLD_STATE);
+  const auto & output_state = _model.output_axis().subaxis(STATE);
   if (_model.input_axis().has_old_state())
     for (const auto & var : input_old_state.variable_names())
       diagnostic_assert(diagnoses,
@@ -213,17 +213,17 @@ TransientDriver::advance_step()
   // State from the previous time step becomes the old state in the current time step
   if (_model.input_axis().has_old_state())
   {
-    const auto input_old_state = _model.input_axis().subaxis("old_state");
+    const auto input_old_state = _model.input_axis().subaxis(OLD_STATE);
     for (const auto & var : input_old_state.variable_names())
-      _in[var.prepend("old_state")] = _result_out[_step_count - 1][var.prepend("state")];
+      _in[var.prepend(OLD_STATE)] = _result_out[_step_count - 1][var.prepend(STATE)];
   }
 
   // Forces from the previous time step become the old forces in the current time step
   if (_model.input_axis().has_old_forces())
   {
-    const auto input_old_forces = _model.input_axis().subaxis("old_forces");
+    const auto input_old_forces = _model.input_axis().subaxis(OLD_FORCES);
     for (const auto & var : input_old_forces.variable_names())
-      _in[var.prepend("old_forces")] = _result_in[_step_count - 1][var.prepend("forces")];
+      _in[var.prepend(OLD_FORCES)] = _result_in[_step_count - 1][var.prepend(FORCES)];
   }
 }
 
@@ -254,17 +254,17 @@ TransientDriver::apply_predictor()
   if (!_model.input_axis().has_state())
     return;
 
-  const auto input_state = _model.input_axis().subaxis("state");
+  const auto input_state = _model.input_axis().subaxis(STATE);
   for (const auto & var : input_state.variable_names())
-    if (_model.output_axis().has_variable(var.prepend("state")))
+    if (_model.output_axis().has_variable(var.prepend(STATE)))
     {
       if (_predictor == "PREVIOUS_STATE")
-        _in[var.prepend("state")] = _result_out[_step_count - 1][var.prepend("state")];
+        _in[var.prepend(STATE)] = _result_out[_step_count - 1][var.prepend(STATE)];
       else if (_predictor == "LINEAR_EXTRAPOLATION")
       {
         // Fall back to PREVIOUS_STATE predictor at the 1st time step
         if (_step_count == 1)
-          _in[var.prepend("state")] = _result_out[_step_count - 1][var.prepend("state")];
+          _in[var.prepend(STATE)] = _result_out[_step_count - 1][var.prepend(STATE)];
         // Otherwise linearly extrapolate in time
         else
         {
@@ -274,9 +274,9 @@ TransientDriver::apply_predictor()
           const auto dt = t - t_n;
           const auto dt_n = t_n - t_nm1;
 
-          const auto s_n = _result_out[_step_count - 1][var.prepend("state")];
-          const auto s_nm1 = _result_out[_step_count - 2][var.prepend("state")];
-          _in[var.prepend("state")] = s_n + (s_n - s_nm1) / dt_n * dt;
+          const auto s_n = _result_out[_step_count - 1][var.prepend(STATE)];
+          const auto s_nm1 = _result_out[_step_count - 2][var.prepend(STATE)];
+          _in[var.prepend(STATE)] = s_n + (s_n - s_nm1) / dt_n * dt;
         }
       }
       else

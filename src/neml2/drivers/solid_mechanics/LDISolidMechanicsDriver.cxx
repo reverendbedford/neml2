@@ -35,19 +35,19 @@ LDISolidMechanicsDriver::expected_options()
   options.doc() +=
       " This driver is specialized for large deformation models using the incremental formulation.";
 
-  options.set<VariableName>("deformation_rate") = VariableName("forces", "deformation_rate");
+  options.set<VariableName>("deformation_rate") = VariableName(FORCES, "deformation_rate");
   options.set("deformation_rate").doc() = "Deformation rate";
   options.set<CrossRef<torch::Tensor>>("prescribed_deformation_rate");
   options.set("prescribed_deformation_rate").doc() =
       "Prescribed deformation rate (when control = STRAIN)";
 
-  options.set<VariableName>("cauchy_stress_rate") = VariableName("forces", "cauchy_stress_rate");
+  options.set<VariableName>("cauchy_stress_rate") = VariableName(FORCES, "cauchy_stress_rate");
   options.set("cauchy_stress_rate").doc() = "Cauchy stress rate";
   options.set<CrossRef<torch::Tensor>>("prescribed_cauchy_stress_rate");
   options.set("prescribed_cauchy_stress_rate").doc() =
       "Prescribed cauchy stress rate (when control = STRESS)";
 
-  options.set<VariableName>("vorticity") = VariableName("forces", "vorticity");
+  options.set<VariableName>("vorticity") = VariableName(FORCES, "vorticity");
   options.set("vorticity").doc() = "Vorticity";
   options.set<CrossRef<torch::Tensor>>("prescribed_vorticity");
   options.set("prescribed_vorticity").doc() = "Prescribed vorticity";
@@ -59,7 +59,7 @@ LDISolidMechanicsDriver::expected_options()
   options.set<Real>("cp_warmup_elastic_scale") = 1.0;
   options.set("cp_warmup_elastic_scale").doc() =
       "Elastic step scale factor used for the crystal plasticity warm-up step";
-  options.set<VariableName>("cp_warmup_elastic_strain") = VariableName("state", "elastic_strain");
+  options.set<VariableName>("cp_warmup_elastic_strain") = VariableName(STATE, "elastic_strain");
   options.set("cp_warmup_elastic_strain").doc() =
       "Elastic strain name used for the CP warm-up step";
 

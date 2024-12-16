@@ -52,37 +52,37 @@ VariableBase::owner()
 bool
 VariableBase::is_state() const
 {
-  return _name.start_with("state");
+  return _name.is_state();
 }
 
 bool
 VariableBase::is_old_state() const
 {
-  return _name.start_with("old_state");
+  return _name.is_old_state();
 }
 
 bool
 VariableBase::is_force() const
 {
-  return _name.start_with("forces");
+  return _name.is_force();
 }
 
 bool
 VariableBase::is_old_force() const
 {
-  return _name.start_with("old_forces");
+  return _name.is_old_force();
 }
 
 bool
 VariableBase::is_residual() const
 {
-  return _name.start_with("residual");
+  return _name.is_residual();
 }
 
 bool
 VariableBase::is_parameter() const
 {
-  return _name.start_with("parameters");
+  return _name.is_parameter();
 }
 
 bool

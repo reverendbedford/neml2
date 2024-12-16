@@ -35,12 +35,12 @@ SDTSolidMechanicsDriver::expected_options()
   options.doc() +=
       " This driver is specialized for small deformation models using the total formulation.";
 
-  options.set<VariableName>("strain") = VariableName("forces", "E");
+  options.set<VariableName>("strain") = VariableName(FORCES, "E");
   options.set("strain").doc() = "Name of the strain used to drive the update";
   options.set<CrossRef<torch::Tensor>>("prescribed_strain");
   options.set("prescribed_strain").doc() = "Prescribed strain (when control = STRAIN)";
 
-  options.set<VariableName>("stress") = VariableName("forces", "S");
+  options.set<VariableName>("stress") = VariableName(FORCES, "S");
   options.set("stress").doc() = "Name of the stress used to drive the update";
   options.set<CrossRef<torch::Tensor>>("prescribed_stress");
   options.set("prescribed_stress").doc() = "Prescribed stress (when control = STRESS)";

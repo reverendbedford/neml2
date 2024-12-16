@@ -333,7 +333,7 @@ Model::provided_items() const
 void
 Model::set_guess(const Sol<false> & x)
 {
-  const auto sol_assember = VectorAssembler(input_axis().subaxis("state"));
+  const auto sol_assember = VectorAssembler(input_axis().subaxis(STATE));
   assign_input(sol_assember.split_by_variable(x));
 }
 
@@ -349,13 +349,13 @@ Model::assemble(NonlinearSystem::Res<false> * residual, NonlinearSystem::Jac<fal
 
   if (residual)
   {
-    const auto res_assembler = VectorAssembler(output_axis().subaxis("residual"));
+    const auto res_assembler = VectorAssembler(output_axis().subaxis(RESIDUAL));
     *residual = Res<false>(res_assembler.assemble_by_variable(collect_output()));
   }
   if (Jacobian)
   {
     const auto jac_assembler =
-        MatrixAssembler(output_axis().subaxis("residual"), input_axis().subaxis("state"));
+        MatrixAssembler(output_axis().subaxis(RESIDUAL), input_axis().subaxis(STATE));
     *Jacobian = Jac<false>(jac_assembler.assemble_by_variable(collect_output_derivatives()));
   }
 }

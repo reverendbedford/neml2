@@ -51,13 +51,13 @@ KocksMeckingActivationEnergy::expected_options()
   options.set<Real>("b");
   options.set("b").doc() = "Magnitude of the Burgers vector";
 
-  options.set_input("temperature") = VariableName("forces", "T");
+  options.set_input("temperature") = VariableName(FORCES, "T");
   options.set("temperature").doc() = "Absolute temperature";
 
-  options.set_input("strain_rate") = VariableName("forces", "effective_strain_rate");
+  options.set_input("strain_rate") = VariableName(FORCES, "effective_strain_rate");
   options.set("strain_rate").doc() = "Name of the effective strain rate";
 
-  options.set_output("activation_energy") = VariableName("forces", "g");
+  options.set_output("activation_energy") = VariableName(FORCES, "g");
   options.set("activation_energy").doc() = "Output name of the activation energy";
   return options;
 }

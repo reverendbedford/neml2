@@ -57,7 +57,7 @@ TwoStageThermalAnnealing<T>::expected_options()
   options.set_output("modified_rate");
   options.set("modified_rate").doc() = "Output for the modified hardening rate.";
 
-  options.set_input("temperature") = VariableName("forces", "T");
+  options.set_input("temperature") = VariableName(FORCES, "T");
   options.set("temperature").doc() = "Temperature";
 
   options.set_parameter<CrossRef<Scalar>>("T1");

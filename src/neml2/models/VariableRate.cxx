@@ -46,7 +46,7 @@ VariableRate<T>::expected_options()
   options.set_input("variable");
   options.set("variable").doc() = "The variable to take time derivative with";
 
-  options.set_input("time") = VariableName("forces", "t");
+  options.set_input("time") = VariableName(FORCES, "t");
   options.set("time").doc() = "Time";
 
   return options;

@@ -28,6 +28,12 @@
 
 namespace neml2
 {
+std::vector<std::string>
+reserved_subaxis_names()
+{
+  return {STATE, OLD_STATE, FORCES, OLD_FORCES, RESIDUAL, PARAMETERS};
+}
+
 LabeledAxisAccessor::operator std::vector<std::string>() const
 {
   std::vector<std::string> v(_item_names.begin(), _item_names.end());
@@ -106,14 +112,50 @@ LabeledAxisAccessor::start_with(const LabeledAxisAccessor & axis) const
   return slice(0, int64_t(axis.size())) == axis;
 }
 
+bool
+LabeledAxisAccessor::is_state() const
+{
+  return start_with(STATE);
+}
+
+bool
+LabeledAxisAccessor::is_old_state() const
+{
+  return start_with(OLD_STATE);
+}
+
+bool
+LabeledAxisAccessor::is_force() const
+{
+  return start_with(FORCES);
+}
+
+bool
+LabeledAxisAccessor::is_old_force() const
+{
+  return start_with(OLD_FORCES);
+}
+
+bool
+LabeledAxisAccessor::is_residual() const
+{
+  return start_with(RESIDUAL);
+}
+
+bool
+LabeledAxisAccessor::is_parameter() const
+{
+  return start_with(PARAMETERS);
+}
+
 LabeledAxisAccessor
 LabeledAxisAccessor::current() const
 {
   neml_assert(_item_names.size() >= 1, "variable name length must be at least 1");
-  if (start_with("old_state"))
-    return remount("state");
-  if (start_with("old_forces"))
-    return remount("forces");
+  if (start_with(OLD_STATE))
+    return remount(STATE);
+  if (start_with(OLD_FORCES))
+    return remount(FORCES);
   throw NEMLException("Unable to find current counterpart of variable named '" +
                       utils::stringify(*this) + "'");
 }
@@ -122,10 +164,10 @@ LabeledAxisAccessor
 LabeledAxisAccessor::old() const
 {
   neml_assert(_item_names.size() >= 1, "variable name length must be at least 1");
-  if (start_with("state"))
-    return remount("old_state");
-  if (start_with("forces"))
-    return remount("old_forces");
+  if (start_with(STATE))
+    return remount(OLD_STATE);
+  if (start_with(FORCES))
+    return remount(OLD_FORCES);
   throw NEMLException("Unable to find old counterpart of variable named '" +
                       utils::stringify(*this) + "'");
 }

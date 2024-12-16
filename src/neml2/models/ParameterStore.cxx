@@ -224,7 +224,7 @@ ParameterStore::declare_parameter_crossref(const std::string & name,
       const auto & pname = crossref.raw();
       auto & nl_param = Factory::get_object<NonlinearParameter<T>>(
           "Models", pname, extra_opts, /*force_create=*/false);
-      model->template declare_input_variable<T>(VariableName(pname).prepend("parameters"));
+      model->template declare_input_variable<T>(VariableName(pname).prepend(PARAMETERS));
       _nl_params[name] = &nl_param.param();
       _nl_param_models[name] = &nl_param;
       return nl_param.param().value();

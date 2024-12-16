@@ -36,7 +36,7 @@ SlipStrengthMap::expected_options()
   OptionSet options = Model::expected_options();
   options.doc() = "Map between internal variables the slip system strengths.";
 
-  options.set_output("slip_strengths") = VariableName("state", "internal", "slip_strengths");
+  options.set_output("slip_strengths") = VariableName(STATE, "internal", "slip_strengths");
   options.set("slip_strengths").doc() = "Name of the slip system strengths";
 
   options.set<std::string>("crystal_geometry_name") = "crystal_geometry";

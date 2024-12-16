@@ -45,10 +45,10 @@ TEST_CASE("training")
   p = Scalar(5, default_tensor_options().requires_grad(true));
 
   // Variables
-  VariableName strain("forces", "E");
-  VariableName time("forces", "t");
-  VariableName stress("state", "S");
-  VariableName ep("state", "internal", "ep");
+  VariableName strain(FORCES, "E");
+  VariableName time(FORCES, "t");
+  VariableName stress(STATE, "S");
+  VariableName ep(STATE, "internal", "ep");
 
   // Evaluate the model for the first time
   ValueMap x1;
@@ -63,8 +63,8 @@ TEST_CASE("training")
   ValueMap x2;
   x2[strain.old()] = x1[strain];
   x2[time.old()] = x1[time];
-  x2[stress.old()] = r1.at(stress.remount("residual")) * 1e-2;
-  x2[ep.old()] = r1.at(ep.remount("residual")) * 1e-2;
+  x2[stress.old()] = r1.at(stress.remount(RESIDUAL)) * 1e-2;
+  x2[ep.old()] = r1.at(ep.remount(RESIDUAL)) * 1e-2;
   x2[strain] = SR2::fill(0.02, 0.02, 0.03, -0.02, -0.01, 0.01).batch_expand(nbatch);
   x2[time] = Scalar::full(5.0).batch_expand(nbatch);
   x2[stress] = SR2::fill(100.0, 100.0, 200.0, -50.0, -150.0, 50.0).batch_expand(nbatch);
@@ -72,8 +72,8 @@ TEST_CASE("training")
   const auto r2 = model.value(x2);
 
   // Evaluate the objective function
-  const auto s2 = r2.at(stress.remount("residual")) * 1e-2;
-  const auto ep2 = r2.at(ep.remount("residual")) * 1e-2;
+  const auto s2 = r2.at(stress.remount(RESIDUAL)) * 1e-2;
+  const auto ep2 = r2.at(ep.remount(RESIDUAL)) * 1e-2;
   const auto f = torch::norm(torch::cat({s2.base_flatten(), ep2.base_flatten()}, -1));
 
   // Check the parameter gradient

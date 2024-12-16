@@ -273,7 +273,6 @@ public:
 
   void requires_grad_(bool req = true) override;
 
-  /// Set the variable value
   void operator=(const Tensor & val) override;
 
   /// Variable value
@@ -282,8 +281,10 @@ public:
   /// Negation
   T operator-() const { return -value(); }
 
+  /// Convert to the underlying tensor type
   operator T() const { return value(); }
 
+  /// Convert to Tensor
   template <typename T2 = T, typename = typename std::enable_if_t<!std::is_same_v<T2, Tensor>>>
   operator Tensor() const
   {

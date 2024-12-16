@@ -34,7 +34,7 @@ KinematicHardeningStaticRecovery::expected_options()
   OptionSet options = Model::expected_options();
   options.doc() += "This object defines kinematic hardening static recovery on a backstress term.";
 
-  options.set_input("back_stress") = VariableName("state", "internal", "X");
+  options.set_input("back_stress") = VariableName(STATE, "internal", "X");
   options.set("back_stress").doc() = "Back stress";
 
   options.set_output("back_stress_rate");

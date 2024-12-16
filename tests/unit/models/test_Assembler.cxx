@@ -39,10 +39,10 @@ TEST_CASE("VectorAssembler", "[models]")
   const auto & axis = model.input_axis();
   const auto assembler = VectorAssembler(axis);
 
-  const auto T_name = VariableName("forces", "temperature");
-  const auto foo_name = VariableName("state", "foo");
-  const auto bar_name = VariableName("state", "bar");
-  const auto baz_name = VariableName("state", "baz");
+  const auto T_name = VariableName(FORCES, "temperature");
+  const auto foo_name = VariableName(STATE, "foo");
+  const auto bar_name = VariableName(STATE, "bar");
+  const auto baz_name = VariableName(STATE, "baz");
 
   const auto T = Scalar::full({2, 5}, 120);
   const auto foo = Scalar::zeros();
@@ -76,8 +76,8 @@ TEST_CASE("VectorAssembler", "[models]")
     const auto v = assembler.assemble_by_variable({{T_name, T}, {bar_name, bar}, {baz_name, baz}});
     const auto vs = assembler.split_by_subaxis(v);
     REQUIRE(vs.size() == 2);
-    REQUIRE(torch::allclose(vs.at("forces"), T.base_flatten()));
-    REQUIRE(torch::allclose(vs.at("state"),
+    REQUIRE(torch::allclose(vs.at(FORCES), T.base_flatten()));
+    REQUIRE(torch::allclose(vs.at(STATE),
                             math::base_cat({bar.base_flatten().batch_expand({5, 2, 5}),
                                             baz.base_flatten().batch_expand({5, 2, 5}),
                                             foo.base_flatten().batch_expand({5, 2, 5})})));

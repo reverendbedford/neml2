@@ -430,17 +430,17 @@ LabeledAxis::equals(const LabeledAxis & other) const
 void
 LabeledAxis::cache_reserved_subaxis(const std::string & axis_name)
 {
-  if (axis_name == "state")
+  if (axis_name == STATE)
     _has_state = true;
-  else if (axis_name == "old_state")
+  else if (axis_name == OLD_STATE)
     _has_old_state = true;
-  else if (axis_name == "forces")
+  else if (axis_name == FORCES)
     _has_forces = true;
-  else if (axis_name == "old_forces")
+  else if (axis_name == OLD_FORCES)
     _has_old_forces = true;
-  else if (axis_name == "residual")
+  else if (axis_name == RESIDUAL)
     _has_residual = true;
-  else if (axis_name == "parameters")
+  else if (axis_name == PARAMETERS)
     _has_parameters = true;
 }
 

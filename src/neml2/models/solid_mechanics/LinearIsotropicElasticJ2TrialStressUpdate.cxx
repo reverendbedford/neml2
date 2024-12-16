@@ -36,14 +36,14 @@ LinearIsotropicElasticJ2TrialStressUpdate::expected_options()
   options.doc() = "Update the trial stress under the assumptions of J2 plasticity and isotropic "
                   "linear elasticity";
 
-  options.set_input("elastic_trial_stress") = VariableName("forces", "s");
+  options.set_input("elastic_trial_stress") = VariableName(FORCES, "s");
   options.set("elastic_trial_stress").doc() = "Initial trial stress assuming a purely elastic step";
 
-  options.set_input("equivalent_plastic_strain") = VariableName("state", "ep");
+  options.set_input("equivalent_plastic_strain") = VariableName(STATE, "ep");
   options.set("equivalent_plastic_strain").doc() =
       "Current guess for the equivalent plastic strain";
 
-  options.set_output("updated_trial_stress") = VariableName("state", "s");
+  options.set_output("updated_trial_stress") = VariableName(STATE, "s");
   options.set("updated_trial_stress").doc() =
       "Trial stress corrected for the current increment of plastic deformation";
 

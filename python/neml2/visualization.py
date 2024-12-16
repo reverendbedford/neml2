@@ -24,6 +24,7 @@
 
 import graphviz
 from dataclasses import dataclass
+import neml2
 
 
 @dataclass
@@ -88,7 +89,7 @@ class Configuration:
     }
 
 
-subaxes = ["state", "old_state", "forces", "old_forces", "residual", "parameters"]
+subaxes = neml2.reserved_subaxis_names()
 
 
 def compose(model, config=Configuration()):

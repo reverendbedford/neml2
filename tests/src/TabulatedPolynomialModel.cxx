@@ -34,14 +34,14 @@ TabulatedPolynomialModel::expected_options()
 {
   auto options = Model::expected_options();
   // Model inputs
-  options.set<VariableName>("von_mises_stress") = VariableName("state", "s");
-  options.set<VariableName>("temperature") = VariableName("forces", "T");
-  options.set<VariableName>("internal_state_1") = VariableName("state", "s1");
-  options.set<VariableName>("internal_state_2") = VariableName("state", "s2");
+  options.set<VariableName>("von_mises_stress") = VariableName(STATE, "s");
+  options.set<VariableName>("temperature") = VariableName(FORCES, "T");
+  options.set<VariableName>("internal_state_1") = VariableName(STATE, "s1");
+  options.set<VariableName>("internal_state_2") = VariableName(STATE, "s2");
   // Model outputs
-  options.set<VariableName>("equivalent_plastic_strain_rate") = VariableName("state", "ep_rate");
-  options.set<VariableName>("internal_state_1_rate") = VariableName("state", "s1_rate");
-  options.set<VariableName>("internal_state_2_rate") = VariableName("state", "s2_rate");
+  options.set<VariableName>("equivalent_plastic_strain_rate") = VariableName(STATE, "ep_rate");
+  options.set<VariableName>("internal_state_1_rate") = VariableName(STATE, "s1_rate");
+  options.set<VariableName>("internal_state_2_rate") = VariableName(STATE, "s2_rate");
   // Model constants
   options.set<CrossRef<Tensor>>("A0");
   options.set<CrossRef<Tensor>>("A1");

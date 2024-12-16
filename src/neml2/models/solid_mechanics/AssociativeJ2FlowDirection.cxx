@@ -35,10 +35,10 @@ AssociativeJ2FlowDirection::expected_options()
   auto options = Model::expected_options();
   options.doc() = "The plastic flow direction assuming an associative J2 flow.";
 
-  options.set<VariableName>("mandel_stress") = VariableName("state", "M");
+  options.set<VariableName>("mandel_stress") = VariableName(STATE, "M");
   options.set("mandel_stress").doc() = "Mandel stress";
 
-  options.set<VariableName>("flow_direction") = VariableName("state", "NM");
+  options.set<VariableName>("flow_direction") = VariableName(STATE, "NM");
   options.set("flow_direction").doc() = "Flow direction";
 
   return options;

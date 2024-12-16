@@ -43,13 +43,13 @@ FredrickArmstrongPlasticHardening::expected_options()
       "direction, \\f$ \\dot{\\gamma} \\f$ is the flow rate, and \\f$ C \\f$ and \\f$ g \\f$ are "
       "material parameters.";
 
-  options.set_input("back_stress") = VariableName("state", "internal", "X");
+  options.set_input("back_stress") = VariableName(STATE, "internal", "X");
   options.set("back_stress").doc() = "Back stress";
 
   options.set_output("back_stress_rate");
   options.set("back_stress_rate").doc() = "Back stress rate, defaults to back_stress + _rate";
 
-  options.set_input("flow_direction") = VariableName("state", "internal", "NM");
+  options.set_input("flow_direction") = VariableName(STATE, "internal", "NM");
   options.set("flow_direction").doc() = "Flow direction";
 
   options.set_parameter<CrossRef<Scalar>>("C");

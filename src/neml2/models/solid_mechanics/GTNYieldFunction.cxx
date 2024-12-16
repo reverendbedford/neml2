@@ -56,19 +56,19 @@ GTNYieldFunction::expected_options()
   options.set_parameter<CrossRef<Scalar>>("q3");
   options.set("q3").doc() = "Pore pressure";
 
-  options.set_input("flow_invariant") = VariableName("state", "internal", "se");
+  options.set_input("flow_invariant") = VariableName(STATE, "internal", "se");
   options.set("flow_invariant").doc() = "Effective stress driving plastic flow";
 
-  options.set_input("poro_invariant") = VariableName("state", "internal", "sp");
+  options.set_input("poro_invariant") = VariableName(STATE, "internal", "sp");
   options.set("poro_invariant").doc() = "Effective stress driving porous flow";
 
   options.set_input("isotropic_hardening");
   options.set("isotropic_hardening").doc() = "Isotropic hardening";
 
-  options.set_input("void_fraction") = VariableName("state", "internal", "f");
+  options.set_input("void_fraction") = VariableName(STATE, "internal", "f");
   options.set("void_fraction").doc() = "Void fraction (porosity)";
 
-  options.set_output("yield_function") = VariableName("state", "internal", "fp");
+  options.set_output("yield_function") = VariableName(STATE, "internal", "fp");
   options.set("yield_function").doc() = "Yield function";
 
   return options;

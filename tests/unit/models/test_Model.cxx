@@ -36,27 +36,27 @@ TEST_CASE("Model", "[models]")
   {
     auto & model = reload_model("unit/models/ComposedModel3.i", "model");
 
-    REQUIRE(model.input_variable({"forces", "t"}).type() == TensorType::kScalar);
-    REQUIRE(model.input_variable({"forces", "temperature"}).type() == TensorType::kScalar);
-    REQUIRE(model.input_variable({"old_forces", "t"}).type() == TensorType::kScalar);
-    REQUIRE(model.input_variable({"old_state", "bar"}).type() == TensorType::kScalar);
-    REQUIRE(model.input_variable({"old_state", "baz"}).type() == TensorType::kSR2);
-    REQUIRE(model.input_variable({"old_state", "foo"}).type() == TensorType::kScalar);
-    REQUIRE(model.input_variable({"state", "bar"}).type() == TensorType::kScalar);
-    REQUIRE(model.input_variable({"state", "baz"}).type() == TensorType::kSR2);
-    REQUIRE(model.input_variable({"state", "foo"}).type() == TensorType::kScalar);
-    REQUIRE(model.output_variable({"state", "sum"}).type() == TensorType::kScalar);
+    REQUIRE(model.input_variable({FORCES, "t"}).type() == TensorType::kScalar);
+    REQUIRE(model.input_variable({FORCES, "temperature"}).type() == TensorType::kScalar);
+    REQUIRE(model.input_variable({OLD_FORCES, "t"}).type() == TensorType::kScalar);
+    REQUIRE(model.input_variable({OLD_STATE, "bar"}).type() == TensorType::kScalar);
+    REQUIRE(model.input_variable({OLD_STATE, "baz"}).type() == TensorType::kSR2);
+    REQUIRE(model.input_variable({OLD_STATE, "foo"}).type() == TensorType::kScalar);
+    REQUIRE(model.input_variable({STATE, "bar"}).type() == TensorType::kScalar);
+    REQUIRE(model.input_variable({STATE, "baz"}).type() == TensorType::kSR2);
+    REQUIRE(model.input_variable({STATE, "foo"}).type() == TensorType::kScalar);
+    REQUIRE(model.output_variable({STATE, "sum"}).type() == TensorType::kScalar);
 
-    REQUIRE(utils::stringify(model.input_variable({"forces", "t"}).type()) == "Scalar");
-    REQUIRE(utils::stringify(model.input_variable({"forces", "temperature"}).type()) == "Scalar");
-    REQUIRE(utils::stringify(model.input_variable({"old_forces", "t"}).type()) == "Scalar");
-    REQUIRE(utils::stringify(model.input_variable({"old_state", "bar"}).type()) == "Scalar");
-    REQUIRE(utils::stringify(model.input_variable({"old_state", "baz"}).type()) == "SR2");
-    REQUIRE(utils::stringify(model.input_variable({"old_state", "foo"}).type()) == "Scalar");
-    REQUIRE(utils::stringify(model.input_variable({"state", "bar"}).type()) == "Scalar");
-    REQUIRE(utils::stringify(model.input_variable({"state", "baz"}).type()) == "SR2");
-    REQUIRE(utils::stringify(model.input_variable({"state", "foo"}).type()) == "Scalar");
-    REQUIRE(utils::stringify(model.output_variable({"state", "sum"}).type()) == "Scalar");
+    REQUIRE(utils::stringify(model.input_variable({FORCES, "t"}).type()) == "Scalar");
+    REQUIRE(utils::stringify(model.input_variable({FORCES, "temperature"}).type()) == "Scalar");
+    REQUIRE(utils::stringify(model.input_variable({OLD_FORCES, "t"}).type()) == "Scalar");
+    REQUIRE(utils::stringify(model.input_variable({OLD_STATE, "bar"}).type()) == "Scalar");
+    REQUIRE(utils::stringify(model.input_variable({OLD_STATE, "baz"}).type()) == "SR2");
+    REQUIRE(utils::stringify(model.input_variable({OLD_STATE, "foo"}).type()) == "Scalar");
+    REQUIRE(utils::stringify(model.input_variable({STATE, "bar"}).type()) == "Scalar");
+    REQUIRE(utils::stringify(model.input_variable({STATE, "baz"}).type()) == "SR2");
+    REQUIRE(utils::stringify(model.input_variable({STATE, "foo"}).type()) == "Scalar");
+    REQUIRE(utils::stringify(model.output_variable({STATE, "sum"}).type()) == "Scalar");
   }
 
   SECTION("diagnose")

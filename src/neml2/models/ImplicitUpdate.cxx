@@ -66,7 +66,7 @@ ImplicitUpdate::ImplicitUpdate(const OptionSet & options)
   //   2. Output variables of the "implicit_model" on the "residual" subaxis should be *provided* by
   //      *this* model.
   for (auto && [name, var] : _model.output_variables())
-    clone_output_variable(var, name.remount("state"));
+    clone_output_variable(var, name.remount(STATE));
 }
 
 void
@@ -87,12 +87,12 @@ ImplicitUpdate::diagnose(std::vector<Diagnosis> & diagnoses) const
                     _model.input_axis());
   diagnostic_assert(
       diagnoses,
-      _model.input_axis().subaxis("state") == _model.output_axis().subaxis("residual"),
+      _model.input_axis().subaxis(STATE) == _model.output_axis().subaxis(RESIDUAL),
       "The implicit model should have conformal trial state and residual. The input state "
       "subaxis is\n",
-      _model.input_axis().subaxis("state"),
+      _model.input_axis().subaxis(STATE),
       "\nThe output residual subaxis is\n",
-      _model.output_axis().subaxis("residual"));
+      _model.output_axis().subaxis(RESIDUAL));
 }
 
 void
@@ -109,7 +109,7 @@ ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
   neml_assert_dbg(!d2out_din2, "This model does not define the second derivatives.");
 
   // The trial state is used as the initial guess
-  const auto sol_assember = VectorAssembler(_model.input_axis().subaxis("state"));
+  const auto sol_assember = VectorAssembler(_model.input_axis().subaxis(STATE));
   auto x0 = NonlinearSystem::Sol<false>(sol_assember.assemble_by_variable(_model.collect_input()));
 
   // Perform automatic scaling (using the trial state)
@@ -148,8 +148,8 @@ ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
     _model.dvalue();
     const auto jac_assembler = MatrixAssembler(_model.output_axis(), _model.input_axis());
     const auto J = jac_assembler.assemble_by_variable(_model.collect_output_derivatives());
-    const auto derivs = jac_assembler.split_by_subaxis(J).at("residual");
-    const auto dr_ds = derivs.at("state");
+    const auto derivs = jac_assembler.split_by_subaxis(J).at(RESIDUAL);
+    const auto dr_ds = derivs.at(STATE);
 
     // Factorize the Jacobian once and for all
     const auto [LU, pivot] = math::linalg::lu_factor(dr_ds);
@@ -157,7 +157,7 @@ ImplicitUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
     // The actual IFT:
     for (const auto & [subaxis, deriv] : derivs)
     {
-      if (subaxis == "state")
+      if (subaxis == STATE)
         continue;
       const auto ift_assembler =
           MatrixAssembler(output_axis(), _model.input_axis().subaxis(subaxis));

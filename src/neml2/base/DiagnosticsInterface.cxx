@@ -52,15 +52,20 @@ DiagnosticsInterface::diagnostic_assert_state(std::vector<Diagnosis> & diagnoses
                                               const VariableBase & v) const
 {
   diagnostic_assert(
-      diagnoses, v.is_state(), "Variable ", v.name(), " must be on the state sub-axis.");
+      diagnoses, v.is_state(), "Variable ", v.name(), " must be on the ", STATE, " sub-axis.");
 }
 
 void
 DiagnosticsInterface::diagnostic_assert_old_state(std::vector<Diagnosis> & diagnoses,
                                                   const VariableBase & v) const
 {
-  diagnostic_assert(
-      diagnoses, v.is_old_state(), "Variable ", v.name(), " must be on the old_state sub-axis.");
+  diagnostic_assert(diagnoses,
+                    v.is_old_state(),
+                    "Variable ",
+                    v.name(),
+                    " must be on the ",
+                    OLD_STATE,
+                    " sub-axis.");
 }
 
 void
@@ -68,23 +73,33 @@ DiagnosticsInterface::diagnostic_assert_force(std::vector<Diagnosis> & diagnoses
                                               const VariableBase & v) const
 {
   diagnostic_assert(
-      diagnoses, v.is_force(), "Variable ", v.name(), " must be on the forces sub-axis.");
+      diagnoses, v.is_force(), "Variable ", v.name(), " must be on the ", FORCES, " sub-axis.");
 }
 
 void
 DiagnosticsInterface::diagnostic_assert_old_force(std::vector<Diagnosis> & diagnoses,
                                                   const VariableBase & v) const
 {
-  diagnostic_assert(
-      diagnoses, v.is_old_force(), "Variable ", v.name(), " must be on the old_forces sub-axis.");
+  diagnostic_assert(diagnoses,
+                    v.is_old_force(),
+                    "Variable ",
+                    v.name(),
+                    " must be on the ",
+                    OLD_FORCES,
+                    " sub-axis.");
 }
 
 void
 DiagnosticsInterface::diagnostic_assert_residual(std::vector<Diagnosis> & diagnoses,
                                                  const VariableBase & v) const
 {
-  diagnostic_assert(
-      diagnoses, v.is_residual(), "Variable ", v.name(), " must be on the residual sub-axis.");
+  diagnostic_assert(diagnoses,
+                    v.is_residual(),
+                    "Variable ",
+                    v.name(),
+                    " must be on the ",
+                    RESIDUAL,
+                    " sub-axis.");
 }
 
 void
@@ -96,19 +111,37 @@ DiagnosticsInterface::diagnostic_check_input_variable(std::vector<Diagnosis> & d
                         v.is_residual() || v.is_parameter(),
                     "Input variable ",
                     v.name(),
-                    " must be on one of the following sub-axes: state, old_state, forces, "
-                    "old_forces, residual, parameters.");
+                    " must be on one of the following sub-axes: ",
+                    STATE,
+                    ", ",
+                    OLD_STATE,
+                    ", ",
+                    FORCES,
+                    ", ",
+                    OLD_FORCES,
+                    ", ",
+                    RESIDUAL,
+                    ", ",
+                    PARAMETERS,
+                    ".");
 }
 
 void
 DiagnosticsInterface::diagnostic_check_output_variable(std::vector<Diagnosis> & diagnoses,
                                                        const VariableBase & v) const
 {
-  diagnostic_assert(
-      diagnoses,
-      v.is_state() || v.is_force() || v.is_residual() || v.is_parameter(),
-      "Output variable ",
-      v.name(),
-      " must be on one of the following sub-axes: state, forces, residual, parameters.");
+  diagnostic_assert(diagnoses,
+                    v.is_state() || v.is_force() || v.is_residual() || v.is_parameter(),
+                    "Output variable ",
+                    v.name(),
+                    " must be on one of the following sub-axes: ",
+                    STATE,
+                    ", ",
+                    FORCES,
+                    ", ",
+                    RESIDUAL,
+                    ", ",
+                    PARAMETERS,
+                    ".");
 }
 } // namespace neml2

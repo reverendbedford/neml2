@@ -34,14 +34,14 @@ TorchScriptFlowRate::expected_options()
 {
   auto options = Model::expected_options();
   // Model inputs
-  options.set<VariableName>("von_mises_stress") = VariableName("state", "s");
-  options.set<VariableName>("temperature") = VariableName("forces", "T");
-  options.set<VariableName>("internal_state_1") = VariableName("state", "G");
-  options.set<VariableName>("internal_state_2") = VariableName("state", "C");
+  options.set<VariableName>("von_mises_stress") = VariableName(STATE, "s");
+  options.set<VariableName>("temperature") = VariableName(FORCES, "T");
+  options.set<VariableName>("internal_state_1") = VariableName(STATE, "G");
+  options.set<VariableName>("internal_state_2") = VariableName(STATE, "C");
   // Model outputs
-  options.set<VariableName>("equivalent_plastic_strain_rate") = VariableName("state", "ep_rate");
-  options.set<VariableName>("internal_state_1_rate") = VariableName("state", "G_rate");
-  options.set<VariableName>("internal_state_2_rate") = VariableName("state", "C_rate");
+  options.set<VariableName>("equivalent_plastic_strain_rate") = VariableName(STATE, "ep_rate");
+  options.set<VariableName>("internal_state_1_rate") = VariableName(STATE, "G_rate");
+  options.set<VariableName>("internal_state_2_rate") = VariableName(STATE, "C_rate");
   // The machine learning model
   options.set<std::string>("torch_script");
   return options;

@@ -43,13 +43,13 @@ ResolvedShear::expected_options()
                   "stress \\f$ Q \\f$ is the orientation matrix, \\f$ d_i \\f$ is the slip "
                   "direction, and \\f$ n_i \\f$ is the slip system normal.";
 
-  options.set_output("resolved_shears") = VariableName("state", "internal", "resolved_shears");
+  options.set_output("resolved_shears") = VariableName(STATE, "internal", "resolved_shears");
   options.set("resolved_shears").doc() = "The name of the resolved shears";
 
-  options.set_input("stress") = VariableName("state", "internal", "cauchy_stress");
+  options.set_input("stress") = VariableName(STATE, "internal", "cauchy_stress");
   options.set("stress").doc() = "The name of the Cauchy stress tensor";
 
-  options.set_input("orientation") = VariableName("state", "orientation_matrix");
+  options.set_input("orientation") = VariableName(STATE, "orientation_matrix");
   options.set("orientation").doc() = "The name of the orientation matrix";
 
   options.set<std::string>("crystal_geometry_name") = "crystal_geometry";

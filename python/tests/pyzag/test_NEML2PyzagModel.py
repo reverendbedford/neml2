@@ -79,8 +79,8 @@ def test_compare(input):
     ref = torch.jit.load(pwd / "gold" / "{}.pt".format(input))
     input = dict(ref.input.named_buffers())
     output = dict(ref.output.named_buffers())
-    forces = pmodel.forces_asm.assemble_by_ariable(input).torch()
-    state = pmodel.state_asm.assemble_by_ariable(output).torch()
+    forces = pmodel.forces_asm.assemble_by_variable(input).torch()
+    state = pmodel.state_asm.assemble_by_variable(output).torch()
     nstep = forces.shape[0]
 
     solver = nonlinear.RecursiveNonlinearEquationSolver(

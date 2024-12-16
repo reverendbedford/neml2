@@ -36,13 +36,13 @@ register_NEML2_object(ADSampleRateModel);
 template <bool AD>
 SampleRateModelTmpl<AD>::SampleRateModelTmpl(const OptionSet & options)
   : Model(options),
-    foo(declare_input_variable<Scalar>(VariableName{"state", "foo"})),
-    bar(declare_input_variable<Scalar>(VariableName{"state", "bar"})),
-    baz(declare_input_variable<SR2>(VariableName{"state", "baz"})),
-    T(declare_input_variable<Scalar>(VariableName{"forces", "temperature"})),
-    foo_dot(declare_output_variable<Scalar>(VariableName{"state", "foo_rate"})),
-    bar_dot(declare_output_variable<Scalar>(VariableName{"state", "bar_rate"})),
-    baz_dot(declare_output_variable<SR2>(VariableName{"state", "baz_rate"})),
+    foo(declare_input_variable<Scalar>(VariableName{STATE, "foo"})),
+    bar(declare_input_variable<Scalar>(VariableName{STATE, "bar"})),
+    baz(declare_input_variable<SR2>(VariableName{STATE, "baz"})),
+    T(declare_input_variable<Scalar>(VariableName{FORCES, "temperature"})),
+    foo_dot(declare_output_variable<Scalar>(VariableName{STATE, "foo_rate"})),
+    bar_dot(declare_output_variable<Scalar>(VariableName{STATE, "bar_rate"})),
+    baz_dot(declare_output_variable<SR2>(VariableName{STATE, "baz_rate"})),
     _a(declare_parameter<Scalar>("a", Scalar(-0.01, default_tensor_options()))),
     _b(declare_parameter<Scalar>("b", Scalar(-0.5, default_tensor_options()))),
     _c(declare_parameter<Scalar>("c", Scalar(-0.9, default_tensor_options())))

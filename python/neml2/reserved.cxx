@@ -22,28 +22,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/models/solid_mechanics/PlasticFlowRate.h"
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+#include "neml2/models/LabeledAxisAccessor.h"
 
-namespace neml2
+namespace py = pybind11;
+
+PYBIND11_MODULE(reserved, m)
 {
-OptionSet
-PlasticFlowRate::expected_options()
-{
-  OptionSet options = Model::expected_options();
+  m.doc() = "Reserved subaxis names";
 
-  options.set_input("yield_function") = VariableName(STATE, "internal", "fp");
-  options.set("yield_function").doc() = "Yield function";
-
-  options.set_output("flow_rate") = VariableName(STATE, "internal", "gamma_rate");
-  options.set("flow_rate").doc() = "Flow rate";
-
-  return options;
+  m.attr("subaxis_names") = neml2::reserved_subaxis_names();
+  m.attr("STATE") = neml2::STATE;
+  m.attr("OLD_STATE") = neml2::OLD_STATE;
+  m.attr("FORCES") = neml2::FORCES;
+  m.attr("OLD_FORCES") = neml2::OLD_FORCES;
+  m.attr("RESIDUAL") = neml2::RESIDUAL;
+  m.attr("PARAMETERS") = neml2::PARAMETERS;
 }
-
-PlasticFlowRate::PlasticFlowRate(const OptionSet & options)
-  : Model(options),
-    _f(declare_input_variable<Scalar>("yield_function")),
-    _gamma_dot(declare_output_variable<Scalar>("flow_rate"))
-{
-}
-} // namespace neml2

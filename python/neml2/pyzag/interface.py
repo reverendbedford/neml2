@@ -27,6 +27,7 @@ from pyzag import nonlinear
 import torch
 import neml2
 from neml2.tensors import Tensor
+from neml2.reserved import *
 
 
 class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
@@ -69,16 +70,21 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
 
     @property
     def nstate(self):
-        return self.model.input_axis().subaxis("state").size()
+        return self.model.input_axis().subaxis(STATE).size()
 
     @property
     def nforce(self):
-        return self.model.input_axis().subaxis("forces").size()
+        return self.model.input_axis().subaxis(FORCES).size()
 
     def _check_model(self):
         """Simple consistency checks, could be a debug check but we only call this once"""
 
         # First run diagnostics from NEML2
+        # TODO: This check is temporarily disabled because the default diagnostics
+        # from the C++ side disallow old variables to appear on the output axis.
+        # However, one of the pyzag example models (km_mixed_model.i) relys on
+        # MixedControlSetup to calculate old mixed conditions. To get rid of such
+        # hack, some changes are required in pyzag.
         # neml2.diagnose(self.model)
 
         # Then pyzag specific checks
@@ -87,7 +93,7 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
 
         # 1. Input axis should have state, old_state, forces, old_forces
         model_input_subaxes = input_axis.subaxis_names()
-        expected_input_subaxes = ["forces", "old_forces", "old_state", "state"]
+        expected_input_subaxes = [FORCES, OLD_FORCES, OLD_STATE, STATE]
         if model_input_subaxes != expected_input_subaxes:
             raise ValueError(
                 "Wrapped NEML2 model should have {} as (the only) input subaxes. Got {}".format(
@@ -97,7 +103,7 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
 
         # 2. Output axis should just have the residual (and only the residual)
         model_output_subaxes = output_axis.subaxis_names()
-        expected_output_subaxes = ["residual"]
+        expected_output_subaxes = [RESIDUAL]
         if model_output_subaxes != expected_output_subaxes:
             raise ValueError(
                 "Wrapped NEML2 model should have {} as (the only) output subaxes. Got {}".format(
@@ -106,8 +112,8 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
             )
 
         # 3. All the variables on state should match the variables in the residual
-        input_state_vars = input_axis.subaxis("state").variable_names()
-        output_residual_vars = output_axis.subaxis("residual").variable_names()
+        input_state_vars = input_axis.subaxis(STATE).variable_names()
+        output_residual_vars = output_axis.subaxis(RESIDUAL).variable_names()
         if input_state_vars != output_residual_vars:
             raise ValueError(
                 "Input state variables should match output residual variables. However, input state variables are {}, and output residual variables are {}".format(
@@ -116,7 +122,7 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
             )
 
         # 4. Everything in old_state should be in state (but not the other way around)
-        input_old_state_vars = input_axis.subaxis("old_state").variable_names()
+        input_old_state_vars = input_axis.subaxis(OLD_STATE).variable_names()
         if not set(input_old_state_vars) <= set(input_state_vars):
             raise ValueError(
                 "Input old state variables should be a subset of input state variables. However, input state variables are {}, and input old state variables are {}".format(
@@ -125,8 +131,8 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
             )
 
         # 5. Everything in old_forces should be in forces (but not the other way around)
-        input_forces_vars = input_axis.subaxis("forces").variable_names()
-        input_old_forces_vars = input_axis.subaxis("old_forces").variable_names()
+        input_forces_vars = input_axis.subaxis(FORCES).variable_names()
+        input_old_forces_vars = input_axis.subaxis(OLD_FORCES).variable_names()
         if not set(input_old_forces_vars) <= set(input_forces_vars):
             raise ValueError(
                 "Input old forces should be a subset of input forces. However, input forces are {}, and input old forces are {}".format(
@@ -166,11 +172,11 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
 
         self.input_asm = neml2.VectorAssembler(input_axis)
         self.output_asm = neml2.VectorAssembler(output_axis)
-        self.deriv_asm = neml2.MatrixAssembler(output_axis, input_axis.subaxis("state"))
-        self.old_deriv_asm = neml2.MatrixAssembler(output_axis, input_axis.subaxis("old_state"))
+        self.deriv_asm = neml2.MatrixAssembler(output_axis, input_axis.subaxis(STATE))
+        self.old_deriv_asm = neml2.MatrixAssembler(output_axis, input_axis.subaxis(OLD_STATE))
 
-        self.state_asm = neml2.VectorAssembler(input_axis.subaxis("state"))
-        self.forces_asm = neml2.VectorAssembler(input_axis.subaxis("forces"))
+        self.state_asm = neml2.VectorAssembler(input_axis.subaxis(STATE))
+        self.forces_asm = neml2.VectorAssembler(input_axis.subaxis(FORCES))
 
     def _disassemble_input(self, state, forces):
         """Assemble the model input from the flat tensors
@@ -225,7 +231,7 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
             J_old_vars_adapted = {}
             for yvar, vs in J_old_vars.items():
                 J_old_vars_adapted[yvar] = {k.current(): v for k, v in vs.items()}
-            J_old = self.deriv_asm.split_by_variable(J_old_vars_adapted)
+            J_old = self.deriv_asm.assemble_by_variable(J_old_vars_adapted)
         assert J_old.base.shape[-1] == J_old.base.shape[-2]
 
         return r.torch(), torch.stack([J_old.torch(), J.torch()])

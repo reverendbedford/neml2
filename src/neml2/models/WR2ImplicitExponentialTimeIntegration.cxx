@@ -50,7 +50,7 @@ WR2ImplicitExponentialTimeIntegration::expected_options()
   options.set_input("rate");
   options.set("rate").doc() = "Variable rate";
 
-  options.set_input("time") = VariableName("forces", "t");
+  options.set_input("time") = VariableName(FORCES, "t");
   options.set("time").doc() = "Time";
 
   return options;
@@ -66,7 +66,7 @@ WR2ImplicitExponentialTimeIntegration::WR2ImplicitExponentialTimeIntegration(
                : declare_input_variable<WR2>("rate")),
     _t(declare_input_variable<Scalar>("time")),
     _tn(declare_input_variable<Scalar>(_t.name().old())),
-    _r(declare_output_variable<Rot>(_s.name().remount("residual")))
+    _r(declare_output_variable<Rot>(_s.name().remount(RESIDUAL)))
 {
 }
 

@@ -36,13 +36,13 @@ GursonCavitation::expected_options()
   options.doc() = "Local mass balance used in conjunction with the GTNYieldFunction, \\f$ "
                   "\\dot{\\phi} = (1-\\phi) \\dot{\\varepsilon}_p \\f$.";
 
-  options.set_input("plastic_strain_rate") = VariableName("state", "internal", "Ep_rate");
+  options.set_input("plastic_strain_rate") = VariableName(STATE, "internal", "Ep_rate");
   options.set("plastic_strain_rate").doc() = "Plastic strain rate";
 
-  options.set_input("void_fraction") = VariableName("state", "internal", "f");
+  options.set_input("void_fraction") = VariableName(STATE, "internal", "f");
   options.set("void_fraction").doc() = "Void fraction (porosity)";
 
-  options.set_output("void_fraction_rate") = VariableName("state", "internal", "f_rate");
+  options.set_output("void_fraction_rate") = VariableName(STATE, "internal", "f_rate");
   options.set("void_fraction_rate").doc() = "Rate of void evolution";
 
   return options;

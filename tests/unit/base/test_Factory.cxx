@@ -32,9 +32,9 @@ TEST_CASE("Factory", "[base]")
   auto options = ScalarLinearCombination::expected_options();
   options.name() = "example";
   options.type() = "ScalarLinearCombination";
-  options.set<std::vector<VariableName>>("from_var") = {VariableName("state", "A"),
-                                                        VariableName("state", "substate", "B")};
-  options.set<VariableName>("to_var") = VariableName("state", "outsub", "C");
+  options.set<std::vector<VariableName>>("from_var") = {VariableName(STATE, "A"),
+                                                        VariableName(STATE, "substate", "B")};
+  options.set<VariableName>("to_var") = VariableName(STATE, "outsub", "C");
 
   OptionCollection all_options;
   all_options["Models"]["example"] = options;
@@ -46,14 +46,14 @@ TEST_CASE("Factory", "[base]")
   {
     auto & summodel = Factory::get_object<ScalarLinearCombination>("Models", "example");
 
-    REQUIRE(summodel.input_axis().has_subaxis("state"));
-    REQUIRE(summodel.input_axis().subaxis("state").has_subaxis("substate"));
-    REQUIRE(summodel.input_axis().subaxis("state").has_variable("A"));
-    REQUIRE(summodel.input_axis().subaxis("state").subaxis("substate").has_variable("B"));
+    REQUIRE(summodel.input_axis().has_subaxis(STATE));
+    REQUIRE(summodel.input_axis().subaxis(STATE).has_subaxis("substate"));
+    REQUIRE(summodel.input_axis().subaxis(STATE).has_variable("A"));
+    REQUIRE(summodel.input_axis().subaxis(STATE).subaxis("substate").has_variable("B"));
 
-    REQUIRE(summodel.output_axis().has_subaxis("state"));
-    REQUIRE(summodel.output_axis().subaxis("state").has_subaxis("outsub"));
-    REQUIRE(summodel.output_axis().subaxis("state").subaxis("outsub").has_variable("C"));
+    REQUIRE(summodel.output_axis().has_subaxis(STATE));
+    REQUIRE(summodel.output_axis().subaxis(STATE).has_subaxis("outsub"));
+    REQUIRE(summodel.output_axis().subaxis(STATE).subaxis("outsub").has_variable("C"));
   }
 
   SECTION("loaded_options")

@@ -44,13 +44,13 @@ PlasticVorticity::expected_options()
                   "\\f$ the slip rate on the ith slip system, \\f$Q \\f$ the orientation, \\f$ d_i "
                   "\\f$ the slip system direction, and \\f$ n_i \\f$ the slip system normal.";
 
-  options.set_output("plastic_vorticity") = VariableName("state", "internal", "plastic_vorticity");
+  options.set_output("plastic_vorticity") = VariableName(STATE, "internal", "plastic_vorticity");
   options.set("plastic_vorticity").doc() = "The name of the plastic vorticity tensor";
 
-  options.set_input("orientation") = VariableName("state", "orientation_matrix");
+  options.set_input("orientation") = VariableName(STATE, "orientation_matrix");
   options.set("orientation").doc() = "The name of the orientation matrix tensor";
 
-  options.set_input("slip_rates") = VariableName("state", "internal", "slip_rates");
+  options.set_input("slip_rates") = VariableName(STATE, "internal", "slip_rates");
   options.set("slip_rates").doc() = "The name of the tensor containg the current slip rates";
 
   options.set<std::string>("crystal_geometry_name") = "crystal_geometry";

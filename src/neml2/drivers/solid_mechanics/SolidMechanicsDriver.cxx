@@ -37,13 +37,13 @@ SolidMechanicsDriver::expected_options()
   options.set("control").doc() =
       "External control of the material update. Options are " + control_selection.candidates_str();
 
-  options.set<VariableName>("temperature") = VariableName("forces", "T");
+  options.set<VariableName>("temperature") = VariableName(FORCES, "T");
   options.set("temperature").doc() = "Name of temperature";
   options.set<CrossRef<torch::Tensor>>("prescribed_temperature");
   options.set("prescribed_temperature").doc() =
       "Actual prescibed temperature values, when providing temperatures to the model";
 
-  options.set<VariableName>("mixed_driving_force") = VariableName("forces", "fixed_values");
+  options.set<VariableName>("mixed_driving_force") = VariableName(FORCES, "fixed_values");
   options.set("mixed_driving_force").doc() = "Name of mixed driving force when using mixed control";
   options.set<CrossRef<torch::Tensor>>("prescribed_mixed_driving_force");
   options.set("prescribed_mixed_driving_force").doc() =
@@ -51,7 +51,7 @@ SolidMechanicsDriver::expected_options()
       "control signal is 0 these are strain/deformation values, where it is 1 these are stress "
       "values";
 
-  options.set<VariableName>("mixed_control_signal") = VariableName("forces", "control");
+  options.set<VariableName>("mixed_control_signal") = VariableName(FORCES, "control");
   options.set("mixed_control_signal").doc() =
       "The name of the control signal for mixed control on the input axis";
   options.set<CrossRef<torch::Tensor>>("prescribed_mixed_control_signal");

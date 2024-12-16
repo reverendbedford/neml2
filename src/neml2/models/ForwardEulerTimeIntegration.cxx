@@ -48,7 +48,7 @@ ForwardEulerTimeIntegration<T>::expected_options()
   options.set_input("rate");
   options.set("rate").doc() = "Variable rate of change";
 
-  options.set_input("time") = VariableName("forces", "t");
+  options.set_input("time") = VariableName(FORCES, "t");
   options.set("time").doc() = "Time";
 
   return options;

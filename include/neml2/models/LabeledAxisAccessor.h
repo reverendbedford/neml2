@@ -32,6 +32,17 @@
 
 namespace neml2
 {
+// Reserved subaxis names
+inline const std::string STATE = "state";
+inline const std::string OLD_STATE = "old_state";
+inline const std::string FORCES = "forces";
+inline const std::string OLD_FORCES = "old_forces";
+inline const std::string RESIDUAL = "residual";
+inline const std::string PARAMETERS = "parameters";
+
+// Reserved subaxis names
+std::vector<std::string> reserved_subaxis_names();
+
 /**
  * @brief The accessor containing all the information needed to access an item in a `LabeledAxis`.
  *
@@ -129,6 +140,16 @@ public:
 
   /// Check if this accessor begins with another accessor
   bool start_with(const LabeledAxisAccessor & axis) const;
+
+  ///@{
+  /// Check if the accessor is on a specific sub-axis
+  bool is_state() const;
+  bool is_old_state() const;
+  bool is_force() const;
+  bool is_old_force() const;
+  bool is_residual() const;
+  bool is_parameter() const;
+  ///@}
 
   /// Returns the "current" counterpart
   LabeledAxisAccessor current() const;

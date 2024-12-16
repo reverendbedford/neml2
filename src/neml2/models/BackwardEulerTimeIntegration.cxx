@@ -49,7 +49,7 @@ BackwardEulerTimeIntegration<T>::expected_options()
   options.set_input("rate");
   options.set("rate").doc() = "Variable rate";
 
-  options.set_input("time") = VariableName("forces", "t");
+  options.set_input("time") = VariableName(FORCES, "t");
   options.set("time").doc() = "Time";
 
   return options;
@@ -65,7 +65,7 @@ BackwardEulerTimeIntegration<T>::BackwardEulerTimeIntegration(const OptionSet & 
                : declare_input_variable<T>("rate")),
     _t(declare_input_variable<Scalar>("time")),
     _tn(declare_input_variable<Scalar>(_t.name().old())),
-    _r(declare_output_variable<T>(_s.name().remount("residual")))
+    _r(declare_output_variable<T>(_s.name().remount(RESIDUAL)))
 {
 }
 
