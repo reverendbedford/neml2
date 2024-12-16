@@ -33,8 +33,8 @@ TrustRegionSubProblem::TrustRegionSubProblem(const OptionSet & options)
 }
 
 void
-TrustRegionSubProblem::reinit(const NonlinearSystem::RES<true> & r,
-                              const NonlinearSystem::JAC<true> & J,
+TrustRegionSubProblem::reinit(const NonlinearSystem::Res<true> & r,
+                              const NonlinearSystem::Jac<true> & J,
                               const Scalar & delta)
 {
   _delta = delta;
@@ -43,23 +43,23 @@ TrustRegionSubProblem::reinit(const NonlinearSystem::RES<true> & r,
 }
 
 void
-TrustRegionSubProblem::set_guess(const NonlinearSystem::SOL<false> & x)
+TrustRegionSubProblem::set_guess(const NonlinearSystem::Sol<false> & x)
 {
   _s = Scalar(x);
 }
 
 void
-TrustRegionSubProblem::assemble(NonlinearSystem::RES<false> * residual,
-                                NonlinearSystem::JAC<false> * Jacobian)
+TrustRegionSubProblem::assemble(NonlinearSystem::Res<false> * residual,
+                                NonlinearSystem::Jac<false> * Jacobian)
 {
   auto p = -preconditioned_direction(_s);
   auto np = math::sqrt(math::bvv(p, p));
 
   if (residual)
-    *residual = NonlinearSystem::RES<false>(1.0 / np - 1.0 / math::sqrt(2.0 * _delta));
+    *residual = NonlinearSystem::Res<false>(1.0 / np - 1.0 / math::sqrt(2.0 * _delta));
 
   if (Jacobian)
-    *Jacobian = NonlinearSystem::JAC<false>(1.0 / math::pow(np, 3.0) *
+    *Jacobian = NonlinearSystem::Jac<false>(1.0 / math::pow(np, 3.0) *
                                             math::bvv(p, preconditioned_solve(_s, p)));
 }
 

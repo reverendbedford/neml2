@@ -128,7 +128,7 @@ if __name__ == "__main__":
     extensions = {".h": "//", ".cxx": "//", ".py": "#", ".sh": "#"}
     additional_files = {}
 
-    exclude_dirs = ["include/neml2/contrib"]
+    exclude_dirs = []
     exclude_files = []
 
     rootdir = Path(".")

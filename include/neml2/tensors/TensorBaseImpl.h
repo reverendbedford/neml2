@@ -22,6 +22,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+/**
+ * This file contains implementation details of the TensorBase class.
+ * Refer to `TensorBase.h` for the class definition.
+ */
+
 #pragma once
 
 #include "neml2/tensors/TensorBase.h"

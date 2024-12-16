@@ -185,12 +185,12 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
         bdim = len(batch_shape)
 
         # Disassemble state and old_state
-        state_vars = self.state_asm.disassemble(Tensor(state, bdim))
+        state_vars = self.state_asm.split_by_variable(Tensor(state, bdim))
         new_state_vars = {k: v.batch[self.lookback :] for k, v in state_vars.items()}
         old_state_vars = {k.old(): v.batch[: -self.lookback] for k, v in state_vars.items()}
 
         # Disassemble forces and old_forces
-        forces_vars = self.forces_asm.disassemble(Tensor(forces, bdim))
+        forces_vars = self.forces_asm.split_by_variable(Tensor(forces, bdim))
         new_forces_vars = {k: v.batch[self.lookback :] for k, v in forces_vars.items()}
         old_forces_vars = {k.old(): v.batch[: -self.lookback] for k, v in forces_vars.items()}
 
@@ -221,11 +221,11 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
 
         # The old Jacobian may not be, in which case we will rely on the deriv_asm to make it square
         if J_old.base.shape[-1] != J_old.base.shape[-2]:
-            J_old_vars = self.old_deriv_asm.disassemble(J_old)
+            J_old_vars = self.old_deriv_asm.split_by_variable(J_old)
             J_old_vars_adapted = {}
             for yvar, vs in J_old_vars.items():
                 J_old_vars_adapted[yvar] = {k.current(): v for k, v in vs.items()}
-            J_old = self.deriv_asm.assemble(J_old_vars_adapted)
+            J_old = self.deriv_asm.split_by_variable(J_old_vars_adapted)
         assert J_old.base.shape[-1] == J_old.base.shape[-2]
 
         return r.torch(), torch.stack([J_old.torch(), J.torch()])
@@ -247,11 +247,11 @@ class NEML2PyzagModel(nonlinear.NonlinearRecursiveFunction):
         r, J = self.model.value_and_dvalue(x)
 
         # Assemble residual
-        r_vec = self.output_asm.assemble(r)
+        r_vec = self.output_asm.assemble_by_variable(r)
 
         # Assemble Jacobian
-        J_new_mat = self.deriv_asm.assemble(J)
-        J_old_mat = self.old_deriv_asm.assemble(J)
+        J_new_mat = self.deriv_asm.assemble_by_variable(J)
+        J_old_mat = self.old_deriv_asm.assemble_by_variable(J)
 
         # At this point, the residual and Jacobians should be good to go
         return self._adapt_for_pyzag(r_vec, J_new_mat, J_old_mat)

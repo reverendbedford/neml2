@@ -45,7 +45,7 @@ Newton::Newton(const OptionSet & options)
 }
 
 Newton::Result
-Newton::solve(NonlinearSystem & system, const NonlinearSystem::SOL<false> & x0)
+Newton::solve(NonlinearSystem & system, const NonlinearSystem::Sol<false> & x0)
 {
   // Solve always takes place in the "scaled" space
   auto x = system.scale(x0);
@@ -108,29 +108,29 @@ Newton::converged(size_t itr, const torch::Tensor & nR, const torch::Tensor & nR
 
 void
 Newton::update(NonlinearSystem & /*system*/,
-               NonlinearSystem::SOL<true> & x,
-               const NonlinearSystem::RES<true> & r,
-               const NonlinearSystem::JAC<true> & J)
+               NonlinearSystem::Sol<true> & x,
+               const NonlinearSystem::Res<true> & r,
+               const NonlinearSystem::Jac<true> & J)
 {
-  x = NonlinearSystem::SOL<true>(x.variable_data() + Tensor(solve_direction(r, J)));
+  x = NonlinearSystem::Sol<true>(x.variable_data() + Tensor(solve_direction(r, J)));
 }
 
 void
 Newton::final_update(NonlinearSystem & /*system*/,
-                     NonlinearSystem::SOL<true> & x,
-                     const NonlinearSystem::RES<true> & r,
-                     const NonlinearSystem::JAC<true> & J)
+                     NonlinearSystem::Sol<true> & x,
+                     const NonlinearSystem::Res<true> & r,
+                     const NonlinearSystem::Jac<true> & J)
 {
-  x = NonlinearSystem::SOL<true>(Tensor(x) + Tensor(solve_direction(r, J)));
+  x = NonlinearSystem::Sol<true>(Tensor(x) + Tensor(solve_direction(r, J)));
 }
 
-NonlinearSystem::SOL<true>
-Newton::solve_direction(const NonlinearSystem::RES<true> & r, const NonlinearSystem::JAC<true> & J)
+NonlinearSystem::Sol<true>
+Newton::solve_direction(const NonlinearSystem::Res<true> & r, const NonlinearSystem::Jac<true> & J)
 {
   if (r.base_dim() == 0 && J.base_dim() == 0)
-    return NonlinearSystem::SOL<true>(-Tensor(r) / Tensor(J));
+    return NonlinearSystem::Sol<true>(-Tensor(r) / Tensor(J));
 
-  return NonlinearSystem::SOL<true>(-math::linalg::solve(J, r));
+  return NonlinearSystem::Sol<true>(-math::linalg::solve(J, r));
 }
 
 } // namespace neml2

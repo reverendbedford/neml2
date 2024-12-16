@@ -75,7 +75,7 @@ NonlinearSystem::NonlinearSystem(const OptionSet & options)
 }
 
 void
-NonlinearSystem::init_scaling(const NonlinearSystem::SOL<false> & x, const bool verbose)
+NonlinearSystem::init_scaling(const NonlinearSystem::Sol<false> & x, const bool verbose)
 {
   if (!_autoscale)
     return;
@@ -134,70 +134,70 @@ NonlinearSystem::ensure_scaling_matrices_initialized_dbg() const
                  : "Automatic scaling is not requested but scaling matrices were initialized.");
 }
 
-NonlinearSystem::RES<true>
-NonlinearSystem::scale(const NonlinearSystem::RES<false> & r) const
+NonlinearSystem::Res<true>
+NonlinearSystem::scale(const NonlinearSystem::Res<false> & r) const
 {
   if (!_autoscale)
-    return RES<true>(r);
+    return Res<true>(r);
 
   ensure_scaling_matrices_initialized_dbg();
-  return RES<true>(_row_scaling * r);
+  return Res<true>(_row_scaling * r);
 }
 
-NonlinearSystem::RES<false>
-NonlinearSystem::unscale(const NonlinearSystem::RES<true> & r) const
+NonlinearSystem::Res<false>
+NonlinearSystem::unscale(const NonlinearSystem::Res<true> & r) const
 {
   if (!_autoscale)
-    return RES<false>(r);
+    return Res<false>(r);
 
   ensure_scaling_matrices_initialized_dbg();
-  return RES<false>(1. / _row_scaling * r);
+  return Res<false>(1. / _row_scaling * r);
 }
 
-NonlinearSystem::JAC<true>
-NonlinearSystem::scale(const NonlinearSystem::JAC<false> & J) const
+NonlinearSystem::Jac<true>
+NonlinearSystem::scale(const NonlinearSystem::Jac<false> & J) const
 {
   if (!_autoscale)
-    return JAC<true>(J);
+    return Jac<true>(J);
 
   ensure_scaling_matrices_initialized_dbg();
-  return JAC<true>(math::bmm(math::bmm(math::base_diag_embed(_row_scaling), J),
+  return Jac<true>(math::bmm(math::bmm(math::base_diag_embed(_row_scaling), J),
                              math::base_diag_embed(_col_scaling)));
 }
 
-NonlinearSystem::JAC<false>
-NonlinearSystem::unscale(const NonlinearSystem::JAC<true> & J) const
+NonlinearSystem::Jac<false>
+NonlinearSystem::unscale(const NonlinearSystem::Jac<true> & J) const
 {
   if (!_autoscale)
-    return JAC<false>(J);
+    return Jac<false>(J);
 
   ensure_scaling_matrices_initialized_dbg();
-  return JAC<false>(math::bmm(math::bmm(math::base_diag_embed(1.0 / _row_scaling), J),
+  return Jac<false>(math::bmm(math::bmm(math::base_diag_embed(1.0 / _row_scaling), J),
                               math::base_diag_embed(1.0 / _col_scaling)));
 }
 
-NonlinearSystem::SOL<true>
-NonlinearSystem::scale(const NonlinearSystem::SOL<false> & u) const
+NonlinearSystem::Sol<true>
+NonlinearSystem::scale(const NonlinearSystem::Sol<false> & u) const
 {
   if (!_autoscale)
-    return SOL<true>(u);
+    return Sol<true>(u);
 
   ensure_scaling_matrices_initialized_dbg();
-  return SOL<true>(1. / _col_scaling * u);
+  return Sol<true>(1. / _col_scaling * u);
 }
 
-NonlinearSystem::SOL<false>
-NonlinearSystem::unscale(const NonlinearSystem::SOL<true> & u) const
+NonlinearSystem::Sol<false>
+NonlinearSystem::unscale(const NonlinearSystem::Sol<true> & u) const
 {
   if (!_autoscale)
-    return SOL<false>(u);
+    return Sol<false>(u);
 
   ensure_scaling_matrices_initialized_dbg();
-  return SOL<false>(_col_scaling * u);
+  return Sol<false>(_col_scaling * u);
 }
 
 void
-NonlinearSystem::set_guess(const NonlinearSystem::SOL<true> & x)
+NonlinearSystem::set_guess(const NonlinearSystem::Sol<true> & x)
 {
   set_guess(unscale(x));
 }

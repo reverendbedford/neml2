@@ -62,27 +62,27 @@ NewtonWithLineSearch::NewtonWithLineSearch(const OptionSet & options)
 
 void
 NewtonWithLineSearch::update(NonlinearSystem & system,
-                             NonlinearSystem::SOL<true> & x,
-                             const NonlinearSystem::RES<true> & r,
-                             const NonlinearSystem::JAC<true> & J)
+                             NonlinearSystem::Sol<true> & x,
+                             const NonlinearSystem::Res<true> & r,
+                             const NonlinearSystem::Jac<true> & J)
 {
   auto dx = solve_direction(r, J);
   auto alpha = linesearch(system, x, dx, r);
-  x = NonlinearSystem::SOL<true>(x.variable_data() + alpha * Tensor(dx));
+  x = NonlinearSystem::Sol<true>(x.variable_data() + alpha * Tensor(dx));
 }
 
 Scalar
 NewtonWithLineSearch::linesearch(NonlinearSystem & system,
-                                 const NonlinearSystem::SOL<true> & x,
-                                 const NonlinearSystem::SOL<true> & dx,
-                                 const NonlinearSystem::RES<true> & R0) const
+                                 const NonlinearSystem::Sol<true> & x,
+                                 const NonlinearSystem::Sol<true> & dx,
+                                 const NonlinearSystem::Res<true> & R0) const
 {
   auto alpha = Scalar::ones(x.batch_sizes(), x.options());
   const auto nR02 = math::bvv(R0, R0);
 
   for (std::size_t i = 1; i < _linesearch_miter; i++)
   {
-    NonlinearSystem::SOL<true> xp(Tensor(x) + alpha * Tensor(dx));
+    NonlinearSystem::Sol<true> xp(Tensor(x) + alpha * Tensor(dx));
     auto R = system.residual(xp);
     auto nR2 = math::bvv(R, R);
     auto crit = nR02 + 2.0 * _linesearch_c * alpha * math::bvv(R0, dx);

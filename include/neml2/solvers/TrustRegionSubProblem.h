@@ -41,14 +41,14 @@ public:
   TrustRegionSubProblem(const OptionSet & options);
 
   /// Record the current state of the underlying problem
-  void reinit(const RES<true> & r, const JAC<true> & J, const Scalar & delta);
+  void reinit(const Res<true> & r, const Jac<true> & J, const Scalar & delta);
 
   Tensor preconditioned_direction(const Scalar & s) const;
 
 protected:
-  void set_guess(const SOL<false> & x) override;
+  void set_guess(const Sol<false> & x) override;
 
-  void assemble(RES<false> * residual, JAC<false> * Jacobian) override;
+  void assemble(Res<false> * residual, Jac<false> * Jacobian) override;
 
   Tensor preconditioned_solve(const Scalar & s, const Tensor & v) const;
 

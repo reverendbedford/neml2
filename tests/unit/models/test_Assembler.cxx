@@ -49,9 +49,9 @@ TEST_CASE("VectorAssembler", "[models]")
   const auto bar = Scalar::full({2, 1}, -1.0);
   const auto baz = SR2::full({5, 2, 5}, 0.1);
 
-  SECTION("assemble")
+  SECTION("assemble_by_variable")
   {
-    const auto v = assembler.assemble({{T_name, T}, {bar_name, bar}, {baz_name, baz}});
+    const auto v = assembler.assemble_by_variable({{T_name, T}, {bar_name, bar}, {baz_name, baz}});
     REQUIRE(v.batch_sizes().concrete() == TensorShape{5, 2, 5});
     REQUIRE(v.base_sizes() == TensorShapeRef{9});
     REQUIRE(torch::allclose(v.base_index({axis.slice(T_name)}), T.base_flatten()));
@@ -60,10 +60,10 @@ TEST_CASE("VectorAssembler", "[models]")
     REQUIRE(torch::allclose(v.base_index({axis.slice(baz_name)}), baz.base_flatten()));
   }
 
-  SECTION("disassemble")
+  SECTION("split_by_variable")
   {
-    const auto v = assembler.assemble({{T_name, T}, {bar_name, bar}, {baz_name, baz}});
-    const auto vars = assembler.disassemble(v);
+    const auto v = assembler.assemble_by_variable({{T_name, T}, {bar_name, bar}, {baz_name, baz}});
+    const auto vars = assembler.split_by_variable(v);
     REQUIRE(vars.size() == 4);
     REQUIRE(torch::allclose(vars.at(T_name), T.base_flatten()));
     REQUIRE(torch::allclose(vars.at(foo_name), foo.base_flatten()));
@@ -71,10 +71,10 @@ TEST_CASE("VectorAssembler", "[models]")
     REQUIRE(torch::allclose(vars.at(baz_name), baz.base_flatten()));
   }
 
-  SECTION("split")
+  SECTION("split_by_subaxis")
   {
-    const auto v = assembler.assemble({{T_name, T}, {bar_name, bar}, {baz_name, baz}});
-    const auto vs = assembler.split(v);
+    const auto v = assembler.assemble_by_variable({{T_name, T}, {bar_name, bar}, {baz_name, baz}});
+    const auto vs = assembler.split_by_subaxis(v);
     REQUIRE(vs.size() == 2);
     REQUIRE(torch::allclose(vs.at("forces"), T.base_flatten()));
     REQUIRE(torch::allclose(vs.at("state"),

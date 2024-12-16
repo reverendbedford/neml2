@@ -109,7 +109,7 @@ The assembly of the partial derivatives into the total derivative \f$\partial y 
 
 ## Automatic differentiation {#automatic-differentiation}
 
-Deriving and implementing derivatives of the forward operator can be cubersome from times to times. NEML2 offers the option to use automatic differentiation (AD) to obtain derivatives. To enable automatic differentiation, one simply need to override the neml2::Model::request_AD method and specify which derivatives should be computed using AD:
+Deriving and implementing derivatives of the forward operator can be cumbersome from times to times. NEML2 offers the option to use automatic differentiation (AD) to obtain derivatives. To enable automatic differentiation, one simply need to override the neml2::Model::request_AD method and specify which derivatives should be computed using AD:
 ```cpp
 void
 MyModel::request_AD()
@@ -135,7 +135,7 @@ Since a composed model uses chain rule to efficiently evaluate the total derivat
 
 ## Model assembly {#model-assembly}
 
-NEML2 stores each variable in contiguous memory, but does not guarantee contiguity across variables. This choice is made to allow for massive asynchronous evaluation (with the help of lazy tensor) and to reduce memory consumption (since variables can have different number of batch shapes). However, this choice is not ideal for a family of nonlinear material models whose constitutive updates require solving one (or more) implicit system of equations. To address such issue, NEML2 offers two mechanisms to facilitate the creation of the implicit system (e.g., its residual and Jacobian):
+NEML2 stores each variable in contiguous memory, but does not guarantee contiguity across variables. This choice is made to allow for massive asynchronous evaluation (with the help of lazy tensors) and to reduce memory consumption (since variables can have different number of batch shapes). However, this choice is not ideal for a family of nonlinear material models whose constitutive updates require solving one (or more) implicit system of equations. To address such issue, NEML2 offers two mechanisms to facilitate the creation of the implicit system (e.g., its residual and Jacobian):
 - [Axis labeling](@ref axis-labeling) for setting up the layout of the implicit system
 - [Tensor assembly](@ref tensor-assembly) for assembling and disassembling the implicit system
 
@@ -148,7 +148,7 @@ The [LabeledAxis](@ref neml2::LabeledAxis) contains all information regarding ho
 - Variable: An item that is also of a [NEML2 primitive tensor type](@ref tensor-types)
 - Sub-axis: An item of type `LabeledAxis`
 
-So yes, an axis can be labeled recursively, e.g.,
+An axis can be labeled recursively, e.g.,
 
 ```
      0 1 2 3 4 5     6     7 8 9 10 11 12   13   14

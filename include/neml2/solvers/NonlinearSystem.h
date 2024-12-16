@@ -41,18 +41,18 @@ public:
    * scaled and unscaled residual
    */
   template <bool scaled>
-  struct RES : public Tensor
+  struct Res : public Tensor
   {
-    RES() = default;
+    Res() = default;
 
     /// Conversion from Tensor must be explicit
-    explicit RES(const Tensor & r)
+    explicit Res(const Tensor & r)
       : Tensor(r)
     {
     }
 
     /// Conversion between scaled and unscaled must be explicit
-    explicit RES(const RES<!scaled> & r)
+    explicit Res(const Res<!scaled> & r)
       : Tensor(r)
     {
     }
@@ -63,18 +63,18 @@ public:
    * scaled and unscaled residual
    */
   template <bool scaled>
-  struct JAC : public Tensor
+  struct Jac : public Tensor
   {
-    JAC() = default;
+    Jac() = default;
 
     /// Conversion from Tensor must be explicit
-    explicit JAC(const Tensor & J)
+    explicit Jac(const Tensor & J)
       : Tensor(J)
     {
     }
 
     /// Conversion between scaled and unscaled must be explicit
-    explicit JAC(const JAC<!scaled> & J)
+    explicit Jac(const Jac<!scaled> & J)
       : Tensor(J)
     {
     }
@@ -85,18 +85,18 @@ public:
    * scaled and unscaled solution (or solution increment, search direction, etc.)
    */
   template <bool scaled>
-  struct SOL : public Tensor
+  struct Sol : public Tensor
   {
-    SOL() = default;
+    Sol() = default;
 
     /// Conversion from Tensor must be explicit
-    explicit SOL(const Tensor & u)
+    explicit Sol(const Tensor & u)
       : Tensor(u)
     {
     }
 
     /// Conversion between scaled and unscaled must be explicit
-    explicit SOL(const SOL<!scaled> & u)
+    explicit Sol(const Sol<!scaled> & u)
       : Tensor(u)
     {
     }
@@ -144,43 +144,43 @@ public:
    * @param x Unscaled initial guess used to compute the initial unscaled residual and Jacobian
    * @param verbose Print automatic scaling convergence information
    */
-  virtual void init_scaling(const SOL<false> & x, const bool verbose = false);
+  virtual void init_scaling(const Sol<false> & x, const bool verbose = false);
 
   /// Apply scaling to the residual
-  RES<true> scale(const RES<false> & r) const;
+  Res<true> scale(const Res<false> & r) const;
   /// Remove scaling to the residual
-  RES<false> unscale(const RES<true> & r) const;
+  Res<false> unscale(const Res<true> & r) const;
   /// Apply scaling to the Jacobian
-  JAC<true> scale(const JAC<false> & J) const;
+  Jac<true> scale(const Jac<false> & J) const;
   /// Remove scaling to the Jacobian
-  JAC<false> unscale(const JAC<true> & J) const;
+  Jac<false> unscale(const Jac<true> & J) const;
   /// Apply scaling to the solution
-  SOL<true> scale(const SOL<false> & u) const;
+  Sol<true> scale(const Sol<false> & u) const;
   /// Remove scaling to the solution
-  SOL<false> unscale(const SOL<true> & u) const;
+  Sol<false> unscale(const Sol<true> & u) const;
 
   /// Set the current guess
-  virtual void set_guess(const SOL<true> & x) final;
+  virtual void set_guess(const Sol<true> & x) final;
   /// Set the _unscaled_ current guess
-  virtual void set_guess(const SOL<false> & x) = 0;
+  virtual void set_guess(const Sol<false> & x) = 0;
   /// Assemble and return the residual
   template <bool scaled>
-  RES<scaled> residual();
+  Res<scaled> residual();
   /// Convenient shortcut to set the current guess, assemble and return the residual
   template <bool scaled>
-  RES<scaled> residual(const SOL<scaled> & x);
+  Res<scaled> residual(const Sol<scaled> & x);
   /// Assemble and return the Jacobian
   template <bool scaled>
-  JAC<scaled> Jacobian();
+  Jac<scaled> Jacobian();
   /// Convenient shortcut to set the current guess, assemble and return the Jacobian
   template <bool scaled>
-  JAC<scaled> Jacobian(const SOL<scaled> & x);
+  Jac<scaled> Jacobian(const Sol<scaled> & x);
   /// Assemble and return the residual and Jacobian
   template <bool scaled>
-  std::tuple<RES<scaled>, JAC<scaled>> residual_and_Jacobian();
+  std::tuple<Res<scaled>, Jac<scaled>> residual_and_Jacobian();
   /// Convenient shortcut to set the current guess, assemble and return the residual and Jacobian
   template <bool scaled>
-  std::tuple<RES<scaled>, JAC<scaled>> residual_and_Jacobian(const SOL<scaled> & x);
+  std::tuple<Res<scaled>, Jac<scaled>> residual_and_Jacobian(const Sol<scaled> & x);
 
 protected:
   /**
@@ -189,7 +189,7 @@ protected:
    * @param r Pointer to the residual vector -- nullptr if not requested
    * @param J Pointer to the Jacobian matrix -- nullptr if not requested
    */
-  virtual void assemble(RES<false> * r, JAC<false> * J) = 0;
+  virtual void assemble(Res<false> * r, Jac<false> * J) = 0;
 
   /// If true, do automatic scaling
   const bool _autoscale;
@@ -218,10 +218,10 @@ private:
 ///////////////////////////////////////////////////////////////////////////////
 
 template <bool scaled>
-NonlinearSystem::RES<scaled>
+NonlinearSystem::Res<scaled>
 NonlinearSystem::residual()
 {
-  RES<false> r;
+  Res<false> r;
   assemble(&r, nullptr);
   if constexpr (scaled)
     return scale(r);
@@ -230,18 +230,18 @@ NonlinearSystem::residual()
 }
 
 template <bool scaled>
-NonlinearSystem::RES<scaled>
-NonlinearSystem::residual(const NonlinearSystem::SOL<scaled> & x)
+NonlinearSystem::Res<scaled>
+NonlinearSystem::residual(const NonlinearSystem::Sol<scaled> & x)
 {
   set_guess(x);
   return residual<scaled>();
 }
 
 template <bool scaled>
-NonlinearSystem::JAC<scaled>
+NonlinearSystem::Jac<scaled>
 NonlinearSystem::Jacobian()
 {
-  JAC<false> J;
+  Jac<false> J;
   assemble(nullptr, &J);
   if constexpr (scaled)
     return scale(J);
@@ -250,19 +250,19 @@ NonlinearSystem::Jacobian()
 }
 
 template <bool scaled>
-NonlinearSystem::JAC<scaled>
-NonlinearSystem::Jacobian(const NonlinearSystem::SOL<scaled> & x)
+NonlinearSystem::Jac<scaled>
+NonlinearSystem::Jacobian(const NonlinearSystem::Sol<scaled> & x)
 {
   set_guess(x);
   return Jacobian<scaled>();
 }
 
 template <bool scaled>
-std::tuple<NonlinearSystem::RES<scaled>, NonlinearSystem::JAC<scaled>>
+std::tuple<NonlinearSystem::Res<scaled>, NonlinearSystem::Jac<scaled>>
 NonlinearSystem::residual_and_Jacobian()
 {
-  RES<false> r;
-  JAC<false> J;
+  Res<false> r;
+  Jac<false> J;
   assemble(&r, &J);
   if constexpr (scaled)
     return {scale(r), scale(J)};
@@ -271,8 +271,8 @@ NonlinearSystem::residual_and_Jacobian()
 }
 
 template <bool scaled>
-std::tuple<NonlinearSystem::RES<scaled>, NonlinearSystem::JAC<scaled>>
-NonlinearSystem::residual_and_Jacobian(const NonlinearSystem::SOL<scaled> & x)
+std::tuple<NonlinearSystem::Res<scaled>, NonlinearSystem::Jac<scaled>>
+NonlinearSystem::residual_and_Jacobian(const NonlinearSystem::Sol<scaled> & x)
 {
   set_guess(x);
   return residual_and_Jacobian<scaled>();

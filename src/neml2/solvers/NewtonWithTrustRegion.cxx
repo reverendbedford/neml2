@@ -110,16 +110,16 @@ NewtonWithTrustRegion::subproblem_solver_options(const OptionSet & options) cons
 
 void
 NewtonWithTrustRegion::prepare(const NonlinearSystem & /*system*/,
-                               const NonlinearSystem::SOL<true> & x)
+                               const NonlinearSystem::Sol<true> & x)
 {
   _delta = Scalar::full(x.batch_sizes(), _delta_0, x.options());
 }
 
 void
 NewtonWithTrustRegion::update(NonlinearSystem & system,
-                              NonlinearSystem::SOL<true> & x,
-                              const NonlinearSystem::RES<true> & r,
-                              const NonlinearSystem::JAC<true> & J)
+                              NonlinearSystem::Sol<true> & x,
+                              const NonlinearSystem::Res<true> & r,
+                              const NonlinearSystem::Jac<true> & J)
 {
   auto p = solve_direction(r, J);
 
@@ -128,7 +128,7 @@ NewtonWithTrustRegion::update(NonlinearSystem & system,
   auto red_b = merit_function_reduction(r, J, p);
 
   // Actual reduction in the objective function
-  NonlinearSystem::SOL<true> xp(Tensor(x) + Tensor(p));
+  NonlinearSystem::Sol<true> xp(Tensor(x) + Tensor(p));
   auto rp = system.residual(xp);
   auto nrp = math::linalg::vector_norm(rp);
   auto red_a = 0.5 * math::pow(nr, 2.0) - 0.5 * math::pow(nrp, 2.0);
@@ -159,12 +159,12 @@ NewtonWithTrustRegion::update(NonlinearSystem & system,
               << torch::max(_delta).item<Real>() << std::endl;
   }
 
-  x = NonlinearSystem::SOL<true>(math::where(accept, Tensor(xp), x.variable_data()));
+  x = NonlinearSystem::Sol<true>(math::where(accept, Tensor(xp), x.variable_data()));
 }
 
-NonlinearSystem::SOL<true>
-NewtonWithTrustRegion::solve_direction(const NonlinearSystem::RES<true> & r,
-                                       const NonlinearSystem::JAC<true> & J)
+NonlinearSystem::Sol<true>
+NewtonWithTrustRegion::solve_direction(const NonlinearSystem::Res<true> & r,
+                                       const NonlinearSystem::Jac<true> & J)
 {
   // The full Newton step
   auto p_newton = Newton::solve_direction(r, J);
@@ -172,7 +172,7 @@ NewtonWithTrustRegion::solve_direction(const NonlinearSystem::RES<true> & r,
   // The trust region step (obtained by solving the bound constrained subproblem)
   _subproblem.reinit(r, J, _delta);
   auto res = _subproblem_solver.solve(_subproblem,
-                                      NonlinearSystem::SOL<false>(Tensor::zeros_like(_delta)));
+                                      NonlinearSystem::Sol<false>(Tensor::zeros_like(_delta)));
 
   // Do some printing if verbose
   if (verbose)
@@ -189,14 +189,14 @@ NewtonWithTrustRegion::solve_direction(const NonlinearSystem::RES<true> & r,
   auto newton_inside_trust_region =
       (math::linalg::vector_norm(p_newton) <= math::sqrt(2.0 * _delta)).unsqueeze(-1);
 
-  return NonlinearSystem::SOL<true>(
+  return NonlinearSystem::Sol<true>(
       Tensor(torch::where(newton_inside_trust_region, p_newton, p_trust), p_newton.batch_sizes()));
 }
 
 Scalar
-NewtonWithTrustRegion::merit_function_reduction(const NonlinearSystem::RES<true> & r,
-                                                const NonlinearSystem::JAC<true> & J,
-                                                const NonlinearSystem::SOL<true> & p) const
+NewtonWithTrustRegion::merit_function_reduction(const NonlinearSystem::Res<true> & r,
+                                                const NonlinearSystem::Jac<true> & J,
+                                                const NonlinearSystem::Sol<true> & p) const
 {
   auto Jp = math::bmv(J, p);
   return -math::bvv(r, Jp) - 0.5 * math::bvv(Jp, Jp);

@@ -31,7 +31,7 @@
 namespace neml2
 {
 /**
- * @brief Helper to assemble a vector of tensors into a single tensor and also to disassemble
+ * @brief Helper to assemble a vector of tensors into a single tensor and also to split
  * a tensor into a map of tensors.
  *
  */
@@ -44,20 +44,20 @@ public:
   }
 
   /// Assemble a vector of vectors (by variables)
-  Tensor assemble(const ValueMap &) const;
+  Tensor assemble_by_variable(const ValueMap &) const;
 
   /// Split the vector (by variables)
-  ValueMap disassemble(const Tensor &) const;
+  ValueMap split_by_variable(const Tensor &) const;
 
   /// Split the vector (by subaxes)
-  ValueMap split(const Tensor &) const;
+  ValueMap split_by_subaxis(const Tensor &) const;
 
 private:
   const LabeledAxis & _axis;
 };
 
 /**
- * @brief Helper to assemble a matrix of tensors into a single tensor and also to disassemble
+ * @brief Helper to assemble a matrix of tensors into a single tensor and also to split
  * a tensor into a map of map of tensors.
  *
  */
@@ -71,13 +71,13 @@ public:
   }
 
   /// Assemble a matrix of matrices (by variables)
-  Tensor assemble(const DerivMap &) const;
+  Tensor assemble_by_variable(const DerivMap &) const;
 
   /// Split the matrix (by variables)
-  DerivMap disassemble(const Tensor &) const;
+  DerivMap split_by_variable(const Tensor &) const;
 
   /// Split the matrix (by subaxes)
-  DerivMap split(const Tensor &) const;
+  DerivMap split_by_subaxis(const Tensor &) const;
 
 private:
   const LabeledAxis & _yaxis;

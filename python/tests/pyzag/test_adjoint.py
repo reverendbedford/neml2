@@ -99,7 +99,9 @@ class TestElasticModel(DerivativeCheck):
         strain = SR2.linspace(start_strain, end_strain, self.nstep).batch.unsqueeze(-1)
 
         # Prescribed forces
-        self.forces = self.model.forces_asm.assemble({"forces/t": time, "forces/E": strain}).torch()
+        self.forces = self.model.forces_asm.assemble_by_ariable(
+            {"forces/t": time, "forces/E": strain}
+        ).torch()
 
         # Initial state
         self.initial_state = torch.zeros((self.nbatch, self.model.nstate))
@@ -130,7 +132,9 @@ class TestViscoplasticModel(DerivativeCheck):
         strain = SR2.linspace(start_strain, end_strain, self.nstep).batch.unsqueeze(-1)
 
         # Prescribed forces
-        self.forces = self.model.forces_asm.assemble({"forces/t": time, "forces/E": strain}).torch()
+        self.forces = self.model.forces_asm.assemble_by_ariable(
+            {"forces/t": time, "forces/E": strain}
+        ).torch()
 
         # Initial state
         self.initial_state = torch.zeros((self.nbatch, self.model.nstate))
@@ -173,7 +177,7 @@ class TestKocksMeckingMixedControlModel(DerivativeCheck):
         temperature = Scalar.linspace(start_temperature, end_temperature, self.nstep)
 
         # Prescribed forces
-        self.forces = self.model.forces_asm.assemble(
+        self.forces = self.model.forces_asm.assemble_by_ariable(
             {
                 "forces/t": time,
                 "forces/control": control,

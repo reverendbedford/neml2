@@ -42,11 +42,11 @@ public:
 
   Newton(const OptionSet & options);
 
-  Result solve(NonlinearSystem & system, const NonlinearSystem::SOL<false> & x0) override;
+  Result solve(NonlinearSystem & system, const NonlinearSystem::Sol<false> & x0) override;
 
 protected:
   /// Prepare solver internal data before the iterative update
-  virtual void prepare(const NonlinearSystem & /*system*/, const NonlinearSystem::SOL<true> & /*x*/)
+  virtual void prepare(const NonlinearSystem & /*system*/, const NonlinearSystem::Sol<true> & /*x*/)
   {
   }
 
@@ -65,18 +65,18 @@ protected:
 
   /// Update trial solution
   virtual void update(NonlinearSystem & system,
-                      NonlinearSystem::SOL<true> & x,
-                      const NonlinearSystem::RES<true> & r,
-                      const NonlinearSystem::JAC<true> & J);
+                      NonlinearSystem::Sol<true> & x,
+                      const NonlinearSystem::Res<true> & r,
+                      const NonlinearSystem::Jac<true> & J);
 
   /// Do a final update to track AD function graph
   virtual void final_update(NonlinearSystem & system,
-                            NonlinearSystem::SOL<true> & x,
-                            const NonlinearSystem::RES<true> & r,
-                            const NonlinearSystem::JAC<true> & J);
+                            NonlinearSystem::Sol<true> & x,
+                            const NonlinearSystem::Res<true> & r,
+                            const NonlinearSystem::Jac<true> & J);
 
   /// Find the current update direction
-  virtual NonlinearSystem::SOL<true> solve_direction(const NonlinearSystem::RES<true> & r,
-                                                     const NonlinearSystem::JAC<true> & J);
+  virtual NonlinearSystem::Sol<true> solve_direction(const NonlinearSystem::Res<true> & r,
+                                                     const NonlinearSystem::Jac<true> & J);
 };
 } // namespace neml2

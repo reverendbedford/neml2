@@ -36,6 +36,13 @@ class Model;
 class Derivative;
 enum class TensorType : int8_t;
 
+/**
+ * @brief Base class of variable
+ *
+ * Specific implementations are defined by the derived class `Variable<T>` where we rely on
+ * polymorphism so that we can store different types of variables in the same container.
+ *
+ */
 class VariableBase
 {
 public:

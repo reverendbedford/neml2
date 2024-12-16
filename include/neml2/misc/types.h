@@ -25,7 +25,6 @@
 #pragma once
 
 #include <torch/types.h>
-#include "neml2/contrib/boost/bitmask_operators.h"
 
 namespace neml2
 {
@@ -173,10 +172,3 @@ std::string & parameter_name_separator();
 bool & currently_solving_nonlinear_system();
 
 } // namespace neml2
-
-// Enable bitmask operations for FType
-template <>
-struct enable_bitmask_operators<neml2::FType>
-{
-  static const bool enable = true;
-};

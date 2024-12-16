@@ -51,7 +51,7 @@ public:
     /// Solver return code, @see neml2::NonlinearSolver::RetCode
     RetCode ret = RetCode::FAILURE;
     /// Solution to the nonlinear system
-    NonlinearSystem::SOL<false> solution;
+    NonlinearSystem::Sol<false> solution;
     /// Number of iterations before convergence
     std::size_t iterations = 0;
   };
@@ -73,7 +73,7 @@ public:
    * @param x0 The initial guess
    * @return @see neml2::NonlinearSolver::Result
    */
-  virtual Result solve(NonlinearSystem & system, const NonlinearSystem::SOL<false> & x0) = 0;
+  virtual Result solve(NonlinearSystem & system, const NonlinearSystem::Sol<false> & x0) = 0;
 
   /// Absolute tolerance
   Real atol;

@@ -188,9 +188,9 @@ protected:
     return *(std::dynamic_pointer_cast<T>(model));
   }
 
-  void set_guess(const SOL<false> &) override;
+  void set_guess(const Sol<false> &) override;
 
-  void assemble(RES<false> *, JAC<false> *) override;
+  void assemble(Res<false> *, Jac<false> *) override;
 
   /// Models *this* model may use during its evaluation
   std::vector<Model *> _registered_models;

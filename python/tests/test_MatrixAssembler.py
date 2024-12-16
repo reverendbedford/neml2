@@ -29,13 +29,13 @@ from neml2.tensors import Tensor
 import torch
 
 
-def test_assemble():
+def test_assemble_by_variable():
     pwd = Path(__file__).parent
     model = neml2.reload_model(pwd / "test_LabeledAxis.i", "model")
     xaxis = model.input_axis()
     yaxis = model.output_axis()
     assembler = neml2.MatrixAssembler(yaxis, xaxis)
-    M = assembler.assemble(
+    M = assembler.assemble_by_variable(
         {
             "residual/foo_bar": {
                 "state/bar": Tensor.full((1, 1), 1.0),
@@ -51,14 +51,14 @@ def test_assemble():
     assert torch.allclose(M.base[0, 7].torch(), torch.tensor([3.0]))
 
 
-def test_disassemble():
+def test_split_by_variable():
     pwd = Path(__file__).parent
     model = neml2.reload_model(pwd / "test_LabeledAxis.i", "model")
     xaxis = model.input_axis()
     yaxis = model.output_axis()
     assembler = neml2.MatrixAssembler(yaxis, xaxis)
     M = Tensor(torch.linspace(0, 1, 8).reshape(1, 8), 0)
-    vals = assembler.disassemble(M)["residual/foo_bar"]
+    vals = assembler.split_by_variable(M)["residual/foo_bar"]
     assert torch.allclose(vals["forces/t"].torch(), M.base[0, 0].torch())
     assert torch.allclose(vals["old_forces/t"].torch(), M.base[0, 1].torch())
     assert torch.allclose(vals["old_state/bar"].torch(), M.base[0, 2].torch())
@@ -69,14 +69,14 @@ def test_disassemble():
     assert torch.allclose(vals["state/foo_rate"].torch(), M.base[0, 7].torch())
 
 
-def test_split():
+def test_split_by_subaxis():
     pwd = Path(__file__).parent
     model = neml2.reload_model(pwd / "test_LabeledAxis.i", "model")
     xaxis = model.input_axis()
     yaxis = model.output_axis()
     assembler = neml2.MatrixAssembler(yaxis, xaxis)
     M = Tensor(torch.linspace(0, 1, 8).reshape(1, 8), 0)
-    vals = assembler.split(M)["residual"]
+    vals = assembler.split_by_subaxis(M)["residual"]
     assert torch.allclose(vals["forces"].torch(), M.base[0, 0].torch())
     assert torch.allclose(vals["old_forces"].torch(), M.base[0, 1].torch())
     assert torch.allclose(vals["old_state"].torch(), M.base[0, 2:4].torch())

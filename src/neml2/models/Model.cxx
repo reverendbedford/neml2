@@ -331,14 +331,14 @@ Model::provided_items() const
 }
 
 void
-Model::set_guess(const SOL<false> & x)
+Model::set_guess(const Sol<false> & x)
 {
   const auto sol_assember = VectorAssembler(input_axis().subaxis("state"));
-  assign_input(sol_assember.disassemble(x));
+  assign_input(sol_assember.split_by_variable(x));
 }
 
 void
-Model::assemble(NonlinearSystem::RES<false> * residual, NonlinearSystem::JAC<false> * Jacobian)
+Model::assemble(NonlinearSystem::Res<false> * residual, NonlinearSystem::Jac<false> * Jacobian)
 {
   if (residual && !Jacobian)
     value();
@@ -350,13 +350,13 @@ Model::assemble(NonlinearSystem::RES<false> * residual, NonlinearSystem::JAC<fal
   if (residual)
   {
     const auto res_assembler = VectorAssembler(output_axis().subaxis("residual"));
-    *residual = RES<false>(res_assembler.assemble(collect_output()));
+    *residual = Res<false>(res_assembler.assemble_by_variable(collect_output()));
   }
   if (Jacobian)
   {
     const auto jac_assembler =
         MatrixAssembler(output_axis().subaxis("residual"), input_axis().subaxis("state"));
-    *Jacobian = JAC<false>(jac_assembler.assemble(collect_output_derivatives()));
+    *Jacobian = Jac<false>(jac_assembler.assemble_by_variable(collect_output_derivatives()));
   }
 }
 

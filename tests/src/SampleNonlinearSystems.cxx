@@ -34,7 +34,7 @@ TestNonlinearSystem::TestNonlinearSystem(const OptionSet & options)
 }
 
 void
-TestNonlinearSystem::set_guess(const NonlinearSystem::SOL<false> & x)
+TestNonlinearSystem::set_guess(const NonlinearSystem::Sol<false> & x)
 {
   neml_assert_dbg(x.base_dim() == 1, "Trial solution must be one dimensional");
   _x = x;
@@ -46,12 +46,12 @@ PowerTestSystem::PowerTestSystem(const OptionSet & options)
 }
 
 void
-PowerTestSystem::assemble(NonlinearSystem::RES<false> * residual,
-                          NonlinearSystem::JAC<false> * Jacobian)
+PowerTestSystem::assemble(NonlinearSystem::Res<false> * residual,
+                          NonlinearSystem::Jac<false> * Jacobian)
 {
   if (residual)
   {
-    *residual = NonlinearSystem::RES<false>(Tensor::zeros_like(_x));
+    *residual = NonlinearSystem::Res<false>(Tensor::zeros_like(_x));
     for (Size i = 0; i < _x.base_size(0); i++)
       residual->base_index_put_({i},
                                 math::pow(_x.base_index({i}), Scalar(i + 1, _x.options())) - 1.0);
@@ -59,7 +59,7 @@ PowerTestSystem::assemble(NonlinearSystem::RES<false> * residual,
 
   if (Jacobian)
   {
-    *Jacobian = NonlinearSystem::JAC<false>(
+    *Jacobian = NonlinearSystem::Jac<false>(
         Tensor::zeros(_x.batch_sizes(), {_x.base_size(0), _x.base_size(0)}, _x.options()));
     for (Size i = 0; i < _x.base_size(0); i++)
       Jacobian->base_index_put_({i, i},
@@ -68,7 +68,7 @@ PowerTestSystem::assemble(NonlinearSystem::RES<false> * residual,
 }
 
 Tensor
-PowerTestSystem::exact_solution(const NonlinearSystem::SOL<false> & x) const
+PowerTestSystem::exact_solution(const NonlinearSystem::Sol<false> & x) const
 {
   return Tensor::ones_like(x);
 }
@@ -79,8 +79,8 @@ RosenbrockTestSystem::RosenbrockTestSystem(const OptionSet & options)
 }
 
 void
-RosenbrockTestSystem::assemble(NonlinearSystem::RES<false> * residual,
-                               NonlinearSystem::JAC<false> * Jacobian)
+RosenbrockTestSystem::assemble(NonlinearSystem::Res<false> * residual,
+                               NonlinearSystem::Jac<false> * Jacobian)
 {
   if (residual)
   {
@@ -94,7 +94,7 @@ RosenbrockTestSystem::assemble(NonlinearSystem::RES<false> * residual,
     auto xn1 = _x.base_index({-1});
     auto xn2 = _x.base_index({-2});
 
-    *residual = NonlinearSystem::RES<false>(Tensor::zeros_like(_x));
+    *residual = NonlinearSystem::Res<false>(Tensor::zeros_like(_x));
     residual->base_index_put_({indexing::Slice(1, -1)},
                               200 * (xm - math::pow(xm_m1, 2.0)) -
                                   400 * (xm_p1 - math::pow(xm, 2.0)) * xm - 2 * (1 - xm));
@@ -121,12 +121,12 @@ RosenbrockTestSystem::assemble(NonlinearSystem::RES<false> * residual,
                              202 + 1200 * math::pow(s_x11, 2.0) - 400 * s_x2);
 
     *Jacobian =
-        NonlinearSystem::JAC<false>(Tensor(torch::diag_embed(diagonal) + H, _x.batch_sizes()));
+        NonlinearSystem::Jac<false>(Tensor(torch::diag_embed(diagonal) + H, _x.batch_sizes()));
   }
 }
 
 Tensor
-RosenbrockTestSystem::exact_solution(const NonlinearSystem::SOL<false> & x) const
+RosenbrockTestSystem::exact_solution(const NonlinearSystem::Sol<false> & x) const
 {
   return Tensor::ones_like(x);
 }

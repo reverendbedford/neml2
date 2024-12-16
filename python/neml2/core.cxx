@@ -383,16 +383,16 @@ Diagnose common issues in model setup. Raises a runtime error including all iden
   // neml2.core.VectorAssembler
   py::class_<VectorAssembler>(m, "VectorAssembler")
       .def(py::init<const LabeledAxis &>())
-      .def("assemble",
+      .def("assemble_by_variable",
            [](const VectorAssembler & self, py::dict py_vals_dict)
-           { return self.assemble(unpack_tensor_map(py_vals_dict)); })
-      .def("disassemble", &VectorAssembler::disassemble)
-      .def("split", &VectorAssembler::split);
+           { return self.assemble_by_variable(unpack_tensor_map(py_vals_dict)); })
+      .def("split_by_variable", &VectorAssembler::split_by_variable)
+      .def("split_by_subaxis", &VectorAssembler::split_by_subaxis);
 
   // neml2.core.MatrixAssembler
   py::class_<MatrixAssembler>(m, "MatrixAssembler")
       .def(py::init<const LabeledAxis &, const LabeledAxis &>())
-      .def("assemble",
+      .def("assemble_by_variable",
            [](const MatrixAssembler & self, py::dict py_vals_dict)
            {
              DerivMap vals_dict;
@@ -405,13 +405,13 @@ Diagnose common issues in model setup. Raises a runtime error including all iden
                catch (py::cast_error &)
                {
                  throw py::cast_error(
-                     "neml2.MatrixAssembler.assemble: Invalid input value type -- dictionary keys "
-                     "must be convertible to neml2.VariableName, and dictionary values must be "
-                     "convertible to dict[neml2.VariableName, neml2.Tensor]");
+                     "neml2.MatrixAssembler.assemble_by_variable: Invalid input value type -- "
+                     "dictionary keys must be convertible to neml2.VariableName, and dictionary "
+                     "values must be convertible to dict[neml2.VariableName, neml2.Tensor]");
                }
              }
-             return self.assemble(vals_dict);
+             return self.assemble_by_variable(vals_dict);
            })
-      .def("disassemble", &MatrixAssembler::disassemble)
-      .def("split", &MatrixAssembler::split);
+      .def("split_by_variable", &MatrixAssembler::split_by_variable)
+      .def("split_by_subaxis", &MatrixAssembler::split_by_subaxis);
 }

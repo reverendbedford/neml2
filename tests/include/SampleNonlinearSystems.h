@@ -33,8 +33,8 @@ class TestNonlinearSystem : public NonlinearSystem
 public:
   TestNonlinearSystem(const OptionSet & options);
 
-  void set_guess(const SOL<false> & x) override;
-  virtual Tensor exact_solution(const SOL<false> & x) const = 0;
+  void set_guess(const Sol<false> & x) override;
+  virtual Tensor exact_solution(const Sol<false> & x) const = 0;
 
 protected:
   Tensor _x;
@@ -45,10 +45,10 @@ class PowerTestSystem : public TestNonlinearSystem
 public:
   PowerTestSystem(const OptionSet & options);
 
-  Tensor exact_solution(const SOL<false> & x) const override;
+  Tensor exact_solution(const Sol<false> & x) const override;
 
 protected:
-  void assemble(RES<false> *, JAC<false> *) override;
+  void assemble(Res<false> *, Jac<false> *) override;
 };
 
 class RosenbrockTestSystem : public TestNonlinearSystem
@@ -56,9 +56,9 @@ class RosenbrockTestSystem : public TestNonlinearSystem
 public:
   RosenbrockTestSystem(const neml2::OptionSet & options);
 
-  neml2::Tensor exact_solution(const SOL<false> & x) const override;
+  neml2::Tensor exact_solution(const Sol<false> & x) const override;
 
 protected:
-  void assemble(RES<false> *, JAC<false> *) override;
+  void assemble(Res<false> *, Jac<false> *) override;
 };
 }

@@ -70,7 +70,6 @@ def test_change_parameter_shape():
 
 
 @pytest.mark.parametrize("input", ["elastic_model", "viscoplastic_model", "km_mixed_model"])
-# @pytest.mark.parametrize("input", ["elastic_model", "viscoplastic_model"])
 def test_compare(input):
     pwd = Path(__file__).parent
     nmodel = neml2.reload_model(pwd / "models" / "{}.i".format(input), "implicit_rate")
@@ -80,8 +79,8 @@ def test_compare(input):
     ref = torch.jit.load(pwd / "gold" / "{}.pt".format(input))
     input = dict(ref.input.named_buffers())
     output = dict(ref.output.named_buffers())
-    forces = pmodel.forces_asm.assemble(input).torch()
-    state = pmodel.state_asm.assemble(output).torch()
+    forces = pmodel.forces_asm.assemble_by_ariable(input).torch()
+    state = pmodel.state_asm.assemble_by_ariable(output).torch()
     nstep = forces.shape[0]
 
     solver = nonlinear.RecursiveNonlinearEquationSolver(

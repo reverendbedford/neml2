@@ -45,15 +45,15 @@ public:
 protected:
   /// Update trial solution
   void update(NonlinearSystem & system,
-              NonlinearSystem::SOL<true> & x,
-              const NonlinearSystem::RES<true> & r,
-              const NonlinearSystem::JAC<true> & J) override;
+              NonlinearSystem::Sol<true> & x,
+              const NonlinearSystem::Res<true> & r,
+              const NonlinearSystem::Jac<true> & J) override;
 
   /// Perform Armijo linesearch
   virtual Scalar linesearch(NonlinearSystem & system,
-                            const NonlinearSystem::SOL<true> & x,
-                            const NonlinearSystem::SOL<true> & dx,
-                            const NonlinearSystem::RES<true> & R0) const;
+                            const NonlinearSystem::Sol<true> & x,
+                            const NonlinearSystem::Sol<true> & dx,
+                            const NonlinearSystem::Res<true> & R0) const;
 
   /// Linesearch maximum iterations
   unsigned int _linesearch_miter;
