@@ -28,6 +28,7 @@
 #include "neml2/base/Storage.h"
 #include "neml2/models/LabeledAxis.h"
 #include "neml2/models/Variable.h"
+#include "neml2/models/map_types.h"
 #include "neml2/tensors/tensors.h"
 
 namespace neml2
@@ -96,22 +97,20 @@ public:
 
   ///@{
   /// Assign variable values
-  void assign_input(const std::map<VariableName, Tensor> & vals);
-  void assign_output(const std::map<VariableName, Tensor> & vals);
+  void assign_input(const ValueMap & vals);
+  void assign_output(const ValueMap & vals);
   /// Assign variable derivatives
-  void
-  assign_output_derivatives(const std::map<VariableName, std::map<VariableName, Tensor>> & derivs);
+  void assign_output_derivatives(const DerivMap & derivs);
   ///@}
 
   ///@{
   /// Collect variable values
-  std::map<VariableName, Tensor> collect_input() const;
-  std::map<VariableName, Tensor> collect_output() const;
+  ValueMap collect_input() const;
+  ValueMap collect_output() const;
   /// Collect variable derivatives
-  std::map<VariableName, std::map<VariableName, Tensor>> collect_output_derivatives() const;
+  DerivMap collect_output_derivatives() const;
   /// Collect variable second derivatives
-  std::map<VariableName, std::map<VariableName, std::map<VariableName, Tensor>>>
-  collect_output_second_derivatives() const;
+  SecDerivMap collect_output_second_derivatives() const;
   ///@}
 
 protected:

@@ -41,9 +41,8 @@ public:
 
 private:
   template <typename T>
-  void set_variable(std::map<VariableName, Tensor> & storage,
-                    const std::string & option_vars,
-                    const std::string & option_vals)
+  void
+  set_variable(ValueMap & storage, const std::string & option_vars, const std::string & option_vals)
   {
     const auto vars = input_options().get<std::vector<VariableName>>(option_vars);
     const auto vals = input_options().get<std::vector<CrossRef<T>>>(option_vals);
@@ -70,8 +69,8 @@ private:
   const bool _check_AD_param_derivs;
   const bool _check_cuda;
 
-  std::map<VariableName, Tensor> _in;
-  std::map<VariableName, Tensor> _out;
+  ValueMap _in;
+  ValueMap _out;
 
   Real _val_rtol;
   Real _val_atol;

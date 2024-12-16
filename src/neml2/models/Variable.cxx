@@ -198,12 +198,12 @@ assign_or_add(Tensor & dest, const Tensor & val)
     dest = val;
 }
 
-std::map<VariableName, Tensor>
+ValueMap
 VariableBase::total_derivatives(const DependencyResolver<Model, VariableName> & dep,
                                 Model * model,
                                 const VariableName & yvar) const
 {
-  std::map<VariableName, Tensor> derivs;
+  ValueMap derivs;
 
   for (const auto & [uvar, dy_du] : model->output_variable(yvar).derivatives())
   {
@@ -218,12 +218,12 @@ VariableBase::total_derivatives(const DependencyResolver<Model, VariableName> & 
   return derivs;
 }
 
-std::map<VariableName, std::map<VariableName, Tensor>>
+DerivMap
 VariableBase::total_second_derivatives(const DependencyResolver<Model, VariableName> & dep,
                                        Model * model,
                                        const VariableName & yvar) const
 {
-  std::map<VariableName, std::map<VariableName, Tensor>> sec_derivs;
+  DerivMap sec_derivs;
 
   for (const auto & [u1var, d2y_du1] : model->output_variable(yvar).second_derivatives())
     for (const auto & [u2var, d2y_du1u2] : d2y_du1)

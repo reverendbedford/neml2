@@ -118,44 +118,5 @@ public:
     return l;
   }
 };
-
-/**
- * @brief This specialization exposes neml2::indexing::TensorLabels
- */
-template <>
-struct type_caster<neml2::indexing::TensorLabels>
-{
-public:
-  PYBIND11_TYPE_CASTER(neml2::indexing::TensorLabels, const_name("list[str]"));
-
-  bool load(handle src, bool)
-  {
-    // do not treat str as an iterable, otherwise "forces/t" will get parsed into individual
-    // characters...
-    if (isinstance<str>(src))
-      return false;
-
-    // if src is an iterable
-    if (isinstance<iterable>(src))
-    {
-      auto src_iterable = reinterpret_borrow<iterable>(src);
-      for (auto item : src_iterable)
-        value.push_back(item.cast<neml2::indexing::TensorLabel>());
-      return true;
-    }
-
-    return false;
-  }
-
-  static handle cast(const neml2::indexing::TensorIndices & src,
-                     return_value_policy /* policy */,
-                     handle /* parent */)
-  {
-    list l;
-    for (const auto & val : src)
-      l.append(val);
-    return l;
-  }
-};
 }
 }

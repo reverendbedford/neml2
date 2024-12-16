@@ -199,8 +199,8 @@ Model::zero_output()
     submodel->zero_output();
 }
 
-std::map<VariableName, Tensor>
-Model::value(const std::map<VariableName, Tensor> & in)
+ValueMap
+Model::value(const ValueMap & in)
 {
   zero_input();
   assign_input(in);
@@ -209,8 +209,8 @@ Model::value(const std::map<VariableName, Tensor> & in)
   return collect_output();
 }
 
-std::tuple<std::map<VariableName, Tensor>, std::map<VariableName, std::map<VariableName, Tensor>>>
-Model::value_and_dvalue(const std::map<VariableName, Tensor> & in)
+std::tuple<ValueMap, DerivMap>
+Model::value_and_dvalue(const ValueMap & in)
 {
   zero_input();
   assign_input(in);
@@ -219,8 +219,8 @@ Model::value_and_dvalue(const std::map<VariableName, Tensor> & in)
   return {collect_output(), collect_output_derivatives()};
 }
 
-std::map<VariableName, std::map<VariableName, Tensor>>
-Model::dvalue(const std::map<VariableName, Tensor> & in)
+DerivMap
+Model::dvalue(const ValueMap & in)
 {
   zero_input();
   assign_input(in);
@@ -229,10 +229,8 @@ Model::dvalue(const std::map<VariableName, Tensor> & in)
   return collect_output_derivatives();
 }
 
-std::tuple<std::map<VariableName, Tensor>,
-           std::map<VariableName, std::map<VariableName, Tensor>>,
-           std::map<VariableName, std::map<VariableName, std::map<VariableName, Tensor>>>>
-Model::value_and_dvalue_and_d2value(const std::map<VariableName, Tensor> & in)
+std::tuple<ValueMap, DerivMap, SecDerivMap>
+Model::value_and_dvalue_and_d2value(const ValueMap & in)
 {
   zero_input();
   assign_input(in);
@@ -241,9 +239,8 @@ Model::value_and_dvalue_and_d2value(const std::map<VariableName, Tensor> & in)
   return {collect_output(), collect_output_derivatives(), collect_output_second_derivatives()};
 }
 
-std::tuple<std::map<VariableName, std::map<VariableName, Tensor>>,
-           std::map<VariableName, std::map<VariableName, std::map<VariableName, Tensor>>>>
-Model::dvalue_and_d2value(const std::map<VariableName, Tensor> & in)
+std::tuple<DerivMap, SecDerivMap>
+Model::dvalue_and_d2value(const ValueMap & in)
 {
   zero_input();
   assign_input(in);
@@ -252,8 +249,8 @@ Model::dvalue_and_d2value(const std::map<VariableName, Tensor> & in)
   return {collect_output_derivatives(), collect_output_second_derivatives()};
 }
 
-std::map<VariableName, std::map<VariableName, std::map<VariableName, Tensor>>>
-Model::d2value(const std::map<VariableName, Tensor> & in)
+SecDerivMap
+Model::d2value(const ValueMap & in)
 {
   zero_input();
   assign_input(in);

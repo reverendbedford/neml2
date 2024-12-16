@@ -23,8 +23,6 @@
 // THE SOFTWARE.
 
 #include "neml2/drivers/TransientDriver.h"
-#include "neml2/models/ComposedModel.h"
-#include "neml2/models/ImplicitUpdate.h"
 
 namespace fs = std::filesystem;
 

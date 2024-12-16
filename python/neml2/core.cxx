@@ -38,7 +38,7 @@
 namespace py = pybind11;
 using namespace neml2;
 
-std::map<VariableName, Tensor>
+ValueMap
 unpack_tensor_map(py::dict pyinputs, const Model * model = nullptr)
 {
   std::vector<VariableName> input_names;
@@ -89,7 +89,7 @@ unpack_tensor_map(py::dict pyinputs, const Model * model = nullptr)
     }
   }
 
-  std::map<VariableName, Tensor> inputs;
+  ValueMap inputs;
   for (size_t i = 0; i < input_names.size(); ++i)
     inputs[input_names[i]] = input_values[i];
 
@@ -395,7 +395,7 @@ Diagnose common issues in model setup. Raises a runtime error including all iden
       .def("assemble",
            [](const MatrixAssembler & self, py::dict py_vals_dict)
            {
-             std::map<VariableName, std::map<VariableName, Tensor>> vals_dict;
+             DerivMap vals_dict;
              for (auto && [key, val] : py_vals_dict)
              {
                try

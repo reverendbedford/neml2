@@ -51,7 +51,7 @@ TEST_CASE("training")
   VariableName ep("state", "internal", "ep");
 
   // Evaluate the model for the first time
-  std::map<VariableName, Tensor> x1;
+  ValueMap x1;
   x1[strain.old()] = SR2::fill(0.0, 0.0, 0.01, -0.01, -0.01, 0.02).batch_expand(nbatch);
   x1[strain] = SR2::fill(0.01, 0.01, 0.01, -0.02, -0.03, 0.04).batch_expand(nbatch);
   x1[time] = Scalar::full(1.0).batch_expand(nbatch);
@@ -60,7 +60,7 @@ TEST_CASE("training")
   const auto r1 = model.value(x1);
 
   // Evaluate the model for the second time
-  std::map<VariableName, Tensor> x2;
+  ValueMap x2;
   x2[strain.old()] = x1[strain];
   x2[time.old()] = x1[time];
   x2[stress.old()] = r1.at(stress.remount("residual")) * 1e-2;

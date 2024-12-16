@@ -164,10 +164,4 @@ std::ostream & operator<<(std::ostream & os, const LabeledAxisAccessor & accesso
 using VariableName = LabeledAxisAccessor;
 using SubaxisName = LabeledAxisAccessor;
 
-namespace indexing
-{
-using TensorLabel = LabeledAxisAccessor;
-using TensorLabels = c10::SmallVector<LabeledAxisAccessor>;
-using TensorLabelsRef = c10::ArrayRef<LabeledAxisAccessor>;
-} // namespace indexing
 } // namespace neml2

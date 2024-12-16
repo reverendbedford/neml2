@@ -31,8 +31,9 @@ namespace neml2
 /**
  * @brief The transient driver specialized for solid mechanics problems.
  *
- * Derived classes should implement the `update_forces` method to update the driving forces based on
- * the assumptions on kinematics, i.e., small vs large deformation, incremental vs total etc.
+ * Derived classes should implement the `SolidMechanicsDriver::update_forces` method to update the
+ * driving forces based on the assumptions on kinematics, i.e., small vs large deformation,
+ * incremental vs total etc.
  *
  */
 class SolidMechanicsDriver : public TransientDriver

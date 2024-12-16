@@ -28,7 +28,7 @@
 namespace neml2
 {
 Tensor
-VectorAssembler::assemble(const std::map<VariableName, Tensor> & vals_dict) const
+VectorAssembler::assemble(const ValueMap & vals_dict) const
 {
   const auto vars = _axis.variable_names();
 
@@ -74,10 +74,10 @@ VectorAssembler::assemble(const std::map<VariableName, Tensor> & vals_dict) cons
   return math::base_cat(vals, -1);
 }
 
-std::map<VariableName, Tensor>
+ValueMap
 VectorAssembler::disassemble(const Tensor & tensor) const
 {
-  std::map<VariableName, Tensor> ret;
+  ValueMap ret;
 
   const auto keys = _axis.variable_names();
   const auto vals = tensor.split(_axis.variable_sizes(), -1);
@@ -103,8 +103,7 @@ VectorAssembler::split(const Tensor & tensor) const
 }
 
 Tensor
-MatrixAssembler::assemble(
-    const std::map<VariableName, std::map<VariableName, Tensor>> & vals_dict) const
+MatrixAssembler::assemble(const DerivMap & vals_dict) const
 {
   const auto yvars = _yaxis.variable_names();
   const auto xvars = _xaxis.variable_names();
@@ -182,10 +181,10 @@ MatrixAssembler::assemble(
   return math::base_cat(rows, -2);
 }
 
-std::map<VariableName, std::map<VariableName, Tensor>>
+DerivMap
 MatrixAssembler::disassemble(const Tensor & tensor) const
 {
-  std::map<VariableName, std::map<VariableName, Tensor>> ret;
+  DerivMap ret;
 
   const auto yvars = _yaxis.variable_names();
   const auto xvars = _xaxis.variable_names();

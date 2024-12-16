@@ -127,7 +127,7 @@ Tensor bmv(const Tensor & a, const Tensor & v);
  * @brief Batched vector-vector (dot) product
  *
  * The input tensor \p a must have exactly 1 base dimension.
- * The input tensor \p vbmust have exactly 1 base dimension.
+ * The input tensor \p b must have exactly 1 base dimension.
  * The batch shapes must broadcast.
  */
 Tensor bvv(const Tensor & a, const Tensor & b);

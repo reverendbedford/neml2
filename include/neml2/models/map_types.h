@@ -24,63 +24,14 @@
 
 #pragma once
 
-#include "neml2/models/LabeledAxis.h"
+#include "neml2/models/LabeledAxisAccessor.h"
 #include "neml2/tensors/Tensor.h"
-#include "neml2/models/map_types.h"
+
+#include <map>
 
 namespace neml2
 {
-/**
- * @brief Helper to assemble a vector of tensors into a single tensor and also to disassemble
- * a tensor into a map of tensors.
- *
- */
-class VectorAssembler
-{
-public:
-  VectorAssembler(const LabeledAxis & axis)
-    : _axis(axis)
-  {
-  }
-
-  /// Assemble a vector of vectors (by variables)
-  Tensor assemble(const ValueMap &) const;
-
-  /// Split the vector (by variables)
-  ValueMap disassemble(const Tensor &) const;
-
-  /// Split the vector (by subaxes)
-  ValueMap split(const Tensor &) const;
-
-private:
-  const LabeledAxis & _axis;
-};
-
-/**
- * @brief Helper to assemble a matrix of tensors into a single tensor and also to disassemble
- * a tensor into a map of map of tensors.
- *
- */
-class MatrixAssembler
-{
-public:
-  MatrixAssembler(const LabeledAxis & yaxis, const LabeledAxis & xaxis)
-    : _yaxis(yaxis),
-      _xaxis(xaxis)
-  {
-  }
-
-  /// Assemble a matrix of matrices (by variables)
-  Tensor assemble(const DerivMap &) const;
-
-  /// Split the matrix (by variables)
-  DerivMap disassemble(const Tensor &) const;
-
-  /// Split the matrix (by subaxes)
-  DerivMap split(const Tensor &) const;
-
-private:
-  const LabeledAxis & _yaxis;
-  const LabeledAxis & _xaxis;
-};
+using ValueMap = std::map<LabeledAxisAccessor, Tensor>;
+using DerivMap = std::map<LabeledAxisAccessor, ValueMap>;
+using SecDerivMap = std::map<LabeledAxisAccessor, DerivMap>;
 } // namespace neml2

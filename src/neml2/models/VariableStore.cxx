@@ -120,7 +120,7 @@ VariableStore::zero_output()
 }
 
 void
-VariableStore::assign_input(const std::map<VariableName, Tensor> & vals)
+VariableStore::assign_input(const ValueMap & vals)
 {
   for (const auto & [name, val] : vals)
     if (input_axis().has_variable(name))
@@ -128,51 +128,50 @@ VariableStore::assign_input(const std::map<VariableName, Tensor> & vals)
 }
 
 void
-VariableStore::assign_output(const std::map<VariableName, Tensor> & vals)
+VariableStore::assign_output(const ValueMap & vals)
 {
   for (const auto & [name, val] : vals)
     output_variable(name).set(val.clone());
 }
 
 void
-VariableStore::assign_output_derivatives(
-    const std::map<VariableName, std::map<VariableName, Tensor>> & derivs)
+VariableStore::assign_output_derivatives(const DerivMap & derivs)
 {
   for (const auto & [yvar, deriv] : derivs)
     output_variable(yvar).derivatives().insert(deriv.begin(), deriv.end());
 }
 
-std::map<VariableName, Tensor>
+ValueMap
 VariableStore::collect_input() const
 {
-  std::map<VariableName, Tensor> vals;
+  ValueMap vals;
   for (auto && [name, var] : input_variables())
     vals[name] = var.tensor();
   return vals;
 }
 
-std::map<VariableName, Tensor>
+ValueMap
 VariableStore::collect_output() const
 {
-  std::map<VariableName, Tensor> vals;
+  ValueMap vals;
   for (auto && [name, var] : output_variables())
     vals[name] = var.tensor();
   return vals;
 }
 
-std::map<VariableName, std::map<VariableName, Tensor>>
+DerivMap
 VariableStore::collect_output_derivatives() const
 {
-  std::map<VariableName, std::map<VariableName, Tensor>> derivs;
+  DerivMap derivs;
   for (auto && [name, var] : output_variables())
     derivs[name] = var.derivatives();
   return derivs;
 }
 
-std::map<VariableName, std::map<VariableName, std::map<VariableName, Tensor>>>
+SecDerivMap
 VariableStore::collect_output_second_derivatives() const
 {
-  std::map<VariableName, std::map<VariableName, std::map<VariableName, Tensor>>> sec_derivs;
+  SecDerivMap sec_derivs;
   for (auto && [name, var] : output_variables())
     sec_derivs[name] = var.second_derivatives();
   return sec_derivs;

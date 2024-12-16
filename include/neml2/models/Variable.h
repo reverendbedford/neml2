@@ -27,6 +27,7 @@
 #include "neml2/models/LabeledAxisAccessor.h"
 #include "neml2/base/DependencyResolver.h"
 #include "neml2/tensors/Tensor.h"
+#include "neml2/models/map_types.h"
 
 namespace neml2
 {
@@ -172,18 +173,12 @@ public:
   ///@}
 
   /// Partial derivatives
-  const std::map<VariableName, Tensor> & derivatives() const { return _derivs; }
-  std::map<VariableName, Tensor> & derivatives() { return _derivs; }
+  const ValueMap & derivatives() const { return _derivs; }
+  ValueMap & derivatives() { return _derivs; }
 
   /// Partial second derivatives
-  const std::map<VariableName, std::map<VariableName, Tensor>> & second_derivatives() const
-  {
-    return _sec_derivs;
-  }
-  std::map<VariableName, std::map<VariableName, Tensor>> & second_derivatives()
-  {
-    return _sec_derivs;
-  }
+  const DerivMap & second_derivatives() const { return _sec_derivs; }
+  DerivMap & second_derivatives() { return _sec_derivs; }
 
   /// Clear the variable value and derivatives
   virtual void clear();
@@ -201,24 +196,22 @@ public:
   Model * const _owner = nullptr;
 
 private:
-  std::map<VariableName, Tensor>
-  total_derivatives(const DependencyResolver<Model, VariableName> & dep,
-                    Model * model,
-                    const VariableName & yvar) const;
+  ValueMap total_derivatives(const DependencyResolver<Model, VariableName> & dep,
+                             Model * model,
+                             const VariableName & yvar) const;
 
-  std::map<VariableName, std::map<VariableName, Tensor>>
-  total_second_derivatives(const DependencyResolver<Model, VariableName> & dep,
-                           Model * model,
-                           const VariableName & yvar) const;
+  DerivMap total_second_derivatives(const DependencyResolver<Model, VariableName> & dep,
+                                    Model * model,
+                                    const VariableName & yvar) const;
 
   /// List shape of the variable
   const TensorShape _list_sizes = {};
 
   /// Derivatives of this variable with respect to other variables
-  std::map<VariableName, Tensor> _derivs;
+  ValueMap _derivs;
 
   /// Second derivatives of this variable with respect to other variables
-  std::map<VariableName, std::map<VariableName, Tensor>> _sec_derivs;
+  DerivMap _sec_derivs;
 };
 
 /**

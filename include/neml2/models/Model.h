@@ -38,8 +38,8 @@ namespace neml2
  * @brief The base class for all constitutive models.
  *
  * A model maps some input to output. The forward operator (and its derivative) is defined in the
- * method \p set_value. All concrete models must provide the implementation of the forward operator
- * by overriding the \p set_value method.
+ * method `Model::set_value`. All concrete models must provide the implementation of the forward
+ * operator by overriding the `Model::set_value` method.
  */
 class Model : public std::enable_shared_from_this<Model>,
               public Data,
@@ -102,31 +102,23 @@ public:
   virtual void dvalue_and_d2value();
 
   /// Convenient shortcut to construct and return the model value
-  virtual std::map<VariableName, Tensor> value(const std::map<VariableName, Tensor> & in);
+  virtual ValueMap value(const ValueMap & in);
 
   /// Convenient shortcut to construct and return the model value and its derivative
-  virtual std::tuple<std::map<VariableName, Tensor>,
-                     std::map<VariableName, std::map<VariableName, Tensor>>>
-  value_and_dvalue(const std::map<VariableName, Tensor> & in);
+  virtual std::tuple<ValueMap, DerivMap> value_and_dvalue(const ValueMap & in);
 
   /// Convenient shortcut to construct and return the derivative
-  virtual std::map<VariableName, std::map<VariableName, Tensor>>
-  dvalue(const std::map<VariableName, Tensor> & in);
+  virtual DerivMap dvalue(const ValueMap & in);
 
   /// Convenient shortcut to construct and return the model's value, first and second derivative
-  virtual std::tuple<std::map<VariableName, Tensor>,
-                     std::map<VariableName, std::map<VariableName, Tensor>>,
-                     std::map<VariableName, std::map<VariableName, std::map<VariableName, Tensor>>>>
-  value_and_dvalue_and_d2value(const std::map<VariableName, Tensor> & in);
+  virtual std::tuple<ValueMap, DerivMap, SecDerivMap>
+  value_and_dvalue_and_d2value(const ValueMap & in);
 
   /// Convenient shortcut to construct and return the model's second derivative
-  virtual std::map<VariableName, std::map<VariableName, std::map<VariableName, Tensor>>>
-  d2value(const std::map<VariableName, Tensor> & in);
+  virtual SecDerivMap d2value(const ValueMap & in);
 
   /// Convenient shortcut to construct and return the model's first and second derivative
-  virtual std::tuple<std::map<VariableName, std::map<VariableName, Tensor>>,
-                     std::map<VariableName, std::map<VariableName, std::map<VariableName, Tensor>>>>
-  dvalue_and_d2value(const std::map<VariableName, Tensor> & in);
+  virtual std::tuple<DerivMap, SecDerivMap> dvalue_and_d2value(const ValueMap & in);
 
   /// Declaration of nonlinear parameters may require manipulation of input
   friend class ParameterStore;

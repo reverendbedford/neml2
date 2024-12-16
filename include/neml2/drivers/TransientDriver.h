@@ -26,6 +26,7 @@
 
 #include "neml2/drivers/Driver.h"
 #include "neml2/tensors/tensors.h"
+#include "neml2/models/map_types.h"
 
 #include <filesystem>
 #include <torch/nn/modules/container/modulelist.h>
@@ -106,7 +107,7 @@ protected:
   /// Total number of steps
   const Size _nsteps;
   /// The input to the constitutive model
-  std::map<VariableName, Tensor> _in;
+  ValueMap _in;
 
   /// The predictor used to set the initial guess
   const EnumSelection _predictor;
@@ -121,9 +122,9 @@ protected:
   const bool _show_output;
 
   /// Inputs from all time steps
-  std::vector<std::map<VariableName, Tensor>> _result_in;
+  std::vector<ValueMap> _result_in;
   /// Outputs from all time steps
-  std::vector<std::map<VariableName, Tensor>> _result_out;
+  std::vector<ValueMap> _result_out;
 
 private:
   void output_pt(const std::filesystem::path & out) const;
