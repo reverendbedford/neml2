@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">32</td>
-            <td class="headerCovTableEntry">32</td>
-            <td class="headerCovTableEntryHi">100.0 %</td>
+            <td class="headerCovTableEntry">33</td>
+            <td class="headerCovTableEntryHi">97.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-13 23:10:15</td>
+            <td class="headerValue">2024-12-16 23:27:01</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">4</td>
@@ -115,46 +115,46 @@
 <a name="53"><span class="lineNum">      53 </span><span class="lineCov">         24 :   return options;</span></a>
 <a name="54"><span class="lineNum">      54 </span><span class="lineCov">         12 : }</span></a>
 <a name="55"><span class="lineNum">      55 </span>            : </a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">          8 : ElasticityTensor::ElasticityTensor(const OptionSet &amp; options)</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">          4 : ElasticityTensor::ElasticityTensor(const OptionSet &amp; options)</span></a>
 <a name="57"><span class="lineNum">      57 </span>            :   : NonlinearParameter&lt;SSR4&gt;(options),</a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">          8 :     _coef(declare_parameters&lt;Scalar&gt;(&quot;coef&quot;, &quot;coefficients&quot;, /*allow_nonlinear=*/true)),</span></a>
-<a name="59"><span class="lineNum">      59 </span><span class="lineCov">         16 :     _coef_types(options.get&lt;MultiEnumSelection&gt;(&quot;coefficient_types&quot;).as&lt;ParamType&gt;())</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">          4 :     _coef(declare_parameters&lt;Scalar&gt;(&quot;coef&quot;, &quot;coefficients&quot;, /*allow_nonlinear=*/true)),</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">          8 :     _coef_types(options.get&lt;MultiEnumSelection&gt;(&quot;coefficient_types&quot;).as&lt;ParamType&gt;())</span></a>
 <a name="60"><span class="lineNum">      60 </span>            : {</a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">          8 :   neml_assert(_coef_types.size() == _coef.size(),</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">          4 :   neml_assert(_coef_types.size() == _coef.size(),</span></a>
 <a name="62"><span class="lineNum">      62 </span>            :               &quot;Number of coefficient types must match number of coefficients.&quot;);</a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">          8 : }</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">          4 : }</span></a>
 <a name="64"><span class="lineNum">      64 </span>            : </a>
 <a name="65"><span class="lineNum">      65 </span>            : std::tuple&lt;std::vector&lt;Scalar&gt;, std::vector&lt;size_t&gt;&gt;</a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">        142 : ElasticityTensor::remap(const std::vector&lt;ParamType&gt; &amp; order) const</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">         82 : ElasticityTensor::remap(const std::vector&lt;ParamType&gt; &amp; order) const</span></a>
 <a name="67"><span class="lineNum">      67 </span>            : {</a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">        142 :   std::vector&lt;Scalar&gt; coef;</span></a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">        142 :   std::vector&lt;size_t&gt; remap;</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">         82 :   std::vector&lt;Scalar&gt; coef;</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">         82 :   std::vector&lt;size_t&gt; remap;</span></a>
 <a name="70"><span class="lineNum">      70 </span>            : </a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">        516 :   for (auto &amp; o : order)</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">        300 :   for (auto &amp; o : order)</span></a>
 <a name="72"><span class="lineNum">      72 </span>            :   {</a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineCov">        374 :     auto it = std::find(_coef_types.begin(), _coef_types.end(), o);</span></a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineCov">        374 :     neml_assert(it != _coef_types.end(),</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">        218 :     auto it = std::find(_coef_types.begin(), _coef_types.end(), o);</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">        218 :     neml_assert(it != _coef_types.end(),</span></a>
 <a name="75"><span class="lineNum">      75 </span>            :                 &quot;Required coefficient type for constructing the elasticity tensor not found in &quot;</a>
 <a name="76"><span class="lineNum">      76 </span>            :                 &quot;provided input.&quot;);</a>
-<a name="77"><span class="lineNum">      77 </span><span class="lineCov">        374 :     auto i = std::distance(_coef_types.begin(), it);</span></a>
-<a name="78"><span class="lineNum">      78 </span><span class="lineCov">        374 :     coef.push_back(*_coef[i]);</span></a>
-<a name="79"><span class="lineNum">      79 </span><span class="lineCov">        374 :     remap.push_back(i);</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">        218 :     auto i = std::distance(_coef_types.begin(), it);</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineCov">        218 :     coef.push_back(*_coef[i]);</span></a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineCov">        218 :     remap.push_back(i);</span></a>
 <a name="80"><span class="lineNum">      80 </span>            :   }</a>
 <a name="81"><span class="lineNum">      81 </span>            : </a>
-<a name="82"><span class="lineNum">      82 </span><span class="lineCov">        284 :   return std::make_tuple(coef, remap);</span></a>
-<a name="83"><span class="lineNum">      83 </span><span class="lineCov">        142 : }</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">        164 :   return std::make_tuple(coef, remap);</span></a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineCov">         82 : }</span></a>
 <a name="84"><span class="lineNum">      84 </span>            : </a>
 <a name="85"><span class="lineNum">      85 </span>            : std::vector&lt;Scalar&gt;</a>
-<a name="86"><span class="lineNum">      86 </span><span class="lineCov">        142 : ElasticityTensor::reorder_derivs(const std::vector&lt;Scalar&gt; &amp; derivs,</span></a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineCov">         82 : ElasticityTensor::reorder_derivs(const std::vector&lt;Scalar&gt; &amp; derivs,</span></a>
 <a name="87"><span class="lineNum">      87 </span>            :                                  const std::vector&lt;size_t&gt; &amp; order) const</a>
 <a name="88"><span class="lineNum">      88 </span>            : {</a>
-<a name="89"><span class="lineNum">      89 </span><span class="lineCov">        142 :   std::vector&lt;Scalar&gt; out(derivs.size());</span></a>
-<a name="90"><span class="lineNum">      90 </span><span class="lineCov">        516 :   for (size_t i = 0; i &lt; derivs.size(); i++)</span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineCov">         82 :   std::vector&lt;Scalar&gt; out(derivs.size());</span></a>
+<a name="90"><span class="lineNum">      90 </span><span class="lineCov">        300 :   for (size_t i = 0; i &lt; derivs.size(); i++)</span></a>
 <a name="91"><span class="lineNum">      91 </span>            :   {</a>
-<a name="92"><span class="lineNum">      92 </span><span class="lineCov">        374 :     out[order[i]] = derivs[i];</span></a>
+<a name="92"><span class="lineNum">      92 </span><span class="lineCov">        218 :     out[order[i]] = derivs[i];</span></a>
 <a name="93"><span class="lineNum">      93 </span>            :   }</a>
-<a name="94"><span class="lineNum">      94 </span><span class="lineCov">        142 :   return out;</span></a>
-<a name="95"><span class="lineNum">      95 </span>            : }</a>
+<a name="94"><span class="lineNum">      94 </span><span class="lineCov">         82 :   return out;</span></a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="96"><span class="lineNum">      96 </span>            : </a>
 <a name="97"><span class="lineNum">      97 </span>            : } // namespace neml2</a>
 </pre>

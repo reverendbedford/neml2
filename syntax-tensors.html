@@ -113,7 +113,7 @@ $(function(){initNavTree('syntax-tensors.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md48">Available objects and their input file syntax</a><ul><li class="level2"><a href="#emptymillerindex">EmptyMillerIndex</a></li>
+<ul><li class="level1"><a href="#autotoc_md51">Available objects and their input file syntax</a><ul><li class="level2"><a href="#emptymillerindex">EmptyMillerIndex</a></li>
 <li class="level2"><a href="#emptyquaternion">EmptyQuaternion</a></li>
 <li class="level2"><a href="#emptyr2">EmptyR2</a></li>
 <li class="level2"><a href="#emptyr3">EmptyR3</a></li>
@@ -280,7 +280,7 @@ Type name written in PascalCase typically refer to a NEML2 object type, oftentim
 The 🔗 symbol denotes that the option can <a class="el" href="input-file.html#cross-referencing">cross-reference</a> another object.</dd>
 <dd>
 You can always use <code>Ctrl</code>+<code>F</code> or <code>Cmd</code>+<code>F</code> to search the entire page.</dd></dl>
-<h1><a class="anchor" id="autotoc_md48"></a>
+<h1><a class="anchor" id="autotoc_md51"></a>
 Available objects and their input file syntax</h1>
 <p>Refer to <a class="el" href="system-tensors.html">System Documentation</a> for detailed explanation about this system.</p>
 <h2><a class="anchor" id="emptymillerindex"></a>
@@ -566,7 +566,7 @@ FillRot</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1FillRot.html">link</a></p>
 <h2><a class="anchor" id="fillsr2"></a>
 FillSR2</h2>
-<p>Construct a R2 with a vector of Scalars. The vector length must be 1, 3, or 6. See the full documentation on <a class="el" href="classneml2_1_1SR2.html" title="The (logical) symmetric second order tensor.">neml2::SR2</a> on the dispatch of fill method. When vector length is 1, the Scalar value is used to fill the diagonals; when vector length is 3, the Scalar values are used to fill the respective diagonal entries; when vector length is 6, the Scalar values are used to fill the tensor following the Voigt notation. </p><details >
+<p>Construct a R2 with a vector of Scalars. The vector length must be 1, 3, or 6. See the full documentation on <a class="el" href="classneml2_1_1SR2.html" title="The symmetric second order tensor.">neml2::SR2</a> on the dispatch of fill method. When vector length is 1, the Scalar value is used to fill the diagonals; when vector length is 3, the Scalar values are used to fill the respective diagonal entries; when vector length is 6, the Scalar values are used to fill the tensor following the Voigt notation. </p><details >
 <summary >
 <code>values</code> Scalars used to fill the R2</summary>
 <p></p>
@@ -1014,13 +1014,12 @@ IdentityTensor</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1IdentityTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacemillerindex"></a>
 LinspaceMillerIndex</h2>
-<p>Construct a MillerIndex linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ad412572f5f03153d697f84d5cfaaa09f" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
+<p>Construct a MillerIndex linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ab9805449dc0970401c00fd71495c1b5d" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -1058,13 +1057,12 @@ LinspaceMillerIndex</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacequaternion"></a>
 LinspaceQuaternion</h2>
-<p>Construct a Quaternion linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ad412572f5f03153d697f84d5cfaaa09f" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
+<p>Construct a Quaternion linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ab9805449dc0970401c00fd71495c1b5d" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -1102,13 +1100,12 @@ LinspaceQuaternion</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacer2"></a>
 LinspaceR2</h2>
-<p>Construct a R2 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ad412572f5f03153d697f84d5cfaaa09f" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
+<p>Construct a R2 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ab9805449dc0970401c00fd71495c1b5d" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -1146,13 +1143,12 @@ LinspaceR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacer3"></a>
 LinspaceR3</h2>
-<p>Construct a R3 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ad412572f5f03153d697f84d5cfaaa09f" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
+<p>Construct a R3 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ab9805449dc0970401c00fd71495c1b5d" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -1190,13 +1186,12 @@ LinspaceR3</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacer4"></a>
 LinspaceR4</h2>
-<p>Construct a R4 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ad412572f5f03153d697f84d5cfaaa09f" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
+<p>Construct a R4 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ab9805449dc0970401c00fd71495c1b5d" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -1234,13 +1229,12 @@ LinspaceR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacer5"></a>
 LinspaceR5</h2>
-<p>Construct a R5 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ad412572f5f03153d697f84d5cfaaa09f" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
+<p>Construct a R5 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ab9805449dc0970401c00fd71495c1b5d" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -1278,13 +1272,12 @@ LinspaceR5</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacer8"></a>
 LinspaceR8</h2>
-<p>Construct a R8 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ad412572f5f03153d697f84d5cfaaa09f" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
+<p>Construct a R8 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ab9805449dc0970401c00fd71495c1b5d" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -1322,13 +1315,12 @@ LinspaceR8</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacerot"></a>
 LinspaceRot</h2>
-<p>Construct a Rot linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ad412572f5f03153d697f84d5cfaaa09f" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
+<p>Construct a Rot linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ab9805449dc0970401c00fd71495c1b5d" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -1366,13 +1358,12 @@ LinspaceRot</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacesffr4"></a>
 LinspaceSFFR4</h2>
-<p>Construct a SFFR4 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ad412572f5f03153d697f84d5cfaaa09f" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
+<p>Construct a SFFR4 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ab9805449dc0970401c00fd71495c1b5d" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -1410,13 +1401,12 @@ LinspaceSFFR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacesfr3"></a>
 LinspaceSFR3</h2>
-<p>Construct a SFR3 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ad412572f5f03153d697f84d5cfaaa09f" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
+<p>Construct a SFR3 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ab9805449dc0970401c00fd71495c1b5d" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -1454,13 +1444,12 @@ LinspaceSFR3</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacesr2"></a>
 LinspaceSR2</h2>
-<p>Construct a SR2 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ad412572f5f03153d697f84d5cfaaa09f" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
+<p>Construct a SR2 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ab9805449dc0970401c00fd71495c1b5d" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -1498,13 +1487,12 @@ LinspaceSR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacessfr5"></a>
 LinspaceSSFR5</h2>
-<p>Construct a SSFR5 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ad412572f5f03153d697f84d5cfaaa09f" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
+<p>Construct a SSFR5 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ab9805449dc0970401c00fd71495c1b5d" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -1542,13 +1530,12 @@ LinspaceSSFR5</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacessr4"></a>
 LinspaceSSR4</h2>
-<p>Construct a SSR4 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ad412572f5f03153d697f84d5cfaaa09f" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
+<p>Construct a SSR4 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ab9805449dc0970401c00fd71495c1b5d" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -1586,13 +1573,12 @@ LinspaceSSR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacessssr8"></a>
 LinspaceSSSSR8</h2>
-<p>Construct a SSSSR8 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ad412572f5f03153d697f84d5cfaaa09f" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
+<p>Construct a SSSSR8 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ab9805449dc0970401c00fd71495c1b5d" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -1630,13 +1616,12 @@ LinspaceSSSSR8</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="linspaceswr4"></a>
 LinspaceSWR4</h2>
-<p>Construct a SWR4 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ad412572f5f03153d697f84d5cfaaa09f" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
+<p>Construct a SWR4 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ab9805449dc0970401c00fd71495c1b5d" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -1674,13 +1659,12 @@ LinspaceSWR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacescalar"></a>
 LinspaceScalar</h2>
-<p>Construct a Scalar linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ad412572f5f03153d697f84d5cfaaa09f" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
+<p>Construct a Scalar linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ab9805449dc0970401c00fd71495c1b5d" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -1718,7 +1702,7 @@ LinspaceScalar</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacetensor"></a>
 LinspaceTensor</h2>
-<p>Construct a Tensor linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ad412572f5f03153d697f84d5cfaaa09f" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
+<p>Construct a Tensor linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ab9805449dc0970401c00fd71495c1b5d" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
 <summary >
 <code>batch_dim</code> Batch dimension of the output</summary>
 <p></p>
@@ -1770,13 +1754,12 @@ LinspaceTensor</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspaceTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacevec"></a>
 LinspaceVec</h2>
-<p>Construct a Vec linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ad412572f5f03153d697f84d5cfaaa09f" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
+<p>Construct a Vec linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ab9805449dc0970401c00fd71495c1b5d" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -1814,13 +1797,12 @@ LinspaceVec</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacewr2"></a>
 LinspaceWR2</h2>
-<p>Construct a WR2 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ad412572f5f03153d697f84d5cfaaa09f" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
+<p>Construct a WR2 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ab9805449dc0970401c00fd71495c1b5d" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -1858,13 +1840,12 @@ LinspaceWR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacewsr4"></a>
 LinspaceWSR4</h2>
-<p>Construct a WSR4 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ad412572f5f03153d697f84d5cfaaa09f" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
+<p>Construct a WSR4 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ab9805449dc0970401c00fd71495c1b5d" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -1902,13 +1883,12 @@ LinspaceWSR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="linspacewwr4"></a>
 LinspaceWWR4</h2>
-<p>Construct a WWR4 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ad412572f5f03153d697f84d5cfaaa09f" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
+<p>Construct a WWR4 linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#ab9805449dc0970401c00fd71495c1b5d" title="Create a new tensor by adding a new batch dimension with linear spacing between start and end.">neml2::TensorBase::linspace</a> for a detailed explanation. </p><details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -1946,7 +1926,7 @@ LinspaceWWR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacemillerindex"></a>
 LogspaceMillerIndex</h2>
-<p>Construct a MillerIndex with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a396a6aaae5bd291fe8c1af7a37fe3c54" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
+<p>Construct a MillerIndex with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a06fcc12048cfe9c39723c37999f0a2e4" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
 <summary >
 <code>base</code> Exponent base</summary>
 <p></p>
@@ -1957,11 +1937,10 @@ LogspaceMillerIndex</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -1999,7 +1978,7 @@ LogspaceMillerIndex</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacequaternion"></a>
 LogspaceQuaternion</h2>
-<p>Construct a Quaternion with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a396a6aaae5bd291fe8c1af7a37fe3c54" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
+<p>Construct a Quaternion with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a06fcc12048cfe9c39723c37999f0a2e4" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
 <summary >
 <code>base</code> Exponent base</summary>
 <p></p>
@@ -2010,11 +1989,10 @@ LogspaceQuaternion</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -2052,7 +2030,7 @@ LogspaceQuaternion</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacer2"></a>
 LogspaceR2</h2>
-<p>Construct a R2 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a396a6aaae5bd291fe8c1af7a37fe3c54" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
+<p>Construct a R2 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a06fcc12048cfe9c39723c37999f0a2e4" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
 <summary >
 <code>base</code> Exponent base</summary>
 <p></p>
@@ -2063,11 +2041,10 @@ LogspaceR2</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -2105,7 +2082,7 @@ LogspaceR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacer3"></a>
 LogspaceR3</h2>
-<p>Construct a R3 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a396a6aaae5bd291fe8c1af7a37fe3c54" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
+<p>Construct a R3 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a06fcc12048cfe9c39723c37999f0a2e4" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
 <summary >
 <code>base</code> Exponent base</summary>
 <p></p>
@@ -2116,11 +2093,10 @@ LogspaceR3</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -2158,7 +2134,7 @@ LogspaceR3</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacer4"></a>
 LogspaceR4</h2>
-<p>Construct a R4 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a396a6aaae5bd291fe8c1af7a37fe3c54" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
+<p>Construct a R4 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a06fcc12048cfe9c39723c37999f0a2e4" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
 <summary >
 <code>base</code> Exponent base</summary>
 <p></p>
@@ -2169,11 +2145,10 @@ LogspaceR4</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -2211,7 +2186,7 @@ LogspaceR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacer5"></a>
 LogspaceR5</h2>
-<p>Construct a R5 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a396a6aaae5bd291fe8c1af7a37fe3c54" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
+<p>Construct a R5 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a06fcc12048cfe9c39723c37999f0a2e4" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
 <summary >
 <code>base</code> Exponent base</summary>
 <p></p>
@@ -2222,11 +2197,10 @@ LogspaceR5</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -2264,7 +2238,7 @@ LogspaceR5</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacer8"></a>
 LogspaceR8</h2>
-<p>Construct a R8 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a396a6aaae5bd291fe8c1af7a37fe3c54" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
+<p>Construct a R8 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a06fcc12048cfe9c39723c37999f0a2e4" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
 <summary >
 <code>base</code> Exponent base</summary>
 <p></p>
@@ -2275,11 +2249,10 @@ LogspaceR8</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -2317,7 +2290,7 @@ LogspaceR8</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacerot"></a>
 LogspaceRot</h2>
-<p>Construct a Rot with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a396a6aaae5bd291fe8c1af7a37fe3c54" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
+<p>Construct a Rot with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a06fcc12048cfe9c39723c37999f0a2e4" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
 <summary >
 <code>base</code> Exponent base</summary>
 <p></p>
@@ -2328,11 +2301,10 @@ LogspaceRot</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -2370,7 +2342,7 @@ LogspaceRot</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacesffr4"></a>
 LogspaceSFFR4</h2>
-<p>Construct a SFFR4 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a396a6aaae5bd291fe8c1af7a37fe3c54" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
+<p>Construct a SFFR4 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a06fcc12048cfe9c39723c37999f0a2e4" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
 <summary >
 <code>base</code> Exponent base</summary>
 <p></p>
@@ -2381,11 +2353,10 @@ LogspaceSFFR4</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -2423,7 +2394,7 @@ LogspaceSFFR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacesfr3"></a>
 LogspaceSFR3</h2>
-<p>Construct a SFR3 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a396a6aaae5bd291fe8c1af7a37fe3c54" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
+<p>Construct a SFR3 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a06fcc12048cfe9c39723c37999f0a2e4" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
 <summary >
 <code>base</code> Exponent base</summary>
 <p></p>
@@ -2434,11 +2405,10 @@ LogspaceSFR3</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -2476,7 +2446,7 @@ LogspaceSFR3</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacesr2"></a>
 LogspaceSR2</h2>
-<p>Construct a SR2 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a396a6aaae5bd291fe8c1af7a37fe3c54" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
+<p>Construct a SR2 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a06fcc12048cfe9c39723c37999f0a2e4" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
 <summary >
 <code>base</code> Exponent base</summary>
 <p></p>
@@ -2487,11 +2457,10 @@ LogspaceSR2</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -2529,7 +2498,7 @@ LogspaceSR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacessfr5"></a>
 LogspaceSSFR5</h2>
-<p>Construct a SSFR5 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a396a6aaae5bd291fe8c1af7a37fe3c54" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
+<p>Construct a SSFR5 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a06fcc12048cfe9c39723c37999f0a2e4" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
 <summary >
 <code>base</code> Exponent base</summary>
 <p></p>
@@ -2540,11 +2509,10 @@ LogspaceSSFR5</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -2582,7 +2550,7 @@ LogspaceSSFR5</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacessr4"></a>
 LogspaceSSR4</h2>
-<p>Construct a SSR4 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a396a6aaae5bd291fe8c1af7a37fe3c54" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
+<p>Construct a SSR4 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a06fcc12048cfe9c39723c37999f0a2e4" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
 <summary >
 <code>base</code> Exponent base</summary>
 <p></p>
@@ -2593,11 +2561,10 @@ LogspaceSSR4</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -2635,7 +2602,7 @@ LogspaceSSR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacessssr8"></a>
 LogspaceSSSSR8</h2>
-<p>Construct a SSSSR8 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a396a6aaae5bd291fe8c1af7a37fe3c54" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
+<p>Construct a SSSSR8 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a06fcc12048cfe9c39723c37999f0a2e4" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
 <summary >
 <code>base</code> Exponent base</summary>
 <p></p>
@@ -2646,11 +2613,10 @@ LogspaceSSSSR8</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -2688,7 +2654,7 @@ LogspaceSSSSR8</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="logspaceswr4"></a>
 LogspaceSWR4</h2>
-<p>Construct a SWR4 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a396a6aaae5bd291fe8c1af7a37fe3c54" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
+<p>Construct a SWR4 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a06fcc12048cfe9c39723c37999f0a2e4" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
 <summary >
 <code>base</code> Exponent base</summary>
 <p></p>
@@ -2699,11 +2665,10 @@ LogspaceSWR4</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -2741,7 +2706,7 @@ LogspaceSWR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacescalar"></a>
 LogspaceScalar</h2>
-<p>Construct a Scalar with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a396a6aaae5bd291fe8c1af7a37fe3c54" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
+<p>Construct a Scalar with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a06fcc12048cfe9c39723c37999f0a2e4" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
 <summary >
 <code>base</code> Exponent base</summary>
 <p></p>
@@ -2752,11 +2717,10 @@ LogspaceScalar</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -2794,7 +2758,7 @@ LogspaceScalar</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacetensor"></a>
 LogspaceTensor</h2>
-<p>Construct a Tensor with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a396a6aaae5bd291fe8c1af7a37fe3c54" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
+<p>Construct a Tensor with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a06fcc12048cfe9c39723c37999f0a2e4" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
 <summary >
 <code>base</code> Exponent base</summary>
 <p></p>
@@ -2810,6 +2774,14 @@ LogspaceTensor</h2>
 <ul>
 <li><u>Type</u>: number</li>
 <li><u>Default</u>: -1 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -2847,7 +2819,7 @@ LogspaceTensor</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspaceTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacevec"></a>
 LogspaceVec</h2>
-<p>Construct a Vec with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a396a6aaae5bd291fe8c1af7a37fe3c54" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
+<p>Construct a Vec with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a06fcc12048cfe9c39723c37999f0a2e4" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
 <summary >
 <code>base</code> Exponent base</summary>
 <p></p>
@@ -2858,11 +2830,10 @@ LogspaceVec</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -2900,7 +2871,7 @@ LogspaceVec</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacewr2"></a>
 LogspaceWR2</h2>
-<p>Construct a WR2 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a396a6aaae5bd291fe8c1af7a37fe3c54" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
+<p>Construct a WR2 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a06fcc12048cfe9c39723c37999f0a2e4" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
 <summary >
 <code>base</code> Exponent base</summary>
 <p></p>
@@ -2911,11 +2882,10 @@ LogspaceWR2</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -2953,7 +2923,7 @@ LogspaceWR2</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacewsr4"></a>
 LogspaceWSR4</h2>
-<p>Construct a WSR4 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a396a6aaae5bd291fe8c1af7a37fe3c54" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
+<p>Construct a WSR4 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a06fcc12048cfe9c39723c37999f0a2e4" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
 <summary >
 <code>base</code> Exponent base</summary>
 <p></p>
@@ -2964,11 +2934,10 @@ LogspaceWSR4</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >
@@ -3006,7 +2975,7 @@ LogspaceWSR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LogspacePrimitiveTensor.html">link</a></p>
 <h2><a class="anchor" id="logspacewwr4"></a>
 LogspaceWWR4</h2>
-<p>Construct a WWR4 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a396a6aaae5bd291fe8c1af7a37fe3c54" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
+<p>Construct a WWR4 with exponents linearly spaced on the batch dimensions. See <a class="el" href="classneml2_1_1TensorBase.html#a06fcc12048cfe9c39723c37999f0a2e4" title="log-space equivalent of the linspace named constructor">neml2::TensorBase::logspace</a> for a detailed explanation. </p><details >
 <summary >
 <code>base</code> Exponent base</summary>
 <p></p>
@@ -3017,11 +2986,10 @@ LogspaceWWR4</h2>
 </details>
 <details >
 <summary >
-<code>batch_dim</code> Batch dimension of the output</summary>
+<code>batch_expand</code> After construction, perform an additional batch expanding operation into the given batch shape.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: -1 </li>
+<li><u>Type</u>: tensor shape </li>
 </ul>
 </details>
 <details >

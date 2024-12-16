@@ -1,10 +1,15 @@
 var classneml2_1_1BufferStore =
 [
-    [ "BufferStore", "classneml2_1_1BufferStore.html#ac9a0513f22b822f9513059d10d072124", null ],
+    [ "BufferStore", "classneml2_1_1BufferStore.html#a4f37326fece4816dfb1a000ce9930d62", null ],
+    [ "BufferStore", "classneml2_1_1BufferStore.html#a3ade3cdf681ff0df2c151fbeb3ad7643", null ],
+    [ "BufferStore", "classneml2_1_1BufferStore.html#aea4d0eda61bc986e02d1071be7912a6d", null ],
+    [ "~BufferStore", "classneml2_1_1BufferStore.html#a038167df8ac0aee8f6771de0b334bb45", null ],
     [ "declare_buffer", "classneml2_1_1BufferStore.html#afecb0cb84b93d6b59150843ecad87f51", null ],
     [ "declare_buffer", "classneml2_1_1BufferStore.html#a71f1b9a304f24158c1c50fd7bf39dbba", null ],
     [ "get_buffer", "classneml2_1_1BufferStore.html#afc4b2c74e4e1d6c046206f03b8527b4c", null ],
     [ "named_buffers", "classneml2_1_1BufferStore.html#a78126926df4e0803472743590d0d0c07", null ],
     [ "named_buffers", "classneml2_1_1BufferStore.html#a2d8918197af1017ee852aec5b073d18b", null ],
+    [ "operator=", "classneml2_1_1BufferStore.html#ad6dfc393ab0aefaee3cec2eb46f855b1", null ],
+    [ "operator=", "classneml2_1_1BufferStore.html#ad3af821237efc40c0d71e81fcf5adba1", null ],
     [ "send_buffers_to", "classneml2_1_1BufferStore.html#a0706a7bfaf65ab80f363db3abba749b2", null ]
 ];

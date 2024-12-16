@@ -5,10 +5,9 @@ var searchData=
   ['identity_5fmap_2',['identity_map',['../classtensors_1_1Rot.html#a4de5285060124d7c95bd93c326c5528d',1,'tensors.Rot.identity_map()'],['../classtensors_1_1Scalar.html#a12b8fd229394c36912210255034b13e2',1,'tensors.Scalar.identity_map()'],['../classtensors_1_1Vec.html#a4de5285060124d7c95bd93c326c5528d',1,'tensors.Vec.identity_map()'],['../classtensors_1_1WR2.html#a4de5285060124d7c95bd93c326c5528d',1,'tensors.WR2.identity_map()']]],
   ['identity_5fsym_3',['identity_sym',['../classtensors_1_1SSR4.html#a180fbee52d41ceca125d007ff2f789dd',1,'tensors::SSR4']]],
   ['identity_5fvol_4',['identity_vol',['../classtensors_1_1SSR4.html#a2366118cfad7a99500a683a2d12f617f',1,'tensors::SSR4']]],
-  ['input_5faxis_5',['input_axis',['../classbase_1_1Model.html#afbbc96065eb742fa5cd67dd1dc7dd535',1,'base::Model']]],
-  ['input_5ftype_6',['input_type',['../classbase_1_1Model.html#a6f94506b6413ac9df21ac0300ba24d9a',1,'base::Model']]],
+  ['input_5faxis_5',['input_axis',['../classcore_1_1Model.html#ae5ac216b2e493dec162d222ed7358fe5',1,'core::Model']]],
+  ['input_5ftype_6',['input_type',['../classcore_1_1Model.html#ab189caf8ecb155253d8036bbf230fe0d',1,'core::Model']]],
   ['installation_7',['Quick installation',['../index.html#autotoc_md3',1,'']]],
   ['interface_8',['interface',['../namespaceinterface.html',1,'']]],
-  ['inverse_9',['inverse',['../classtensors_1_1R2.html#a81819d21fc91baea78496b86e5c08826',1,'tensors.R2.inverse()'],['../classtensors_1_1Rot.html#a6f32da4d331be6890a865ad8e8413a2f',1,'tensors.Rot.inverse()']]],
-  ['is_5fad_5fenabled_10',['is_AD_enabled',['../classbase_1_1Model.html#aac650847551fe3dc3217093e1f30a0ff',1,'base::Model']]]
+  ['inverse_9',['inverse',['../classtensors_1_1R2.html#a81819d21fc91baea78496b86e5c08826',1,'tensors.R2.inverse()'],['../classtensors_1_1Rot.html#a6f32da4d331be6890a865ad8e8413a2f',1,'tensors.Rot.inverse()']]]
 ];

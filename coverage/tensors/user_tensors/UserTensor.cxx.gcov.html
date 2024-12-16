@@ -31,13 +31,13 @@
             <td class="headerValue">coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">25</td>
             <td class="headerCovTableEntry">26</td>
-            <td class="headerCovTableEntryHi">96.2 %</td>
+            <td class="headerCovTableEntry">27</td>
+            <td class="headerCovTableEntryHi">96.3 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-13 23:10:15</td>
+            <td class="headerValue">2024-12-16 23:27:01</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -109,16 +109,16 @@
 <a name="47"><span class="lineNum">      47 </span><span class="lineCov">          6 :   return options;</span></a>
 <a name="48"><span class="lineNum">      48 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="49"><span class="lineNum">      49 </span>            : </a>
-<a name="50"><span class="lineNum">      50 </span><span class="lineCov">          9 : UserTensor::UserTensor(const OptionSet &amp; options)</span></a>
-<a name="51"><span class="lineNum">      51 </span>            :   : Tensor(Tensor::empty(options.get&lt;TensorShape&gt;(&quot;batch_shape&quot;),</a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineCov">         10 : UserTensor::UserTensor(const OptionSet &amp; options)</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineCov">         20 :   : Tensor(Tensor::empty(options.get&lt;TensorShape&gt;(&quot;batch_shape&quot;),</span></a>
 <a name="52"><span class="lineNum">      52 </span>            :                          options.get&lt;TensorShape&gt;(&quot;base_shape&quot;),</a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">          9 :                          default_tensor_options())),</span></a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          9 :     UserTensorBase(options)</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineCov">         10 :                          default_tensor_options())),</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">         30 :     UserTensorBase(options)</span></a>
 <a name="55"><span class="lineNum">      55 </span>            : {</a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">         18 :   auto vals = options.get&lt;std::vector&lt;Real&gt;&gt;(&quot;values&quot;);</span></a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">          9 :   auto flat = torch::tensor(vals, default_tensor_options());</span></a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">          9 :   if (vals.size() == size_t(this-&gt;base_storage()))</span></a>
-<a name="59"><span class="lineNum">      59 </span><span class="lineCov">         12 :     this-&gt;index_put_({torch::indexing::Ellipsis}, flat.reshape(this-&gt;base_sizes()));</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">         20 :   auto vals = options.get&lt;std::vector&lt;Real&gt;&gt;(&quot;values&quot;);</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">         10 :   auto flat = torch::tensor(vals, default_tensor_options());</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">         10 :   if (vals.size() == size_t(this-&gt;base_storage()))</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">         14 :     this-&gt;index_put_({torch::indexing::Ellipsis}, flat.reshape(this-&gt;base_sizes()));</span></a>
 <a name="60"><span class="lineNum">      60 </span><span class="lineCov">          3 :   else if (vals.size() == size_t(utils::storage_size(this-&gt;sizes())))</span></a>
 <a name="61"><span class="lineNum">      61 </span><span class="lineCov">          4 :     this-&gt;index_put_({torch::indexing::Ellipsis}, flat.reshape(this-&gt;sizes()));</span></a>
 <a name="62"><span class="lineNum">      62 </span>            :   else</a>
@@ -129,7 +129,7 @@
 <a name="67"><span class="lineNum">      67 </span><span class="lineCov">          2 :                 this-&gt;base_storage(),</span></a>
 <a name="68"><span class="lineNum">      68 </span>            :                 &quot; or the total storage size &quot;,</a>
 <a name="69"><span class="lineNum">      69 </span><span class="lineCov">          2 :                 utils::storage_size(this-&gt;sizes()));</span></a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">         12 : }</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">         13 : }</span></a>
 <a name="71"><span class="lineNum">      71 </span>            : } // namespace neml2</a>
 </pre>
       </td>

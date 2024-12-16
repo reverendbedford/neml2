@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['quaternion_0',['Quaternion',['../classtensors_1_1TensorType.html#a52406567e52526d0db9d96cd96142b3f',1,'tensors::TensorType']]]
+  ['lookback_0',['lookback',['../classinterface_1_1NEML2PyzagModel.html#ab7fca4ba78d418620d84bdb8e02d65a9',1,'interface::NEML2PyzagModel']]]
 ];

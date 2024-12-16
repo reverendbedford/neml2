@@ -1,5 +1,5 @@
 <map id="R2" name="R2">
-<area shape="rect" id="Node000001" title="A basic R2." alt="" coords="96,299,135,324"/>
+<area shape="rect" id="Node000001" title="Second order tensor without symmetry." alt="" coords="96,299,135,324"/>
 <area shape="rect" id="Node000006" href="$classneml2_1_1FillR2.html" title="Create a filled R2 from the input file." alt="" coords="15,372,74,397"/>
 <area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="96,336,58,374,54,370,92,332"/>
 <area shape="rect" id="Node000007" href="$classneml2_1_1crystallography_1_1SymmetryFromOrbifold.html" title="Provide the correct symmetry operators for a given crystal class." alt="" coords="99,372,273,397"/>

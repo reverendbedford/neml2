@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-13 23:10:15</td>
+            <td class="headerValue">2024-12-16 23:27:01</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">24</td>
@@ -104,31 +104,31 @@
 <a name="42"><span class="lineNum">      42 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="43"><span class="lineNum">      43 </span>            : </a>
 <a name="44"><span class="lineNum">      44 </span>            : template &lt;typename T&gt;</a>
-<a name="45"><span class="lineNum">      45 </span><span class="lineCov">        100 : InputParameter&lt;T&gt;::InputParameter(const OptionSet &amp; options)</span></a>
+<a name="45"><span class="lineNum">      45 </span><span class="lineCov">         50 : InputParameter&lt;T&gt;::InputParameter(const OptionSet &amp; options)</span></a>
 <a name="46"><span class="lineNum">      46 </span>            :   : NonlinearParameter&lt;T&gt;(options),</a>
-<a name="47"><span class="lineNum">      47 </span><span class="lineCov">        100 :     _input_var(this-&gt;template declare_input_variable&lt;T&gt;(&quot;from&quot;))</span></a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineCov">         50 :     _input_var(this-&gt;template declare_input_variable&lt;T&gt;(&quot;from&quot;))</span></a>
 <a name="48"><span class="lineNum">      48 </span>            : {</a>
-<a name="49"><span class="lineNum">      49 </span><span class="lineCov">        100 :   neml_assert(utils::stringify(_input_var.name()) != this-&gt;name(),</span></a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineCov">         50 :   neml_assert(utils::stringify(_input_var.name()) != this-&gt;name(),</span></a>
 <a name="50"><span class="lineNum">      50 </span>            :               &quot;InputParameter must use an input variable name different from the parameter name. &quot;</a>
 <a name="51"><span class="lineNum">      51 </span>            :               &quot;They both has name '&quot;,</a>
-<a name="52"><span class="lineNum">      52 </span><span class="lineCov">        100 :               this-&gt;name(),</span></a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineCov">         50 :               this-&gt;name(),</span></a>
 <a name="53"><span class="lineNum">      53 </span>            :               &quot;'.&quot;);</a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">        100 : }</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">         50 : }</span></a>
 <a name="55"><span class="lineNum">      55 </span>            : </a>
 <a name="56"><span class="lineNum">      56 </span>            : template &lt;typename T&gt;</a>
 <a name="57"><span class="lineNum">      57 </span>            : void</a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">       1444 : InputParameter&lt;T&gt;::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">       1452 : InputParameter&lt;T&gt;::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
 <a name="59"><span class="lineNum">      59 </span>            : {</a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">       1444 :   if (out)</span></a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">       1444 :     this-&gt;_p = _input_var.value();</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">       1452 :   if (out)</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">       1452 :     this-&gt;_p = _input_var.value();</span></a>
 <a name="62"><span class="lineNum">      62 </span>            : </a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">       1444 :   if (dout_din)</span></a>
-<a name="64"><span class="lineNum">      64 </span><span class="lineCov">        460 :     if (_input_var.is_dependent())</span></a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">        460 :       this-&gt;_p.d(_input_var) = T::identity_map(this-&gt;options());</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">       1452 :   if (dout_din)</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">        797 :     if (_input_var.is_dependent())</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">        797 :       this-&gt;_p.d(_input_var) = T::identity_map(_input_var.options());</span></a>
 <a name="66"><span class="lineNum">      66 </span>            : </a>
 <a name="67"><span class="lineNum">      67 </span>            :   // This is zero</a>
 <a name="68"><span class="lineNum">      68 </span>            :   (void)d2out_din2;</a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">       1444 : }</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">       1452 : }</span></a>
 <a name="70"><span class="lineNum">      70 </span>            : } // namespace neml2</a>
 </pre>
       </td>

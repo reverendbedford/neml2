@@ -1,5 +1,5 @@
 <map id="WWR4" name="WWR4">
-<area shape="rect" id="Node000001" title="The (logical) symmetric fourth order tensor, with skew symmetry in the first two dimensions and last ..." alt="" coords="65,240,131,265"/>
+<area shape="rect" id="Node000001" title="The symmetric fourth order tensor, with skew symmetry in the first two dimensions and last two dimens..." alt="" coords="65,240,131,265"/>
 <area shape="rect" id="Node000002" href="$classneml2_1_1PrimitiveTensor.html" title=" " alt="" coords="5,152,191,192"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="101,206,101,240,95,240,95,206"/>
 <area shape="rect" id="Node000003" href="$classneml2_1_1TensorBase.html" title="NEML2&#39;s enhanced tensor type." alt="" coords="9,79,187,104"/>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-13 23:10:15</td>
+            <td class="headerValue">2024-12-16 23:27:01</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -106,25 +106,25 @@
 <a name="44"><span class="lineNum">      44 </span><span class="lineCov">          6 :   return options;</span></a>
 <a name="45"><span class="lineNum">      45 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="46"><span class="lineNum">      46 </span>            : </a>
-<a name="47"><span class="lineNum">      47 </span><span class="lineCov">          7 : RotationMatrix::RotationMatrix(const OptionSet &amp; options)</span></a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineCov">          4 : RotationMatrix::RotationMatrix(const OptionSet &amp; options)</span></a>
 <a name="48"><span class="lineNum">      48 </span>            :   : Model(options),</a>
-<a name="49"><span class="lineNum">      49 </span><span class="lineCov">         14 :     _from(declare_input_variable&lt;Rot&gt;(&quot;from&quot;)),</span></a>
-<a name="50"><span class="lineNum">      50 </span><span class="lineCov">          7 :     _to(declare_output_variable&lt;R2&gt;(&quot;to&quot;))</span></a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineCov">          4 :     _from(declare_input_variable&lt;Rot&gt;(&quot;from&quot;)),</span></a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineCov">          8 :     _to(declare_output_variable&lt;R2&gt;(&quot;to&quot;))</span></a>
 <a name="51"><span class="lineNum">      51 </span>            : {</a>
-<a name="52"><span class="lineNum">      52 </span><span class="lineCov">          7 : }</span></a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineCov">          4 : }</span></a>
 <a name="53"><span class="lineNum">      53 </span>            : </a>
 <a name="54"><span class="lineNum">      54 </span>            : void</a>
-<a name="55"><span class="lineNum">      55 </span><span class="lineCov">        388 : RotationMatrix::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">        343 : RotationMatrix::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
 <a name="56"><span class="lineNum">      56 </span>            : {</a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">        388 :   neml_assert(!d2out_din2, &quot;Second derivatives not implemented&quot;);</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">        343 :   neml_assert(!d2out_din2, &quot;Second derivatives not implemented&quot;);</span></a>
 <a name="58"><span class="lineNum">      58 </span>            : </a>
-<a name="59"><span class="lineNum">      59 </span><span class="lineCov">        388 :   if (out)</span></a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">        388 :     _to = Rot(_from).euler_rodrigues();</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">        343 :   if (out)</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">        343 :     _to = Rot(_from).euler_rodrigues();</span></a>
 <a name="61"><span class="lineNum">      61 </span>            : </a>
-<a name="62"><span class="lineNum">      62 </span><span class="lineCov">        388 :   if (dout_din)</span></a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">         73 :     if (_from.is_dependent())</span></a>
-<a name="64"><span class="lineNum">      64 </span><span class="lineCov">         73 :       _to.d(_from) = Rot(_from).deuler_rodrigues();</span></a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">        388 : }</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">        343 :   if (dout_din)</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">         65 :     if (_from.is_dependent())</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">         65 :       _to.d(_from) = Rot(_from).deuler_rodrigues();</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">        343 : }</span></a>
 <a name="66"><span class="lineNum">      66 </span>            : } // namespace neml2</a>
 </pre>
       </td>

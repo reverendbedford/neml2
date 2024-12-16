@@ -76,22 +76,23 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "../annotated.html",
-"classtensors_1_1LabeledVector.html#a12cbc6d15fc2eb68a65ff8e7c35e6266",
-"classtensors_1_1Quaternion.html#a101f32a4843d56c4bb03ff44ee734ac3",
-"classtensors_1_1R2.html#ae07f7930f92d3591c93e2381cd5be285",
-"classtensors_1_1R4.html#a43080b242de156a5409d4b58fc7d0c9c",
-"classtensors_1_1R5BaseView.html#ad3086cc2c2e496079ee0cb7101efcdd2",
-"classtensors_1_1Rot.html#a60c9df390da28cbca1ff851faa17355f",
-"classtensors_1_1SFFR4BaseView.html#a8280bf84289a1974db6731877052b3be",
-"classtensors_1_1SR2.html#a7bfcdfbc710a8dd42a0397edbb2aba77",
-"classtensors_1_1SSFR5BatchView.html#aee99bcb887b17d4984101f7d47be0d5d",
-"classtensors_1_1SSSSR8.html#ae892e4dc4bd471eaa97228f455be0a67",
-"classtensors_1_1Scalar.html#a1b71e090e1aac169ef1f148e9542fae4",
-"classtensors_1_1Scalar.html#aeda84a0f253a24f61946e5692096facd",
-"classtensors_1_1TensorBatchView.html#a1ca0dc1e1b48d833bec5246700c58b68",
-"classtensors_1_1WR2.html#a1b71e090e1aac169ef1f148e9542fae4",
-"classtensors_1_1WSR4.html#abc5944a8aa210bfceceb00812b61a350",
-"namespaceinterface.html#a363cb2378691942e38266fd07ebe66ec"
+"classtensors_1_1MillerIndex.html#a545346d762e13364e33cf84049b41bf7",
+"classtensors_1_1QuaternionBaseView.html#acb632072001de789afacec5d090910de",
+"classtensors_1_1R3.html#a6c473406fb744d689106b5c22955b8e0",
+"classtensors_1_1R4BatchView.html#a3ea996f1beef4547cb3c6a6f426603a5",
+"classtensors_1_1R8.html#ad4a4859a16a37513b1dba6bae4170dd7",
+"classtensors_1_1RotBatchView.html#a0a1b9c91ef6262ae4d30998ae2b27cde",
+"classtensors_1_1SFR3.html#ac119a9b157a44be08a4684dd696c4aac",
+"classtensors_1_1SSFR5.html#a28effc46e0fde18850f68b8aaeead3b3",
+"classtensors_1_1SSR4BaseView.html#a291cf91b893b7bf50a66d4a6702149e7",
+"classtensors_1_1SWR4.html#a7a39444ffcfdef75dda61483c001106f",
+"classtensors_1_1Scalar.html#a8f5318ea546374f4fbbfbb13bd3ff9ac",
+"classtensors_1_1Tensor.html#a4fb6609bd2f3071aa70e131ded737500",
+"classtensors_1_1Vec.html#a6852c9a2b2bddb0ff0ec552d311fcdc6",
+"classtensors_1_1WR2.html#aea4c488af346586c65c0ecb5ca4b602f",
+"classtensors_1_1WWR4.html#a5a140021b3b28947b491784b3af8e860",
+"namespacemath.html#a577e4eac272482279f97a55d3742d2fd",
+"usergroup5.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

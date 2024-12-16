@@ -145,6 +145,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a1ff2134cf6cbb111f94cc3f99af04af1" id="r_a1ff2134cf6cbb111f94cc3f99af04af1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1ff2134cf6cbb111f94cc3f99af04af1">suppressed</a> = <a class="el" href="classneml2_1_1CrossRef.html">false</a></td></tr>
 <tr class="memdesc:a1ff2134cf6cbb111f94cc3f99af04af1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether this option is suppressed.  <br /></td></tr>
 <tr class="separator:a1ff2134cf6cbb111f94cc3f99af04af1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0dad440c5621dbbf1afb3db44f478fe" id="r_ad0dad440c5621dbbf1afb3db44f478fe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad0dad440c5621dbbf1afb3db44f478fe">user_specified</a> = <a class="el" href="classneml2_1_1CrossRef.html">false</a></td></tr>
+<tr class="memdesc:ad0dad440c5621dbbf1afb3db44f478fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether this option has been specified by the user from the input file.  <br /></td></tr>
+<tr class="separator:ad0dad440c5621dbbf1afb3db44f478fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a199574c97b9317e5c68ff987e45da24a" name="a199574c97b9317e5c68ff987e45da24a"></a>
@@ -284,6 +287,23 @@ Public Attributes</h2></td></tr>
 
 <p>Type of the option. </p>
 <p>We use RTTI to determine the type of the option. Most importantly, two options are considered different if they have different types, even if they have the same name. For example, if you specify an option of name "foo" of type <code>int</code> as an expected option, later if you attempt to retrieve an option of name "foo" but of type <code>string</code>, an exception will be thrown saying that the option does not exist. </p>
+
+</div>
+</div>
+<a id="ad0dad440c5621dbbf1afb3db44f478fe" name="ad0dad440c5621dbbf1afb3db44f478fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0dad440c5621dbbf1afb3db44f478fe">&#9670;&#160;</a></span>user_specified</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">bool</a> user_specified = <a class="el" href="classneml2_1_1CrossRef.html">false</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Whether this option has been specified by the user from the input file. </p>
+<p>In occasions, options are optional. This field is used to determine whether the user has specified the option. If the user has not specified the option, the default (sometimes undefined) value is used. It is therefore important to check this flag before retrieving optional options. </p>
 
 </div>
 </div>

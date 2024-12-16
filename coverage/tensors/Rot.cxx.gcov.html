@@ -31,13 +31,13 @@
             <td class="headerValue">coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">109</td>
-            <td class="headerCovTableEntry">135</td>
-            <td class="headerCovTableEntryMed">80.7 %</td>
+            <td class="headerCovTableEntry">107</td>
+            <td class="headerCovTableEntry">133</td>
+            <td class="headerCovTableEntryMed">80.5 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-13 23:10:15</td>
+            <td class="headerValue">2024-12-16 23:27:01</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">13</td>
@@ -111,8 +111,8 @@
 <a name="49"><span class="lineNum">      49 </span>            : </a>
 <a name="50"><span class="lineNum">      50 </span>            : Rot</a>
 <a name="51"><span class="lineNum">      51 </span><span class="lineCov">          6 : Rot::fill_euler_angles(const torch::Tensor &amp; vals,</span></a>
-<a name="52"><span class="lineNum">      52 </span>            :                        std::string angle_convention,</a>
-<a name="53"><span class="lineNum">      53 </span>            :                        std::string angle_type)</a>
+<a name="52"><span class="lineNum">      52 </span>            :                        const std::string &amp; angle_convention,</a>
+<a name="53"><span class="lineNum">      53 </span>            :                        const std::string &amp; angle_type)</a>
 <a name="54"><span class="lineNum">      54 </span>            : {</a>
 <a name="55"><span class="lineNum">      55 </span><span class="lineCov">          6 :   neml_assert((torch::numel(vals) % 3) == 0,</span></a>
 <a name="56"><span class="lineNum">      56 </span>            :               &quot;Rot input values should have length divisable by 3 for input type 'euler_angles'&quot;);</a>
@@ -218,116 +218,114 @@
 <a name="156"><span class="lineNum">     156 </span>            : }</a>
 <a name="157"><span class="lineNum">     157 </span>            : </a>
 <a name="158"><span class="lineNum">     158 </span>            : R2</a>
-<a name="159"><span class="lineNum">     159 </span><span class="lineCov">       1077 : Rot::euler_rodrigues() const</span></a>
+<a name="159"><span class="lineNum">     159 </span><span class="lineCov">        828 : Rot::euler_rodrigues() const</span></a>
 <a name="160"><span class="lineNum">     160 </span>            : {</a>
-<a name="161"><span class="lineNum">     161 </span><span class="lineCov">       1077 :   auto rr = norm_sq();</span></a>
-<a name="162"><span class="lineNum">     162 </span><span class="lineCov">       1077 :   auto E = R3::levi_civita(options());</span></a>
-<a name="163"><span class="lineNum">     163 </span><span class="lineCov">       1077 :   auto W = R2::skew(*this);</span></a>
+<a name="161"><span class="lineNum">     161 </span><span class="lineCov">        828 :   auto rr = norm_sq();</span></a>
+<a name="162"><span class="lineNum">     162 </span><span class="lineCov">        828 :   auto E = R3::levi_civita(options());</span></a>
+<a name="163"><span class="lineNum">     163 </span><span class="lineCov">        828 :   auto W = R2::skew(*this);</span></a>
 <a name="164"><span class="lineNum">     164 </span>            : </a>
-<a name="165"><span class="lineNum">     165 </span><span class="lineCov">       2154 :   return 1.0 / math::pow(1 + rr, 2.0) *</span></a>
-<a name="166"><span class="lineNum">     166 </span><span class="lineCov">       4308 :          (math::pow(1 + rr, 2.0) * R2::identity(options()) + 4 * (1.0 - rr) * W + 8.0 * W * W);</span></a>
-<a name="167"><span class="lineNum">     167 </span><span class="lineCov">       1077 : }</span></a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineCov">       1656 :   return 1.0 / math::pow(1 + rr, 2.0) *</span></a>
+<a name="166"><span class="lineNum">     166 </span><span class="lineCov">       3312 :          (math::pow(1 + rr, 2.0) * R2::identity(options()) + 4 * (1.0 - rr) * W + 8.0 * W * W);</span></a>
+<a name="167"><span class="lineNum">     167 </span><span class="lineCov">        828 : }</span></a>
 <a name="168"><span class="lineNum">     168 </span>            : </a>
 <a name="169"><span class="lineNum">     169 </span>            : R3</a>
-<a name="170"><span class="lineNum">     170 </span><span class="lineCov">        120 : Rot::deuler_rodrigues() const</span></a>
+<a name="170"><span class="lineNum">     170 </span><span class="lineCov">         97 : Rot::deuler_rodrigues() const</span></a>
 <a name="171"><span class="lineNum">     171 </span>            : {</a>
-<a name="172"><span class="lineNum">     172 </span><span class="lineCov">        120 :   auto rr = norm_sq();</span></a>
-<a name="173"><span class="lineNum">     173 </span><span class="lineCov">        120 :   auto I = R2::identity(options());</span></a>
-<a name="174"><span class="lineNum">     174 </span><span class="lineCov">        120 :   auto E = R3::levi_civita(options());</span></a>
-<a name="175"><span class="lineNum">     175 </span><span class="lineCov">        120 :   auto W = R2::skew(*this);</span></a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineCov">         97 :   auto rr = norm_sq();</span></a>
+<a name="173"><span class="lineNum">     173 </span><span class="lineCov">         97 :   auto I = R2::identity(options());</span></a>
+<a name="174"><span class="lineNum">     174 </span><span class="lineCov">         97 :   auto E = R3::levi_civita(options());</span></a>
+<a name="175"><span class="lineNum">     175 </span><span class="lineCov">         97 :   auto W = R2::skew(*this);</span></a>
 <a name="176"><span class="lineNum">     176 </span>            : </a>
-<a name="177"><span class="lineNum">     177 </span><span class="lineCov">        480 :   return 8.0 * (rr - 3.0) / math::pow(1.0 + rr, 3.0) * R3(torch::einsum(&quot;...ij,...k&quot;, {W, *this})) -</span></a>
-<a name="178"><span class="lineNum">     178 </span><span class="lineCov">        720 :          32.0 / math::pow(1 + rr, 3.0) * R3(torch::einsum(&quot;...ij,...k&quot;, {(W * W), *this})) -</span></a>
-<a name="179"><span class="lineNum">     179 </span><span class="lineCov">        360 :          4.0 * (1 - rr) / math::pow(1.0 + rr, 2.0) * R3(torch::einsum(&quot;...kij-&gt;...ijk&quot;, {E})) -</span></a>
-<a name="180"><span class="lineNum">     180 </span><span class="lineCov">        240 :          8.0 / math::pow(1.0 + rr, 2.0) *</span></a>
-<a name="181"><span class="lineNum">     181 </span><span class="lineCov">        960 :              R3(torch::einsum(&quot;...kim,...mj&quot;, {E, W}) + torch::einsum(&quot;...im,...kmj&quot;, {W, E}));</span></a>
-<a name="182"><span class="lineNum">     182 </span><span class="lineCov">        120 : }</span></a>
+<a name="177"><span class="lineNum">     177 </span><span class="lineCov">        388 :   return 8.0 * (rr - 3.0) / math::pow(1.0 + rr, 3.0) * R3(torch::einsum(&quot;...ij,...k&quot;, {W, *this})) -</span></a>
+<a name="178"><span class="lineNum">     178 </span><span class="lineCov">        582 :          32.0 / math::pow(1 + rr, 3.0) * R3(torch::einsum(&quot;...ij,...k&quot;, {(W * W), *this})) -</span></a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineCov">        291 :          4.0 * (1 - rr) / math::pow(1.0 + rr, 2.0) * R3(torch::einsum(&quot;...kij-&gt;...ijk&quot;, {E})) -</span></a>
+<a name="180"><span class="lineNum">     180 </span><span class="lineCov">        194 :          8.0 / math::pow(1.0 + rr, 2.0) *</span></a>
+<a name="181"><span class="lineNum">     181 </span><span class="lineCov">        776 :              R3(torch::einsum(&quot;...kim,...mj&quot;, {E, W}) + torch::einsum(&quot;...im,...kmj&quot;, {W, E}));</span></a>
+<a name="182"><span class="lineNum">     182 </span><span class="lineCov">         97 : }</span></a>
 <a name="183"><span class="lineNum">     183 </span>            : </a>
 <a name="184"><span class="lineNum">     184 </span>            : Rot</a>
-<a name="185"><span class="lineNum">     185 </span><span class="lineCov">        470 : Rot::rotate(const Rot &amp; r) const</span></a>
+<a name="185"><span class="lineNum">     185 </span><span class="lineCov">        408 : Rot::rotate(const Rot &amp; r) const</span></a>
 <a name="186"><span class="lineNum">     186 </span>            : {</a>
-<a name="187"><span class="lineNum">     187 </span><span class="lineCov">        470 :   return r * (*this);</span></a>
+<a name="187"><span class="lineNum">     187 </span><span class="lineCov">        408 :   return r * (*this);</span></a>
 <a name="188"><span class="lineNum">     188 </span>            : }</a>
 <a name="189"><span class="lineNum">     189 </span>            : </a>
 <a name="190"><span class="lineNum">     190 </span>            : R2</a>
-<a name="191"><span class="lineNum">     191 </span><span class="lineCov">         89 : Rot::drotate(const Rot &amp; r) const</span></a>
+<a name="191"><span class="lineNum">     191 </span><span class="lineCov">         72 : Rot::drotate(const Rot &amp; r) const</span></a>
 <a name="192"><span class="lineNum">     192 </span>            : {</a>
-<a name="193"><span class="lineNum">     193 </span><span class="lineCov">         89 :   auto r1 = *this;</span></a>
-<a name="194"><span class="lineNum">     194 </span><span class="lineCov">         89 :   auto r2 = r;</span></a>
-<a name="195"><span class="lineNum">     195 </span>            : </a>
-<a name="196"><span class="lineNum">     196 </span><span class="lineCov">         89 :   auto rr1 = r1.norm_sq();</span></a>
-<a name="197"><span class="lineNum">     197 </span><span class="lineCov">         89 :   auto rr2 = r2.norm_sq();</span></a>
-<a name="198"><span class="lineNum">     198 </span><span class="lineCov">        178 :   auto d = 1.0 + rr1 * rr2 - 2 * r1.dot(r2);</span></a>
-<a name="199"><span class="lineNum">     199 </span><span class="lineCov">         89 :   auto r3 = this-&gt;rotate(r);</span></a>
-<a name="200"><span class="lineNum">     200 </span><span class="lineCov">         89 :   auto I = R2::identity(options());</span></a>
-<a name="201"><span class="lineNum">     201 </span>            : </a>
-<a name="202"><span class="lineNum">     202 </span><span class="lineCov">        178 :   return 1.0 / d *</span></a>
-<a name="203"><span class="lineNum">     203 </span><span class="lineCov">        356 :          (-r3.outer(2 * rr1 * r2 - 2.0 * r1) - 2 * r1.outer(r2) + (1 - rr1) * I - 2 * R2::skew(r1));</span></a>
-<a name="204"><span class="lineNum">     204 </span><span class="lineCov">         89 : }</span></a>
-<a name="205"><span class="lineNum">     205 </span>            : </a>
-<a name="206"><span class="lineNum">     206 </span>            : R2</a>
-<a name="207"><span class="lineNum">     207 </span><span class="lineCov">          9 : Rot::drotate_self(const Rot &amp; r) const</span></a>
-<a name="208"><span class="lineNum">     208 </span>            : {</a>
-<a name="209"><span class="lineNum">     209 </span><span class="lineCov">          9 :   auto r1 = r;</span></a>
-<a name="210"><span class="lineNum">     210 </span><span class="lineCov">          9 :   auto r2 = *this;</span></a>
-<a name="211"><span class="lineNum">     211 </span>            : </a>
-<a name="212"><span class="lineNum">     212 </span><span class="lineCov">          9 :   auto rr1 = r1.norm_sq();</span></a>
-<a name="213"><span class="lineNum">     213 </span><span class="lineCov">          9 :   auto rr2 = r2.norm_sq();</span></a>
-<a name="214"><span class="lineNum">     214 </span><span class="lineCov">         18 :   auto d = 1.0 + rr1 * rr2 - 2 * r1.dot(r2);</span></a>
-<a name="215"><span class="lineNum">     215 </span><span class="lineCov">          9 :   auto r3 = this-&gt;rotate(r);</span></a>
-<a name="216"><span class="lineNum">     216 </span><span class="lineCov">          9 :   auto I = R2::identity(options());</span></a>
-<a name="217"><span class="lineNum">     217 </span>            : </a>
-<a name="218"><span class="lineNum">     218 </span><span class="lineCov">         18 :   return 1.0 / d *</span></a>
-<a name="219"><span class="lineNum">     219 </span><span class="lineCov">         36 :          (-r3.outer(2 * rr1 * r2 - 2.0 * r1) - 2 * r1.outer(r2) + (1 - rr1) * I + 2 * R2::skew(r1));</span></a>
-<a name="220"><span class="lineNum">     220 </span><span class="lineCov">          9 : }</span></a>
-<a name="221"><span class="lineNum">     221 </span>            : </a>
-<a name="222"><span class="lineNum">     222 </span>            : Rot</a>
-<a name="223"><span class="lineNum">     223 </span><span class="lineCov">         25 : Rot::shadow() const</span></a>
-<a name="224"><span class="lineNum">     224 </span>            : {</a>
-<a name="225"><span class="lineNum">     225 </span><span class="lineCov">         50 :   return -*this / this-&gt;norm_sq();</span></a>
-<a name="226"><span class="lineNum">     226 </span>            : }</a>
-<a name="227"><span class="lineNum">     227 </span>            : </a>
-<a name="228"><span class="lineNum">     228 </span>            : R2</a>
-<a name="229"><span class="lineNum">     229 </span><span class="lineCov">          5 : Rot::dshadow() const</span></a>
-<a name="230"><span class="lineNum">     230 </span>            : {</a>
-<a name="231"><span class="lineNum">     231 </span><span class="lineCov">          5 :   auto ns = this-&gt;norm_sq();</span></a>
-<a name="232"><span class="lineNum">     232 </span>            : </a>
-<a name="233"><span class="lineNum">     233 </span><span class="lineCov">         15 :   return (2.0 / ns * this-&gt;outer(*this) - R2::identity(options())) / ns;</span></a>
-<a name="234"><span class="lineNum">     234 </span><span class="lineCov">          5 : }</span></a>
-<a name="235"><span class="lineNum">     235 </span>            : </a>
-<a name="236"><span class="lineNum">     236 </span>            : Scalar</a>
-<a name="237"><span class="lineNum">     237 </span><span class="lineNoCov">          0 : Rot::dist(const Rot &amp; r) const</span></a>
-<a name="238"><span class="lineNum">     238 </span>            : {</a>
-<a name="239"><span class="lineNum">     239 </span><span class="lineNoCov">          0 :   auto st = this-&gt;shadow();</span></a>
-<a name="240"><span class="lineNum">     240 </span><span class="lineNoCov">          0 :   auto sr = r.shadow();</span></a>
-<a name="241"><span class="lineNum">     241 </span>            : </a>
-<a name="242"><span class="lineNum">     242 </span><span class="lineNoCov">          0 :   return this-&gt;gdist(r).minimum(this-&gt;gdist(sr)).minimum(sr.gdist(r)).minimum(sr.gdist(st));</span></a>
-<a name="243"><span class="lineNum">     243 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="244"><span class="lineNum">     244 </span>            : </a>
-<a name="245"><span class="lineNum">     245 </span>            : Scalar</a>
-<a name="246"><span class="lineNum">     246 </span><span class="lineNoCov">          0 : Rot::gdist(const Rot &amp; r) const</span></a>
-<a name="247"><span class="lineNum">     247 </span>            : {</a>
-<a name="248"><span class="lineNum">     248 </span><span class="lineNoCov">          0 :   return 4.0 * math::arcsin((*this - r).norm() /</span></a>
-<a name="249"><span class="lineNum">     249 </span><span class="lineNoCov">          0 :                             math::sqrt((1.0 + this-&gt;norm_sq()) * (1.0 + r.norm_sq())));</span></a>
-<a name="250"><span class="lineNum">     250 </span>            : }</a>
-<a name="251"><span class="lineNum">     251 </span>            : </a>
-<a name="252"><span class="lineNum">     252 </span>            : Scalar</a>
-<a name="253"><span class="lineNum">     253 </span><span class="lineNoCov">          0 : Rot::dV() const</span></a>
-<a name="254"><span class="lineNum">     254 </span>            : {</a>
-<a name="255"><span class="lineNum">     255 </span><span class="lineNoCov">          0 :   return 8.0 / M_PI * math::pow(1.0 + this-&gt;norm_sq(), -3.0);</span></a>
-<a name="256"><span class="lineNum">     256 </span>            : }</a>
-<a name="257"><span class="lineNum">     257 </span>            : </a>
-<a name="258"><span class="lineNum">     258 </span>            : Rot</a>
-<a name="259"><span class="lineNum">     259 </span><span class="lineCov">        474 : operator*(const Rot &amp; r1, const Rot &amp; r2)</span></a>
-<a name="260"><span class="lineNum">     260 </span>            : {</a>
-<a name="261"><span class="lineNum">     261 </span><span class="lineCov">        474 :   auto rr1 = r1.norm_sq();</span></a>
-<a name="262"><span class="lineNum">     262 </span><span class="lineCov">        474 :   auto rr2 = r2.norm_sq();</span></a>
-<a name="263"><span class="lineNum">     263 </span>            : </a>
-<a name="264"><span class="lineNum">     264 </span><span class="lineCov">        948 :   return ((1 - rr2) * r1 + (1.0 - rr1) * r2 - 2.0 * r2.cross(r1)) /</span></a>
-<a name="265"><span class="lineNum">     265 </span><span class="lineCov">       1896 :          (1.0 + rr1 * rr2 - 2 * r1.dot(r2));</span></a>
-<a name="266"><span class="lineNum">     266 </span><span class="lineCov">        474 : }</span></a>
-<a name="267"><span class="lineNum">     267 </span>            : </a>
-<a name="268"><span class="lineNum">     268 </span>            : } // namemspace neml2</a>
+<a name="193"><span class="lineNum">     193 </span><span class="lineCov">         72 :   auto r1 = *this;</span></a>
+<a name="194"><span class="lineNum">     194 </span>            : </a>
+<a name="195"><span class="lineNum">     195 </span><span class="lineCov">         72 :   auto rr1 = r1.norm_sq();</span></a>
+<a name="196"><span class="lineNum">     196 </span><span class="lineCov">         72 :   auto rr2 = r.norm_sq();</span></a>
+<a name="197"><span class="lineNum">     197 </span><span class="lineCov">        144 :   auto d = 1.0 + rr1 * rr2 - 2 * r1.dot(r);</span></a>
+<a name="198"><span class="lineNum">     198 </span><span class="lineCov">         72 :   auto r3 = this-&gt;rotate(r);</span></a>
+<a name="199"><span class="lineNum">     199 </span><span class="lineCov">         72 :   auto I = R2::identity(options());</span></a>
+<a name="200"><span class="lineNum">     200 </span>            : </a>
+<a name="201"><span class="lineNum">     201 </span><span class="lineCov">        144 :   return 1.0 / d *</span></a>
+<a name="202"><span class="lineNum">     202 </span><span class="lineCov">        288 :          (-r3.outer(2 * rr1 * r - 2.0 * r1) - 2 * r1.outer(r) + (1 - rr1) * I - 2 * R2::skew(r1));</span></a>
+<a name="203"><span class="lineNum">     203 </span><span class="lineCov">         72 : }</span></a>
+<a name="204"><span class="lineNum">     204 </span>            : </a>
+<a name="205"><span class="lineNum">     205 </span>            : R2</a>
+<a name="206"><span class="lineNum">     206 </span><span class="lineCov">          3 : Rot::drotate_self(const Rot &amp; r) const</span></a>
+<a name="207"><span class="lineNum">     207 </span>            : {</a>
+<a name="208"><span class="lineNum">     208 </span><span class="lineCov">          3 :   auto r2 = *this;</span></a>
+<a name="209"><span class="lineNum">     209 </span>            : </a>
+<a name="210"><span class="lineNum">     210 </span><span class="lineCov">          3 :   auto rr1 = r.norm_sq();</span></a>
+<a name="211"><span class="lineNum">     211 </span><span class="lineCov">          3 :   auto rr2 = r2.norm_sq();</span></a>
+<a name="212"><span class="lineNum">     212 </span><span class="lineCov">          6 :   auto d = 1.0 + rr1 * rr2 - 2 * r.dot(r2);</span></a>
+<a name="213"><span class="lineNum">     213 </span><span class="lineCov">          3 :   auto r3 = this-&gt;rotate(r);</span></a>
+<a name="214"><span class="lineNum">     214 </span><span class="lineCov">          3 :   auto I = R2::identity(options());</span></a>
+<a name="215"><span class="lineNum">     215 </span>            : </a>
+<a name="216"><span class="lineNum">     216 </span><span class="lineCov">          6 :   return 1.0 / d *</span></a>
+<a name="217"><span class="lineNum">     217 </span><span class="lineCov">         12 :          (-r3.outer(2 * rr1 * r2 - 2.0 * r) - 2 * r.outer(r2) + (1 - rr1) * I + 2 * R2::skew(r));</span></a>
+<a name="218"><span class="lineNum">     218 </span><span class="lineCov">          3 : }</span></a>
+<a name="219"><span class="lineNum">     219 </span>            : </a>
+<a name="220"><span class="lineNum">     220 </span>            : Rot</a>
+<a name="221"><span class="lineNum">     221 </span><span class="lineCov">         12 : Rot::shadow() const</span></a>
+<a name="222"><span class="lineNum">     222 </span>            : {</a>
+<a name="223"><span class="lineNum">     223 </span><span class="lineCov">         24 :   return -*this / this-&gt;norm_sq();</span></a>
+<a name="224"><span class="lineNum">     224 </span>            : }</a>
+<a name="225"><span class="lineNum">     225 </span>            : </a>
+<a name="226"><span class="lineNum">     226 </span>            : R2</a>
+<a name="227"><span class="lineNum">     227 </span><span class="lineCov">          2 : Rot::dshadow() const</span></a>
+<a name="228"><span class="lineNum">     228 </span>            : {</a>
+<a name="229"><span class="lineNum">     229 </span><span class="lineCov">          2 :   auto ns = this-&gt;norm_sq();</span></a>
+<a name="230"><span class="lineNum">     230 </span>            : </a>
+<a name="231"><span class="lineNum">     231 </span><span class="lineCov">          6 :   return (2.0 / ns * this-&gt;outer(*this) - R2::identity(options())) / ns;</span></a>
+<a name="232"><span class="lineNum">     232 </span><span class="lineCov">          2 : }</span></a>
+<a name="233"><span class="lineNum">     233 </span>            : </a>
+<a name="234"><span class="lineNum">     234 </span>            : Scalar</a>
+<a name="235"><span class="lineNum">     235 </span><span class="lineNoCov">          0 : Rot::dist(const Rot &amp; r) const</span></a>
+<a name="236"><span class="lineNum">     236 </span>            : {</a>
+<a name="237"><span class="lineNum">     237 </span><span class="lineNoCov">          0 :   auto st = this-&gt;shadow();</span></a>
+<a name="238"><span class="lineNum">     238 </span><span class="lineNoCov">          0 :   auto sr = r.shadow();</span></a>
+<a name="239"><span class="lineNum">     239 </span>            : </a>
+<a name="240"><span class="lineNum">     240 </span><span class="lineNoCov">          0 :   return this-&gt;gdist(r).minimum(this-&gt;gdist(sr)).minimum(sr.gdist(r)).minimum(sr.gdist(st));</span></a>
+<a name="241"><span class="lineNum">     241 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="242"><span class="lineNum">     242 </span>            : </a>
+<a name="243"><span class="lineNum">     243 </span>            : Scalar</a>
+<a name="244"><span class="lineNum">     244 </span><span class="lineNoCov">          0 : Rot::gdist(const Rot &amp; r) const</span></a>
+<a name="245"><span class="lineNum">     245 </span>            : {</a>
+<a name="246"><span class="lineNum">     246 </span><span class="lineNoCov">          0 :   return 4.0 * math::arcsin((*this - r).norm() /</span></a>
+<a name="247"><span class="lineNum">     247 </span><span class="lineNoCov">          0 :                             math::sqrt((1.0 + this-&gt;norm_sq()) * (1.0 + r.norm_sq())));</span></a>
+<a name="248"><span class="lineNum">     248 </span>            : }</a>
+<a name="249"><span class="lineNum">     249 </span>            : </a>
+<a name="250"><span class="lineNum">     250 </span>            : Scalar</a>
+<a name="251"><span class="lineNum">     251 </span><span class="lineNoCov">          0 : Rot::dV() const</span></a>
+<a name="252"><span class="lineNum">     252 </span>            : {</a>
+<a name="253"><span class="lineNum">     253 </span><span class="lineNoCov">          0 :   return 8.0 / M_PI * math::pow(1.0 + this-&gt;norm_sq(), -3.0);</span></a>
+<a name="254"><span class="lineNum">     254 </span>            : }</a>
+<a name="255"><span class="lineNum">     255 </span>            : </a>
+<a name="256"><span class="lineNum">     256 </span>            : Rot</a>
+<a name="257"><span class="lineNum">     257 </span><span class="lineCov">        412 : operator*(const Rot &amp; r1, const Rot &amp; r2)</span></a>
+<a name="258"><span class="lineNum">     258 </span>            : {</a>
+<a name="259"><span class="lineNum">     259 </span><span class="lineCov">        412 :   auto rr1 = r1.norm_sq();</span></a>
+<a name="260"><span class="lineNum">     260 </span><span class="lineCov">        412 :   auto rr2 = r2.norm_sq();</span></a>
+<a name="261"><span class="lineNum">     261 </span>            : </a>
+<a name="262"><span class="lineNum">     262 </span><span class="lineCov">        824 :   return ((1 - rr2) * r1 + (1.0 - rr1) * r2 - 2.0 * r2.cross(r1)) /</span></a>
+<a name="263"><span class="lineNum">     263 </span><span class="lineCov">       1648 :          (1.0 + rr1 * rr2 - 2 * r1.dot(r2));</span></a>
+<a name="264"><span class="lineNum">     264 </span><span class="lineCov">        412 : }</span></a>
+<a name="265"><span class="lineNum">     265 </span>            : </a>
+<a name="266"><span class="lineNum">     266 </span>            : } // namemspace neml2</a>
 </pre>
       </td>
     </tr>

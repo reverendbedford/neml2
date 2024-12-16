@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-13 23:10:15</td>
+            <td class="headerValue">2024-12-16 23:27:01</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -102,45 +102,45 @@
 <a name="40"><span class="lineNum">      40 </span>            :       &quot;strain, \\f$ \\dot{\\gamma} \\f$ is the flow rate, \\f$ f \\f$ is the yield function, and &quot;</a>
 <a name="41"><span class="lineNum">      41 </span><span class="lineCov">          6 :       &quot;\\f$ \\boldsymbol{M} \\f$ is the Mandel stress.&quot;;</span></a>
 <a name="42"><span class="lineNum">      42 </span>            : </a>
-<a name="43"><span class="lineNum">      43 </span><span class="lineCov">          6 :   options.set_input(&quot;flow_direction&quot;) = VariableName(&quot;state&quot;, &quot;internal&quot;, &quot;NM&quot;);</span></a>
+<a name="43"><span class="lineNum">      43 </span><span class="lineCov">          6 :   options.set_input(&quot;flow_direction&quot;) = VariableName(STATE, &quot;internal&quot;, &quot;NM&quot;);</span></a>
 <a name="44"><span class="lineNum">      44 </span><span class="lineCov">          6 :   options.set(&quot;flow_direction&quot;).doc() = &quot;Flow direction which can be calculated using Normality&quot;;</span></a>
 <a name="45"><span class="lineNum">      45 </span>            : </a>
-<a name="46"><span class="lineNum">      46 </span><span class="lineCov">          6 :   options.set_output(&quot;plastic_strain_rate&quot;) = VariableName(&quot;state&quot;, &quot;internal&quot;, &quot;Ep_rate&quot;);</span></a>
+<a name="46"><span class="lineNum">      46 </span><span class="lineCov">          6 :   options.set_output(&quot;plastic_strain_rate&quot;) = VariableName(STATE, &quot;internal&quot;, &quot;Ep_rate&quot;);</span></a>
 <a name="47"><span class="lineNum">      47 </span><span class="lineCov">          6 :   options.set(&quot;plastic_strain_rate&quot;).doc() = &quot;Rate of plastic strain&quot;;</span></a>
 <a name="48"><span class="lineNum">      48 </span>            : </a>
 <a name="49"><span class="lineNum">      49 </span><span class="lineCov">          6 :   return options;</span></a>
 <a name="50"><span class="lineNum">      50 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="51"><span class="lineNum">      51 </span>            : </a>
-<a name="52"><span class="lineNum">      52 </span><span class="lineCov">          5 : AssociativePlasticFlow::AssociativePlasticFlow(const OptionSet &amp; options)</span></a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineCov">          4 : AssociativePlasticFlow::AssociativePlasticFlow(const OptionSet &amp; options)</span></a>
 <a name="53"><span class="lineNum">      53 </span>            :   : FlowRule(options),</a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">         10 :     _NM(declare_input_variable&lt;SR2&gt;(&quot;flow_direction&quot;)),</span></a>
-<a name="55"><span class="lineNum">      55 </span><span class="lineCov">          5 :     _Ep_dot(declare_output_variable&lt;SR2&gt;(&quot;plastic_strain_rate&quot;))</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          4 :     _NM(declare_input_variable&lt;SR2&gt;(&quot;flow_direction&quot;)),</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">          8 :     _Ep_dot(declare_output_variable&lt;SR2&gt;(&quot;plastic_strain_rate&quot;))</span></a>
 <a name="56"><span class="lineNum">      56 </span>            : {</a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">          5 : }</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">          4 : }</span></a>
 <a name="58"><span class="lineNum">      58 </span>            : </a>
 <a name="59"><span class="lineNum">      59 </span>            : void</a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">        362 : AssociativePlasticFlow::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">        341 : AssociativePlasticFlow::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
 <a name="61"><span class="lineNum">      61 </span>            : {</a>
-<a name="62"><span class="lineNum">      62 </span><span class="lineCov">        362 :   neml_assert_dbg(!d2out_din2, &quot;AssociativePlasticFlow doesn't implement second derivatives.&quot;);</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">        341 :   neml_assert_dbg(!d2out_din2, &quot;AssociativePlasticFlow doesn't implement second derivatives.&quot;);</span></a>
 <a name="63"><span class="lineNum">      63 </span>            : </a>
 <a name="64"><span class="lineNum">      64 </span>            :   // For associative flow,</a>
 <a name="65"><span class="lineNum">      65 </span>            :   // Ep_dot = gamma_dot * NM</a>
 <a name="66"><span class="lineNum">      66 </span>            :   //     NM = df/dM</a>
 <a name="67"><span class="lineNum">      67 </span>            : </a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">        362 :   if (out)</span></a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">        360 :     _Ep_dot = _gamma_dot * _NM;</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">        341 :   if (out)</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">        340 :     _Ep_dot = _gamma_dot * _NM;</span></a>
 <a name="70"><span class="lineNum">      70 </span>            : </a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">        362 :   if (dout_din)</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">        341 :   if (dout_din)</span></a>
 <a name="72"><span class="lineNum">      72 </span>            :   {</a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineCov">        155 :     auto I = SR2::identity_map(options());</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">        152 :     auto I = SR2::identity_map(_gamma_dot.options());</span></a>
 <a name="74"><span class="lineNum">      74 </span>            : </a>
-<a name="75"><span class="lineNum">      75 </span><span class="lineCov">        155 :     if (_gamma_dot.is_dependent())</span></a>
-<a name="76"><span class="lineNum">      76 </span><span class="lineCov">        155 :       _Ep_dot.d(_gamma_dot) = _NM;</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">        152 :     if (_gamma_dot.is_dependent())</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">        152 :       _Ep_dot.d(_gamma_dot) = _NM;</span></a>
 <a name="77"><span class="lineNum">      77 </span>            : </a>
-<a name="78"><span class="lineNum">      78 </span><span class="lineCov">        155 :     if (_NM.is_dependent())</span></a>
-<a name="79"><span class="lineNum">      79 </span><span class="lineCov">        155 :       _Ep_dot.d(_NM) = _gamma_dot * I;</span></a>
-<a name="80"><span class="lineNum">      80 </span><span class="lineCov">        155 :   }</span></a>
-<a name="81"><span class="lineNum">      81 </span><span class="lineCov">        362 : }</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineCov">        152 :     if (_NM.is_dependent())</span></a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineCov">        152 :       _Ep_dot.d(_NM) = _gamma_dot * I;</span></a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineCov">        152 :   }</span></a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineCov">        341 : }</span></a>
 <a name="82"><span class="lineNum">      82 </span>            : } // namespace neml2</a>
 </pre>
       </td>

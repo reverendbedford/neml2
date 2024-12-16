@@ -113,8 +113,8 @@ $(function(){initNavTree('syntax-drivers.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md44">Available objects and their input file syntax</a><ul><li class="level2"><a href="#largedeformationincrementalsolidmechanicsdriver">LargeDeformationIncrementalSolidMechanicsDriver</a></li>
-<li class="level2"><a href="#solidmechanicsdriver">SolidMechanicsDriver</a></li>
+<ul><li class="level1"><a href="#autotoc_md47">Available objects and their input file syntax</a><ul><li class="level2"><a href="#ldisolidmechanicsdriver">LDISolidMechanicsDriver</a></li>
+<li class="level2"><a href="#sdtsolidmechanicsdriver">SDTSolidMechanicsDriver</a></li>
 </ul>
 </li>
 </ul>
@@ -127,12 +127,12 @@ Type name written in PascalCase typically refer to a NEML2 object type, oftentim
 The 🔗 symbol denotes that the option can <a class="el" href="input-file.html#cross-referencing">cross-reference</a> another object.</dd>
 <dd>
 You can always use <code>Ctrl</code>+<code>F</code> or <code>Cmd</code>+<code>F</code> to search the entire page.</dd></dl>
-<h1><a class="anchor" id="autotoc_md44"></a>
+<h1><a class="anchor" id="autotoc_md47"></a>
 Available objects and their input file syntax</h1>
 <p>Refer to <a class="el" href="system-drivers.html">System Documentation</a> for detailed explanation about this system.</p>
-<h2><a class="anchor" id="largedeformationincrementalsolidmechanicsdriver"></a>
-LargeDeformationIncrementalSolidMechanicsDriver</h2>
-<p>Driver for large deformation solid mechanics material model. The material model is updated <em>incrementally</em>. </p><details >
+<h2><a class="anchor" id="ldisolidmechanicsdriver"></a>
+LDISolidMechanicsDriver</h2>
+<p>Driver for solid mechanics material model with optional thermal coupling. This driver is specialized for large deformation models using the incremental formulation. </p><details >
 <summary >
 <code>cauchy_stress_rate</code> Cauchy stress rate</summary>
 <p></p>
@@ -143,20 +143,38 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>control</code> External control of the material update. Options are STRAIN and STRESS, for strain control and stress control, respectively.</summary>
+<code>control</code> External control of the material update. Options are MIXED STRESS STRAIN </summary>
 <p></p>
 <ul>
-<li><u>Type</u>: string</li>
+<li><u>Type</u>: EnumSelection</li>
 <li><u>Default</u>: STRAIN </li>
 </ul>
 </details>
 <details >
 <summary >
-<code>cp_elastic_scale</code> Elastic step scale factor used in the 'CP_' predictors</summary>
+<code>cp_warmup</code> Whether to perform a warm-up step for crystal plasticity models. The warm-up step uses a relaxed/damped elastic predictor for the very first time step.</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: bool</li>
+<li><u>Default</u>: false </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>cp_warmup_elastic_scale</code> Elastic step scale factor used for the crystal plasticity warm-up step</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: number</li>
 <li><u>Default</u>: 1 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>cp_warmup_elastic_strain</code> Elastic strain name used for the CP warm-up step</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name</li>
+<li><u>Default</u>: state/elastic_strain </li>
 </ul>
 </details>
 <details >
@@ -179,16 +197,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>enable_AD</code> Enable automatic differentiation</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>ic_rot_names</code> Apply initial conditions to these Rot variables</summary>
+<code>ic_MillerIndex_names</code> Apply initial conditions to these MillerIndex variables</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: list of variable name </li>
@@ -196,7 +205,119 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>ic_rot_values</code> Initial condition values for the Rot variables</summary>
+<code>ic_MillerIndex_values</code> Initial condition values for the MillerIndex variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of MillerIndex 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_Quaternion_names</code> Apply initial conditions to these Quaternion variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_Quaternion_values</code> Initial condition values for the Quaternion variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of Quaternion 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_R2_names</code> Apply initial conditions to these R2 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_R2_values</code> Initial condition values for the R2 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of R2 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_R3_names</code> Apply initial conditions to these R3 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_R3_values</code> Initial condition values for the R3 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of R3 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_R4_names</code> Apply initial conditions to these R4 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_R4_values</code> Initial condition values for the R4 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of R4 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_R5_names</code> Apply initial conditions to these R5 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_R5_values</code> Initial condition values for the R5 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of R5 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_R8_names</code> Apply initial conditions to these R8 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_R8_values</code> Initial condition values for the R8 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of R8 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_Rot_names</code> Apply initial conditions to these Rot variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_Rot_values</code> Initial condition values for the Rot variables</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: list of Rot 🔗 </li>
@@ -204,7 +325,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>ic_scalar_names</code> Apply initial conditions to these Scalar variables</summary>
+<code>ic_SFFR4_names</code> Apply initial conditions to these SFFR4 variables</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: list of variable name </li>
@@ -212,7 +333,119 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>ic_scalar_values</code> Initial condition values for the Scalar variables</summary>
+<code>ic_SFFR4_values</code> Initial condition values for the SFFR4 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of SFFR4 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_SFR3_names</code> Apply initial conditions to these SFR3 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_SFR3_values</code> Initial condition values for the SFR3 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of SFR3 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_SR2_names</code> Apply initial conditions to these SR2 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_SR2_values</code> Initial condition values for the SR2 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of SR2 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_SSFR5_names</code> Apply initial conditions to these SSFR5 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_SSFR5_values</code> Initial condition values for the SSFR5 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of SSFR5 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_SSR4_names</code> Apply initial conditions to these SSR4 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_SSR4_values</code> Initial condition values for the SSR4 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of SSR4 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_SSSSR8_names</code> Apply initial conditions to these SSSSR8 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_SSSSR8_values</code> Initial condition values for the SSSSR8 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of SSSSR8 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_SWR4_names</code> Apply initial conditions to these SWR4 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_SWR4_values</code> Initial condition values for the SWR4 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of SWR4 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_Scalar_names</code> Apply initial conditions to these Scalar variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_Scalar_values</code> Initial condition values for the Scalar variables</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: list of Scalar 🔗 </li>
@@ -220,7 +453,7 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>ic_sr2_names</code> Apply initial conditions to these SR2 variables</summary>
+<code>ic_Tensor_names</code> Apply initial conditions to these Tensor variables</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: list of variable name </li>
@@ -228,10 +461,92 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>ic_sr2_values</code> Initial condition values for the SR2 variables</summary>
+<code>ic_Tensor_values</code> Initial condition values for the Tensor variables</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: list of SR2 🔗 </li>
+<li><u>Type</u>: list of Tensor 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_Vec_names</code> Apply initial conditions to these Vec variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_Vec_values</code> Initial condition values for the Vec variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of Vec 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_WR2_names</code> Apply initial conditions to these WR2 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_WR2_values</code> Initial condition values for the WR2 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of WR2 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_WSR4_names</code> Apply initial conditions to these WSR4 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_WSR4_values</code> Initial condition values for the WSR4 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of WSR4 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_WWR4_names</code> Apply initial conditions to these WWR4 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_WWR4_values</code> Initial condition values for the WWR4 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of WWR4 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>mixed_control_signal</code> The name of the control signal for mixed control on the input axis</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name</li>
+<li><u>Default</u>: forces/control </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>mixed_driving_force</code> Name of mixed driving force when using mixed control</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name</li>
+<li><u>Default</u>: forces/fixed_values </li>
 </ul>
 </details>
 <details >
@@ -244,10 +559,10 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>predictor</code> Predictor used to set the initial guess for each time step. Options are PREVIOUS_STATE, LINEAR_EXTRAPOLATION, CP_PREVIOUS_STATE, and CP_LINEAR_EXTRAPOLATION. The options prefixed with 'CP_' are specifically designed for crystal plasticity models.</summary>
+<code>predictor</code> Predictor used to set the initial guess for each time step. Options are LINEAR_EXTRAPOLATION PREVIOUS_STATE </summary>
 <p></p>
 <ul>
-<li><u>Type</u>: string</li>
+<li><u>Type</u>: EnumSelection</li>
 <li><u>Default</u>: PREVIOUS_STATE </li>
 </ul>
 </details>
@@ -269,248 +584,39 @@ LargeDeformationIncrementalSolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
+<code>prescribed_mixed_control_signal</code> The actual values of the control signal for mixed control. 0 implies strain/deformation control, 1 implies stress control</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Tensor 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>prescribed_mixed_driving_force</code> The fixed, controlled values provided as user input for the mixed control case. Where the control signal is 0 these are strain/deformation values, where it is 1 these are stress values</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Tensor 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>prescribed_temperature</code> Actual prescibed temperature values, when providing temperatures to the model</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Tensor 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>prescribed_time</code> Time steps to perform the material update. The times tensor must have at least one batch dimension representing time steps</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Scalar 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
 <code>prescribed_vorticity</code> Prescribed vorticity</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: Tensor 🔗 </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>save_as</code> File path (absolute or relative to the working directory) to store the results</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: string </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>show_input_axis</code> Whether to show model input axis at the beginning</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>show_output_axis</code> Whether to show model output axis at the beginning</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>show_parameters</code> Whether to show model parameters at the beginning</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>time</code> Time</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: variable name</li>
-<li><u>Default</u>: forces/t </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>times</code> Time steps to perform the material update. The times tensor must have exactly 2 dimensions. The first dimension represents time steps, and the second dimension represents batches (i.e., how many material models to update simultaneously).</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: Tensor 🔗 </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>verbose</code> Whether to output additional logging information</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>vorticity</code> Vorticity</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: variable name</li>
-<li><u>Default</u>: forces/vorticity </li>
-</ul>
-</details>
-<p>Detailed documentation <a class="el" href="classneml2_1_1LargeDeformationIncrementalSolidMechanicsDriver.html">link</a></p>
-<h2><a class="anchor" id="solidmechanicsdriver"></a>
-SolidMechanicsDriver</h2>
-<p>Driver for small deformation solid mechanics material model with optional thermal coupling. </p><details >
-<summary >
-<code>cauchy_stress</code> Cauchy stress</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: variable name</li>
-<li><u>Default</u>: forces/S </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>control</code> External control of the material update. Options are STRAIN and STRESS, for strain control and stress control, respectively.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: string</li>
-<li><u>Default</u>: STRAIN </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>control_name</code> The name of the control signal on the input axis</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: variable name</li>
-<li><u>Default</u>: forces/control </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>cp_elastic_scale</code> Elastic step scale factor used in the 'CP_' predictors</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: number</li>
-<li><u>Default</u>: 1 </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>device</code> Device on which to evaluate the material model. The string supplied must follow the following schema: (cpu|cuda)[:&lt;device-index&gt;] where cpu or cuda specifies the device type, and :&lt;device-index&gt; optionally specifies a device index. For example, device='cpu' sets the target compute device to be CPU, and device='cuda:1' sets the target compute device to be CUDA with device ID 1.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: string</li>
-<li><u>Default</u>: cpu </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>enable_AD</code> Enable automatic differentiation</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>fixed_values</code> Name of fixed values (when control = MIXED)</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: variable name</li>
-<li><u>Default</u>: forces/fixed_values </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>ic_rot_names</code> Apply initial conditions to these Rot variables</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: list of variable name </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>ic_rot_values</code> Initial condition values for the Rot variables</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: list of Rot 🔗 </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>ic_scalar_names</code> Apply initial conditions to these Scalar variables</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: list of variable name </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>ic_scalar_values</code> Initial condition values for the Scalar variables</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: list of Scalar 🔗 </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>ic_sr2_names</code> Apply initial conditions to these SR2 variables</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: list of variable name </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>ic_sr2_values</code> Initial condition values for the SR2 variables</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: list of SR2 🔗 </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>model</code> The material model to be updated by the driver</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: string </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>predictor</code> Predictor used to set the initial guess for each time step. Options are PREVIOUS_STATE, LINEAR_EXTRAPOLATION, CP_PREVIOUS_STATE, and CP_LINEAR_EXTRAPOLATION. The options prefixed with 'CP_' are specifically designed for crystal plasticity models.</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: string</li>
-<li><u>Default</u>: PREVIOUS_STATE </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>prescribed_control</code> The actual values of the control signal. 0 implies strain control, 1 implies stress control</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: Tensor 🔗 </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>prescribed_mixed_conditions</code> The fixed, controlled values provided as user input for the mixed control case. Where the control signal is 0 these are strain values, where it is 1 these are stress values</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: Tensor 🔗 </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>prescribed_strains</code> Prescribed strain (when control = STRAIN)</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: Tensor 🔗 </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>prescribed_stresses</code> Prescribed stress (when control = STRESS)</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: Tensor 🔗 </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>prescribed_temperatures</code> Actual prescibed temperature values, when providing temperatures to the model</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Tensor 🔗 </li>
@@ -571,7 +677,417 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>times</code> Time steps to perform the material update. The times tensor must have exactly 2 dimensions. The first dimension represents time steps, and the second dimension represents batches (i.e., how many material models to update simultaneously).</summary>
+<code>verbose</code> Whether to output additional logging information</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: bool</li>
+<li><u>Default</u>: false </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>vorticity</code> Vorticity</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name</li>
+<li><u>Default</u>: forces/vorticity </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1LDISolidMechanicsDriver.html">link</a></p>
+<h2><a class="anchor" id="sdtsolidmechanicsdriver"></a>
+SDTSolidMechanicsDriver</h2>
+<p>Driver for solid mechanics material model with optional thermal coupling. This driver is specialized for small deformation models using the total formulation. </p><details >
+<summary >
+<code>control</code> External control of the material update. Options are MIXED STRESS STRAIN </summary>
+<p></p>
+<ul>
+<li><u>Type</u>: EnumSelection</li>
+<li><u>Default</u>: STRAIN </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>device</code> Device on which to evaluate the material model. The string supplied must follow the following schema: (cpu|cuda)[:&lt;device-index&gt;] where cpu or cuda specifies the device type, and :&lt;device-index&gt; optionally specifies a device index. For example, device='cpu' sets the target compute device to be CPU, and device='cuda:1' sets the target compute device to be CUDA with device ID 1.</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: string</li>
+<li><u>Default</u>: cpu </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_MillerIndex_names</code> Apply initial conditions to these MillerIndex variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_MillerIndex_values</code> Initial condition values for the MillerIndex variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of MillerIndex 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_Quaternion_names</code> Apply initial conditions to these Quaternion variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_Quaternion_values</code> Initial condition values for the Quaternion variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of Quaternion 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_R2_names</code> Apply initial conditions to these R2 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_R2_values</code> Initial condition values for the R2 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of R2 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_R3_names</code> Apply initial conditions to these R3 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_R3_values</code> Initial condition values for the R3 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of R3 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_R4_names</code> Apply initial conditions to these R4 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_R4_values</code> Initial condition values for the R4 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of R4 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_R5_names</code> Apply initial conditions to these R5 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_R5_values</code> Initial condition values for the R5 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of R5 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_R8_names</code> Apply initial conditions to these R8 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_R8_values</code> Initial condition values for the R8 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of R8 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_Rot_names</code> Apply initial conditions to these Rot variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_Rot_values</code> Initial condition values for the Rot variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of Rot 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_SFFR4_names</code> Apply initial conditions to these SFFR4 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_SFFR4_values</code> Initial condition values for the SFFR4 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of SFFR4 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_SFR3_names</code> Apply initial conditions to these SFR3 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_SFR3_values</code> Initial condition values for the SFR3 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of SFR3 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_SR2_names</code> Apply initial conditions to these SR2 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_SR2_values</code> Initial condition values for the SR2 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of SR2 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_SSFR5_names</code> Apply initial conditions to these SSFR5 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_SSFR5_values</code> Initial condition values for the SSFR5 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of SSFR5 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_SSR4_names</code> Apply initial conditions to these SSR4 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_SSR4_values</code> Initial condition values for the SSR4 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of SSR4 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_SSSSR8_names</code> Apply initial conditions to these SSSSR8 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_SSSSR8_values</code> Initial condition values for the SSSSR8 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of SSSSR8 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_SWR4_names</code> Apply initial conditions to these SWR4 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_SWR4_values</code> Initial condition values for the SWR4 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of SWR4 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_Scalar_names</code> Apply initial conditions to these Scalar variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_Scalar_values</code> Initial condition values for the Scalar variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of Scalar 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_Tensor_names</code> Apply initial conditions to these Tensor variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_Tensor_values</code> Initial condition values for the Tensor variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of Tensor 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_Vec_names</code> Apply initial conditions to these Vec variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_Vec_values</code> Initial condition values for the Vec variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of Vec 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_WR2_names</code> Apply initial conditions to these WR2 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_WR2_values</code> Initial condition values for the WR2 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of WR2 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_WSR4_names</code> Apply initial conditions to these WSR4 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_WSR4_values</code> Initial condition values for the WSR4 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of WSR4 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_WWR4_names</code> Apply initial conditions to these WWR4 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>ic_WWR4_values</code> Initial condition values for the WWR4 variables</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of WWR4 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>mixed_control_signal</code> The name of the control signal for mixed control on the input axis</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name</li>
+<li><u>Default</u>: forces/control </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>mixed_driving_force</code> Name of mixed driving force when using mixed control</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name</li>
+<li><u>Default</u>: forces/fixed_values </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>model</code> The material model to be updated by the driver</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: string </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>predictor</code> Predictor used to set the initial guess for each time step. Options are LINEAR_EXTRAPOLATION PREVIOUS_STATE </summary>
+<p></p>
+<ul>
+<li><u>Type</u>: EnumSelection</li>
+<li><u>Default</u>: PREVIOUS_STATE </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>prescribed_mixed_control_signal</code> The actual values of the control signal for mixed control. 0 implies strain/deformation control, 1 implies stress control</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Tensor 🔗 </li>
@@ -579,11 +1095,113 @@ SolidMechanicsDriver</h2>
 </details>
 <details >
 <summary >
-<code>total_strain</code> Total strain</summary>
+<code>prescribed_mixed_driving_force</code> The fixed, controlled values provided as user input for the mixed control case. Where the control signal is 0 these are strain/deformation values, where it is 1 these are stress values</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Tensor 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>prescribed_strain</code> Prescribed strain (when control = STRAIN)</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Tensor 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>prescribed_stress</code> Prescribed stress (when control = STRESS)</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Tensor 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>prescribed_temperature</code> Actual prescibed temperature values, when providing temperatures to the model</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Tensor 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>prescribed_time</code> Time steps to perform the material update. The times tensor must have at least one batch dimension representing time steps</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Scalar 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>save_as</code> File path (absolute or relative to the working directory) to store the results</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: string </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>show_input_axis</code> Whether to show model input axis at the beginning</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: bool</li>
+<li><u>Default</u>: false </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>show_output_axis</code> Whether to show model output axis at the beginning</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: bool</li>
+<li><u>Default</u>: false </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>show_parameters</code> Whether to show model parameters at the beginning</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: bool</li>
+<li><u>Default</u>: false </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>strain</code> Name of the strain used to drive the update</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: variable name</li>
 <li><u>Default</u>: forces/E </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>stress</code> Name of the stress used to drive the update</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name</li>
+<li><u>Default</u>: forces/S </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>temperature</code> Name of temperature</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name</li>
+<li><u>Default</u>: forces/T </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>time</code> Time</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name</li>
+<li><u>Default</u>: forces/t </li>
 </ul>
 </details>
 <details >
@@ -595,7 +1213,7 @@ SolidMechanicsDriver</h2>
 <li><u>Default</u>: false </li>
 </ul>
 </details>
-<p>Detailed documentation <a class="el" href="classneml2_1_1SolidMechanicsDriver.html">link</a> </p>
+<p>Detailed documentation <a class="el" href="classneml2_1_1SDTSolidMechanicsDriver.html">link</a> </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

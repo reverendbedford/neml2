@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-13 23:10:15</td>
+            <td class="headerValue">2024-12-16 23:27:01</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -102,59 +102,59 @@
 <a name="40"><span class="lineNum">      40 </span><span class="lineCov">          6 :   options.set_parameter&lt;CrossRef&lt;Scalar&gt;&gt;(&quot;yield_stress&quot;);</span></a>
 <a name="41"><span class="lineNum">      41 </span><span class="lineCov">          6 :   options.set(&quot;yield_stress&quot;).doc() = &quot;Yield stress&quot;;</span></a>
 <a name="42"><span class="lineNum">      42 </span>            : </a>
-<a name="43"><span class="lineNum">      43 </span><span class="lineCov">          6 :   options.set_input(&quot;effective_stress&quot;) = VariableName(&quot;state&quot;, &quot;internal&quot;, &quot;s&quot;);</span></a>
+<a name="43"><span class="lineNum">      43 </span><span class="lineCov">          6 :   options.set_input(&quot;effective_stress&quot;) = VariableName(STATE, &quot;internal&quot;, &quot;s&quot;);</span></a>
 <a name="44"><span class="lineNum">      44 </span><span class="lineCov">          6 :   options.set(&quot;effective_stress&quot;).doc() = &quot;Effective stress&quot;;</span></a>
 <a name="45"><span class="lineNum">      45 </span>            : </a>
 <a name="46"><span class="lineNum">      46 </span><span class="lineCov">          6 :   options.set_input(&quot;isotropic_hardening&quot;);</span></a>
 <a name="47"><span class="lineNum">      47 </span><span class="lineCov">          6 :   options.set(&quot;isotropic_hardening&quot;).doc() = &quot;Isotropic hardening&quot;;</span></a>
 <a name="48"><span class="lineNum">      48 </span>            : </a>
-<a name="49"><span class="lineNum">      49 </span><span class="lineCov">          6 :   options.set_output(&quot;yield_function&quot;) = VariableName(&quot;state&quot;, &quot;internal&quot;, &quot;fp&quot;);</span></a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineCov">          6 :   options.set_output(&quot;yield_function&quot;) = VariableName(STATE, &quot;internal&quot;, &quot;fp&quot;);</span></a>
 <a name="50"><span class="lineNum">      50 </span><span class="lineCov">          6 :   options.set(&quot;yield_function&quot;).doc() = &quot;Yield function&quot;;</span></a>
 <a name="51"><span class="lineNum">      51 </span>            : </a>
 <a name="52"><span class="lineNum">      52 </span><span class="lineCov">          6 :   return options;</span></a>
 <a name="53"><span class="lineNum">      53 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="54"><span class="lineNum">      54 </span>            : </a>
-<a name="55"><span class="lineNum">      55 </span><span class="lineCov">         20 : YieldFunction::YieldFunction(const OptionSet &amp; options)</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">         13 : YieldFunction::YieldFunction(const OptionSet &amp; options)</span></a>
 <a name="56"><span class="lineNum">      56 </span>            :   : Model(options),</a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">         40 :     _s(declare_input_variable&lt;Scalar&gt;(&quot;effective_stress&quot;)),</span></a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">         40 :     _h(options.get&lt;VariableName&gt;(&quot;isotropic_hardening&quot;).empty()</span></a>
-<a name="59"><span class="lineNum">      59 </span><span class="lineCov">         20 :            ? nullptr</span></a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          8 :            : &amp;declare_input_variable&lt;Scalar&gt;(&quot;isotropic_hardening&quot;)),</span></a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">         20 :     _f(declare_output_variable&lt;Scalar&gt;(&quot;yield_function&quot;)),</span></a>
-<a name="62"><span class="lineNum">      62 </span><span class="lineCov">         40 :     _sy(declare_parameter&lt;Scalar&gt;(&quot;sy&quot;, &quot;yield_stress&quot;, /*allow_nonlinear=*/true))</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">         13 :     _s(declare_input_variable&lt;Scalar&gt;(&quot;effective_stress&quot;)),</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">         26 :     _h(options.get&lt;VariableName&gt;(&quot;isotropic_hardening&quot;).empty()</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">         13 :            ? nullptr</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">         13 :            : &amp;declare_input_variable&lt;Scalar&gt;(&quot;isotropic_hardening&quot;)),</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">         13 :     _f(declare_output_variable&lt;Scalar&gt;(&quot;yield_function&quot;)),</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">         26 :     _sy(declare_parameter&lt;Scalar&gt;(&quot;sy&quot;, &quot;yield_stress&quot;, /*allow_nonlinear=*/true))</span></a>
 <a name="63"><span class="lineNum">      63 </span>            : {</a>
-<a name="64"><span class="lineNum">      64 </span><span class="lineCov">         20 : }</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">         13 : }</span></a>
 <a name="65"><span class="lineNum">      65 </span>            : </a>
 <a name="66"><span class="lineNum">      66 </span>            : void</a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">       1012 : YieldFunction::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">        947 : YieldFunction::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
 <a name="68"><span class="lineNum">      68 </span>            : {</a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">       1012 :   if (out)</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">        947 :   if (out)</span></a>
 <a name="70"><span class="lineNum">      70 </span>            :   {</a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">       1012 :     if (_h)</span></a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineCov">        497 :       _f = std::sqrt(2.0 / 3.0) * (_s - _sy - (*_h));</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">        947 :     if (_h)</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineCov">        502 :       _f = std::sqrt(2.0 / 3.0) * (_s - _sy - (*_h));</span></a>
 <a name="73"><span class="lineNum">      73 </span>            :     else</a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineCov">        515 :       _f = std::sqrt(2.0 / 3.0) * (_s - _sy);</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">        445 :       _f = std::sqrt(2.0 / 3.0) * (_s - _sy);</span></a>
 <a name="75"><span class="lineNum">      75 </span>            :   }</a>
 <a name="76"><span class="lineNum">      76 </span>            : </a>
-<a name="77"><span class="lineNum">      77 </span><span class="lineCov">       1012 :   if (dout_din)</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">        947 :   if (dout_din)</span></a>
 <a name="78"><span class="lineNum">      78 </span>            :   {</a>
-<a name="79"><span class="lineNum">      79 </span><span class="lineCov">        693 :     auto I = Scalar::identity_map(options());</span></a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineCov">        686 :     auto I = Scalar::identity_map(_s.options());</span></a>
 <a name="80"><span class="lineNum">      80 </span>            : </a>
-<a name="81"><span class="lineNum">      81 </span><span class="lineCov">        693 :     if (_s.is_dependent())</span></a>
-<a name="82"><span class="lineNum">      82 </span><span class="lineCov">        693 :       _f.d(_s) = std::sqrt(2.0 / 3.0) * I;</span></a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineCov">        686 :     if (_s.is_dependent())</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">        686 :       _f.d(_s) = std::sqrt(2.0 / 3.0) * I;</span></a>
 <a name="83"><span class="lineNum">      83 </span>            : </a>
-<a name="84"><span class="lineNum">      84 </span><span class="lineCov">        693 :     if (_h)</span></a>
-<a name="85"><span class="lineNum">      85 </span><span class="lineCov">        353 :       _f.d(*_h) = -std::sqrt(2.0 / 3.0) * I;</span></a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineCov">        686 :     if (_h)</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineCov">        379 :       _f.d(*_h) = -std::sqrt(2.0 / 3.0) * I;</span></a>
 <a name="86"><span class="lineNum">      86 </span>            : </a>
-<a name="87"><span class="lineNum">      87 </span><span class="lineCov">        693 :     if (const auto * const sy = nl_param(&quot;sy&quot;))</span></a>
-<a name="88"><span class="lineNum">      88 </span><span class="lineCov">         52 :       _f.d(*sy) = -std::sqrt(2.0 / 3.0) * I;</span></a>
-<a name="89"><span class="lineNum">      89 </span><span class="lineCov">        693 :   }</span></a>
+<a name="87"><span class="lineNum">      87 </span><span class="lineCov">        686 :     if (const auto * const sy = nl_param(&quot;sy&quot;))</span></a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineCov">         40 :       _f.d(*sy) = -std::sqrt(2.0 / 3.0) * I;</span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineCov">        686 :   }</span></a>
 <a name="90"><span class="lineNum">      90 </span>            : </a>
 <a name="91"><span class="lineNum">      91 </span>            :   if (d2out_din2)</a>
 <a name="92"><span class="lineNum">      92 </span>            :   {</a>
 <a name="93"><span class="lineNum">      93 </span>            :     // zero</a>
 <a name="94"><span class="lineNum">      94 </span>            :   }</a>
-<a name="95"><span class="lineNum">      95 </span><span class="lineCov">       1012 : }</span></a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineCov">        947 : }</span></a>
 <a name="96"><span class="lineNum">      96 </span>            : } // namespace neml2</a>
 </pre>
       </td>

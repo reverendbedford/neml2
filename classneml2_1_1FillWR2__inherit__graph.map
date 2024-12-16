@@ -1,6 +1,6 @@
 <map id="FillWR2" name="FillWR2">
 <area shape="rect" id="Node000001" title="Create a filled WR2 from the input file." alt="" coords="153,372,224,397"/>
-<area shape="rect" id="Node000002" href="$classneml2_1_1WR2.html" title="A skew rank 2, represented as an axial vector." alt="" coords="107,299,159,324"/>
+<area shape="rect" id="Node000002" href="$classneml2_1_1WR2.html" title="A skew&#45;symmetric second order tensor, represented as an axial vector." alt="" coords="107,299,159,324"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="153,333,182,370,178,374,148,337"/>
 <area shape="rect" id="Node000003" href="$classneml2_1_1VecBase.html" title=" " alt="" coords="47,225,184,251"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="124,263,132,298,127,299,119,265"/>

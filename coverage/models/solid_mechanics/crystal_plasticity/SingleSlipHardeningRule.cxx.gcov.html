@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-13 23:10:15</td>
+            <td class="headerValue">2024-12-16 23:27:01</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -100,26 +100,26 @@
 <a name="38"><span class="lineNum">      38 </span><span class="lineCov">         12 :       &quot;Parent class of slip hardening rules where all slip systems share the same strength.&quot;;</span></a>
 <a name="39"><span class="lineNum">      39 </span>            : </a>
 <a name="40"><span class="lineNum">      40 </span><span class="lineCov">         24 :   options.set_output(&quot;slip_hardening_rate&quot;) =</span></a>
-<a name="41"><span class="lineNum">      41 </span><span class="lineCov">         36 :       VariableName(&quot;state&quot;, &quot;internal&quot;, &quot;slip_hardening_rate&quot;);</span></a>
+<a name="41"><span class="lineNum">      41 </span><span class="lineCov">         36 :       VariableName(STATE, &quot;internal&quot;, &quot;slip_hardening_rate&quot;);</span></a>
 <a name="42"><span class="lineNum">      42 </span><span class="lineCov">         24 :   options.set(&quot;slip_hardening_rate&quot;).doc() =</span></a>
 <a name="43"><span class="lineNum">      43 </span><span class="lineCov">         12 :       &quot;Name of tensor to output the slip system hardening rates into&quot;;</span></a>
 <a name="44"><span class="lineNum">      44 </span>            : </a>
-<a name="45"><span class="lineNum">      45 </span><span class="lineCov">         12 :   options.set_input(&quot;slip_hardening&quot;) = VariableName(&quot;state&quot;, &quot;internal&quot;, &quot;slip_hardening&quot;);</span></a>
+<a name="45"><span class="lineNum">      45 </span><span class="lineCov">         12 :   options.set_input(&quot;slip_hardening&quot;) = VariableName(STATE, &quot;internal&quot;, &quot;slip_hardening&quot;);</span></a>
 <a name="46"><span class="lineNum">      46 </span><span class="lineCov">         12 :   options.set(&quot;slip_hardening&quot;).doc() = &quot;Name of current values of slip hardening&quot;;</span></a>
 <a name="47"><span class="lineNum">      47 </span>            : </a>
-<a name="48"><span class="lineNum">      48 </span><span class="lineCov">         12 :   options.set_input(&quot;sum_slip_rates&quot;) = VariableName(&quot;state&quot;, &quot;internal&quot;, &quot;sum_slip_rates&quot;);</span></a>
+<a name="48"><span class="lineNum">      48 </span><span class="lineCov">         12 :   options.set_input(&quot;sum_slip_rates&quot;) = VariableName(STATE, &quot;internal&quot;, &quot;sum_slip_rates&quot;);</span></a>
 <a name="49"><span class="lineNum">      49 </span><span class="lineCov">         12 :   options.set(&quot;sum_slip_rates&quot;).doc() = &quot;Name of tensor containing the sum of the slip rates&quot;;</span></a>
 <a name="50"><span class="lineNum">      50 </span>            : </a>
 <a name="51"><span class="lineNum">      51 </span><span class="lineCov">         12 :   return options;</span></a>
 <a name="52"><span class="lineNum">      52 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="53"><span class="lineNum">      53 </span>            : </a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          5 : SingleSlipHardeningRule::SingleSlipHardeningRule(const OptionSet &amp; options)</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          3 : SingleSlipHardeningRule::SingleSlipHardeningRule(const OptionSet &amp; options)</span></a>
 <a name="55"><span class="lineNum">      55 </span>            :   : Model(options),</a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">         10 :     _tau_dot(declare_output_variable&lt;Scalar&gt;(&quot;slip_hardening_rate&quot;)),</span></a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">          5 :     _tau(declare_input_variable&lt;Scalar&gt;(&quot;slip_hardening&quot;)),</span></a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">         10 :     _gamma_dot_sum(declare_input_variable&lt;Scalar&gt;(&quot;sum_slip_rates&quot;))</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">          3 :     _tau_dot(declare_output_variable&lt;Scalar&gt;(&quot;slip_hardening_rate&quot;)),</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">          3 :     _tau(declare_input_variable&lt;Scalar&gt;(&quot;slip_hardening&quot;)),</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">          6 :     _gamma_dot_sum(declare_input_variable&lt;Scalar&gt;(&quot;sum_slip_rates&quot;))</span></a>
 <a name="59"><span class="lineNum">      59 </span>            : {</a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          5 : }</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          3 : }</span></a>
 <a name="61"><span class="lineNum">      61 </span>            : } // namespace neml2</a>
 </pre>
       </td>

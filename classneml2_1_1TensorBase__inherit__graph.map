@@ -54,39 +54,39 @@
 <area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="774,15,840,15,840,21,774,21"/>
 <area shape="rect" id="Node000007" href="$classneml2_1_1Quaternion.html" title="A batched quaternion." alt="" coords="665,55,760,80"/>
 <area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="598,65,665,65,665,70,598,70"/>
-<area shape="rect" id="Node000010" href="$classneml2_1_1R2Base.html" title="The (logical) full second order tensor." alt="" coords="637,176,789,201"/>
+<area shape="rect" id="Node000010" href="$classneml2_1_1R2Base.html" title="Base class for second order tensor." alt="" coords="637,176,789,201"/>
 <area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="574,186,637,186,637,191,574,191"/>
-<area shape="rect" id="Node000012" href="$classneml2_1_1R3.html" title="The (logical) full third order tensor." alt="" coords="693,240,732,265"/>
+<area shape="rect" id="Node000012" href="$classneml2_1_1R3.html" title="Third order tensor without symmetry." alt="" coords="693,240,732,265"/>
 <area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="557,250,693,250,693,255,557,255"/>
-<area shape="rect" id="Node000014" href="$classneml2_1_1R4.html" title="The (logical) full fourth order tensor." alt="" coords="693,304,732,329"/>
+<area shape="rect" id="Node000014" href="$classneml2_1_1R4.html" title="Fourth order tensor without symmetry." alt="" coords="693,304,732,329"/>
 <area shape="poly" id="edge13_Node000013_Node000014" title=" " alt="" coords="557,314,693,314,693,319,557,319"/>
-<area shape="rect" id="Node000016" href="$classneml2_1_1R5.html" title="The (logical) full fifth order tensor." alt="" coords="693,368,732,393"/>
+<area shape="rect" id="Node000016" href="$classneml2_1_1R5.html" title="Fifth order tensor without symmetry." alt="" coords="693,368,732,393"/>
 <area shape="poly" id="edge15_Node000015_Node000016" title=" " alt="" coords="557,378,693,378,693,383,557,383"/>
 <area shape="rect" id="Node000018" href="$classneml2_1_1R8.html" title="The (logical) full eighth order tensor." alt="" coords="693,432,732,457"/>
 <area shape="poly" id="edge17_Node000017_Node000018" title=" " alt="" coords="559,442,693,442,693,447,559,447"/>
-<area shape="rect" id="Node000021" href="$classneml2_1_1SFFR4.html" title="The logical fourth order tensor with minor symmetry in the 1st and 2nd dimensions." alt="" coords="681,547,744,572"/>
+<area shape="rect" id="Node000021" href="$classneml2_1_1SFFR4.html" title="The fourth order tensor with minor symmetry in the 1st and 2nd dimensions." alt="" coords="681,547,744,572"/>
 <area shape="poly" id="edge20_Node000020_Node000021" title=" " alt="" coords="569,557,681,557,681,562,569,562"/>
-<area shape="rect" id="Node000023" href="$classneml2_1_1SFR3.html" title="The logical third order tensor with symmetry in the first two dimensions." alt="" coords="685,611,740,636"/>
+<area shape="rect" id="Node000023" href="$classneml2_1_1SFR3.html" title="The third order tensor with symmetry in the first two dimensions." alt="" coords="685,611,740,636"/>
 <area shape="poly" id="edge22_Node000022_Node000023" title=" " alt="" coords="565,621,685,621,685,626,565,626"/>
-<area shape="rect" id="Node000025" href="$classneml2_1_1SR2.html" title="The (logical) symmetric second order tensor." alt="" coords="689,668,736,693"/>
+<area shape="rect" id="Node000025" href="$classneml2_1_1SR2.html" title="The symmetric second order tensor." alt="" coords="689,668,736,693"/>
 <area shape="poly" id="edge24_Node000024_Node000025" title=" " alt="" coords="575,678,689,678,689,683,575,683"/>
 <area shape="rect" id="Node000026" href="$classneml2_1_1FillSR2.html" title="Create a filled SR2 from the input file." alt="" coords="864,668,931,693"/>
 <area shape="poly" id="edge25_Node000025_Node000026" title=" " alt="" coords="750,678,864,678,864,683,750,683"/>
-<area shape="rect" id="Node000028" href="$classneml2_1_1SSFR5.html" title="The logical fifth order tensor with minor symmetry in the 1st and 2nd dimensions as well as in the 3r..." alt="" coords="681,725,744,751"/>
+<area shape="rect" id="Node000028" href="$classneml2_1_1SSFR5.html" title="The fifth order tensor with minor symmetry in the 1st and 2nd dimensions as well as in the 3rd and 4t..." alt="" coords="681,725,744,751"/>
 <area shape="poly" id="edge27_Node000027_Node000028" title=" " alt="" coords="569,735,681,735,681,741,569,741"/>
-<area shape="rect" id="Node000030" href="$classneml2_1_1SSR4.html" title="The (logical) symmetric fourth order tensor, with symmetry in the first two dimensionss as well as in..." alt="" coords="685,789,740,815"/>
+<area shape="rect" id="Node000030" href="$classneml2_1_1SSR4.html" title="The symmetric fourth order tensor, with symmetry in the first two dimensionss as well as in the last ..." alt="" coords="685,789,740,815"/>
 <area shape="poly" id="edge29_Node000029_Node000030" title=" " alt="" coords="565,799,685,799,685,805,565,805"/>
 <area shape="rect" id="Node000032" href="$classneml2_1_1SSSSR8.html" title="The logical eigth order tensor with minor symmetry in the 1st and 2nd dimensions, the 3rd and 4th dim..." alt="" coords="677,853,748,879"/>
 <area shape="poly" id="edge31_Node000031_Node000032" title=" " alt="" coords="573,863,677,863,677,869,573,869"/>
-<area shape="rect" id="Node000034" href="$classneml2_1_1SWR4.html" title="The (logical) symmetric fourth order tensor, with symmetry in the first two dimensionss and skew&#45;symm..." alt="" coords="683,917,743,943"/>
+<area shape="rect" id="Node000034" href="$classneml2_1_1SWR4.html" title="The symmetric fourth order tensor, with symmetry in the first two dimensionss and skew&#45;symmetry in th..." alt="" coords="683,917,743,943"/>
 <area shape="poly" id="edge33_Node000033_Node000034" title=" " alt="" coords="568,927,683,927,683,933,568,933"/>
-<area shape="rect" id="Node000036" href="$classneml2_1_1Scalar.html" title="The (logical) scalar." alt="" coords="681,975,744,1000"/>
+<area shape="rect" id="Node000036" href="$classneml2_1_1Scalar.html" title="Scalar." alt="" coords="681,975,744,1000"/>
 <area shape="poly" id="edge35_Node000035_Node000036" title=" " alt="" coords="574,985,681,985,681,990,574,990"/>
-<area shape="rect" id="Node000039" href="$classneml2_1_1VecBase.html" title="Base class for the (logical) vector." alt="" coords="633,1073,792,1099"/>
+<area shape="rect" id="Node000039" href="$classneml2_1_1VecBase.html" title="Base class 3&#45;vector." alt="" coords="633,1073,792,1099"/>
 <area shape="poly" id="edge38_Node000038_Node000039" title=" " alt="" coords="588,1083,633,1083,633,1089,588,1089"/>
-<area shape="rect" id="Node000042" href="$classneml2_1_1WSR4.html" title="The (logical) symmetric fourth order tensor, with skew symmetry in the first two dimensionss and symm..." alt="" coords="683,1180,743,1205"/>
+<area shape="rect" id="Node000042" href="$classneml2_1_1WSR4.html" title="The symmetric fourth order tensor, with skew symmetry in the first two dimensionss and symmetry in th..." alt="" coords="683,1180,743,1205"/>
 <area shape="poly" id="edge41_Node000041_Node000042" title=" " alt="" coords="568,1190,683,1190,683,1195,568,1195"/>
-<area shape="rect" id="Node000044" href="$classneml2_1_1WWR4.html" title="The (logical) symmetric fourth order tensor, with skew symmetry in the first two dimensions and last ..." alt="" coords="680,1236,745,1261"/>
+<area shape="rect" id="Node000044" href="$classneml2_1_1WWR4.html" title="The symmetric fourth order tensor, with skew symmetry in the first two dimensions and last two dimens..." alt="" coords="680,1236,745,1261"/>
 <area shape="poly" id="edge43_Node000043_Node000044" title=" " alt="" coords="571,1251,680,1247,680,1252,571,1256"/>
 <area shape="rect" id="Node000046" href="$classneml2_1_1R2Base.html" title=" " alt="" coords="653,1285,772,1311"/>
 <area shape="poly" id="edge45_Node000045_Node000046" title=" " alt="" coords="542,1329,653,1307,654,1312,543,1335"/>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-13 23:10:15</td>
+            <td class="headerValue">2024-12-16 23:27:01</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -107,13 +107,13 @@
 <a name="45"><span class="lineNum">      45 </span><span class="lineCov">          6 :                   &quot;\\f$ the slip system direction, and \\f$ n_i \\f$ the slip system normal.&quot;;</span></a>
 <a name="46"><span class="lineNum">      46 </span>            : </a>
 <a name="47"><span class="lineNum">      47 </span><span class="lineCov">         12 :   options.set_output(&quot;plastic_deformation_rate&quot;) =</span></a>
-<a name="48"><span class="lineNum">      48 </span><span class="lineCov">         18 :       VariableName(&quot;state&quot;, &quot;internal&quot;, &quot;plastic_deformation_rate&quot;);</span></a>
+<a name="48"><span class="lineNum">      48 </span><span class="lineCov">         18 :       VariableName(STATE, &quot;internal&quot;, &quot;plastic_deformation_rate&quot;);</span></a>
 <a name="49"><span class="lineNum">      49 </span><span class="lineCov">          6 :   options.set(&quot;plastic_deformation_rate&quot;).doc() = &quot;The name of the plastic deformation rate tensor&quot;;</span></a>
 <a name="50"><span class="lineNum">      50 </span>            : </a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">          6 :   options.set_input(&quot;orientation&quot;) = VariableName(&quot;state&quot;, &quot;orientation_matrix&quot;);</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineCov">          6 :   options.set_input(&quot;orientation&quot;) = VariableName(STATE, &quot;orientation_matrix&quot;);</span></a>
 <a name="52"><span class="lineNum">      52 </span><span class="lineCov">          6 :   options.set(&quot;orientation&quot;).doc() = &quot;The name of the orientation matrix tensor&quot;;</span></a>
 <a name="53"><span class="lineNum">      53 </span>            : </a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          6 :   options.set_input(&quot;slip_rates&quot;) = VariableName(&quot;state&quot;, &quot;internal&quot;, &quot;slip_rates&quot;);</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          6 :   options.set_input(&quot;slip_rates&quot;) = VariableName(STATE, &quot;internal&quot;, &quot;slip_rates&quot;);</span></a>
 <a name="55"><span class="lineNum">      55 </span><span class="lineCov">          6 :   options.set(&quot;slip_rates&quot;).doc() = &quot;The name of the tensor containg the current slip rates&quot;;</span></a>
 <a name="56"><span class="lineNum">      56 </span>            : </a>
 <a name="57"><span class="lineNum">      57 </span><span class="lineCov">          6 :   options.set&lt;std::string&gt;(&quot;crystal_geometry_name&quot;) = &quot;crystal_geometry&quot;;</span></a>
@@ -123,38 +123,38 @@
 <a name="61"><span class="lineNum">      61 </span><span class="lineCov">          6 :   return options;</span></a>
 <a name="62"><span class="lineNum">      62 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="63"><span class="lineNum">      63 </span>            : </a>
-<a name="64"><span class="lineNum">      64 </span><span class="lineCov">          3 : PlasticDeformationRate::PlasticDeformationRate(const OptionSet &amp; options)</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">          2 : PlasticDeformationRate::PlasticDeformationRate(const OptionSet &amp; options)</span></a>
 <a name="65"><span class="lineNum">      65 </span>            :   : Model(options),</a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          9 :     _crystal_geometry(register_data&lt;crystallography::CrystalGeometry&gt;(</span></a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          3 :         options.get&lt;std::string&gt;(&quot;crystal_geometry_name&quot;))),</span></a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">          3 :     _dp(declare_output_variable&lt;SR2&gt;(&quot;plastic_deformation_rate&quot;)),</span></a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">          3 :     _R(declare_input_variable&lt;R2&gt;(&quot;orientation&quot;)),</span></a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          6 :     _g(declare_input_variable_list&lt;Scalar&gt;(_crystal_geometry.nslip(), &quot;slip_rates&quot;))</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          6 :     _crystal_geometry(register_data&lt;crystallography::CrystalGeometry&gt;(</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          2 :         options.get&lt;std::string&gt;(&quot;crystal_geometry_name&quot;))),</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">          2 :     _dp(declare_output_variable&lt;SR2&gt;(&quot;plastic_deformation_rate&quot;)),</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">          2 :     _R(declare_input_variable&lt;R2&gt;(&quot;orientation&quot;)),</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          4 :     _g(declare_input_variable&lt;Scalar&gt;(&quot;slip_rates&quot;, _crystal_geometry.nslip()))</span></a>
 <a name="71"><span class="lineNum">      71 </span>            : {</a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineCov">          3 : }</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineCov">          2 : }</span></a>
 <a name="73"><span class="lineNum">      73 </span>            : </a>
 <a name="74"><span class="lineNum">      74 </span>            : void</a>
-<a name="75"><span class="lineNum">      75 </span><span class="lineCov">        322 : PlasticDeformationRate::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">        309 : PlasticDeformationRate::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
 <a name="76"><span class="lineNum">      76 </span>            : {</a>
-<a name="77"><span class="lineNum">      77 </span><span class="lineCov">        322 :   neml_assert_dbg(!d2out_din2, &quot;Second derivative not implemented.&quot;);</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">        309 :   neml_assert_dbg(!d2out_din2, &quot;Second derivative not implemented.&quot;);</span></a>
 <a name="78"><span class="lineNum">      78 </span>            : </a>
-<a name="79"><span class="lineNum">      79 </span>            :   // Grab the input</a>
-<a name="80"><span class="lineNum">      80 </span><span class="lineCov">        322 :   const auto g = Scalar(_g, batch_dim() + 1);</span></a>
-<a name="81"><span class="lineNum">      81 </span><span class="lineCov">        322 :   const auto dp_crystal = math::batch_sum(g * _crystal_geometry.M(), -1);</span></a>
-<a name="82"><span class="lineNum">      82 </span>            : </a>
-<a name="83"><span class="lineNum">      83 </span><span class="lineCov">        322 :   if (out)</span></a>
-<a name="84"><span class="lineNum">      84 </span><span class="lineCov">        322 :     _dp = dp_crystal.rotate(R2(_R));</span></a>
-<a name="85"><span class="lineNum">      85 </span>            : </a>
-<a name="86"><span class="lineNum">      86 </span><span class="lineCov">        322 :   if (dout_din)</span></a>
-<a name="87"><span class="lineNum">      87 </span>            :   {</a>
-<a name="88"><span class="lineNum">      88 </span><span class="lineCov">         65 :     if (_g.is_dependent())</span></a>
-<a name="89"><span class="lineNum">      89 </span><span class="lineCov">        195 :       _dp.d(_g) = Tensor(_crystal_geometry.M().rotate(R2(_R).batch_unsqueeze(-1)), batch_dim())</span></a>
-<a name="90"><span class="lineNum">      90 </span><span class="lineCov">        130 :                       .base_transpose(-2, -1);</span></a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineCov">        309 :   const auto dp_crystal = math::batch_sum(_g * _crystal_geometry.M(), -1);</span></a>
+<a name="80"><span class="lineNum">      80 </span>            : </a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineCov">        309 :   if (out)</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">        309 :     _dp = dp_crystal.rotate(_R);</span></a>
+<a name="83"><span class="lineNum">      83 </span>            : </a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineCov">        309 :   if (dout_din)</span></a>
+<a name="85"><span class="lineNum">      85 </span>            :   {</a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineCov">         63 :     if (_g.is_dependent())</span></a>
+<a name="87"><span class="lineNum">      87 </span>            :     {</a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineCov">        126 :       const auto ddp_dg = _crystal_geometry.M().rotate(R2(_R).batch_unsqueeze(-1));</span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineCov">         63 :       _dp.d(_g) = Tensor(ddp_dg, ddp_dg.batch_sizes().slice(0, -1)).base_transpose(-2, -1);</span></a>
+<a name="90"><span class="lineNum">      90 </span><span class="lineCov">         63 :     }</span></a>
 <a name="91"><span class="lineNum">      91 </span>            : </a>
-<a name="92"><span class="lineNum">      92 </span><span class="lineCov">         65 :     if (_R.is_dependent())</span></a>
-<a name="93"><span class="lineNum">      93 </span><span class="lineCov">         65 :       _dp.d(_R) = dp_crystal.drotate(R2(_R));</span></a>
+<a name="92"><span class="lineNum">      92 </span><span class="lineCov">         63 :     if (_R.is_dependent())</span></a>
+<a name="93"><span class="lineNum">      93 </span><span class="lineCov">         63 :       _dp.d(_R) = dp_crystal.drotate(_R);</span></a>
 <a name="94"><span class="lineNum">      94 </span>            :   }</a>
-<a name="95"><span class="lineNum">      95 </span><span class="lineCov">        322 : }</span></a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineCov">        309 : }</span></a>
 <a name="96"><span class="lineNum">      96 </span>            : } // namespace neml2</a>
 </pre>
       </td>

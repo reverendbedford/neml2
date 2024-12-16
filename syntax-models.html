@@ -113,7 +113,7 @@ $(function(){initNavTree('syntax-models.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md45">Available objects and their input file syntax</a><ul><li class="level2"><a href="#arrheniusparameter">ArrheniusParameter</a></li>
+<ul><li class="level1"><a href="#autotoc_md48">Available objects and their input file syntax</a><ul><li class="level2"><a href="#arrheniusparameter">ArrheniusParameter</a></li>
 <li class="level2"><a href="#associativeisotropicplastichardening">AssociativeIsotropicPlasticHardening</a></li>
 <li class="level2"><a href="#associativej2flowdirection">AssociativeJ2FlowDirection</a></li>
 <li class="level2"><a href="#associativekinematicplastichardening">AssociativeKinematicPlasticHardening</a></li>
@@ -196,6 +196,7 @@ $(function(){initNavTree('syntax-models.html',''); initResizable(); });
 <li class="level2"><a href="#sfr3inputparameter">SFR3InputParameter</a></li>
 <li class="level2"><a href="#sr2backwardeulertimeintegration">SR2BackwardEulerTimeIntegration</a></li>
 <li class="level2"><a href="#sr2constantparameter">SR2ConstantParameter</a></li>
+<li class="level2"><a href="#sr2crystalmean">SR2CrystalMean</a></li>
 <li class="level2"><a href="#sr2forwardeulertimeintegration">SR2ForwardEulerTimeIntegration</a></li>
 <li class="level2"><a href="#sr2inputparameter">SR2InputParameter</a></li>
 <li class="level2"><a href="#sr2invariant">SR2Invariant</a></li>
@@ -259,7 +260,7 @@ You can always use <code>Ctrl</code>+<code>F</code> or <code>Cmd</code>+<code>F<
 <li>🇵: parameter</li>
 <li>🇧: buffer</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md45"></a>
+<h1><a class="anchor" id="autotoc_md48"></a>
 Available objects and their input file syntax</h1>
 <p>Refer to <a class="el" href="system-models.html">System Documentation</a> for detailed explanation about this system.</p>
 <h2><a class="anchor" id="arrheniusparameter"></a>
@@ -2551,6 +2552,34 @@ SR2ConstantParameter</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
+<h2><a class="anchor" id="sr2crystalmean"></a>
+SR2CrystalMean</h2>
+<p>Average the variable over all crystals. </p><details >
+<summary >
+<code>crystal_geometry_name</code> The name of the Data object containing the crystallographic information</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: string</li>
+<li><u>Default</u>: crystal_geometry </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>from</code> 🇮 Variable to average</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>to</code> 🇴 The averaged variable</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1CrystalMean.html">link</a></p>
 <h2><a class="anchor" id="sr2forwardeulertimeintegration"></a>
 SR2ForwardEulerTimeIntegration</h2>
 <p>Perform forward Euler time integration defined as \( s = s_n + (t - t_n) \dot{s} \), where \(s\) is the variable being integrated, \(\dot{s}\) is the variable rate, and \(t\) is time. Subscripts \(n\) denote quantities from the previous time step. </p><details >

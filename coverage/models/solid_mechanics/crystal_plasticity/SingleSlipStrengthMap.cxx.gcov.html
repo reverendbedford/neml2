@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-13 23:10:15</td>
+            <td class="headerValue">2024-12-16 23:27:01</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -101,7 +101,7 @@
 <a name="39"><span class="lineNum">      39 </span>            :       &quot;i, \\f$ \\bar{\\tau} \\f$ is an evolving slip system strength (one value of all systems), &quot;</a>
 <a name="40"><span class="lineNum">      40 </span><span class="lineCov">          6 :       &quot;defined by another object, and \\f$ \\tau_0 \\f$ is a constant strength.&quot;;</span></a>
 <a name="41"><span class="lineNum">      41 </span>            : </a>
-<a name="42"><span class="lineNum">      42 </span><span class="lineCov">          6 :   options.set_input(&quot;slip_hardening&quot;) = VariableName(&quot;state&quot;, &quot;internal&quot;, &quot;slip_hardening&quot;);</span></a>
+<a name="42"><span class="lineNum">      42 </span><span class="lineCov">          6 :   options.set_input(&quot;slip_hardening&quot;) = VariableName(STATE, &quot;internal&quot;, &quot;slip_hardening&quot;);</span></a>
 <a name="43"><span class="lineNum">      43 </span><span class="lineCov">          6 :   options.set(&quot;slip_hardening&quot;).doc() = &quot;The name of the evovling, scalar strength&quot;;</span></a>
 <a name="44"><span class="lineNum">      44 </span>            : </a>
 <a name="45"><span class="lineNum">      45 </span><span class="lineCov">          6 :   options.set_parameter&lt;CrossRef&lt;Scalar&gt;&gt;(&quot;constant_strength&quot;);</span></a>
@@ -110,25 +110,25 @@
 <a name="48"><span class="lineNum">      48 </span><span class="lineCov">          6 :   return options;</span></a>
 <a name="49"><span class="lineNum">      49 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="50"><span class="lineNum">      50 </span>            : </a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">          3 : SingleSlipStrengthMap::SingleSlipStrengthMap(const OptionSet &amp; options)</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineCov">          2 : SingleSlipStrengthMap::SingleSlipStrengthMap(const OptionSet &amp; options)</span></a>
 <a name="52"><span class="lineNum">      52 </span>            :   : SlipStrengthMap(options),</a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">          6 :     _tau_bar(declare_input_variable&lt;Scalar&gt;(&quot;slip_hardening&quot;)),</span></a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          3 :     _tau_const(declare_parameter&lt;Scalar&gt;(&quot;constant_strength&quot;, &quot;constant_strength&quot;))</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineCov">          2 :     _tau_bar(declare_input_variable&lt;Scalar&gt;(&quot;slip_hardening&quot;)),</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          4 :     _tau_const(declare_parameter&lt;Scalar&gt;(&quot;constant_strength&quot;, &quot;constant_strength&quot;))</span></a>
 <a name="55"><span class="lineNum">      55 </span>            : {</a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">          3 : }</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">          2 : }</span></a>
 <a name="57"><span class="lineNum">      57 </span>            : </a>
 <a name="58"><span class="lineNum">      58 </span>            : void</a>
-<a name="59"><span class="lineNum">      59 </span><span class="lineCov">        300 : SingleSlipStrengthMap::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">        296 : SingleSlipStrengthMap::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
 <a name="60"><span class="lineNum">      60 </span>            : {</a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">        300 :   neml_assert_dbg(!d2out_din2, &quot;Second derivative not implemented.&quot;);</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">        296 :   neml_assert_dbg(!d2out_din2, &quot;Second derivative not implemented.&quot;);</span></a>
 <a name="62"><span class="lineNum">      62 </span>            : </a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">        300 :   if (out)</span></a>
-<a name="64"><span class="lineNum">      64 </span><span class="lineCov">        298 :     _tau = (_tau_bar + _tau_const).base_unsqueeze(0).base_expand_as(_tau.value());</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">        296 :   if (out)</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">        295 :     _tau = (_tau_bar + _tau_const).batch_unsqueeze(-1).batch_expand(_crystal_geometry.nslip(), -1);</span></a>
 <a name="65"><span class="lineNum">      65 </span>            : </a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">        300 :   if (dout_din)</span></a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">         65 :     if (_tau_bar.is_dependent())</span></a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">         65 :       _tau.d(_tau_bar) = Scalar::ones(options()).base_expand_as(_tau.d(_tau_bar).value());</span></a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">        300 : }</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">        296 :   if (dout_din)</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">         63 :     if (_tau_bar.is_dependent())</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">         63 :       _tau.d(_tau_bar) = Tensor::ones(_crystal_geometry.nslip(), _tau_bar.options());</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">        296 : }</span></a>
 <a name="70"><span class="lineNum">      70 </span>            : } // namespace neml2</a>
 </pre>
       </td>

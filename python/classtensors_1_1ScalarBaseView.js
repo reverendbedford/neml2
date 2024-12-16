@@ -1,10 +1,10 @@
 var classtensors_1_1ScalarBaseView =
 [
     [ "__init__", "classtensors_1_1ScalarBaseView.html#a8d0c28f1572a05b0d1260188973aec69", null ],
-    [ "__getitem__", "classtensors_1_1ScalarBaseView.html#a4ef9f37737c1c5574a189d279677279b", null ],
+    [ "__getitem__", "classtensors_1_1ScalarBaseView.html#a5093770c7ffa41760959e5b71004ce57", null ],
     [ "__getitem__", "classtensors_1_1ScalarBaseView.html#af4e5a82dd2091933207dba0cb6253b85", null ],
-    [ "__setitem__", "classtensors_1_1ScalarBaseView.html#ad3086cc2c2e496079ee0cb7101efcdd2", null ],
-    [ "__setitem__", "classtensors_1_1ScalarBaseView.html#a7f0df3f16d01543ae18ece40db47be4c", null ],
+    [ "__setitem__", "classtensors_1_1ScalarBaseView.html#a0a1b9c91ef6262ae4d30998ae2b27cde", null ],
+    [ "__setitem__", "classtensors_1_1ScalarBaseView.html#a4dfa71ea0bdca5bb60e587b597f8df83", null ],
     [ "__setitem__", "classtensors_1_1ScalarBaseView.html#a754421ed29c9e1df44df3f8f6011cc71", null ],
     [ "__setitem__", "classtensors_1_1ScalarBaseView.html#a291cf91b893b7bf50a66d4a6702149e7", null ],
     [ "dim", "classtensors_1_1ScalarBaseView.html#a35536134a6ceb1e866faf188992e9c9f", null ],

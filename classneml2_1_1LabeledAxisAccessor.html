@@ -138,17 +138,15 @@ Public Types</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ad2b3c93540dbf9dcbe9a76153246fb80" id="r_ad2b3c93540dbf9dcbe9a76153246fb80"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad2b3c93540dbf9dcbe9a76153246fb80">LabeledAxisAccessor</a> ()=<a class="el" href="classneml2_1_1CrossRef.html">default</a></td></tr>
 <tr class="separator:ad2b3c93540dbf9dcbe9a76153246fb80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebf0a1a9053667c3f1cd073fdef865d3" id="r_aebf0a1a9053667c3f1cd073fdef865d3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aebf0a1a9053667c3f1cd073fdef865d3">~LabeledAxisAccessor</a> ()</td></tr>
-<tr class="separator:aebf0a1a9053667c3f1cd073fdef865d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63073ca6e8c8a3fe09cae5b0955b7304" id="r_a63073ca6e8c8a3fe09cae5b0955b7304"><td class="memTemplParams" colspan="2">template&lt;typename... S&gt; </td></tr>
 <tr class="memitem:a63073ca6e8c8a3fe09cae5b0955b7304"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a63073ca6e8c8a3fe09cae5b0955b7304">LabeledAxisAccessor</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">char</a> *name, <a class="el" href="classneml2_1_1CrossRef.html">S</a> &amp;&amp;... <a class="el" href="classneml2_1_1CrossRef.html">names</a>)</td></tr>
 <tr class="separator:a63073ca6e8c8a3fe09cae5b0955b7304"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f77bf7bf555848fcb277b5a9010a670" id="r_a1f77bf7bf555848fcb277b5a9010a670"><td class="memTemplParams" colspan="2">template&lt;typename... S&gt; </td></tr>
 <tr class="memitem:a1f77bf7bf555848fcb277b5a9010a670"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a1f77bf7bf555848fcb277b5a9010a670">LabeledAxisAccessor</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;name, <a class="el" href="classneml2_1_1CrossRef.html">S</a> &amp;&amp;... <a class="el" href="classneml2_1_1CrossRef.html">names</a>)</td></tr>
 <tr class="separator:a1f77bf7bf555848fcb277b5a9010a670"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af3156d95ef0c2621303c48d6408a2325" id="r_af3156d95ef0c2621303c48d6408a2325"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a class="el" href="classneml2_1_1CrossRef.html">Container</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = std::enable_if_t&lt;!std::is_convertible_v&lt;Container, std::string&gt;&gt;&gt; </td></tr>
-<tr class="memitem:af3156d95ef0c2621303c48d6408a2325"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#af3156d95ef0c2621303c48d6408a2325">LabeledAxisAccessor</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Container</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">c</a>)</td></tr>
-<tr class="separator:af3156d95ef0c2621303c48d6408a2325"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a770825b8d6c37f0122fdfc63784793ae" id="r_a770825b8d6c37f0122fdfc63784793ae"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a class="el" href="classneml2_1_1CrossRef.html">Container</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;                !std::is_convertible_v&lt;Container, std::string&gt; &amp;&amp;                std::is_convertible_v&lt;typename std::iterator_traits&lt;                                          decltype(std::declval&lt;Container&gt;().begin())&gt;::value_type,                                      std::string&gt; &amp;&amp;                std::is_convertible_v&lt;typename std::iterator_traits&lt;                                          decltype(std::declval&lt;Container&gt;().end())&gt;::value_type, std::string &gt; &gt; &gt; </td></tr>
+<tr class="memitem:a770825b8d6c37f0122fdfc63784793ae"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a770825b8d6c37f0122fdfc63784793ae">LabeledAxisAccessor</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Container</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">c</a>)</td></tr>
+<tr class="separator:a770825b8d6c37f0122fdfc63784793ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6bf50c7d79229ef0af3202e38b42cc02" id="r_a6bf50c7d79229ef0af3202e38b42cc02"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6bf50c7d79229ef0af3202e38b42cc02">operator std::vector&lt; std::string &gt;</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="separator:a6bf50c7d79229ef0af3202e38b42cc02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf530e2062ae5cc2a1064ab8a8e7708c" id="r_adf530e2062ae5cc2a1064ab8a8e7708c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> c10::SmallVector&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adf530e2062ae5cc2a1064ab8a8e7708c">vec</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
@@ -157,27 +155,32 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a644718bb2fb240de962dc3c9a1fdf0dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a259cb5a711406a8c3e5d937eb9350cca" id="r_a259cb5a711406a8c3e5d937eb9350cca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a259cb5a711406a8c3e5d937eb9350cca">size</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="separator:a259cb5a711406a8c3e5d937eb9350cca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe3d8226a476f90dc6b5563bc11a229d" id="r_afe3d8226a476f90dc6b5563bc11a229d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afe3d8226a476f90dc6b5563bc11a229d">operator[]</a> (<a class="el" href="classneml2_1_1CrossRef.html">size_t</a> <a class="el" href="classneml2_1_1CrossRef.html">i</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="separator:afe3d8226a476f90dc6b5563bc11a229d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68aee86962a6ea2deef39fd6a9f86a4c" id="r_a68aee86962a6ea2deef39fd6a9f86a4c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a68aee86962a6ea2deef39fd6a9f86a4c">with_suffix</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp;<a class="el" href="classneml2_1_1CrossRef.html">suffix</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="memdesc:a68aee86962a6ea2deef39fd6a9f86a4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append a suffix to the final item name.  <br /></td></tr>
 <tr class="separator:a68aee86962a6ea2deef39fd6a9f86a4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3bc21352099bd9fa964b5cb536dc1057" id="r_a3bc21352099bd9fa964b5cb536dc1057"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3bc21352099bd9fa964b5cb536dc1057">append</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a> &amp;axis) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memitem:a3bc21352099bd9fa964b5cb536dc1057" id="r_a3bc21352099bd9fa964b5cb536dc1057"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3bc21352099bd9fa964b5cb536dc1057">append</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">axis</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="memdesc:a3bc21352099bd9fa964b5cb536dc1057"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append another accessor.  <br /></td></tr>
 <tr class="separator:a3bc21352099bd9fa964b5cb536dc1057"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a54a0457553ab1f399991a41c36b13b1f" id="r_a54a0457553ab1f399991a41c36b13b1f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a54a0457553ab1f399991a41c36b13b1f">prepend</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a> &amp;axis) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memitem:a54a0457553ab1f399991a41c36b13b1f" id="r_a54a0457553ab1f399991a41c36b13b1f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a54a0457553ab1f399991a41c36b13b1f">prepend</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">axis</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="memdesc:a54a0457553ab1f399991a41c36b13b1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prepend another accessor.  <br /></td></tr>
 <tr class="separator:a54a0457553ab1f399991a41c36b13b1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ebbbfb529dc9ba433e1c6c452a2d2f3" id="r_a8ebbbfb529dc9ba433e1c6c452a2d2f3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8ebbbfb529dc9ba433e1c6c452a2d2f3">slice</a> (<a class="el" href="classneml2_1_1CrossRef.html">size_t</a> <a class="el" href="classneml2_1_1CrossRef.html">n</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="memdesc:a8ebbbfb529dc9ba433e1c6c452a2d2f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove the leading <code>n</code> items from the labels.  <br /></td></tr>
-<tr class="separator:a8ebbbfb529dc9ba433e1c6c452a2d2f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9edaec4563819c120910497eb315fdcd" id="r_a9edaec4563819c120910497eb315fdcd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9edaec4563819c120910497eb315fdcd">slice</a> (<a class="el" href="classneml2_1_1CrossRef.html">size_t</a> <a class="el" href="classneml2_1_1CrossRef.html">n1</a>, <a class="el" href="classneml2_1_1CrossRef.html">size_t</a> <a class="el" href="classneml2_1_1CrossRef.html">n2</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="memdesc:a9edaec4563819c120910497eb315fdcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract out the labels from <code>n1</code> to <code>n2</code>.  <br /></td></tr>
-<tr class="separator:a9edaec4563819c120910497eb315fdcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d634ad5c17cb1602647a804db8a19e4" id="r_a6d634ad5c17cb1602647a804db8a19e4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6d634ad5c17cb1602647a804db8a19e4">remount</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a> &amp;axis, <a class="el" href="classneml2_1_1CrossRef.html">size_t</a> <a class="el" href="classneml2_1_1CrossRef.html">n</a>=1) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
-<tr class="memdesc:a6d634ad5c17cb1602647a804db8a19e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">A combination of slice and prepend.  <br /></td></tr>
-<tr class="separator:a6d634ad5c17cb1602647a804db8a19e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64779a9b4ce79c080898dcd85ddc4cee" id="r_a64779a9b4ce79c080898dcd85ddc4cee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a64779a9b4ce79c080898dcd85ddc4cee">start_with</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a> &amp;axis) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memitem:adc32cebc1f3b92f5adcb677cde294efe" id="r_adc32cebc1f3b92f5adcb677cde294efe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adc32cebc1f3b92f5adcb677cde294efe">slice</a> (<a class="el" href="classneml2_1_1CrossRef.html">int64_t</a> <a class="el" href="classneml2_1_1CrossRef.html">n</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:adc32cebc1f3b92f5adcb677cde294efe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove the leading <code>n</code> items from the labels.  <br /></td></tr>
+<tr class="separator:adc32cebc1f3b92f5adcb677cde294efe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a949473a52cdf56e041f999cf32a5af21" id="r_a949473a52cdf56e041f999cf32a5af21"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a949473a52cdf56e041f999cf32a5af21">slice</a> (<a class="el" href="classneml2_1_1CrossRef.html">int64_t</a> <a class="el" href="classneml2_1_1CrossRef.html">n1</a>, <a class="el" href="classneml2_1_1CrossRef.html">int64_t</a> <a class="el" href="classneml2_1_1CrossRef.html">n2</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:a949473a52cdf56e041f999cf32a5af21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract out the labels from <code>n1</code> to <code>n2</code>.  <br /></td></tr>
+<tr class="separator:a949473a52cdf56e041f999cf32a5af21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a705a81dee513937c16fadec72303361e" id="r_a705a81dee513937c16fadec72303361e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a705a81dee513937c16fadec72303361e">remount</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">axis</a>, <a class="el" href="classneml2_1_1CrossRef.html">int64_t</a> <a class="el" href="classneml2_1_1CrossRef.html">n</a>=1) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:a705a81dee513937c16fadec72303361e"><td class="mdescLeft">&#160;</td><td class="mdescRight">A combination of slice and prepend.  <br /></td></tr>
+<tr class="separator:a705a81dee513937c16fadec72303361e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64779a9b4ce79c080898dcd85ddc4cee" id="r_a64779a9b4ce79c080898dcd85ddc4cee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a64779a9b4ce79c080898dcd85ddc4cee">start_with</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">axis</a>) <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="memdesc:a64779a9b4ce79c080898dcd85ddc4cee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if this accessor begins with another accessor.  <br /></td></tr>
 <tr class="separator:a64779a9b4ce79c080898dcd85ddc4cee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d9232156e114273d52e4ccdb20fe9ae" id="r_a3d9232156e114273d52e4ccdb20fe9ae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3d9232156e114273d52e4ccdb20fe9ae">current</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:a3d9232156e114273d52e4ccdb20fe9ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the "current" counterpart.  <br /></td></tr>
+<tr class="separator:a3d9232156e114273d52e4ccdb20fe9ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7293d8a4232072b79d390d3a5e576a3e" id="r_a7293d8a4232072b79d390d3a5e576a3e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7293d8a4232072b79d390d3a5e576a3e">old</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="memdesc:a7293d8a4232072b79d390d3a5e576a3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the "old" counterpart.  <br /></td></tr>
 <tr class="separator:a7293d8a4232072b79d390d3a5e576a3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -192,6 +195,19 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a29305669b60ca1680752e2fc3592ba99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:accf9a4bd0c34d4a5f6a7dab66ea10cdc" id="r_accf9a4bd0c34d4a5f6a7dab66ea10cdc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a2fc8d7e242c9b5c203449904c8c9e914">const_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#accf9a4bd0c34d4a5f6a7dab66ea10cdc">end</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="separator:accf9a4bd0c34d4a5f6a7dab66ea10cdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:a2669d1f91b798f16b2d82c7d6726c277" id="r_a2669d1f91b798f16b2d82c7d6726c277"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2669d1f91b798f16b2d82c7d6726c277">is_state</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="separator:a2669d1f91b798f16b2d82c7d6726c277"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb286c8f7d0bf903ca071c65be12a2b7" id="r_aeb286c8f7d0bf903ca071c65be12a2b7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeb286c8f7d0bf903ca071c65be12a2b7">is_old_state</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="separator:aeb286c8f7d0bf903ca071c65be12a2b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc348d929ff852dcc19a90665c90203f" id="r_acc348d929ff852dcc19a90665c90203f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acc348d929ff852dcc19a90665c90203f">is_force</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="separator:acc348d929ff852dcc19a90665c90203f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a131f9ec0218970bfafb7c2070fc7d1fa" id="r_a131f9ec0218970bfafb7c2070fc7d1fa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a131f9ec0218970bfafb7c2070fc7d1fa">is_old_force</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="separator:a131f9ec0218970bfafb7c2070fc7d1fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b3d7d711bd7b11ee0d594a621b0b2c1" id="r_a8b3d7d711bd7b11ee0d594a621b0b2c1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8b3d7d711bd7b11ee0d594a621b0b2c1">is_residual</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="separator:a8b3d7d711bd7b11ee0d594a621b0b2c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25fea79e63e6e8aac92b06df627bc63c" id="r_a25fea79e63e6e8aac92b06df627bc63c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a25fea79e63e6e8aac92b06df627bc63c">is_parameter</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="separator:a25fea79e63e6e8aac92b06df627bc63c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a2fc8d7e242c9b5c203449904c8c9e914" name="a2fc8d7e242c9b5c203449904c8c9e914"></a>
@@ -242,31 +258,6 @@ Public Member Functions</h2></td></tr>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">default</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="aebf0a1a9053667c3f1cd073fdef865d3" name="aebf0a1a9053667c3f1cd073fdef865d3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aebf0a1a9053667c3f1cd073fdef865d3">&#9670;&#160;</a></span>~LabeledAxisAccessor()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">~<a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a> </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -335,13 +326,13 @@ template&lt;typename... S&gt; </div>
 
 </div>
 </div>
-<a id="af3156d95ef0c2621303c48d6408a2325" name="af3156d95ef0c2621303c48d6408a2325"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af3156d95ef0c2621303c48d6408a2325">&#9670;&#160;</a></span>LabeledAxisAccessor() <span class="overload">[4/4]</span></h2>
+<a id="a770825b8d6c37f0122fdfc63784793ae" name="a770825b8d6c37f0122fdfc63784793ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a770825b8d6c37f0122fdfc63784793ae">&#9670;&#160;</a></span>LabeledAxisAccessor() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a class="el" href="classneml2_1_1CrossRef.html">Container</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = std::enable_if_t&lt;!std::is_convertible_v&lt;Container, std::string&gt;&gt;&gt; </div>
+template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a class="el" href="classneml2_1_1CrossRef.html">Container</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;                !std::is_convertible_v&lt;Container, std::string&gt; &amp;&amp;                std::is_convertible_v&lt;typename std::iterator_traits&lt;                                          decltype(std::declval&lt;Container&gt;().begin())&gt;::value_type,                                      std::string&gt; &amp;&amp;                std::is_convertible_v&lt;typename std::iterator_traits&lt;                                          decltype(std::declval&lt;Container&gt;().end())&gt;::value_type, std::string &gt; &gt; &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -432,6 +423,25 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
 
 </div>
 </div>
+<a id="a3d9232156e114273d52e4ccdb20fe9ae" name="a3d9232156e114273d52e4ccdb20fe9ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d9232156e114273d52e4ccdb20fe9ae">&#9670;&#160;</a></span>current()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a> current </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the "current" counterpart. </p>
+
+</div>
+</div>
 <a id="a644718bb2fb240de962dc3c9a1fdf0dc" name="a644718bb2fb240de962dc3c9a1fdf0dc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a644718bb2fb240de962dc3c9a1fdf0dc">&#9670;&#160;</a></span>empty()</h2>
 
@@ -499,6 +509,109 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
 
 </div>
 </div>
+<a id="acc348d929ff852dcc19a90665c90203f" name="acc348d929ff852dcc19a90665c90203f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc348d929ff852dcc19a90665c90203f">&#9670;&#160;</a></span>is_force()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">bool</a> is_force </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a131f9ec0218970bfafb7c2070fc7d1fa" name="a131f9ec0218970bfafb7c2070fc7d1fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a131f9ec0218970bfafb7c2070fc7d1fa">&#9670;&#160;</a></span>is_old_force()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">bool</a> is_old_force </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aeb286c8f7d0bf903ca071c65be12a2b7" name="aeb286c8f7d0bf903ca071c65be12a2b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb286c8f7d0bf903ca071c65be12a2b7">&#9670;&#160;</a></span>is_old_state()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">bool</a> is_old_state </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a25fea79e63e6e8aac92b06df627bc63c" name="a25fea79e63e6e8aac92b06df627bc63c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25fea79e63e6e8aac92b06df627bc63c">&#9670;&#160;</a></span>is_parameter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">bool</a> is_parameter </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8b3d7d711bd7b11ee0d594a621b0b2c1" name="a8b3d7d711bd7b11ee0d594a621b0b2c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b3d7d711bd7b11ee0d594a621b0b2c1">&#9670;&#160;</a></span>is_residual()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">bool</a> is_residual </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2669d1f91b798f16b2d82c7d6726c277" name="a2669d1f91b798f16b2d82c7d6726c277"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2669d1f91b798f16b2d82c7d6726c277">&#9670;&#160;</a></span>is_state()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">bool</a> is_state </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Check if the accessor is on a specific sub-axis </p>
+
+</div>
+</div>
 <a id="a7293d8a4232072b79d390d3a5e576a3e" name="a7293d8a4232072b79d390d3a5e576a3e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7293d8a4232072b79d390d3a5e576a3e">&#9670;&#160;</a></span>old()</h2>
 
@@ -543,6 +656,23 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
 
 </div>
 </div>
+<a id="afe3d8226a476f90dc6b5563bc11a229d" name="afe3d8226a476f90dc6b5563bc11a229d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe3d8226a476f90dc6b5563bc11a229d">&#9670;&#160;</a></span>operator[]()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">const</a> std::string &amp; <a class="el" href="classneml2_1_1CrossRef.html">operator</a>[] </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>i</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a54a0457553ab1f399991a41c36b13b1f" name="a54a0457553ab1f399991a41c36b13b1f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a54a0457553ab1f399991a41c36b13b1f">&#9670;&#160;</a></span>prepend()</h2>
 
@@ -562,8 +692,8 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
 
 </div>
 </div>
-<a id="a6d634ad5c17cb1602647a804db8a19e4" name="a6d634ad5c17cb1602647a804db8a19e4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6d634ad5c17cb1602647a804db8a19e4">&#9670;&#160;</a></span>remount()</h2>
+<a id="a705a81dee513937c16fadec72303361e" name="a705a81dee513937c16fadec72303361e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a705a81dee513937c16fadec72303361e">&#9670;&#160;</a></span>remount()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -576,7 +706,7 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>n</em><span class="paramdefsep"> = </span><span class="paramdefval">1</span></span>&#160;) const</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">int64_t</a></td>          <td class="paramname"><span class="paramname"><em>n</em><span class="paramdefsep"> = </span><span class="paramdefval">1</span></span>&#160;) const</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -602,8 +732,8 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
 
 </div>
 </div>
-<a id="a8ebbbfb529dc9ba433e1c6c452a2d2f3" name="a8ebbbfb529dc9ba433e1c6c452a2d2f3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8ebbbfb529dc9ba433e1c6c452a2d2f3">&#9670;&#160;</a></span>slice() <span class="overload">[1/2]</span></h2>
+<a id="adc32cebc1f3b92f5adcb677cde294efe" name="adc32cebc1f3b92f5adcb677cde294efe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc32cebc1f3b92f5adcb677cde294efe">&#9670;&#160;</a></span>slice() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -611,7 +741,7 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
         <tr>
           <td class="memname"><a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a> slice </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>n</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">int64_t</a></td>          <td class="paramname"><span class="paramname"><em>n</em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -621,8 +751,8 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
 
 </div>
 </div>
-<a id="a9edaec4563819c120910497eb315fdcd" name="a9edaec4563819c120910497eb315fdcd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9edaec4563819c120910497eb315fdcd">&#9670;&#160;</a></span>slice() <span class="overload">[2/2]</span></h2>
+<a id="a949473a52cdf56e041f999cf32a5af21" name="a949473a52cdf56e041f999cf32a5af21"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a949473a52cdf56e041f999cf32a5af21">&#9670;&#160;</a></span>slice() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -630,12 +760,12 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
         <tr>
           <td class="memname"><a class="el" href="classneml2_1_1LabeledAxisAccessor.html">LabeledAxisAccessor</a> slice </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>n1</em>, </span></td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">int64_t</a></td>          <td class="paramname"><span class="paramname"><em>n1</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>n2</em></span>&#160;) const</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">int64_t</a></td>          <td class="paramname"><span class="paramname"><em>n2</em></span>&#160;) const</td>
         </tr>
       </table>
 </div><div class="memdoc">

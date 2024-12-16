@@ -146,7 +146,7 @@ Variable declaration</h1>
 <div class="line"><span class="keyword">public</span>:</div>
 <div class="line">  <span class="keyword">static</span> OptionSet <a class="code hl_function" href="classneml2_1_1IsotropicHardening.html#acec712ff48d4c0884a1362c116f3257a">expected_options</a>();</div>
 <div class="line"> </div>
-<div class="line">  <a class="code hl_function" href="classneml2_1_1IsotropicHardening.html#aa1a9bb4383495d684fe4c362ebcfe33e">IsotropicHardening</a>(<span class="keyword">const</span> OptionSet &amp; <a class="code hl_function" href="classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132">options</a>);</div>
+<div class="line">  <a class="code hl_function" href="classneml2_1_1IsotropicHardening.html#aa1a9bb4383495d684fe4c362ebcfe33e">IsotropicHardening</a>(<span class="keyword">const</span> OptionSet &amp; options);</div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">protected</span>:</div>
 <div class="line">  <span class="comment">// Equivalent plastic strain</span></div>
@@ -160,8 +160,7 @@ Variable declaration</h1>
 <div class="ttc" id="aclassneml2_1_1IsotropicHardening_html_aa1a9bb4383495d684fe4c362ebcfe33e"><div class="ttname"><a href="classneml2_1_1IsotropicHardening.html#aa1a9bb4383495d684fe4c362ebcfe33e">neml2::IsotropicHardening::IsotropicHardening</a></div><div class="ttdeci">IsotropicHardening(const OptionSet &amp;options)</div><div class="ttdef"><b>Definition</b> IsotropicHardening.cxx:44</div></div>
 <div class="ttc" id="aclassneml2_1_1IsotropicHardening_html_acb1d8d5cc3d18f5bb60c7dbe0728b2e6"><div class="ttname"><a href="classneml2_1_1IsotropicHardening.html#acb1d8d5cc3d18f5bb60c7dbe0728b2e6">neml2::IsotropicHardening::_ep</a></div><div class="ttdeci">const Variable&lt; Scalar &gt; &amp; _ep</div><div class="ttdoc">Equivalent plastic strain.</div><div class="ttdef"><b>Definition</b> IsotropicHardening.h:40</div></div>
 <div class="ttc" id="aclassneml2_1_1IsotropicHardening_html_acec712ff48d4c0884a1362c116f3257a"><div class="ttname"><a href="classneml2_1_1IsotropicHardening.html#acec712ff48d4c0884a1362c116f3257a">neml2::IsotropicHardening::expected_options</a></div><div class="ttdeci">static OptionSet expected_options()</div><div class="ttdef"><b>Definition</b> IsotropicHardening.cxx:30</div></div>
-<div class="ttc" id="aclassneml2_1_1Model_html_a761d77eb7c81c3e93b34bfe6caf4b132"><div class="ttname"><a href="classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132">neml2::Model::options</a></div><div class="ttdeci">const torch::TensorOptions &amp; options() const</div><div class="ttdoc">Storage tensor options.</div><div class="ttdef"><b>Definition</b> Model.h:111</div></div>
-<div class="ttc" id="anamespaceneml2_html"><div class="ttname"><a href="namespaceneml2.html">neml2</a></div><div class="ttdef"><b>Definition</b> CrossRef.cxx:30</div></div>
+<div class="ttc" id="anamespaceneml2_html"><div class="ttname"><a href="namespaceneml2.html">neml2</a></div><div class="ttdef"><b>Definition</b> CrossRef.cxx:31</div></div>
 </div><!-- fragment --><p> Since isotropic hardening <em>is a</em> model, the class inherits from <code>Model</code>. The user-facing expected options are defined by the static method <code>expected_options</code>. NEML2 handles the parsing of user-specified options and pass them to the constructor (see <a class="el" href="input-file.html#input-file-syntax">Input file syntax</a> on how the input file works). The input variable of the model is the equivalent plastic strain, and the output variable of the model is the isotropic hardening. Their corresponding variable value references are stored as <code>_ep</code> and <code>_h</code>, respectively, again following the <a class="el" href="naming-conventions.html">naming conventions</a>.</p>
 <p>The expected options and the constructor are defined as </p><div class="fragment"><div class="line"><span class="preprocessor">#include &quot;neml2/models/solid_mechanics/IsotropicHardening.h&quot;</span></div>
 <div class="line"> </div>
@@ -170,10 +169,10 @@ Variable declaration</h1>
 <div class="line">OptionSet</div>
 <div class="line"><a class="code hl_function" href="classneml2_1_1IsotropicHardening.html#acec712ff48d4c0884a1362c116f3257a">IsotropicHardening::expected_options</a>()</div>
 <div class="line">{</div>
-<div class="line">  OptionSet <a class="code hl_function" href="classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132">options</a> = <a class="code hl_function" href="classneml2_1_1Model.html#acec712ff48d4c0884a1362c116f3257a">Model::expected_options</a>();</div>
-<div class="line">  <a class="code hl_function" href="classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132">options</a>.set&lt;<a class="code hl_typedef" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a>&gt;(<span class="stringliteral">&quot;equivalent_plastic_strain&quot;</span>) = <a class="code hl_typedef" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a>(<span class="stringliteral">&quot;state&quot;</span>, <span class="stringliteral">&quot;internal&quot;</span>, <span class="stringliteral">&quot;ep&quot;</span>);</div>
-<div class="line">  <a class="code hl_function" href="classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132">options</a>.set&lt;<a class="code hl_typedef" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a>&gt;(<span class="stringliteral">&quot;isotropic_hardening&quot;</span>) = <a class="code hl_typedef" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a>(<span class="stringliteral">&quot;state&quot;</span>, <span class="stringliteral">&quot;internal&quot;</span>, <span class="stringliteral">&quot;k&quot;</span>);</div>
-<div class="line">  <span class="keywordflow">return</span> <a class="code hl_function" href="classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132">options</a>;</div>
+<div class="line">  OptionSet options = <a class="code hl_function" href="classneml2_1_1Model.html#acec712ff48d4c0884a1362c116f3257a">Model::expected_options</a>();</div>
+<div class="line">  options.set&lt;<a class="code hl_typedef" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a>&gt;(<span class="stringliteral">&quot;equivalent_plastic_strain&quot;</span>) = <a class="code hl_typedef" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a>(<span class="stringliteral">&quot;state&quot;</span>, <span class="stringliteral">&quot;internal&quot;</span>, <span class="stringliteral">&quot;ep&quot;</span>);</div>
+<div class="line">  options.set&lt;<a class="code hl_typedef" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a>&gt;(<span class="stringliteral">&quot;isotropic_hardening&quot;</span>) = <a class="code hl_typedef" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">VariableName</a>(<span class="stringliteral">&quot;state&quot;</span>, <span class="stringliteral">&quot;internal&quot;</span>, <span class="stringliteral">&quot;k&quot;</span>);</div>
+<div class="line">  <span class="keywordflow">return</span> options;</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_function" href="classneml2_1_1IsotropicHardening.html#aa1a9bb4383495d684fe4c362ebcfe33e">IsotropicHardening::IsotropicHardening</a>(<span class="keyword">const</span> OptionSet &amp; options)</div>
@@ -183,7 +182,7 @@ Variable declaration</h1>
 <div class="line">{</div>
 <div class="line">}</div>
 <div class="line">} <span class="comment">// namespace neml2</span></div>
-<div class="ttc" id="aclassneml2_1_1Model_html_acec712ff48d4c0884a1362c116f3257a"><div class="ttname"><a href="classneml2_1_1Model.html#acec712ff48d4c0884a1362c116f3257a">neml2::Model::expected_options</a></div><div class="ttdeci">static OptionSet expected_options()</div><div class="ttdef"><b>Definition</b> Model.cxx:31</div></div>
+<div class="ttc" id="aclassneml2_1_1Model_html_acec712ff48d4c0884a1362c116f3257a"><div class="ttname"><a href="classneml2_1_1Model.html#acec712ff48d4c0884a1362c116f3257a">neml2::Model::expected_options</a></div><div class="ttdeci">static OptionSet expected_options()</div><div class="ttdef"><b>Definition</b> Model.cxx:33</div></div>
 <div class="ttc" id="anamespaceneml2_html_a5cf0dc3e9d16378ebe48923973730e54"><div class="ttname"><a href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">neml2::VariableName</a></div><div class="ttdeci">LabeledAxisAccessor VariableName</div><div class="ttdef"><b>Definition</b> parser_utils.h:33</div></div>
 </div><!-- fragment --><p> Recall that variable names on <code>LabeledAxis</code> are always fully qualified, the equivalent plastic strain and the isotropic hardening are denoted as "state/internal/ep" and "state/internal/k", respectively. An instance of the class is constructed by extracting user-specified options (of type <code>OptionSet</code>). Note how <code>declare_input_variable&lt;Scalar&gt;</code> and <code>declare_output_variable&lt;Scalar&gt;</code> are used to declare and register the input and output variables.</p>
 <h1><a class="anchor" id="custom-model-parameter-declaration"></a>
@@ -205,7 +204,7 @@ Parameter declaration</h1>
 <div class="line"><span class="keyword">public</span>:</div>
 <div class="line">  <span class="keyword">static</span> OptionSet <a class="code hl_function" href="classneml2_1_1LinearIsotropicHardening.html#acec712ff48d4c0884a1362c116f3257a">expected_options</a>();</div>
 <div class="line"> </div>
-<div class="line">  <a class="code hl_function" href="classneml2_1_1LinearIsotropicHardening.html#aaaaad6f26335889463eda2389411ea0f">LinearIsotropicHardening</a>(<span class="keyword">const</span> OptionSet &amp; <a class="code hl_function" href="classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132">options</a>);</div>
+<div class="line">  <a class="code hl_function" href="classneml2_1_1LinearIsotropicHardening.html#aaaaad6f26335889463eda2389411ea0f">LinearIsotropicHardening</a>(<span class="keyword">const</span> OptionSet &amp; options);</div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">protected</span>:</div>
 <div class="line">  <span class="keywordtype">void</span> <a class="code hl_function" href="classneml2_1_1LinearIsotropicHardening.html#af5600a36813e455aefee72bec1d574fb">set_value</a>(<span class="keywordtype">bool</span> out, <span class="keywordtype">bool</span> dout_din, <span class="keywordtype">bool</span> d2out_din2) <span class="keyword">override</span>;</div>
@@ -227,9 +226,9 @@ Parameter declaration</h1>
 <div class="line">OptionSet</div>
 <div class="line"><a class="code hl_function" href="classneml2_1_1LinearIsotropicHardening.html#acec712ff48d4c0884a1362c116f3257a">LinearIsotropicHardening::expected_options</a>()</div>
 <div class="line">{</div>
-<div class="line">  OptionSet <a class="code hl_function" href="classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132">options</a> = <a class="code hl_function" href="classneml2_1_1IsotropicHardening.html#acec712ff48d4c0884a1362c116f3257a">IsotropicHardening::expected_options</a>();</div>
-<div class="line">  <a class="code hl_function" href="classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132">options</a>.set&lt;CrossRef&lt;Scalar&gt;&gt;(<span class="stringliteral">&quot;hardening_modulus&quot;</span>);</div>
-<div class="line">  <span class="keywordflow">return</span> <a class="code hl_function" href="classneml2_1_1Model.html#a761d77eb7c81c3e93b34bfe6caf4b132">options</a>;</div>
+<div class="line">  OptionSet options = <a class="code hl_function" href="classneml2_1_1IsotropicHardening.html#acec712ff48d4c0884a1362c116f3257a">IsotropicHardening::expected_options</a>();</div>
+<div class="line">  options.set&lt;CrossRef&lt;Scalar&gt;&gt;(<span class="stringliteral">&quot;hardening_modulus&quot;</span>);</div>
+<div class="line">  <span class="keywordflow">return</span> options;</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_function" href="classneml2_1_1LinearIsotropicHardening.html#aaaaad6f26335889463eda2389411ea0f">LinearIsotropicHardening::LinearIsotropicHardening</a>(<span class="keyword">const</span> OptionSet &amp; options)</div>

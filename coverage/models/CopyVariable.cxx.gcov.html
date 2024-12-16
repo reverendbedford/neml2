@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-13 23:10:15</td>
+            <td class="headerValue">2024-12-16 23:27:01</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">23</td>
@@ -110,8 +110,8 @@
 <a name="48"><span class="lineNum">      48 </span>            : template &lt;typename T&gt;</a>
 <a name="49"><span class="lineNum">      49 </span><span class="lineCov">          4 : CopyVariable&lt;T&gt;::CopyVariable(const OptionSet &amp; options)</span></a>
 <a name="50"><span class="lineNum">      50 </span>            :   : Model(options),</a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">          8 :     _to(declare_output_variable&lt;T&gt;(&quot;to&quot;)),</span></a>
-<a name="52"><span class="lineNum">      52 </span><span class="lineCov">          4 :     _from(declare_input_variable&lt;T&gt;(&quot;from&quot;))</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineCov">          4 :     _to(declare_output_variable&lt;T&gt;(&quot;to&quot;)),</span></a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineCov">          8 :     _from(declare_input_variable&lt;T&gt;(&quot;from&quot;))</span></a>
 <a name="53"><span class="lineNum">      53 </span>            : {</a>
 <a name="54"><span class="lineNum">      54 </span><span class="lineCov">          4 : }</span></a>
 <a name="55"><span class="lineNum">      55 </span>            : </a>
@@ -124,7 +124,7 @@
 <a name="62"><span class="lineNum">      62 </span>            : </a>
 <a name="63"><span class="lineNum">      63 </span><span class="lineCov">        171 :   if (_from.is_dependent())</span></a>
 <a name="64"><span class="lineNum">      64 </span><span class="lineCov">        171 :     if (dout_din)</span></a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">         81 :       _to.d(_from) = T::identity_map(options());</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">         81 :       _to.d(_from) = T::identity_map(_from.options());</span></a>
 <a name="66"><span class="lineNum">      66 </span>            : </a>
 <a name="67"><span class="lineNum">      67 </span>            :   if (d2out_din2)</a>
 <a name="68"><span class="lineNum">      68 </span>            :   {</a>

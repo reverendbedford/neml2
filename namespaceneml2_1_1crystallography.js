@@ -18,6 +18,6 @@ var namespaceneml2_1_1crystallography =
     [ "register_NEML2_object", "namespaceneml2_1_1crystallography.html#ab2aa1766ea6875c2d3d3ae3d07574485", null ],
     [ "register_NEML2_object", "namespaceneml2_1_1crystallography.html#a8feb6cc94216570732e6967d2e198c7e", null ],
     [ "register_NEML2_object", "namespaceneml2_1_1crystallography.html#a15dd992592bf8ce08d6a8cd84c6e15cb", null ],
-    [ "symmetry_operations_from_orbifold", "namespaceneml2_1_1crystallography.html#addab1d4919f14a270f6e7a14b0974843", null ],
+    [ "symmetry_operations_from_orbifold", "namespaceneml2_1_1crystallography.html#af6287d1e7451aa3dbd6f6f3a1dfdca3a", null ],
     [ "unique_bidirectional", "namespaceneml2_1_1crystallography.html#a2a8634e10751e0d7000cbcb18b9b0db3", null ]
 ];

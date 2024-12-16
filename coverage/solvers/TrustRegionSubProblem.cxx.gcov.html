@@ -31,17 +31,17 @@
             <td class="headerValue">coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">28</td>
-            <td class="headerCovTableEntry">28</td>
+            <td class="headerCovTableEntry">24</td>
+            <td class="headerCovTableEntry">24</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-13 23:10:15</td>
+            <td class="headerValue">2024-12-16 23:27:01</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">5</td>
-            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntry">6</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
@@ -95,49 +95,48 @@
 <a name="33"><span class="lineNum">      33 </span><span class="lineCov">          3 : }</span></a>
 <a name="34"><span class="lineNum">      34 </span>            : </a>
 <a name="35"><span class="lineNum">      35 </span>            : void</a>
-<a name="36"><span class="lineNum">      36 </span><span class="lineCov">         21 : TrustRegionSubProblem::reinit(const NonlinearSystem &amp; system, const Scalar &amp; delta)</span></a>
-<a name="37"><span class="lineNum">      37 </span>            : {</a>
-<a name="38"><span class="lineNum">      38 </span><span class="lineCov">         21 :   _batch_sizes = delta.batch_sizes().vec();</span></a>
-<a name="39"><span class="lineNum">      39 </span><span class="lineCov">         21 :   _options = delta.options();</span></a>
-<a name="40"><span class="lineNum">      40 </span>            : </a>
-<a name="41"><span class="lineNum">      41 </span><span class="lineCov">         21 :   _solution = Scalar::zeros(_batch_sizes, _options);</span></a>
-<a name="42"><span class="lineNum">      42 </span><span class="lineCov">         21 :   _residual = Scalar::empty(_batch_sizes, _options);</span></a>
-<a name="43"><span class="lineNum">      43 </span><span class="lineCov">         21 :   _Jacobian = Scalar::empty(_batch_sizes, _options);</span></a>
+<a name="36"><span class="lineNum">      36 </span><span class="lineCov">         18 : TrustRegionSubProblem::reinit(const NonlinearSystem::Res&lt;true&gt; &amp; r,</span></a>
+<a name="37"><span class="lineNum">      37 </span>            :                               const NonlinearSystem::Jac&lt;true&gt; &amp; J,</a>
+<a name="38"><span class="lineNum">      38 </span>            :                               const Scalar &amp; delta)</a>
+<a name="39"><span class="lineNum">      39 </span>            : {</a>
+<a name="40"><span class="lineNum">      40 </span><span class="lineCov">         18 :   _delta = delta;</span></a>
+<a name="41"><span class="lineNum">      41 </span><span class="lineCov">         18 :   _JJ = math::bmm(J.base_transpose(0, 1), J);</span></a>
+<a name="42"><span class="lineNum">      42 </span><span class="lineCov">         18 :   _Jr = math::bmv(J.base_transpose(0, 1), r);</span></a>
+<a name="43"><span class="lineNum">      43 </span><span class="lineCov">         18 : }</span></a>
 <a name="44"><span class="lineNum">      44 </span>            : </a>
-<a name="45"><span class="lineNum">      45 </span><span class="lineCov">         21 :   _R = system.get_residual();</span></a>
-<a name="46"><span class="lineNum">      46 </span><span class="lineCov">         21 :   _J = system.get_Jacobian();</span></a>
-<a name="47"><span class="lineNum">      47 </span><span class="lineCov">         21 :   _delta = delta.clone();</span></a>
-<a name="48"><span class="lineNum">      48 </span>            : </a>
-<a name="49"><span class="lineNum">      49 </span><span class="lineCov">         21 :   _JJ = math::bmm(_J.base_transpose(0, 1), _J);</span></a>
-<a name="50"><span class="lineNum">      50 </span><span class="lineCov">         21 :   _JR = math::bmv(_J.base_transpose(0, 1), _R);</span></a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">         21 : }</span></a>
-<a name="52"><span class="lineNum">      52 </span>            : </a>
-<a name="53"><span class="lineNum">      53 </span>            : void</a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">        149 : TrustRegionSubProblem::assemble(bool residual, bool Jacobian)</span></a>
-<a name="55"><span class="lineNum">      55 </span>            : {</a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">        149 :   auto s = Scalar(_solution);</span></a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">        149 :   auto p = -preconditioned_direction(s);</span></a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">        149 :   auto np = math::sqrt(math::bvv(p, p));</span></a>
-<a name="59"><span class="lineNum">      59 </span>            : </a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">        149 :   if (residual)</span></a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">         75 :     _residual = 1.0 / np - 1.0 / math::sqrt(2.0 * _delta);</span></a>
-<a name="62"><span class="lineNum">      62 </span>            : </a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">        149 :   if (Jacobian)</span></a>
-<a name="64"><span class="lineNum">      64 </span><span class="lineCov">         74 :     _Jacobian = 1.0 / math::pow(np, 3.0) * math::bvv(p, preconditioned_solve(s, p));</span></a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">        149 : }</span></a>
-<a name="66"><span class="lineNum">      66 </span>            : </a>
-<a name="67"><span class="lineNum">      67 </span>            : Tensor</a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">        244 : TrustRegionSubProblem::preconditioned_solve(const Scalar &amp; s, const Tensor &amp; v) const</span></a>
-<a name="69"><span class="lineNum">      69 </span>            : {</a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">        488 :   return math::linalg::solve(_JJ + s * Tensor::identity(v.base_sizes()[0], _options), v);</span></a>
-<a name="71"><span class="lineNum">      71 </span>            : }</a>
-<a name="72"><span class="lineNum">      72 </span>            : </a>
-<a name="73"><span class="lineNum">      73 </span>            : Tensor</a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineCov">        170 : TrustRegionSubProblem::preconditioned_direction(const Scalar &amp; s) const</span></a>
-<a name="75"><span class="lineNum">      75 </span>            : {</a>
-<a name="76"><span class="lineNum">      76 </span><span class="lineCov">        170 :   return preconditioned_solve(s, _JR);</span></a>
-<a name="77"><span class="lineNum">      77 </span>            : }</a>
-<a name="78"><span class="lineNum">      78 </span>            : } // namespace neml2</a>
+<a name="45"><span class="lineNum">      45 </span>            : void</a>
+<a name="46"><span class="lineNum">      46 </span><span class="lineCov">         69 : TrustRegionSubProblem::set_guess(const NonlinearSystem::Sol&lt;false&gt; &amp; x)</span></a>
+<a name="47"><span class="lineNum">      47 </span>            : {</a>
+<a name="48"><span class="lineNum">      48 </span><span class="lineCov">         69 :   _s = Scalar(x);</span></a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineCov">         69 : }</span></a>
+<a name="50"><span class="lineNum">      50 </span>            : </a>
+<a name="51"><span class="lineNum">      51 </span>            : void</a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineCov">        120 : TrustRegionSubProblem::assemble(NonlinearSystem::Res&lt;false&gt; * residual,</span></a>
+<a name="53"><span class="lineNum">      53 </span>            :                                 NonlinearSystem::Jac&lt;false&gt; * Jacobian)</a>
+<a name="54"><span class="lineNum">      54 </span>            : {</a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">        120 :   auto p = -preconditioned_direction(_s);</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">        120 :   auto np = math::sqrt(math::bvv(p, p));</span></a>
+<a name="57"><span class="lineNum">      57 </span>            : </a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">        120 :   if (residual)</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">         69 :     *residual = NonlinearSystem::Res&lt;false&gt;(1.0 / np - 1.0 / math::sqrt(2.0 * _delta));</span></a>
+<a name="60"><span class="lineNum">      60 </span>            : </a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">        120 :   if (Jacobian)</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">        102 :     *Jacobian = NonlinearSystem::Jac&lt;false&gt;(1.0 / math::pow(np, 3.0) *</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">        153 :                                             math::bvv(p, preconditioned_solve(_s, p)));</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">        120 : }</span></a>
+<a name="65"><span class="lineNum">      65 </span>            : </a>
+<a name="66"><span class="lineNum">      66 </span>            : Tensor</a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">        189 : TrustRegionSubProblem::preconditioned_solve(const Scalar &amp; s, const Tensor &amp; v) const</span></a>
+<a name="68"><span class="lineNum">      68 </span>            : {</a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">        378 :   return math::linalg::solve(_JJ + s * Tensor::identity(v.base_sizes()[0], v.options()), v);</span></a>
+<a name="70"><span class="lineNum">      70 </span>            : }</a>
+<a name="71"><span class="lineNum">      71 </span>            : </a>
+<a name="72"><span class="lineNum">      72 </span>            : Tensor</a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">        138 : TrustRegionSubProblem::preconditioned_direction(const Scalar &amp; s) const</span></a>
+<a name="74"><span class="lineNum">      74 </span>            : {</a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">        138 :   return preconditioned_solve(s, _Jr);</span></a>
+<a name="76"><span class="lineNum">      76 </span>            : }</a>
+<a name="77"><span class="lineNum">      77 </span>            : } // namespace neml2</a>
 </pre>
       </td>
     </tr>

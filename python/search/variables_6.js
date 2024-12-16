@@ -1,6 +1,10 @@
 var searchData=
 [
-  ['wr2_0',['WR2',['../classtensors_1_1TensorType.html#ac2c1827ae298eb17947881486052018c',1,'tensors::TensorType']]],
-  ['wsr4_1',['WSR4',['../classtensors_1_1TensorType.html#a7c3df675af62d4c1994ebc165836021b',1,'tensors::TensorType']]],
-  ['wwr4_2',['WWR4',['../classtensors_1_1TensorType.html#a7e106bf77886a4c2d85e91e61d3dd7bb',1,'tensors::TensorType']]]
+  ['r2_0',['R2',['../classtensors_1_1TensorType.html#af8a77d8130bbe915125a2c136eb71008',1,'tensors::TensorType']]],
+  ['r3_1',['R3',['../classtensors_1_1TensorType.html#aaf896f092065afb1a96e7c1abf4eb3f4',1,'tensors::TensorType']]],
+  ['r4_2',['R4',['../classtensors_1_1TensorType.html#ac27b8fc2361375ed31984cab73d8611d',1,'tensors::TensorType']]],
+  ['r5_3',['R5',['../classtensors_1_1TensorType.html#afd0bff22b341f1e8d8d8bafdc0055245',1,'tensors::TensorType']]],
+  ['r8_4',['R8',['../classtensors_1_1TensorType.html#a8cf19b0d443272aea39283faa9eac816',1,'tensors::TensorType']]],
+  ['residual_5',['RESIDUAL',['../classinterface_1_1NEML2PyzagModel.html#ad855e5fdf082549e6f9f35ace3ac0ef2',1,'interface.NEML2PyzagModel.RESIDUAL'],['../namespacereserved.html#ad855e5fdf082549e6f9f35ace3ac0ef2',1,'reserved.RESIDUAL']]],
+  ['rot_6',['Rot',['../classtensors_1_1TensorType.html#a893567640ce87ccc7d0fc00e0b64a884',1,'tensors::TensorType']]]
 ];

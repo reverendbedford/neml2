@@ -6,11 +6,14 @@ var searchData=
   ['scalarlinearinterpolation_3',['ScalarLinearInterpolation',['../namespaceneml2.html#a0e8d48e67fb2fadecfc71b0b45bf4b91',1,'neml2']]],
   ['scalartwostagethermalannealing_4',['ScalarTwoStageThermalAnnealing',['../namespaceneml2.html#adfe39ff98646e9d40afd2091233efd78',1,'neml2']]],
   ['scalarvariablerate_5',['ScalarVariableRate',['../namespaceneml2.html#a02b528e002f334206fd5e4eba92fd753',1,'neml2']]],
-  ['size_6',['Size',['../namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e',1,'neml2']]],
-  ['sr2backwardeulertimeintegration_7',['SR2BackwardEulerTimeIntegration',['../namespaceneml2.html#ab7e62237ad422c358ebd5bfccfcffdf2',1,'neml2']]],
-  ['sr2forwardeulertimeintegration_8',['SR2ForwardEulerTimeIntegration',['../namespaceneml2.html#a666fea4dda5768f37f8a850a594c0ae8',1,'neml2']]],
-  ['sr2linearcombination_9',['SR2LinearCombination',['../namespaceneml2.html#a273def6f4878430476cfcd93e78f3d79',1,'neml2']]],
-  ['sr2linearinterpolation_10',['SR2LinearInterpolation',['../namespaceneml2.html#a153e012447b654da55c1fa61466b8330',1,'neml2']]],
-  ['sr2twostagethermalannealing_11',['SR2TwoStageThermalAnnealing',['../namespaceneml2.html#aadb3adc6bdf05c868db7596c1591d807',1,'neml2']]],
-  ['sr2variablerate_12',['SR2VariableRate',['../namespaceneml2.html#a598aec34fe30cfc3ed763890fb8177a5',1,'neml2']]]
+  ['secderivmap_6',['SecDerivMap',['../namespaceneml2.html#a83c026f166ceab8d0620d4ad49869d9f',1,'neml2']]],
+  ['size_7',['Size',['../structneml2_1_1TraceableTensorShape.html#a90023c4b9c19cd471d4603a07a52954e',1,'neml2::TraceableTensorShape::Size'],['../namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e',1,'neml2::Size']]],
+  ['sr2backwardeulertimeintegration_8',['SR2BackwardEulerTimeIntegration',['../namespaceneml2.html#ab7e62237ad422c358ebd5bfccfcffdf2',1,'neml2']]],
+  ['sr2crystalmean_9',['SR2CrystalMean',['../namespaceneml2.html#af6ff0f6e2e1b19475cb6e46ad5679461',1,'neml2']]],
+  ['sr2forwardeulertimeintegration_10',['SR2ForwardEulerTimeIntegration',['../namespaceneml2.html#a666fea4dda5768f37f8a850a594c0ae8',1,'neml2']]],
+  ['sr2linearcombination_11',['SR2LinearCombination',['../namespaceneml2.html#a273def6f4878430476cfcd93e78f3d79',1,'neml2']]],
+  ['sr2linearinterpolation_12',['SR2LinearInterpolation',['../namespaceneml2.html#a153e012447b654da55c1fa61466b8330',1,'neml2']]],
+  ['sr2twostagethermalannealing_13',['SR2TwoStageThermalAnnealing',['../namespaceneml2.html#aadb3adc6bdf05c868db7596c1591d807',1,'neml2']]],
+  ['sr2variablerate_14',['SR2VariableRate',['../namespaceneml2.html#a598aec34fe30cfc3ed763890fb8177a5',1,'neml2']]],
+  ['subaxisname_15',['SubaxisName',['../namespaceneml2.html#a4e8b29168cc98d79ef697666fa7ee532',1,'neml2']]]
 ];
