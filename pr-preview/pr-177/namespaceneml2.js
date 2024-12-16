@@ -469,6 +469,7 @@ var namespaceneml2 =
     [ "register_NEML2_object_alias", "namespaceneml2.html#ad19ac02d7350052ca34e23476728054a", null ],
     [ "reload_input", "namespaceneml2.html#a691281738ec7042ddc02376c9f895677", null ],
     [ "reload_model", "namespaceneml2.html#ab39b1e05156e698cf6b1d777a4512ff0", null ],
+    [ "set_ic", "namespaceneml2.html#a5eea9c3323f01222e022188371d63a88", null ],
     [ "tighter_tolerance", "namespaceneml2.html#ac3d71c197243f4f7e4ce51d890d8119d", null ],
     [ "timed_sections", "namespaceneml2.html#ad1f595896cc2ad6a8e1363e840850dcd", null ],
     [ "tolerance", "namespaceneml2.html#aa138593f5c695e43a899bd4ccbe0d793", null ],

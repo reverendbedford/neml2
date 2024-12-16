@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-16 01:37:58</td>
+            <td class="headerValue">2024-12-16 03:13:53</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">31</td>
@@ -94,51 +94,50 @@
 <a name="32"><span class="lineNum">      32 </span>            :   using User##T = UserPrimitiveTensor&lt;T&gt;;                                                          \</a>
 <a name="33"><span class="lineNum">      33 </span>            :   register_NEML2_object_alias(User##T, #T)</a>
 <a name="34"><span class="lineNum">      34 </span>            : FOR_ALL_PRIMITIVETENSOR(USERPRIMITIVETENSOR_REGISTER);</a>
-<a name="35"><span class="lineNum">      35 </span>            : #undef USERPRIMITIVETENSOR_REGISTER</a>
-<a name="36"><span class="lineNum">      36 </span>            : </a>
-<a name="37"><span class="lineNum">      37 </span>            : template &lt;typename T&gt;</a>
-<a name="38"><span class="lineNum">      38 </span>            : OptionSet</a>
-<a name="39"><span class="lineNum">      39 </span><span class="lineCov">        120 : UserPrimitiveTensor&lt;T&gt;::expected_options()</span></a>
-<a name="40"><span class="lineNum">      40 </span>            : {</a>
-<a name="41"><span class="lineNum">      41 </span>            :   // This is the only way of getting tensor type in a static method like this...</a>
-<a name="42"><span class="lineNum">      42 </span>            :   // Trim 6 chars to remove 'neml2::'</a>
-<a name="43"><span class="lineNum">      43 </span><span class="lineCov">        120 :   auto tensor_type = utils::demangle(typeid(T).name()).substr(7);</span></a>
-<a name="44"><span class="lineNum">      44 </span>            : </a>
-<a name="45"><span class="lineNum">      45 </span><span class="lineCov">        120 :   OptionSet options = UserTensorBase::expected_options();</span></a>
-<a name="46"><span class="lineNum">      46 </span><span class="lineCov">        120 :   options.doc() =</span></a>
-<a name="47"><span class="lineNum">      47 </span>            :       &quot;Construct a &quot; + tensor_type +</a>
-<a name="48"><span class="lineNum">      48 </span>            :       &quot; from a vector values. The vector will be reshaped according to the specified batch shape.&quot;;</a>
-<a name="49"><span class="lineNum">      49 </span>            : </a>
-<a name="50"><span class="lineNum">      50 </span><span class="lineCov">        120 :   options.set&lt;std::vector&lt;Real&gt;&gt;(&quot;values&quot;);</span></a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">        120 :   options.set(&quot;values&quot;).doc() = &quot;Values in this (flattened) tensor&quot;;</span></a>
-<a name="52"><span class="lineNum">      52 </span>            : </a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">        120 :   options.set&lt;TensorShape&gt;(&quot;batch_shape&quot;) = {};</span></a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">        120 :   options.set(&quot;batch_shape&quot;).doc() = &quot;Batch shape&quot;;</span></a>
-<a name="55"><span class="lineNum">      55 </span>            : </a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">        240 :   return options;</span></a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">        120 : }</span></a>
-<a name="58"><span class="lineNum">      58 </span>            : </a>
-<a name="59"><span class="lineNum">      59 </span>            : template &lt;typename T&gt;</a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">         98 : UserPrimitiveTensor&lt;T&gt;::UserPrimitiveTensor(const OptionSet &amp; options)</span></a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">        196 :   : T(T::empty(options.get&lt;TensorShape&gt;(&quot;batch_shape&quot;), default_tensor_options())),</span></a>
-<a name="62"><span class="lineNum">      62 </span><span class="lineCov">        196 :     UserTensorBase(options)</span></a>
-<a name="63"><span class="lineNum">      63 </span>            : {</a>
-<a name="64"><span class="lineNum">      64 </span><span class="lineCov">        196 :   auto vals = options.get&lt;std::vector&lt;Real&gt;&gt;(&quot;values&quot;);</span></a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">         98 :   auto flat = torch::tensor(vals, default_tensor_options());</span></a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">         98 :   if (vals.size() == size_t(this-&gt;base_storage()))</span></a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">        104 :     this-&gt;index_put_({torch::indexing::Ellipsis}, flat.reshape(this-&gt;base_sizes()));</span></a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">         46 :   else if (vals.size() == size_t(utils::storage_size(this-&gt;sizes())))</span></a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">         92 :     this-&gt;index_put_({torch::indexing::Ellipsis}, flat.reshape(this-&gt;sizes()));</span></a>
-<a name="70"><span class="lineNum">      70 </span>            :   else</a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineNoCov">          0 :     neml_assert(false,</span></a>
-<a name="72"><span class="lineNum">      72 </span>            :                 &quot;Number of values &quot;,</a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineNoCov">          0 :                 vals.size(),</span></a>
-<a name="74"><span class="lineNum">      74 </span>            :                 &quot; must equal to either the base storage size &quot;,</a>
-<a name="75"><span class="lineNum">      75 </span><span class="lineNoCov">          0 :                 this-&gt;base_storage(),</span></a>
-<a name="76"><span class="lineNum">      76 </span>            :                 &quot; or the total storage size &quot;,</a>
-<a name="77"><span class="lineNum">      77 </span><span class="lineNoCov">          0 :                 utils::storage_size(this-&gt;sizes()));</span></a>
-<a name="78"><span class="lineNum">      78 </span><span class="lineCov">         98 : }</span></a>
-<a name="79"><span class="lineNum">      79 </span>            : } // namespace neml2</a>
+<a name="35"><span class="lineNum">      35 </span>            : </a>
+<a name="36"><span class="lineNum">      36 </span>            : template &lt;typename T&gt;</a>
+<a name="37"><span class="lineNum">      37 </span>            : OptionSet</a>
+<a name="38"><span class="lineNum">      38 </span><span class="lineCov">        120 : UserPrimitiveTensor&lt;T&gt;::expected_options()</span></a>
+<a name="39"><span class="lineNum">      39 </span>            : {</a>
+<a name="40"><span class="lineNum">      40 </span>            :   // This is the only way of getting tensor type in a static method like this...</a>
+<a name="41"><span class="lineNum">      41 </span>            :   // Trim 6 chars to remove 'neml2::'</a>
+<a name="42"><span class="lineNum">      42 </span><span class="lineCov">        120 :   auto tensor_type = utils::demangle(typeid(T).name()).substr(7);</span></a>
+<a name="43"><span class="lineNum">      43 </span>            : </a>
+<a name="44"><span class="lineNum">      44 </span><span class="lineCov">        120 :   OptionSet options = UserTensorBase::expected_options();</span></a>
+<a name="45"><span class="lineNum">      45 </span><span class="lineCov">        120 :   options.doc() =</span></a>
+<a name="46"><span class="lineNum">      46 </span>            :       &quot;Construct a &quot; + tensor_type +</a>
+<a name="47"><span class="lineNum">      47 </span>            :       &quot; from a vector values. The vector will be reshaped according to the specified batch shape.&quot;;</a>
+<a name="48"><span class="lineNum">      48 </span>            : </a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineCov">        120 :   options.set&lt;std::vector&lt;Real&gt;&gt;(&quot;values&quot;);</span></a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineCov">        120 :   options.set(&quot;values&quot;).doc() = &quot;Values in this (flattened) tensor&quot;;</span></a>
+<a name="51"><span class="lineNum">      51 </span>            : </a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineCov">        120 :   options.set&lt;TensorShape&gt;(&quot;batch_shape&quot;) = {};</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineCov">        120 :   options.set(&quot;batch_shape&quot;).doc() = &quot;Batch shape&quot;;</span></a>
+<a name="54"><span class="lineNum">      54 </span>            : </a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">        240 :   return options;</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">        120 : }</span></a>
+<a name="57"><span class="lineNum">      57 </span>            : </a>
+<a name="58"><span class="lineNum">      58 </span>            : template &lt;typename T&gt;</a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">         98 : UserPrimitiveTensor&lt;T&gt;::UserPrimitiveTensor(const OptionSet &amp; options)</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">        196 :   : T(T::empty(options.get&lt;TensorShape&gt;(&quot;batch_shape&quot;), default_tensor_options())),</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">        196 :     UserTensorBase(options)</span></a>
+<a name="62"><span class="lineNum">      62 </span>            : {</a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">        196 :   auto vals = options.get&lt;std::vector&lt;Real&gt;&gt;(&quot;values&quot;);</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">         98 :   auto flat = torch::tensor(vals, default_tensor_options());</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">         98 :   if (vals.size() == size_t(this-&gt;base_storage()))</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">        104 :     this-&gt;index_put_({torch::indexing::Ellipsis}, flat.reshape(this-&gt;base_sizes()));</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">         46 :   else if (vals.size() == size_t(utils::storage_size(this-&gt;sizes())))</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">         92 :     this-&gt;index_put_({torch::indexing::Ellipsis}, flat.reshape(this-&gt;sizes()));</span></a>
+<a name="69"><span class="lineNum">      69 </span>            :   else</a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineNoCov">          0 :     neml_assert(false,</span></a>
+<a name="71"><span class="lineNum">      71 </span>            :                 &quot;Number of values &quot;,</a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineNoCov">          0 :                 vals.size(),</span></a>
+<a name="73"><span class="lineNum">      73 </span>            :                 &quot; must equal to either the base storage size &quot;,</a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineNoCov">          0 :                 this-&gt;base_storage(),</span></a>
+<a name="75"><span class="lineNum">      75 </span>            :                 &quot; or the total storage size &quot;,</a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineNoCov">          0 :                 utils::storage_size(this-&gt;sizes()));</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">         98 : }</span></a>
+<a name="78"><span class="lineNum">      78 </span>            : } // namespace neml2</a>
 </pre>
       </td>
     </tr>
