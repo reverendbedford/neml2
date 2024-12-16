@@ -2,12 +2,12 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    input_scalar_names = 'state/internal/gamma_rate params/C params/g'
-    input_scalar_values = '0.01 1000.0 10.0'
-    input_symr2_names = 'state/internal/NM state/internal/X'
-    input_symr2_values = 'NM X'
-    output_symr2_names = 'state/internal/X_rate'
-    output_symr2_values = 'X_rate'
+    input_Scalar_names = 'state/internal/gamma_rate params/C params/g'
+    input_Scalar_values = '0.01 1000.0 10.0'
+    input_SR2_names = 'state/internal/NM state/internal/X'
+    input_SR2_values = 'NM X'
+    output_SR2_names = 'state/internal/X_rate'
+    output_SR2_values = 'X_rate'
     value_abs_tol = 1.0e-4
   []
 []

@@ -63,5 +63,4 @@ TensorValue<T>::type() const
 
 #define INSTANTIATE_TENSORVALUE(T) template class TensorValue<T>
 FOR_ALL_TENSORBASE(INSTANTIATE_TENSORVALUE);
-#undef INSTANTIATE_TENSORVALUE
 } // namespace neml2

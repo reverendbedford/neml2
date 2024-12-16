@@ -74,9 +74,7 @@ CrossRef<Tensor>::operator Tensor() const
   }                                                                                                \
   static_assert(true)
 FOR_ALL_PRIMITIVETENSOR(CROSSREF_SPECIALIZE_PRIMITIVETENSOR_IMPL);
-#undef CROSSREF_SPECIALIZE_PRIMITIVETENSOR_IMPL
 
 #define INSTANTIATE_CROSSREF(T) template class CrossRef<T>
 FOR_ALL_TENSORBASE(INSTANTIATE_CROSSREF);
-#undef INSTANTIATE_CROSSREF
 } // namesace neml2

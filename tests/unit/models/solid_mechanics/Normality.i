@@ -2,14 +2,14 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    input_scalar_names = 'state/internal/k'
-    input_scalar_values = '20'
-    input_symr2_names = 'state/internal/M state/internal/X'
-    input_symr2_values = 'M X'
-    output_scalar_names = 'state/internal/Nk'
-    output_scalar_values = '-0.8165'
-    output_symr2_names = 'state/internal/NM state/internal/NX'
-    output_symr2_values = 'NM NX'
+    input_Scalar_names = 'state/internal/k'
+    input_Scalar_values = '20'
+    input_SR2_names = 'state/internal/M state/internal/X'
+    input_SR2_values = 'M X'
+    output_Scalar_names = 'state/internal/Nk'
+    output_Scalar_values = '-0.8165'
+    output_SR2_names = 'state/internal/NM state/internal/NX'
+    output_SR2_values = 'NM NX'
     value_abs_tol = 1e-4
   []
 []

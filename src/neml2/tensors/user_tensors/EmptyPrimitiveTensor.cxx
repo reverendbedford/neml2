@@ -31,7 +31,6 @@ namespace neml2
   using Empty##T = EmptyPrimitiveTensor<T>;                                                        \
   register_NEML2_object_alias(Empty##T, "Empty" #T)
 FOR_ALL_PRIMITIVETENSOR(EMPTYPRIMITIVETENSOR_REGISTER);
-#undef EMPTYPRIMITIVETENSOR_REGISTER
 
 template <typename T>
 OptionSet

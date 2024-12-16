@@ -32,7 +32,6 @@ namespace neml2
   using Zeros##T = ZerosPrimitiveTensor<T>;                                                        \
   register_NEML2_object_alias(Zeros##T, "Zeros" #T)
 FOR_ALL_PRIMITIVETENSOR(ZEROSPRIMITIVETENSOR_REGISTER);
-#undef ZEROSPRIMITIVETENSOR_REGISTER
 
 template <typename T>
 OptionSet

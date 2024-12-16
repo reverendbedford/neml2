@@ -2,10 +2,10 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    output_batch_tensor_names = 'state/internal/slip_rates'
-    output_batch_tensor_values = 'rates'
-    input_batch_tensor_names = 'state/internal/resolved_shears state/internal/slip_strengths'
-    input_batch_tensor_values = 'tau tau_bar'
+    output_Tensor_names = 'state/internal/slip_rates'
+    output_Tensor_values = 'rates'
+    input_Tensor_names = 'state/internal/resolved_shears state/internal/slip_strengths'
+    input_Tensor_values = 'tau tau_bar'
     check_AD_parameter_derivatives = false
     derivative_rel_tol = 0
     derivative_abs_tol = 5e-6

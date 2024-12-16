@@ -2,10 +2,10 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    input_batch_tensor_names = 'state/internal/slip_rates'
-    input_batch_tensor_values = 'rates'
-    output_scalar_names = 'state/internal/sum_slip_rates'
-    output_scalar_values = 'sum'
+    input_Tensor_names = 'state/internal/slip_rates'
+    input_Tensor_values = 'rates'
+    output_Scalar_names = 'state/internal/sum_slip_rates'
+    output_Scalar_values = 'sum'
   []
 []
 

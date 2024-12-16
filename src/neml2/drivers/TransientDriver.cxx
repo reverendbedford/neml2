@@ -28,6 +28,35 @@ namespace fs = std::filesystem;
 
 namespace neml2
 {
+template <typename T>
+void
+set_ic(ValueMap & storage,
+       const OptionSet & options,
+       const std::string & name_opt,
+       const std::string & value_opt,
+       const torch::Device & device)
+{
+  const auto names = options.get<std::vector<VariableName>>(name_opt);
+  const auto vals = options.get<std::vector<CrossRef<T>>>(value_opt);
+  neml_assert(names.size() == vals.size(),
+              "Number of initial condition names ",
+              name_opt,
+              " and number of initial condition values ",
+              value_opt,
+              " should be the same but instead have ",
+              names.size(),
+              " and ",
+              vals.size(),
+              " respectively.");
+  for (std::size_t i = 0; i < names.size(); i++)
+  {
+    neml_assert(names[i].start_with("state"),
+                "Initial condition names should start with 'state' but instead got ",
+                names[i]);
+    storage[names[i]] = T(vals[i]).to(device);
+  }
+}
+
 OptionSet
 TransientDriver::expected_options()
 {
@@ -68,20 +97,12 @@ TransientDriver::expected_options()
       "target compute device to be CPU, and device='cuda:1' sets the target compute device to be "
       "CUDA with device ID 1.";
 
-  options.set<std::vector<VariableName>>("ic_scalar_names");
-  options.set("ic_scalar_names").doc() = "Apply initial conditions to these Scalar variables";
-  options.set<std::vector<CrossRef<Scalar>>>("ic_scalar_values");
-  options.set("ic_scalar_values").doc() = "Initial condition values for the Scalar variables";
-
-  options.set<std::vector<VariableName>>("ic_rot_names");
-  options.set("ic_rot_names").doc() = "Apply initial conditions to these Rot variables";
-  options.set<std::vector<CrossRef<Rot>>>("ic_rot_values");
-  options.set("ic_rot_values").doc() = "Initial condition values for the Rot variables";
-
-  options.set<std::vector<VariableName>>("ic_sr2_names");
-  options.set("ic_sr2_names").doc() = "Apply initial conditions to these SR2 variables";
-  options.set<std::vector<CrossRef<SR2>>>("ic_sr2_values");
-  options.set("ic_sr2_values").doc() = "Initial condition values for the SR2 variables";
+#define OPTION_IC_(T)                                                                              \
+  options.set<std::vector<VariableName>>("ic_" #T "_names");                                       \
+  options.set("ic_" #T "_names").doc() = "Apply initial conditions to these " #T " variables";     \
+  options.set<std::vector<CrossRef<T>>>("ic_" #T "_values");                                       \
+  options.set("ic_" #T "_values").doc() = "Initial condition values for the " #T " variables"
+  FOR_ALL_TENSORBASE(OPTION_IC_);
 
   return options;
 }
@@ -216,10 +237,11 @@ TransientDriver::update_forces()
 void
 TransientDriver::apply_ic()
 {
-  set_ic<Scalar>("ic_scalar_names", "ic_scalar_values");
-  set_ic<Rot>("ic_rot_names", "ic_rot_values");
-  set_ic<SR2>("ic_sr2_names", "ic_sr2_values");
+#define SET_IC_(T)                                                                                 \
+  set_ic<T>(_result_out[0], input_options(), "ic_" #T "_names", "ic_" #T "_values", _device)
+  FOR_ALL_TENSORBASE(SET_IC_);
 
+  // Variables without a user-defined IC are initialized to zeros
   for (auto && [name, var] : _model.output_variables())
     if (!_result_out[0].count(name))
       _result_out[0][name] =

@@ -2,10 +2,10 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    input_batch_tensor_names = 'state/S'
-    input_batch_tensor_values = 'S'
-    output_symr2_names = 'state/S_mean'
-    output_symr2_values = 'S_mean'
+    input_Tensor_names = 'state/S'
+    input_Tensor_values = 'S'
+    output_SR2_names = 'state/S_mean'
+    output_SR2_values = 'S_mean'
   []
 []
 

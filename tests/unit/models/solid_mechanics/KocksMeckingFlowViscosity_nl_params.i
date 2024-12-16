@@ -2,10 +2,10 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    input_scalar_names = 'forces/T params/A params/B params/mu'
-    input_scalar_values = '1000 A_in B_in mu_in'
-    output_scalar_names = 'parameters/p'
-    output_scalar_values = 'p_correct'
+    input_Scalar_names = 'forces/T params/A params/B params/mu'
+    input_Scalar_values = '1000 A_in B_in mu_in'
+    output_Scalar_names = 'parameters/p'
+    output_Scalar_values = 'p_correct'
     check_second_derivatives = true
     derivative_abs_tol = 0.01
     second_derivative_abs_tol = 1e-3

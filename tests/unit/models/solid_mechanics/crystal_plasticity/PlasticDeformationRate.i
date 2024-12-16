@@ -2,12 +2,12 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    output_symr2_names = 'state/internal/plastic_deformation_rate'
-    output_symr2_values = 'dp'
-    input_rot_names = 'state/orientation'
-    input_rot_values = 'R'
-    input_batch_tensor_names = 'state/internal/slip_rates'
-    input_batch_tensor_values = 'gamma'
+    output_SR2_names = 'state/internal/plastic_deformation_rate'
+    output_SR2_values = 'dp'
+    input_Rot_names = 'state/orientation'
+    input_Rot_values = 'R'
+    input_Tensor_names = 'state/internal/slip_rates'
+    input_Tensor_values = 'gamma'
     derivative_rel_tol = 0
     derivative_abs_tol = 1e-5
     second_derivative_rel_tol = 0

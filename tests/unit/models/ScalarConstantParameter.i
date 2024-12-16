@@ -2,8 +2,8 @@
   [unit]
     type = ModelUnitTest
     model = 'E'
-    output_scalar_names = 'parameters/E'
-    output_scalar_values = 'T'
+    output_Scalar_names = 'parameters/E'
+    output_Scalar_values = 'T'
   []
 []
 

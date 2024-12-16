@@ -13,10 +13,10 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    input_symr2_names = 'state/M'
-    input_symr2_values = 'M'
-    output_symr2_names = 'state/NM'
-    output_symr2_values = 'NM'
+    input_SR2_names = 'state/M'
+    input_SR2_values = 'M'
+    output_SR2_names = 'state/NM'
+    output_SR2_values = 'NM'
     derivative_abs_tol = 1e-6
   []
 []

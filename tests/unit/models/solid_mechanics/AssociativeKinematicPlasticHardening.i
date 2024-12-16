@@ -2,12 +2,12 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    input_scalar_names = 'state/internal/gamma_rate'
-    input_scalar_values = '0.0015'
-    input_symr2_names = 'state/internal/NX'
-    input_symr2_values = 'NX'
-    output_symr2_names = 'state/internal/Kp_rate'
-    output_symr2_values = 'Kp_rate'
+    input_Scalar_names = 'state/internal/gamma_rate'
+    input_Scalar_values = '0.0015'
+    input_SR2_names = 'state/internal/NX'
+    input_SR2_values = 'NX'
+    output_SR2_names = 'state/internal/Kp_rate'
+    output_SR2_values = 'Kp_rate'
   []
 []
 

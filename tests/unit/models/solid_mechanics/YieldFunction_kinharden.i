@@ -2,10 +2,10 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    input_symr2_names = 'state/internal/M state/internal/X'
-    input_symr2_values = 'M X'
-    output_scalar_names = 'state/internal/fp'
-    output_scalar_values = '99.8876'
+    input_SR2_names = 'state/internal/M state/internal/X'
+    input_SR2_values = 'M X'
+    output_Scalar_names = 'state/internal/fp'
+    output_Scalar_values = '99.8876'
     derivative_abs_tol = 1e-06
     check_second_derivatives = true
   []

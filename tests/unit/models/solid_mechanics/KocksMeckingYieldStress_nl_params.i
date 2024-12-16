@@ -2,10 +2,10 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    input_scalar_names = 'params/mu params/C'
-    input_scalar_values = 'mu_in C_in'
-    output_scalar_names = 'parameters/p'
-    output_scalar_values = 'p_correct'
+    input_Scalar_names = 'params/mu params/C'
+    input_Scalar_values = 'mu_in C_in'
+    output_Scalar_names = 'parameters/p'
+    output_Scalar_values = 'p_correct'
     check_second_derivatives = true
   []
 []

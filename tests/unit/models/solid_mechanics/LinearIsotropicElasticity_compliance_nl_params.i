@@ -2,12 +2,12 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    input_scalar_names = 'params/E params/nu'
-    input_scalar_values = '100 0.3'
-    input_symr2_names = 'state/S'
-    input_symr2_values = 'S'
-    output_symr2_names = 'state/internal/Ee'
-    output_symr2_values = 'Ee'
+    input_Scalar_names = 'params/E params/nu'
+    input_Scalar_values = '100 0.3'
+    input_SR2_names = 'state/S'
+    input_SR2_values = 'S'
+    output_SR2_names = 'state/internal/Ee'
+    output_SR2_values = 'Ee'
   []
 []
 

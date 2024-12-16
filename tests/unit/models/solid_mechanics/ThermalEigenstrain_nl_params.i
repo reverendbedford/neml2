@@ -2,10 +2,10 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    input_scalar_names = 'forces/T params/alpha'
-    input_scalar_values = '400 1.0e-5'
-    output_symr2_names = 'forces/Eg'
-    output_symr2_values = 'Eg_correct'
+    input_Scalar_names = 'forces/T params/alpha'
+    input_Scalar_values = '400 1.0e-5'
+    output_SR2_names = 'forces/Eg'
+    output_SR2_values = 'Eg_correct'
   []
 []
 

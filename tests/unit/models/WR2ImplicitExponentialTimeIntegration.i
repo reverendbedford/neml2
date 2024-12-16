@@ -2,14 +2,14 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    input_skewr2_names = 'state/foo_rate'
-    input_skewr2_values = 'w'
-    input_rot_names = 'state/foo old_state/foo'
-    input_rot_values = 'foo old_foo'
-    input_scalar_names = 'forces/t old_forces/t'
-    input_scalar_values = '1.3 1.1'
-    output_rot_names = 'residual/foo'
-    output_rot_values = 'res'
+    input_WR2_names = 'state/foo_rate'
+    input_WR2_values = 'w'
+    input_Rot_names = 'state/foo old_state/foo'
+    input_Rot_values = 'foo old_foo'
+    input_Scalar_names = 'forces/t old_forces/t'
+    input_Scalar_values = '1.3 1.1'
+    output_Rot_names = 'residual/foo'
+    output_Rot_values = 'res'
     value_rel_tol = 1e-4
   []
 []

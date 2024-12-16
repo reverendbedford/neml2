@@ -2,10 +2,10 @@
   [unit]
     type = ModelUnitTest
     model = 'p'
-    input_scalar_names = 'forces/T'
-    input_scalar_values = '1000'
-    output_scalar_names = 'parameters/p'
-    output_scalar_values = 'p_correct'
+    input_Scalar_names = 'forces/T'
+    input_Scalar_values = '1000'
+    output_Scalar_names = 'parameters/p'
+    output_Scalar_values = 'p_correct'
     check_second_derivatives = true
   []
 []

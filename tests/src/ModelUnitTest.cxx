@@ -30,6 +30,25 @@
 
 namespace neml2
 {
+template <typename T>
+void
+set_variable(ValueMap & storage,
+             const OptionSet & options,
+             const std::string & option_vars,
+             const std::string & option_vals)
+{
+  const auto vars = options.get<std::vector<VariableName>>(option_vars);
+  const auto vals = options.get<std::vector<CrossRef<T>>>(option_vals);
+  neml_assert(vars.size() == vals.size(),
+              "Trying to assign ",
+              vals.size(),
+              " values to ",
+              vars.size(),
+              " variables.");
+  for (size_t i = 0; i < vars.size(); i++)
+    storage[vars[i]] = T(vals[i]);
+}
+
 register_NEML2_object(ModelUnitTest);
 
 OptionSet
@@ -53,30 +72,12 @@ ModelUnitTest::expected_options()
   options.set<Real>("parameter_derivative_rel_tol") = 1e-5;
   options.set<Real>("parameter_derivative_abs_tol") = 1e-8;
 
-  options.set<std::vector<VariableName>>("input_batch_tensor_names");
-  options.set<std::vector<CrossRef<Tensor>>>("input_batch_tensor_values");
-  options.set<std::vector<VariableName>>("output_batch_tensor_names");
-  options.set<std::vector<CrossRef<Tensor>>>("output_batch_tensor_values");
-  options.set<std::vector<VariableName>>("input_scalar_names");
-  options.set<std::vector<CrossRef<Scalar>>>("input_scalar_values");
-  options.set<std::vector<VariableName>>("input_symr2_names");
-  options.set<std::vector<CrossRef<SR2>>>("input_symr2_values");
-  options.set<std::vector<VariableName>>("input_skewr2_names");
-  options.set<std::vector<CrossRef<WR2>>>("input_skewr2_values");
-  options.set<std::vector<VariableName>>("output_scalar_names");
-  options.set<std::vector<CrossRef<Scalar>>>("output_scalar_values");
-  options.set<std::vector<VariableName>>("output_symr2_names");
-  options.set<std::vector<CrossRef<SR2>>>("output_symr2_values");
-  options.set<std::vector<VariableName>>("output_skewr2_names");
-  options.set<std::vector<CrossRef<WR2>>>("output_skewr2_values");
-  options.set<std::vector<VariableName>>("input_rot_names");
-  options.set<std::vector<CrossRef<Rot>>>("input_rot_values");
-  options.set<std::vector<VariableName>>("output_rot_names");
-  options.set<std::vector<CrossRef<Rot>>>("output_rot_values");
-  options.set<std::vector<VariableName>>("input_ssr4_names");
-  options.set<std::vector<CrossRef<SSR4>>>("input_ssr4_values");
-  options.set<std::vector<VariableName>>("output_ssr4_names");
-  options.set<std::vector<CrossRef<SSR4>>>("output_ssr4_values");
+#define OPTION_SET_(T)                                                                             \
+  options.set<std::vector<VariableName>>("input_" #T "_names");                                    \
+  options.set<std::vector<CrossRef<T>>>("input_" #T "_values");                                    \
+  options.set<std::vector<VariableName>>("output_" #T "_names");                                   \
+  options.set<std::vector<CrossRef<T>>>("output_" #T "_values")
+  FOR_ALL_TENSORBASE(OPTION_SET_);
 
   return options;
 }
@@ -99,19 +100,10 @@ ModelUnitTest::ModelUnitTest(const OptionSet & options)
     _param_rtol(options.get<Real>("parameter_derivative_rel_tol")),
     _param_atol(options.get<Real>("parameter_derivative_abs_tol"))
 {
-  set_variable<Tensor>(_in, "input_batch_tensor_names", "input_batch_tensor_values");
-  set_variable<Scalar>(_in, "input_scalar_names", "input_scalar_values");
-  set_variable<SR2>(_in, "input_symr2_names", "input_symr2_values");
-  set_variable<WR2>(_in, "input_skewr2_names", "input_skewr2_values");
-  set_variable<Rot>(_in, "input_rot_names", "input_rot_values");
-  set_variable<SSR4>(_in, "input_ssr4_names", "input_ssr4_values");
-
-  set_variable<Tensor>(_out, "output_batch_tensor_names", "output_batch_tensor_values");
-  set_variable<Scalar>(_out, "output_scalar_names", "output_scalar_values");
-  set_variable<SR2>(_out, "output_symr2_names", "output_symr2_values");
-  set_variable<WR2>(_out, "output_skewr2_names", "output_skewr2_values");
-  set_variable<Rot>(_out, "output_rot_names", "output_rot_values");
-  set_variable<SSR4>(_out, "output_ssr4_names", "output_ssr4_values");
+#define SET_VARIABLE_(T)                                                                           \
+  set_variable<T>(_in, input_options(), "input_" #T "_names", "input_" #T "_values");              \
+  set_variable<T>(_out, input_options(), "output_" #T "_names", "output_" #T "_values")
+  FOR_ALL_TENSORBASE(SET_VARIABLE_);
 }
 
 bool

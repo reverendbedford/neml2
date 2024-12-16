@@ -2,10 +2,10 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    input_scalar_names = 'params/E params/nu params/mu'
-    input_scalar_values = '100000.0 0.3 60000.0'
-    output_ssr4_names = 'parameters/p'
-    output_ssr4_values = 'p_correct'
+    input_Scalar_names = 'params/E params/nu params/mu'
+    input_Scalar_values = '100000.0 0.3 60000.0'
+    output_SSR4_names = 'parameters/p'
+    output_SSR4_values = 'p_correct'
   []
 []
 

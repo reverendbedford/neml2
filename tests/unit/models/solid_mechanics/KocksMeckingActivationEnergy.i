@@ -2,10 +2,10 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    input_scalar_names = 'forces/T forces/effective_strain_rate'
-    input_scalar_values = 'T 1.1'
-    output_scalar_names = 'forces/g'
-    output_scalar_values = 'g_correct'
+    input_Scalar_names = 'forces/T forces/effective_strain_rate'
+    input_Scalar_values = 'T 1.1'
+    output_Scalar_names = 'forces/g'
+    output_Scalar_values = 'g_correct'
     check_AD_parameter_derivatives = false
   []
 []

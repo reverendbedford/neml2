@@ -20,10 +20,10 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    input_scalar_names = 'state/internal/fp state/internal/gamma_rate'
-    input_scalar_values = 'fp gamma_rate'
-    output_scalar_names = 'residual/internal/gamma_rate'
-    output_scalar_values = 'rp'
+    input_Scalar_names = 'state/internal/fp state/internal/gamma_rate'
+    input_Scalar_values = 'fp gamma_rate'
+    output_Scalar_names = 'residual/internal/gamma_rate'
+    output_Scalar_values = 'rp'
   []
 []
 

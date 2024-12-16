@@ -2,10 +2,10 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    input_scalar_names = 'forces/s state/ep old_state/ep'
-    input_scalar_values = '1.5 0.1 0.05'
-    output_scalar_names = 'state/s'
-    output_scalar_values = '1.38461538462'
+    input_Scalar_names = 'forces/s state/ep old_state/ep'
+    input_Scalar_values = '1.5 0.1 0.05'
+    output_Scalar_names = 'state/s'
+    output_Scalar_values = '1.38461538462'
     derivative_abs_tol = 1e-6
   []
 []

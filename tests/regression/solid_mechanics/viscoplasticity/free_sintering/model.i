@@ -76,8 +76,8 @@ nstep = 100
     prescribed_time = 'times'
     prescribed_strain = 'strains'
     prescribed_temperature = 'temperatures'
-    ic_scalar_names = 'state/internal/f'
-    ic_scalar_values = 'f0'
+    ic_Scalar_names = 'state/internal/f'
+    ic_Scalar_values = 'f0'
     save_as = 'result.pt'
   []
   [regression]

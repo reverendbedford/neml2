@@ -32,7 +32,6 @@ namespace neml2
   using User##T = UserPrimitiveTensor<T>;                                                          \
   register_NEML2_object_alias(User##T, #T)
 FOR_ALL_PRIMITIVETENSOR(USERPRIMITIVETENSOR_REGISTER);
-#undef USERPRIMITIVETENSOR_REGISTER
 
 template <typename T>
 OptionSet

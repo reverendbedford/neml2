@@ -88,8 +88,8 @@
     prescribed_time = 'times'
     prescribed_deformation_rate = 'deformation_rate'
     prescribed_vorticity = 'vorticity'
-    ic_rot_names = 'state/orientation'
-    ic_rot_values = 'initial_orientation'
+    ic_Rot_names = 'state/orientation'
+    ic_Rot_values = 'initial_orientation'
     predictor = 'PREVIOUS_STATE'
     cp_warmup = true
     cp_warmup_elastic_scale = 0.05

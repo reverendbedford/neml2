@@ -2,12 +2,12 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    input_scalar_names = 'forces/T'
-    input_scalar_values = 'temperature_in'
-    input_symr2_names = 'state/internal/k_rate_unmodified state/internal/k'
-    input_symr2_values = 'k_rate_in k_values_in'
-    output_symr2_names = 'state/internal/k_rate'
-    output_symr2_values = 'correct_values'
+    input_Scalar_names = 'forces/T'
+    input_Scalar_values = 'temperature_in'
+    input_SR2_names = 'state/internal/k_rate_unmodified state/internal/k'
+    input_SR2_values = 'k_rate_in k_values_in'
+    output_SR2_names = 'state/internal/k_rate'
+    output_SR2_values = 'correct_values'
     check_second_derivatives = false
     check_AD_parameter_derivatives = false
     value_abs_tol = 1e-4

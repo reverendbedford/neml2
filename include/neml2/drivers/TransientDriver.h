@@ -128,29 +128,5 @@ protected:
 
 private:
   void output_pt(const std::filesystem::path & out) const;
-
-  template <typename T>
-  void set_ic(const std::string & name_opt, const std::string & value_opt)
-  {
-    const auto names = input_options().get<std::vector<VariableName>>(name_opt);
-    const auto vals = input_options().get<std::vector<CrossRef<T>>>(value_opt);
-    neml_assert(names.size() == vals.size(),
-                "Number of initial condition names ",
-                name_opt,
-                " and number of initial condition values ",
-                value_opt,
-                " should be the same but instead have ",
-                names.size(),
-                " and ",
-                vals.size(),
-                " respectively.");
-    for (std::size_t i = 0; i < names.size(); i++)
-    {
-      neml_assert(names[i].start_with("state"),
-                  "Initial condition names should start with 'state' but instead got ",
-                  names[i]);
-      _result_out[0][names[i]] = T(vals[i]).to(_device);
-    }
-  }
 };
 } // namespace neml2

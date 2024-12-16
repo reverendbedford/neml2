@@ -2,10 +2,10 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    input_symr2_names = 'state/internal/Kp'
-    input_symr2_values = 'Kp'
-    output_symr2_names = 'state/internal/X'
-    output_symr2_values = 'X'
+    input_SR2_names = 'state/internal/Kp'
+    input_SR2_values = 'Kp'
+    output_SR2_names = 'state/internal/X'
+    output_SR2_values = 'X'
   []
 []
 

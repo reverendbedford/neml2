@@ -2,10 +2,10 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    input_scalar_names = 'state/A state/substate/B'
-    input_scalar_values = '3 2'
-    output_scalar_names = 'state/outsub/C'
-    output_scalar_values = '5'
+    input_Scalar_names = 'state/A state/substate/B'
+    input_Scalar_values = '3 2'
+    output_Scalar_names = 'state/outsub/C'
+    output_Scalar_values = '5'
   []
 []
 

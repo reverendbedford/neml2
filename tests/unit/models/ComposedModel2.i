@@ -2,16 +2,16 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    input_scalar_names = "state/foo state/foo_rate old_state/foo
+    input_Scalar_names = "state/foo state/foo_rate old_state/foo
                           state/bar state/bar_rate old_state/bar
                           state/baz state/baz_rate old_state/baz
                           forces/t old_forces/t"
-    input_scalar_values = "2 5 0
+    input_Scalar_values = "2 5 0
                            -1 -3 0
                            3 8 1
                            1.3 1.1"
-    output_scalar_names = 'residual/foo_bar_baz'
-    output_scalar_values = '1.0'
+    output_Scalar_names = 'residual/foo_bar_baz'
+    output_Scalar_values = '1.0'
   []
 []
 

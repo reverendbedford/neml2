@@ -31,7 +31,6 @@ namespace neml2
   using Linspace##T = LinspacePrimitiveTensor<T>;                                                  \
   register_NEML2_object_alias(Linspace##T, "Linspace" #T)
 FOR_ALL_PRIMITIVETENSOR(LINSPACEPRIMITIVETENSOR_REGISTER);
-#undef LINSPACEPRIMITIVETENSOR_REGISTER
 
 template <typename T>
 OptionSet

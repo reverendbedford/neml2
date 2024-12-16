@@ -2,12 +2,12 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    output_batch_tensor_names = 'state/internal/resolved_shears'
-    output_batch_tensor_values = 'shears'
-    input_symr2_names = 'state/internal/cauchy_stress'
-    input_symr2_values = 'stress'
-    input_rot_names = 'state/orientation'
-    input_rot_values = 'R'
+    output_Tensor_names = 'state/internal/resolved_shears'
+    output_Tensor_values = 'shears'
+    input_SR2_names = 'state/internal/cauchy_stress'
+    input_SR2_values = 'stress'
+    input_Rot_names = 'state/orientation'
+    input_Rot_values = 'R'
     derivative_rel_tol = 1e-4
     derivative_abs_tol = 5e-6
   []

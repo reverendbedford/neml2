@@ -2,10 +2,10 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    input_scalar_names = 'forces/g state/internal/ri_rate state/internal/rd_rate'
-    input_scalar_values = 'g 0.5 0.75'
-    output_scalar_names = 'state/internal/gamma_rate'
-    output_scalar_values = 'fr_correct'
+    input_Scalar_names = 'forces/g state/internal/ri_rate state/internal/rd_rate'
+    input_Scalar_values = 'g 0.5 0.75'
+    output_Scalar_names = 'state/internal/gamma_rate'
+    output_Scalar_values = 'fr_correct'
     check_AD_parameter_derivatives = false
   []
 []

@@ -76,8 +76,8 @@ nbatch = 20
     prescribed_time = 'times'
     prescribed_strain = 'strains'
     prescribed_temperature = 'temperatures'
-    ic_scalar_names = 'state/G state/C'
-    ic_scalar_values = 'G0 C0'
+    ic_Scalar_names = 'state/G state/C'
+    ic_Scalar_values = 'G0 C0'
     predictor = LINEAR_EXTRAPOLATION
     save_as = 'result.pt'
   []

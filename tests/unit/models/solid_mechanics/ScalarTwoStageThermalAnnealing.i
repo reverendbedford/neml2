@@ -2,10 +2,10 @@
   [unit]
     type = ModelUnitTest
     model = 'model'
-    input_scalar_names = 'forces/T state/internal/k_rate_unmodified state/internal/k'
-    input_scalar_values = 'temperature_in 20.0 100.0'
-    output_scalar_names = 'state/internal/k_rate'
-    output_scalar_values = 'correct_values'
+    input_Scalar_names = 'forces/T state/internal/k_rate_unmodified state/internal/k'
+    input_Scalar_values = 'temperature_in 20.0 100.0'
+    output_Scalar_names = 'state/internal/k_rate'
+    output_Scalar_values = 'correct_values'
     check_second_derivatives = false
     check_AD_parameter_derivatives = false
   []

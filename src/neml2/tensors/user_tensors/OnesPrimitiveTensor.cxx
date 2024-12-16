@@ -31,7 +31,6 @@ namespace neml2
   using Ones##T = OnesPrimitiveTensor<T>;                                                          \
   register_NEML2_object_alias(Ones##T, "Ones" #T)
 FOR_ALL_PRIMITIVETENSOR(ONESPRIMITIVETENSOR_REGISTER);
-#undef ONESPRIMITIVETENSOR_REGISTER
 
 template <typename T>
 OptionSet

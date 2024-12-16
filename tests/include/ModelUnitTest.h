@@ -40,22 +40,6 @@ public:
   bool run() override;
 
 private:
-  template <typename T>
-  void
-  set_variable(ValueMap & storage, const std::string & option_vars, const std::string & option_vals)
-  {
-    const auto vars = input_options().get<std::vector<VariableName>>(option_vars);
-    const auto vals = input_options().get<std::vector<CrossRef<T>>>(option_vals);
-    neml_assert(vars.size() == vals.size(),
-                "Trying to assign ",
-                vals.size(),
-                " values to ",
-                vars.size(),
-                " variables.");
-    for (size_t i = 0; i < vars.size(); i++)
-      storage[vars[i]] = T(vals[i]);
-  }
-
   void check_all();
   void check_value();
   void check_dvalue();
