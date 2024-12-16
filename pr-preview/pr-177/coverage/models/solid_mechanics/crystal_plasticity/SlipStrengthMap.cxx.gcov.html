@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-16 20:49:39</td>
+            <td class="headerValue">2024-12-16 22:52:14</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -98,7 +98,7 @@
 <a name="36"><span class="lineNum">      36 </span><span class="lineCov">          6 :   OptionSet options = Model::expected_options();</span></a>
 <a name="37"><span class="lineNum">      37 </span><span class="lineCov">          6 :   options.doc() = &quot;Map between internal variables the slip system strengths.&quot;;</span></a>
 <a name="38"><span class="lineNum">      38 </span>            : </a>
-<a name="39"><span class="lineNum">      39 </span><span class="lineCov">          6 :   options.set_output(&quot;slip_strengths&quot;) = VariableName(&quot;state&quot;, &quot;internal&quot;, &quot;slip_strengths&quot;);</span></a>
+<a name="39"><span class="lineNum">      39 </span><span class="lineCov">          6 :   options.set_output(&quot;slip_strengths&quot;) = VariableName(STATE, &quot;internal&quot;, &quot;slip_strengths&quot;);</span></a>
 <a name="40"><span class="lineNum">      40 </span><span class="lineCov">          6 :   options.set(&quot;slip_strengths&quot;).doc() = &quot;Name of the slip system strengths&quot;;</span></a>
 <a name="41"><span class="lineNum">      41 </span>            : </a>
 <a name="42"><span class="lineNum">      42 </span><span class="lineCov">          6 :   options.set&lt;std::string&gt;(&quot;crystal_geometry_name&quot;) = &quot;crystal_geometry&quot;;</span></a>

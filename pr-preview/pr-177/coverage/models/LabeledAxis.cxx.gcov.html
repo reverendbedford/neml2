@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-16 20:49:39</td>
+            <td class="headerValue">2024-12-16 22:52:14</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">32</td>
@@ -282,10 +282,10 @@
 <a name="220"><span class="lineNum">     220 </span>            : </a>
 <a name="221"><span class="lineNum">     221 </span>            :   // Otherwise, check the existence of the variable</a>
 <a name="222"><span class="lineNum">     222 </span><span class="lineCov">        627 :   if (name.size() == 1)</span></a>
-<a name="223"><span class="lineNum">     223 </span><span class="lineCov">        201 :     return _variables.find(name[0]) != _variables.end();</span></a>
+<a name="223"><span class="lineNum">     223 </span><span class="lineCov">        202 :     return _variables.find(name[0]) != _variables.end();</span></a>
 <a name="224"><span class="lineNum">     224 </span>            : </a>
-<a name="225"><span class="lineNum">     225 </span><span class="lineCov">        426 :   const auto subaxis = _subaxes.find(name[0]);</span></a>
-<a name="226"><span class="lineNum">     226 </span><span class="lineCov">        426 :   return subaxis != _subaxes.end() &amp;&amp; subaxis-&gt;second-&gt;has_variable(name.slice(1));</span></a>
+<a name="225"><span class="lineNum">     225 </span><span class="lineCov">        425 :   const auto subaxis = _subaxes.find(name[0]);</span></a>
+<a name="226"><span class="lineNum">     226 </span><span class="lineCov">        425 :   return subaxis != _subaxes.end() &amp;&amp; subaxis-&gt;second-&gt;has_variable(name.slice(1));</span></a>
 <a name="227"><span class="lineNum">     227 </span>            : }</a>
 <a name="228"><span class="lineNum">     228 </span>            : </a>
 <a name="229"><span class="lineNum">     229 </span>            : std::size_t</a>
@@ -492,17 +492,17 @@
 <a name="430"><span class="lineNum">     430 </span>            : void</a>
 <a name="431"><span class="lineNum">     431 </span><span class="lineCov">       1374 : LabeledAxis::cache_reserved_subaxis(const std::string &amp; axis_name)</span></a>
 <a name="432"><span class="lineNum">     432 </span>            : {</a>
-<a name="433"><span class="lineNum">     433 </span><span class="lineCov">       1374 :   if (axis_name == &quot;state&quot;)</span></a>
+<a name="433"><span class="lineNum">     433 </span><span class="lineCov">       1374 :   if (axis_name == STATE)</span></a>
 <a name="434"><span class="lineNum">     434 </span><span class="lineCov">        448 :     _has_state = true;</span></a>
-<a name="435"><span class="lineNum">     435 </span><span class="lineCov">        926 :   else if (axis_name == &quot;old_state&quot;)</span></a>
+<a name="435"><span class="lineNum">     435 </span><span class="lineCov">        926 :   else if (axis_name == OLD_STATE)</span></a>
 <a name="436"><span class="lineNum">     436 </span><span class="lineCov">         58 :     _has_old_state = true;</span></a>
-<a name="437"><span class="lineNum">     437 </span><span class="lineCov">        868 :   else if (axis_name == &quot;forces&quot;)</span></a>
+<a name="437"><span class="lineNum">     437 </span><span class="lineCov">        868 :   else if (axis_name == FORCES)</span></a>
 <a name="438"><span class="lineNum">     438 </span><span class="lineCov">        127 :     _has_forces = true;</span></a>
-<a name="439"><span class="lineNum">     439 </span><span class="lineCov">        741 :   else if (axis_name == &quot;old_forces&quot;)</span></a>
+<a name="439"><span class="lineNum">     439 </span><span class="lineCov">        741 :   else if (axis_name == OLD_FORCES)</span></a>
 <a name="440"><span class="lineNum">     440 </span><span class="lineCov">         63 :     _has_old_forces = true;</span></a>
-<a name="441"><span class="lineNum">     441 </span><span class="lineCov">        678 :   else if (axis_name == &quot;residual&quot;)</span></a>
+<a name="441"><span class="lineNum">     441 </span><span class="lineCov">        678 :   else if (axis_name == RESIDUAL)</span></a>
 <a name="442"><span class="lineNum">     442 </span><span class="lineCov">         47 :     _has_residual = true;</span></a>
-<a name="443"><span class="lineNum">     443 </span><span class="lineCov">        631 :   else if (axis_name == &quot;parameters&quot;)</span></a>
+<a name="443"><span class="lineNum">     443 </span><span class="lineCov">        631 :   else if (axis_name == PARAMETERS)</span></a>
 <a name="444"><span class="lineNum">     444 </span><span class="lineCov">        116 :     _has_parameters = true;</span></a>
 <a name="445"><span class="lineNum">     445 </span><span class="lineCov">       1374 : }</span></a>
 <a name="446"><span class="lineNum">     446 </span>            : </a>

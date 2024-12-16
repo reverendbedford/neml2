@@ -469,9 +469,16 @@ var namespaceneml2 =
     [ "register_NEML2_object_alias", "namespaceneml2.html#ad19ac02d7350052ca34e23476728054a", null ],
     [ "reload_input", "namespaceneml2.html#a691281738ec7042ddc02376c9f895677", null ],
     [ "reload_model", "namespaceneml2.html#ab39b1e05156e698cf6b1d777a4512ff0", null ],
+    [ "reserved_subaxis_names", "namespaceneml2.html#ac8fc28d40967ea4e28d1fd66dd5df0e7", null ],
     [ "set_ic", "namespaceneml2.html#a5eea9c3323f01222e022188371d63a88", null ],
     [ "tighter_tolerance", "namespaceneml2.html#ac3d71c197243f4f7e4ce51d890d8119d", null ],
     [ "timed_sections", "namespaceneml2.html#ad1f595896cc2ad6a8e1363e840850dcd", null ],
     [ "tolerance", "namespaceneml2.html#aa138593f5c695e43a899bd4ccbe0d793", null ],
-    [ "transform_from_quaternion", "namespaceneml2.html#a57190bd61c16db4f83948821a43969b5", null ]
+    [ "transform_from_quaternion", "namespaceneml2.html#a57190bd61c16db4f83948821a43969b5", null ],
+    [ "FORCES", "namespaceneml2.html#a995641829cb5a7e90cae7a76cc771a25", null ],
+    [ "OLD_FORCES", "namespaceneml2.html#a7934ba0aa5ee9c92f11ea080d804a1da", null ],
+    [ "OLD_STATE", "namespaceneml2.html#a45857029420659268bda43f87f148410", null ],
+    [ "PARAMETERS", "namespaceneml2.html#aae9debd66f33cd3bb181fc4773531c0d", null ],
+    [ "RESIDUAL", "namespaceneml2.html#a889429029ced9d30e7e406bfe89ca8df", null ],
+    [ "STATE", "namespaceneml2.html#a4edce20446c110419b57e4376b9b8527", null ]
 ];

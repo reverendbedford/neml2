@@ -91,7 +91,8 @@ var NAVTREEINDEX =
 "classtensors_1_1Vec.html#a6852c9a2b2bddb0ff0ec552d311fcdc6",
 "classtensors_1_1WR2.html#aea4c488af346586c65c0ecb5ca4b602f",
 "classtensors_1_1WWR4.html#a5a140021b3b28947b491784b3af8e860",
-"namespacemath.html#a577e4eac272482279f97a55d3742d2fd"
+"namespacemath.html#a577e4eac272482279f97a55d3742d2fd",
+"usergroup5.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

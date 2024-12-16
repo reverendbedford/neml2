@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-16 20:49:39</td>
+            <td class="headerValue">2024-12-16 22:52:14</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">4</td>
@@ -100,7 +100,7 @@
 <a name="38"><span class="lineNum">      38 </span>            :       &quot;fixed_values (the input strain or stress) and the mixed_state (the conjugate stress or &quot;</a>
 <a name="39"><span class="lineNum">      39 </span><span class="lineCov">          6 :       &quot;strain values) into the stress and strain tensors used by the model.&quot;;</span></a>
 <a name="40"><span class="lineNum">      40 </span>            : </a>
-<a name="41"><span class="lineNum">      41 </span><span class="lineCov">          6 :   options.set_input(&quot;control&quot;) = VariableName(&quot;forces&quot;, &quot;control&quot;);</span></a>
+<a name="41"><span class="lineNum">      41 </span><span class="lineCov">          6 :   options.set_input(&quot;control&quot;) = VariableName(FORCES, &quot;control&quot;);</span></a>
 <a name="42"><span class="lineNum">      42 </span><span class="lineCov">         12 :   options.set(&quot;control&quot;).doc() =</span></a>
 <a name="43"><span class="lineNum">      43 </span>            :       &quot;The name of the control signal.  Values less than the threshold are &quot;</a>
 <a name="44"><span class="lineNum">      44 </span><span class="lineCov">          6 :       &quot;strain control, greater are stress control&quot;;</span></a>
@@ -108,18 +108,18 @@
 <a name="46"><span class="lineNum">      46 </span><span class="lineCov">          6 :   options.set&lt;CrossRef&lt;Tensor&gt;&gt;(&quot;threshold&quot;) = &quot;0.5&quot;;</span></a>
 <a name="47"><span class="lineNum">      47 </span><span class="lineCov">          6 :   options.set(&quot;threshold&quot;).doc() = &quot;The threshold to switch between strain and stress control&quot;;</span></a>
 <a name="48"><span class="lineNum">      48 </span>            : </a>
-<a name="49"><span class="lineNum">      49 </span><span class="lineCov">          6 :   options.set_input(&quot;mixed_state&quot;) = VariableName(&quot;state&quot;, &quot;mixed_state&quot;);</span></a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineCov">          6 :   options.set_input(&quot;mixed_state&quot;) = VariableName(STATE, &quot;mixed_state&quot;);</span></a>
 <a name="50"><span class="lineNum">      50 </span><span class="lineCov">         12 :   options.set(&quot;mixed_state&quot;).doc() = &quot;The name of the mixed state tensor. This holds the conjugate &quot;</span></a>
 <a name="51"><span class="lineNum">      51 </span><span class="lineCov">          6 :                                      &quot;values to those being controlled&quot;;</span></a>
 <a name="52"><span class="lineNum">      52 </span>            : </a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">          6 :   options.set_input(&quot;fixed_values&quot;) = VariableName(&quot;forces&quot;, &quot;fixed_values&quot;);</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineCov">          6 :   options.set_input(&quot;fixed_values&quot;) = VariableName(FORCES, &quot;fixed_values&quot;);</span></a>
 <a name="54"><span class="lineNum">      54 </span><span class="lineCov">         12 :   options.set(&quot;fixed_values&quot;).doc() = &quot;The name of the fixed values, i.e. the actual strain or &quot;</span></a>
 <a name="55"><span class="lineNum">      55 </span><span class="lineCov">          6 :                                       &quot;stress values being imposed on the model&quot;;</span></a>
 <a name="56"><span class="lineNum">      56 </span>            : </a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">          6 :   options.set_output(&quot;cauchy_stress&quot;) = VariableName(&quot;state&quot;, &quot;S&quot;);</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">          6 :   options.set_output(&quot;cauchy_stress&quot;) = VariableName(STATE, &quot;S&quot;);</span></a>
 <a name="58"><span class="lineNum">      58 </span><span class="lineCov">          6 :   options.set(&quot;cauchy_stress&quot;).doc() = &quot;The name of the Cauchy stress tensor&quot;;</span></a>
 <a name="59"><span class="lineNum">      59 </span>            : </a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          6 :   options.set_output(&quot;strain&quot;) = VariableName(&quot;state&quot;, &quot;E&quot;);</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          6 :   options.set_output(&quot;strain&quot;) = VariableName(STATE, &quot;E&quot;);</span></a>
 <a name="61"><span class="lineNum">      61 </span><span class="lineCov">          6 :   options.set(&quot;strain&quot;).doc() = &quot;The name of the strain tensor&quot;;</span></a>
 <a name="62"><span class="lineNum">      62 </span>            : </a>
 <a name="63"><span class="lineNum">      63 </span><span class="lineCov">          6 :   return options;</span></a>

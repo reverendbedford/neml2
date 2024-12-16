@@ -290,14 +290,14 @@ Axis labeling</h2>
 <p>Refer to the documentation for a complete list of APIs for creating and modifying a <a class="el" href="classneml2_1_1LabeledAxis.html">LabeledAxis</a>.</p>
 <h2><a class="anchor" id="tensor-assembly"></a>
 Tensor assembly</h2>
-<p>NEML2 implements two types of "assemblers" to assemble (or disassemble) the implicit system given the axis layout defined by <a class="el" href="classneml2_1_1LabeledAxis.html">LabeledAxis</a>:</p><ul>
-<li><a class="el" href="classneml2_1_1VectorAssembler.html">VectorAssembler</a>: Assemble a map of vectors into a single vector (neml2::VectorAssembler::assemble), or disassemble a single vector into a map of vectors (neml2::VectorAssembler::disassemble).</li>
-<li><a class="el" href="classneml2_1_1MatrixAssembler.html">MatrixAssembler</a>: Assemble a map of map of matrices into a single matrix (neml2::MatrixAssembler::assemble), or disassemble a single matrix into a map of map of matrices (neml2::MatrixAssembler::disassemble).</li>
+<p>NEML2 implements two types of "assemblers" to assemble (or split) the implicit system given the axis layout defined by <a class="el" href="classneml2_1_1LabeledAxis.html">LabeledAxis</a>:</p><ul>
+<li><a class="el" href="classneml2_1_1VectorAssembler.html">VectorAssembler</a>: Assemble a map of vectors into a single vector (<a class="el" href="classneml2_1_1VectorAssembler.html#a9602ccc4344c1fd16e9334427403c16b" title="Assemble a vector of vectors (by variables)">neml2::VectorAssembler::assemble_by_variable</a>), or split a single vector into a map of vectors (<a class="el" href="classneml2_1_1VectorAssembler.html#a108323e051fd2a7f0bc3516328b0e5fc" title="Split the vector (by variables)">neml2::VectorAssembler::split_by_variable</a>).</li>
+<li><a class="el" href="classneml2_1_1MatrixAssembler.html">MatrixAssembler</a>: Assemble a map of map of matrices into a single matrix (<a class="el" href="classneml2_1_1MatrixAssembler.html#a4c28328a1a60e6a685f8c4c1d68e9ad0" title="Assemble a matrix of matrices (by variables)">neml2::MatrixAssembler::assemble_by_variable</a>), or split a single matrix into a map of map of matrices (<a class="el" href="classneml2_1_1MatrixAssembler.html#a7b83960e9c6e84713a3664ac03ce8af8" title="Split the matrix (by variables)">neml2::MatrixAssembler::split_by_variable</a>).</li>
 </ul>
-<p>The <code>assemble</code> methods take a map (1D map for the vector assembler and 2D map for the matrix assembler) as input argument. The keys of the map are variable names.</p>
+<p>The <code>assemble_by_variable</code> methods take a map (1D map for the vector assembler and 2D map for the matrix assembler) as input argument. The keys of the map are variable names.</p>
 <dl class="section note"><dt>Note</dt><dd>Variable values not provided by the map are filled with zeros.</dd></dl>
 <p>The <a class="el" href="classneml2_1_1VectorAssembler.html">VectorAssembler</a> is useful for working with the residual and solution vectors of the implicit system, and the <a class="el" href="classneml2_1_1MatrixAssembler.html">MatrixAssembler</a> is primarily used to work with the Jacobian matrix of the implicit system.</p>
-<p>In addition to the <code>assemble</code> and <code>disassemble</code> methods, the assemblers also provide a third method called <code>split</code>. The <code>split</code> method is similar to <code>disassemble</code>, but it splits the tensor by subaxes instead of variables. </p>
+<p>In addition to the <code>assemble_by_variable</code> and <code>split_by_variable</code> methods, the assemblers also provide a third method called <code>split_by_subaxis</code>. The <code>split_by_subaxis</code> method is similar to <code>split_by_variable</code>, but it splits the tensor by subaxes instead of variables. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

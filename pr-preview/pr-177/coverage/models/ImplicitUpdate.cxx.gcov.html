@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-16 20:49:39</td>
+            <td class="headerValue">2024-12-16 22:52:14</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">5</td>
@@ -128,7 +128,7 @@
 <a name="66"><span class="lineNum">      66 </span>            :   //   2. Output variables of the &quot;implicit_model&quot; on the &quot;residual&quot; subaxis should be *provided* by</a>
 <a name="67"><span class="lineNum">      67 </span>            :   //      *this* model.</a>
 <a name="68"><span class="lineNum">      68 </span><span class="lineCov">         27 :   for (auto &amp;&amp; [name, var] : _model.output_variables())</span></a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">         19 :     clone_output_variable(var, name.remount(&quot;state&quot;));</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">         19 :     clone_output_variable(var, name.remount(STATE));</span></a>
 <a name="70"><span class="lineNum">      70 </span><span class="lineCov">          8 : }</span></a>
 <a name="71"><span class="lineNum">      71 </span>            : </a>
 <a name="72"><span class="lineNum">      72 </span>            : void</a>
@@ -149,12 +149,12 @@
 <a name="87"><span class="lineNum">      87 </span><span class="lineCov">          5 :                     _model.input_axis());</span></a>
 <a name="88"><span class="lineNum">      88 </span><span class="lineCov">         15 :   diagnostic_assert(</span></a>
 <a name="89"><span class="lineNum">      89 </span>            :       diagnoses,</a>
-<a name="90"><span class="lineNum">      90 </span><span class="lineCov">          5 :       _model.input_axis().subaxis(&quot;state&quot;) == _model.output_axis().subaxis(&quot;residual&quot;),</span></a>
+<a name="90"><span class="lineNum">      90 </span><span class="lineCov">          5 :       _model.input_axis().subaxis(STATE) == _model.output_axis().subaxis(RESIDUAL),</span></a>
 <a name="91"><span class="lineNum">      91 </span>            :       &quot;The implicit model should have conformal trial state and residual. The input state &quot;</a>
 <a name="92"><span class="lineNum">      92 </span>            :       &quot;subaxis is\n&quot;,</a>
-<a name="93"><span class="lineNum">      93 </span><span class="lineCov">          5 :       _model.input_axis().subaxis(&quot;state&quot;),</span></a>
+<a name="93"><span class="lineNum">      93 </span><span class="lineCov">          5 :       _model.input_axis().subaxis(STATE),</span></a>
 <a name="94"><span class="lineNum">      94 </span>            :       &quot;\nThe output residual subaxis is\n&quot;,</a>
-<a name="95"><span class="lineNum">      95 </span><span class="lineCov">          5 :       _model.output_axis().subaxis(&quot;residual&quot;));</span></a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineCov">          5 :       _model.output_axis().subaxis(RESIDUAL));</span></a>
 <a name="96"><span class="lineNum">      96 </span><span class="lineCov">          5 : }</span></a>
 <a name="97"><span class="lineNum">      97 </span>            : </a>
 <a name="98"><span class="lineNum">      98 </span>            : void</a>
@@ -171,7 +171,7 @@
 <a name="109"><span class="lineNum">     109 </span><span class="lineCov">        178 :   neml_assert_dbg(!d2out_din2, &quot;This model does not define the second derivatives.&quot;);</span></a>
 <a name="110"><span class="lineNum">     110 </span>            : </a>
 <a name="111"><span class="lineNum">     111 </span>            :   // The trial state is used as the initial guess</a>
-<a name="112"><span class="lineNum">     112 </span><span class="lineCov">        178 :   const auto sol_assember = VectorAssembler(_model.input_axis().subaxis(&quot;state&quot;));</span></a>
+<a name="112"><span class="lineNum">     112 </span><span class="lineCov">        178 :   const auto sol_assember = VectorAssembler(_model.input_axis().subaxis(STATE));</span></a>
 <a name="113"><span class="lineNum">     113 </span><span class="lineCov">        356 :   auto x0 = NonlinearSystem::Sol&lt;false&gt;(sol_assember.assemble_by_variable(_model.collect_input()));</span></a>
 <a name="114"><span class="lineNum">     114 </span>            : </a>
 <a name="115"><span class="lineNum">     115 </span>            :   // Perform automatic scaling (using the trial state)</a>
@@ -210,8 +210,8 @@
 <a name="148"><span class="lineNum">     148 </span><span class="lineCov">          2 :     _model.dvalue();</span></a>
 <a name="149"><span class="lineNum">     149 </span><span class="lineCov">          2 :     const auto jac_assembler = MatrixAssembler(_model.output_axis(), _model.input_axis());</span></a>
 <a name="150"><span class="lineNum">     150 </span><span class="lineCov">          2 :     const auto J = jac_assembler.assemble_by_variable(_model.collect_output_derivatives());</span></a>
-<a name="151"><span class="lineNum">     151 </span><span class="lineCov">          4 :     const auto derivs = jac_assembler.split_by_subaxis(J).at(&quot;residual&quot;);</span></a>
-<a name="152"><span class="lineNum">     152 </span><span class="lineCov">          2 :     const auto dr_ds = derivs.at(&quot;state&quot;);</span></a>
+<a name="151"><span class="lineNum">     151 </span><span class="lineCov">          4 :     const auto derivs = jac_assembler.split_by_subaxis(J).at(RESIDUAL);</span></a>
+<a name="152"><span class="lineNum">     152 </span><span class="lineCov">          2 :     const auto dr_ds = derivs.at(STATE);</span></a>
 <a name="153"><span class="lineNum">     153 </span>            : </a>
 <a name="154"><span class="lineNum">     154 </span>            :     // Factorize the Jacobian once and for all</a>
 <a name="155"><span class="lineNum">     155 </span><span class="lineCov">          2 :     const auto [LU, pivot] = math::linalg::lu_factor(dr_ds);</span></a>
@@ -219,7 +219,7 @@
 <a name="157"><span class="lineNum">     157 </span>            :     // The actual IFT:</a>
 <a name="158"><span class="lineNum">     158 </span><span class="lineCov">         10 :     for (const auto &amp; [subaxis, deriv] : derivs)</span></a>
 <a name="159"><span class="lineNum">     159 </span>            :     {</a>
-<a name="160"><span class="lineNum">     160 </span><span class="lineCov">          8 :       if (subaxis == &quot;state&quot;)</span></a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineCov">          8 :       if (subaxis == STATE)</span></a>
 <a name="161"><span class="lineNum">     161 </span><span class="lineCov">          2 :         continue;</span></a>
 <a name="162"><span class="lineNum">     162 </span>            :       const auto ift_assembler =</a>
 <a name="163"><span class="lineNum">     163 </span><span class="lineCov">          6 :           MatrixAssembler(output_axis(), _model.input_axis().subaxis(subaxis));</span></a>

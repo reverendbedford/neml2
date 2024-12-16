@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-16 20:49:39</td>
+            <td class="headerValue">2024-12-16 22:52:14</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -94,10 +94,10 @@
 <a name="32"><span class="lineNum">      32 </span><span class="lineCov">         12 :   OptionSet options = Model::expected_options();</span></a>
 <a name="33"><span class="lineNum">      33 </span><span class="lineCov">         12 :   options.doc() = &quot;Map equivalent plastic strain to isotropic hardening&quot;;</span></a>
 <a name="34"><span class="lineNum">      34 </span>            : </a>
-<a name="35"><span class="lineNum">      35 </span><span class="lineCov">         12 :   options.set_input(&quot;equivalent_plastic_strain&quot;) = VariableName(&quot;state&quot;, &quot;internal&quot;, &quot;ep&quot;);</span></a>
+<a name="35"><span class="lineNum">      35 </span><span class="lineCov">         12 :   options.set_input(&quot;equivalent_plastic_strain&quot;) = VariableName(STATE, &quot;internal&quot;, &quot;ep&quot;);</span></a>
 <a name="36"><span class="lineNum">      36 </span><span class="lineCov">         12 :   options.set(&quot;equivalent_plastic_strain&quot;).doc() = &quot;Equivalent plastic strain&quot;;</span></a>
 <a name="37"><span class="lineNum">      37 </span>            : </a>
-<a name="38"><span class="lineNum">      38 </span><span class="lineCov">         12 :   options.set_output(&quot;isotropic_hardening&quot;) = VariableName(&quot;state&quot;, &quot;internal&quot;, &quot;k&quot;);</span></a>
+<a name="38"><span class="lineNum">      38 </span><span class="lineCov">         12 :   options.set_output(&quot;isotropic_hardening&quot;) = VariableName(STATE, &quot;internal&quot;, &quot;k&quot;);</span></a>
 <a name="39"><span class="lineNum">      39 </span><span class="lineCov">         12 :   options.set(&quot;isotropic_hardening&quot;).doc() = &quot;Isotropic hardening&quot;;</span></a>
 <a name="40"><span class="lineNum">      40 </span>            : </a>
 <a name="41"><span class="lineNum">      41 </span><span class="lineCov">         12 :   return options;</span></a>

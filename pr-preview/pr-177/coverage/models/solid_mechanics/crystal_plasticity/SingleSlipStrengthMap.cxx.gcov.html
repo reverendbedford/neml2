@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-16 20:49:39</td>
+            <td class="headerValue">2024-12-16 22:52:14</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -101,7 +101,7 @@
 <a name="39"><span class="lineNum">      39 </span>            :       &quot;i, \\f$ \\bar{\\tau} \\f$ is an evolving slip system strength (one value of all systems), &quot;</a>
 <a name="40"><span class="lineNum">      40 </span><span class="lineCov">          6 :       &quot;defined by another object, and \\f$ \\tau_0 \\f$ is a constant strength.&quot;;</span></a>
 <a name="41"><span class="lineNum">      41 </span>            : </a>
-<a name="42"><span class="lineNum">      42 </span><span class="lineCov">          6 :   options.set_input(&quot;slip_hardening&quot;) = VariableName(&quot;state&quot;, &quot;internal&quot;, &quot;slip_hardening&quot;);</span></a>
+<a name="42"><span class="lineNum">      42 </span><span class="lineCov">          6 :   options.set_input(&quot;slip_hardening&quot;) = VariableName(STATE, &quot;internal&quot;, &quot;slip_hardening&quot;);</span></a>
 <a name="43"><span class="lineNum">      43 </span><span class="lineCov">          6 :   options.set(&quot;slip_hardening&quot;).doc() = &quot;The name of the evovling, scalar strength&quot;;</span></a>
 <a name="44"><span class="lineNum">      44 </span>            : </a>
 <a name="45"><span class="lineNum">      45 </span><span class="lineCov">          6 :   options.set_parameter&lt;CrossRef&lt;Scalar&gt;&gt;(&quot;constant_strength&quot;);</span></a>

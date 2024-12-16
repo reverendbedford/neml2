@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['lookback_0',['lookback',['../classinterface_1_1NEML2PyzagModel.html#ab7fca4ba78d418620d84bdb8e02d65a9',1,'interface::NEML2PyzagModel']]]
+  ['forces_0',['FORCES',['../classinterface_1_1NEML2PyzagModel.html#a2f65bbcb2d2c7ef58453f69b889706dd',1,'interface.NEML2PyzagModel.FORCES'],['../namespacereserved.html#a2f65bbcb2d2c7ef58453f69b889706dd',1,'reserved.FORCES']]]
 ];

@@ -6,5 +6,6 @@ var searchData=
   ['skew_5freverse_5findex_3',['skew_reverse_index',['../namespaceneml2_1_1math.html#ad5caed3be984fbb32a81c463689aafd9',1,'neml2::math']]],
   ['solution_4',['solution',['../structneml2_1_1NonlinearSolver_1_1Result.html#ad360ad0eb9448a85ebec0c9b732558f8',1,'neml2::NonlinearSolver::Result']]],
   ['sqrt2_5',['sqrt2',['../namespaceneml2_1_1math.html#afae04ccf208cd8fe3e3adbd69445769b',1,'neml2::math']]],
-  ['suppressed_6',['suppressed',['../structneml2_1_1OptionSet_1_1OptionBase_1_1Metadata.html#a1ff2134cf6cbb111f94cc3f99af04af1',1,'neml2::OptionSet::OptionBase::Metadata']]]
+  ['state_6',['STATE',['../namespaceneml2.html#a4edce20446c110419b57e4376b9b8527',1,'neml2']]],
+  ['suppressed_7',['suppressed',['../structneml2_1_1OptionSet_1_1OptionBase_1_1Metadata.html#a1ff2134cf6cbb111f94cc3f99af04af1',1,'neml2::OptionSet::OptionBase::Metadata']]]
 ];

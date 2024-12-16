@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-16 20:49:39</td>
+            <td class="headerValue">2024-12-16 22:52:14</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">4</td>
@@ -112,7 +112,7 @@
 <a name="50"><span class="lineNum">      50 </span><span class="lineCov">          6 :   options.set_input(&quot;rate&quot;);</span></a>
 <a name="51"><span class="lineNum">      51 </span><span class="lineCov">          6 :   options.set(&quot;rate&quot;).doc() = &quot;Variable rate&quot;;</span></a>
 <a name="52"><span class="lineNum">      52 </span>            : </a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">          6 :   options.set_input(&quot;time&quot;) = VariableName(&quot;forces&quot;, &quot;t&quot;);</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineCov">          6 :   options.set_input(&quot;time&quot;) = VariableName(FORCES, &quot;t&quot;);</span></a>
 <a name="54"><span class="lineNum">      54 </span><span class="lineCov">          6 :   options.set(&quot;time&quot;).doc() = &quot;Time&quot;;</span></a>
 <a name="55"><span class="lineNum">      55 </span>            : </a>
 <a name="56"><span class="lineNum">      56 </span><span class="lineCov">          6 :   return options;</span></a>
@@ -128,7 +128,7 @@
 <a name="66"><span class="lineNum">      66 </span><span class="lineCov">          2 :                : declare_input_variable&lt;WR2&gt;(&quot;rate&quot;)),</span></a>
 <a name="67"><span class="lineNum">      67 </span><span class="lineCov">          2 :     _t(declare_input_variable&lt;Scalar&gt;(&quot;time&quot;)),</span></a>
 <a name="68"><span class="lineNum">      68 </span><span class="lineCov">          2 :     _tn(declare_input_variable&lt;Scalar&gt;(_t.name().old())),</span></a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">          4 :     _r(declare_output_variable&lt;Rot&gt;(_s.name().remount(&quot;residual&quot;)))</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">          4 :     _r(declare_output_variable&lt;Rot&gt;(_s.name().remount(RESIDUAL)))</span></a>
 <a name="70"><span class="lineNum">      70 </span>            : {</a>
 <a name="71"><span class="lineNum">      71 </span><span class="lineCov">          2 : }</span></a>
 <a name="72"><span class="lineNum">      72 </span>            : </a>

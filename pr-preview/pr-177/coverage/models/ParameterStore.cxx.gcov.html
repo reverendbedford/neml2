@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-16 20:49:39</td>
+            <td class="headerValue">2024-12-16 22:52:14</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">14</td>
@@ -286,7 +286,7 @@
 <a name="224"><span class="lineNum">     224 </span><span class="lineCov">         56 :       const auto &amp; pname = crossref.raw();</span></a>
 <a name="225"><span class="lineNum">     225 </span><span class="lineCov">         56 :       auto &amp; nl_param = Factory::get_object&lt;NonlinearParameter&lt;T&gt;&gt;(</span></a>
 <a name="226"><span class="lineNum">     226 </span>            :           &quot;Models&quot;, pname, extra_opts, /*force_create=*/false);</a>
-<a name="227"><span class="lineNum">     227 </span><span class="lineCov">         56 :       model-&gt;template declare_input_variable&lt;T&gt;(VariableName(pname).prepend(&quot;parameters&quot;));</span></a>
+<a name="227"><span class="lineNum">     227 </span><span class="lineCov">         56 :       model-&gt;template declare_input_variable&lt;T&gt;(VariableName(pname).prepend(PARAMETERS));</span></a>
 <a name="228"><span class="lineNum">     228 </span><span class="lineCov">         56 :       _nl_params[name] = &amp;nl_param.param();</span></a>
 <a name="229"><span class="lineNum">     229 </span><span class="lineCov">         56 :       _nl_param_models[name] = &amp;nl_param;</span></a>
 <a name="230"><span class="lineNum">     230 </span><span class="lineCov">         56 :       return nl_param.param().value();</span></a>

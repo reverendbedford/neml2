@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-16 20:49:39</td>
+            <td class="headerValue">2024-12-16 22:52:14</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -99,10 +99,10 @@
 <a name="37"><span class="lineNum">      37 </span>            :                   &quot;complementarity condition \\f[ r = \\dot{\\gamma} - f^p - &quot;</a>
 <a name="38"><span class="lineNum">      38 </span><span class="lineCov">          6 :                   &quot;\\sqrt{{\\dot{\\gamma}}^2 + {f^p}^2} \\f]&quot;;</span></a>
 <a name="39"><span class="lineNum">      39 </span>            : </a>
-<a name="40"><span class="lineNum">      40 </span><span class="lineCov">          6 :   options.set_input(&quot;yield_function&quot;) = VariableName(&quot;state&quot;, &quot;internal&quot;, &quot;fp&quot;);</span></a>
+<a name="40"><span class="lineNum">      40 </span><span class="lineCov">          6 :   options.set_input(&quot;yield_function&quot;) = VariableName(STATE, &quot;internal&quot;, &quot;fp&quot;);</span></a>
 <a name="41"><span class="lineNum">      41 </span><span class="lineCov">          6 :   options.set(&quot;yield_function&quot;).doc() = &quot;Yield function&quot;;</span></a>
 <a name="42"><span class="lineNum">      42 </span>            : </a>
-<a name="43"><span class="lineNum">      43 </span><span class="lineCov">          6 :   options.set_input(&quot;flow_rate&quot;) = VariableName(&quot;state&quot;, &quot;internal&quot;, &quot;gamma_rate&quot;);</span></a>
+<a name="43"><span class="lineNum">      43 </span><span class="lineCov">          6 :   options.set_input(&quot;flow_rate&quot;) = VariableName(STATE, &quot;internal&quot;, &quot;gamma_rate&quot;);</span></a>
 <a name="44"><span class="lineNum">      44 </span><span class="lineCov">          6 :   options.set(&quot;flow_rate&quot;).doc() = &quot;Flow rate&quot;;</span></a>
 <a name="45"><span class="lineNum">      45 </span>            : </a>
 <a name="46"><span class="lineNum">      46 </span><span class="lineCov">          6 :   return options;</span></a>
@@ -113,7 +113,7 @@
 <a name="51"><span class="lineNum">      51 </span>            :   : Model(options),</a>
 <a name="52"><span class="lineNum">      52 </span><span class="lineCov">          1 :     _fp(declare_input_variable&lt;Scalar&gt;(&quot;yield_function&quot;)),</span></a>
 <a name="53"><span class="lineNum">      53 </span><span class="lineCov">          1 :     _gamma_dot(declare_input_variable&lt;Scalar&gt;(&quot;flow_rate&quot;)),</span></a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          2 :     _r(declare_output_variable&lt;Scalar&gt;(_gamma_dot.name().remount(&quot;residual&quot;)))</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          2 :     _r(declare_output_variable&lt;Scalar&gt;(_gamma_dot.name().remount(RESIDUAL)))</span></a>
 <a name="55"><span class="lineNum">      55 </span>            : {</a>
 <a name="56"><span class="lineNum">      56 </span><span class="lineCov">          1 : }</span></a>
 <a name="57"><span class="lineNum">      57 </span>            : </a>

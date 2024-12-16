@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-16 20:49:39</td>
+            <td class="headerValue">2024-12-16 22:52:14</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -113,13 +113,13 @@
 <a name="51"><span class="lineNum">      51 </span><span class="lineCov">          6 :   options.set&lt;Real&gt;(&quot;b&quot;);</span></a>
 <a name="52"><span class="lineNum">      52 </span><span class="lineCov">          6 :   options.set(&quot;b&quot;).doc() = &quot;Magnitude of the Burgers vector&quot;;</span></a>
 <a name="53"><span class="lineNum">      53 </span>            : </a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          6 :   options.set_input(&quot;temperature&quot;) = VariableName(&quot;forces&quot;, &quot;T&quot;);</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          6 :   options.set_input(&quot;temperature&quot;) = VariableName(FORCES, &quot;T&quot;);</span></a>
 <a name="55"><span class="lineNum">      55 </span><span class="lineCov">          6 :   options.set(&quot;temperature&quot;).doc() = &quot;Absolute temperature&quot;;</span></a>
 <a name="56"><span class="lineNum">      56 </span>            : </a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">          6 :   options.set_input(&quot;strain_rate&quot;) = VariableName(&quot;forces&quot;, &quot;effective_strain_rate&quot;);</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">          6 :   options.set_input(&quot;strain_rate&quot;) = VariableName(FORCES, &quot;effective_strain_rate&quot;);</span></a>
 <a name="58"><span class="lineNum">      58 </span><span class="lineCov">          6 :   options.set(&quot;strain_rate&quot;).doc() = &quot;Name of the effective strain rate&quot;;</span></a>
 <a name="59"><span class="lineNum">      59 </span>            : </a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          6 :   options.set_output(&quot;activation_energy&quot;) = VariableName(&quot;forces&quot;, &quot;g&quot;);</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          6 :   options.set_output(&quot;activation_energy&quot;) = VariableName(FORCES, &quot;g&quot;);</span></a>
 <a name="61"><span class="lineNum">      61 </span><span class="lineCov">          6 :   options.set(&quot;activation_energy&quot;).doc() = &quot;Output name of the activation energy&quot;;</span></a>
 <a name="62"><span class="lineNum">      62 </span><span class="lineCov">          6 :   return options;</span></a>
 <a name="63"><span class="lineNum">      63 </span><span class="lineNoCov">          0 : }</span></a>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-16 20:49:39</td>
+            <td class="headerValue">2024-12-16 22:52:14</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">7</td>
@@ -99,13 +99,13 @@
 <a name="37"><span class="lineNum">      37 </span><span class="lineCov">         24 :   options.set(&quot;control&quot;).doc() =</span></a>
 <a name="38"><span class="lineNum">      38 </span><span class="lineCov">         36 :       &quot;External control of the material update. Options are &quot; + control_selection.candidates_str();</span></a>
 <a name="39"><span class="lineNum">      39 </span>            : </a>
-<a name="40"><span class="lineNum">      40 </span><span class="lineCov">         12 :   options.set&lt;VariableName&gt;(&quot;temperature&quot;) = VariableName(&quot;forces&quot;, &quot;T&quot;);</span></a>
+<a name="40"><span class="lineNum">      40 </span><span class="lineCov">         12 :   options.set&lt;VariableName&gt;(&quot;temperature&quot;) = VariableName(FORCES, &quot;T&quot;);</span></a>
 <a name="41"><span class="lineNum">      41 </span><span class="lineCov">         12 :   options.set(&quot;temperature&quot;).doc() = &quot;Name of temperature&quot;;</span></a>
 <a name="42"><span class="lineNum">      42 </span><span class="lineCov">         12 :   options.set&lt;CrossRef&lt;torch::Tensor&gt;&gt;(&quot;prescribed_temperature&quot;);</span></a>
 <a name="43"><span class="lineNum">      43 </span><span class="lineCov">         24 :   options.set(&quot;prescribed_temperature&quot;).doc() =</span></a>
 <a name="44"><span class="lineNum">      44 </span><span class="lineCov">         12 :       &quot;Actual prescibed temperature values, when providing temperatures to the model&quot;;</span></a>
 <a name="45"><span class="lineNum">      45 </span>            : </a>
-<a name="46"><span class="lineNum">      46 </span><span class="lineCov">         12 :   options.set&lt;VariableName&gt;(&quot;mixed_driving_force&quot;) = VariableName(&quot;forces&quot;, &quot;fixed_values&quot;);</span></a>
+<a name="46"><span class="lineNum">      46 </span><span class="lineCov">         12 :   options.set&lt;VariableName&gt;(&quot;mixed_driving_force&quot;) = VariableName(FORCES, &quot;fixed_values&quot;);</span></a>
 <a name="47"><span class="lineNum">      47 </span><span class="lineCov">         12 :   options.set(&quot;mixed_driving_force&quot;).doc() = &quot;Name of mixed driving force when using mixed control&quot;;</span></a>
 <a name="48"><span class="lineNum">      48 </span><span class="lineCov">         12 :   options.set&lt;CrossRef&lt;torch::Tensor&gt;&gt;(&quot;prescribed_mixed_driving_force&quot;);</span></a>
 <a name="49"><span class="lineNum">      49 </span><span class="lineCov">         24 :   options.set(&quot;prescribed_mixed_driving_force&quot;).doc() =</span></a>
@@ -113,7 +113,7 @@
 <a name="51"><span class="lineNum">      51 </span>            :       &quot;control signal is 0 these are strain/deformation values, where it is 1 these are stress &quot;</a>
 <a name="52"><span class="lineNum">      52 </span><span class="lineCov">         12 :       &quot;values&quot;;</span></a>
 <a name="53"><span class="lineNum">      53 </span>            : </a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">         12 :   options.set&lt;VariableName&gt;(&quot;mixed_control_signal&quot;) = VariableName(&quot;forces&quot;, &quot;control&quot;);</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">         12 :   options.set&lt;VariableName&gt;(&quot;mixed_control_signal&quot;) = VariableName(FORCES, &quot;control&quot;);</span></a>
 <a name="55"><span class="lineNum">      55 </span><span class="lineCov">         24 :   options.set(&quot;mixed_control_signal&quot;).doc() =</span></a>
 <a name="56"><span class="lineNum">      56 </span><span class="lineCov">         12 :       &quot;The name of the control signal for mixed control on the input axis&quot;;</span></a>
 <a name="57"><span class="lineNum">      57 </span><span class="lineCov">         12 :   options.set&lt;CrossRef&lt;torch::Tensor&gt;&gt;(&quot;prescribed_mixed_control_signal&quot;);</span></a>

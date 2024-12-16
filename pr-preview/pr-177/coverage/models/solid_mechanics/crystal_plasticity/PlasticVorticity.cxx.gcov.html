@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-16 20:49:39</td>
+            <td class="headerValue">2024-12-16 22:52:14</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -106,13 +106,13 @@
 <a name="44"><span class="lineNum">      44 </span>            :                   &quot;\\f$ the slip rate on the ith slip system, \\f$Q \\f$ the orientation, \\f$ d_i &quot;</a>
 <a name="45"><span class="lineNum">      45 </span><span class="lineCov">          6 :                   &quot;\\f$ the slip system direction, and \\f$ n_i \\f$ the slip system normal.&quot;;</span></a>
 <a name="46"><span class="lineNum">      46 </span>            : </a>
-<a name="47"><span class="lineNum">      47 </span><span class="lineCov">          6 :   options.set_output(&quot;plastic_vorticity&quot;) = VariableName(&quot;state&quot;, &quot;internal&quot;, &quot;plastic_vorticity&quot;);</span></a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineCov">          6 :   options.set_output(&quot;plastic_vorticity&quot;) = VariableName(STATE, &quot;internal&quot;, &quot;plastic_vorticity&quot;);</span></a>
 <a name="48"><span class="lineNum">      48 </span><span class="lineCov">          6 :   options.set(&quot;plastic_vorticity&quot;).doc() = &quot;The name of the plastic vorticity tensor&quot;;</span></a>
 <a name="49"><span class="lineNum">      49 </span>            : </a>
-<a name="50"><span class="lineNum">      50 </span><span class="lineCov">          6 :   options.set_input(&quot;orientation&quot;) = VariableName(&quot;state&quot;, &quot;orientation_matrix&quot;);</span></a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineCov">          6 :   options.set_input(&quot;orientation&quot;) = VariableName(STATE, &quot;orientation_matrix&quot;);</span></a>
 <a name="51"><span class="lineNum">      51 </span><span class="lineCov">          6 :   options.set(&quot;orientation&quot;).doc() = &quot;The name of the orientation matrix tensor&quot;;</span></a>
 <a name="52"><span class="lineNum">      52 </span>            : </a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">          6 :   options.set_input(&quot;slip_rates&quot;) = VariableName(&quot;state&quot;, &quot;internal&quot;, &quot;slip_rates&quot;);</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineCov">          6 :   options.set_input(&quot;slip_rates&quot;) = VariableName(STATE, &quot;internal&quot;, &quot;slip_rates&quot;);</span></a>
 <a name="54"><span class="lineNum">      54 </span><span class="lineCov">          6 :   options.set(&quot;slip_rates&quot;).doc() = &quot;The name of the tensor containg the current slip rates&quot;;</span></a>
 <a name="55"><span class="lineNum">      55 </span>            : </a>
 <a name="56"><span class="lineNum">      56 </span><span class="lineCov">          6 :   options.set&lt;std::string&gt;(&quot;crystal_geometry_name&quot;) = &quot;crystal_geometry&quot;;</span></a>

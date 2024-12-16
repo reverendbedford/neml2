@@ -177,7 +177,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a0e5d0734e623567857c4351c93c05c30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark this variable as a leaf variable in tracing function graph for AD.  <br /></td></tr>
 <tr class="separator:a0e5d0734e623567857c4351c93c05c30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3cd04abf5f378154f0dd70296e6090b3" id="r_a3cd04abf5f378154f0dd70296e6090b3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3cd04abf5f378154f0dd70296e6090b3">operator=</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;<a class="el" href="classneml2_1_1CrossRef.html">val</a>) <a class="el" href="classneml2_1_1CrossRef.html">override</a></td></tr>
-<tr class="memdesc:a3cd04abf5f378154f0dd70296e6090b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the variable value.  <br /></td></tr>
+<tr class="memdesc:a3cd04abf5f378154f0dd70296e6090b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator.  <br /></td></tr>
 <tr class="separator:a3cd04abf5f378154f0dd70296e6090b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5d906b55180c260032ce43d6c5d4d06" id="r_ab5d906b55180c260032ce43d6c5d4d06"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab5d906b55180c260032ce43d6c5d4d06">value</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
 <tr class="memdesc:ab5d906b55180c260032ce43d6c5d4d06"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classneml2_1_1Variable.html" title="Concrete definition of a variable.">Variable</a> value.  <br /></td></tr>
@@ -186,9 +186,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a9d13ef98e126ced1a93723d1c1eb923c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Negation.  <br /></td></tr>
 <tr class="separator:a9d13ef98e126ced1a93723d1c1eb923c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54724b9dd792a6022b918eae2f393734" id="r_a54724b9dd792a6022b918eae2f393734"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a54724b9dd792a6022b918eae2f393734">operator T</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:a54724b9dd792a6022b918eae2f393734"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert to the underlying tensor type.  <br /></td></tr>
 <tr class="separator:a54724b9dd792a6022b918eae2f393734"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5abddcc4086337aaf522f36dbac880b" id="r_ae5abddcc4086337aaf522f36dbac880b"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a class="el" href="classneml2_1_1CrossRef.html">T2</a>  = T, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;T2, Tensor&gt;&gt;&gt; </td></tr>
 <tr class="memitem:ae5abddcc4086337aaf522f36dbac880b"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ae5abddcc4086337aaf522f36dbac880b">operator Tensor</a> () <a class="el" href="classneml2_1_1CrossRef.html">const</a></td></tr>
+<tr class="memdesc:ae5abddcc4086337aaf522f36dbac880b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert to <a class="el" href="classneml2_1_1Tensor.html">Tensor</a>.  <br /></td></tr>
 <tr class="separator:ae5abddcc4086337aaf522f36dbac880b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee7cb2065b88d21ac4ad05bc997ecf82" id="r_aee7cb2065b88d21ac4ad05bc997ecf82"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aee7cb2065b88d21ac4ad05bc997ecf82">clear</a> () <a class="el" href="classneml2_1_1CrossRef.html">override</a></td></tr>
 <tr class="memdesc:aee7cb2065b88d21ac4ad05bc997ecf82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the variable value and derivatives.  <br /></td></tr>
@@ -577,6 +579,8 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T &gt;
 </table>
 </div><div class="memdoc">
 
+<p>Convert to the underlying tensor type. </p>
+
 </div>
 </div>
 <a id="ae5abddcc4086337aaf522f36dbac880b" name="ae5abddcc4086337aaf522f36dbac880b"></a>
@@ -605,6 +609,8 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Convert to <a class="el" href="classneml2_1_1Tensor.html">Tensor</a>. </p>
 
 </div>
 </div>
@@ -662,7 +668,7 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T &gt;
 </table>
 </div><div class="memdoc">
 
-<p>Set the variable value. </p>
+<p>Assignment operator. </p>
 
 <p>Implements <a class="el" href="classneml2_1_1VariableBase.html#aaf277ecb7976703957be4430e2708d1f">VariableBase</a>.</p>
 

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['tensor_0',['Tensor',['../classtensors_1_1TensorType.html#a619b02117e24db4903761cac89d5af4c',1,'tensors::TensorType']]]
+  ['quaternion_0',['Quaternion',['../classtensors_1_1TensorType.html#a52406567e52526d0db9d96cd96142b3f',1,'tensors::TensorType']]]
 ];
