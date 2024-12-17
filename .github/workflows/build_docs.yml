@@ -38,7 +38,8 @@ jobs:
         run: |
           sudo apt install graphviz lcov
           pip install -r requirements.txt
-          pip install torch==2.5.1
+      - name: Install PyTorch
+        run: pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
 
       # Configure and build
       - name: Configure documentation

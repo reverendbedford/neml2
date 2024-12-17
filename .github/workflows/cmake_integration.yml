@@ -26,7 +26,8 @@ jobs:
       - uses: jwlawson/actions-setup-cmake@v2
         with:
           cmake-version: "3.28"
-      - run: pip install torch==2.5.1
+      - name: Install PyTorch
+        run: pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
       - name: Create a source file for testing purposes
         run: |
           echo -e "\

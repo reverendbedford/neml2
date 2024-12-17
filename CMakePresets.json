@@ -2,11 +2,11 @@
   "version": 8,
   "configurePresets": [
     {
-      "name": "Development",
+      "name": "development",
+      "displayName": "Development",
       "description": "C++ backend, Python binding, tests, and documentation",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "installDir": "${sourceDir}/install/${presetName}",
-      "generator": "Ninja",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "NEML2_TESTS": "ON",
@@ -17,11 +17,11 @@
       }
     },
     {
-      "name": "Benchmarking",
+      "name": "benchmarking",
+      "displayName": "Benchmarking",
       "description": "Runner for benchmarking and profiling",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "installDir": "${sourceDir}/install/${presetName}",
-      "generator": "Ninja",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
         "NEML2_TESTS": "ON",
@@ -32,11 +32,11 @@
       }
     },
     {
-      "name": "Coverage",
+      "name": "coverage",
+      "displayName": "Coverage",
       "description": "Generate coverage report from unit tests",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "installDir": "${sourceDir}/install/${presetName}",
-      "generator": "Ninja",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Coverage",
         "NEML2_TESTS": "ON",
@@ -50,11 +50,11 @@
       }
     },
     {
-      "name": "Release",
+      "name": "release",
+      "displayName": "Release",
       "description": "Production build with HTML documentation for C++ backend and Python bindings",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "installDir": "${sourceDir}/install/${presetName}",
-      "generator": "Ninja",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "RelWithDebInfo",
         "NEML2_TESTS": "OFF",
@@ -69,7 +69,7 @@
     {
       "name": "C++ Backend",
       "description": "C++ backend with tests",
-      "configurePreset": "Development",
+      "configurePreset": "development",
       "targets": [
         "unit_tests",
         "regression_tests",
@@ -79,7 +79,7 @@
     {
       "name": "Python Bindings",
       "description": "Python bindings with tests",
-      "configurePreset": "Development",
+      "configurePreset": "development",
       "targets": [
         "python-stub"
       ]
@@ -87,7 +87,7 @@
     {
       "name": "Documentation",
       "description": "HTML documentation",
-      "configurePreset": "Development",
+      "configurePreset": "development",
       "targets": [
         "html"
       ]
