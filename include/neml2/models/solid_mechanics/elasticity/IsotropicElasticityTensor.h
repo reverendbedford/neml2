@@ -24,22 +24,24 @@
 
 #pragma once
 
-#include "neml2/models/solid_mechanics/AnisotropicElasticity.h"
-#include "neml2/tensors/SSR4.h"
+#include "neml2/models/solid_mechanics/elasticity/ElasticityTensor.h"
+#include "neml2/models/solid_mechanics/elasticity/IsotropicElasticityConverter.h"
 
 namespace neml2
 {
-class GeneralElasticity : public AnisotropicElasticity
+/**
+ * @brief Define an isotropoic elasticity tensor in various ways
+ */
+class IsotropicElasticityTensor : public ElasticityTensor<2>
 {
 public:
   static OptionSet expected_options();
 
-  GeneralElasticity(const OptionSet & options);
+  IsotropicElasticityTensor(const OptionSet & options);
 
 protected:
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
-  /// Stiffness tensor
-  const SSR4 & _T;
+  const IsotropicElasticityConverter _converter;
 };
 } // namespace neml2

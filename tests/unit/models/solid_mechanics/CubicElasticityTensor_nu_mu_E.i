@@ -34,7 +34,7 @@
   []
   [p]
     type = CubicElasticityTensor
-    coefficient_types = 'poissons_ratio shear_modulus youngs_modulus'
+    coefficient_types = 'POISSONS_RATIO SHEAR_MODULUS YOUNGS_MODULUS'
     coefficients = 'nu mu E'
   []
   [model]

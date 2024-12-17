@@ -24,24 +24,49 @@
 
 #pragma once
 
-#include "neml2/models/solid_mechanics/Elasticity.h"
+#include "neml2/models/NonlinearParameter.h"
+#include "neml2/models/solid_mechanics/elasticity/ElasticityConverter.h"
 
 namespace neml2
 {
-class LinearIsotropicElasticity : public Elasticity
+/**
+ * @brief Superclass for defining elasticity tensors in terms of other parameters
+ *
+ * @tparam N Number of independent elastic constants
+ */
+template <std::size_t N>
+class ElasticityTensor : public NonlinearParameter<SSR4>
 {
 public:
   static OptionSet expected_options();
 
-  LinearIsotropicElasticity(const OptionSet & options);
+  ElasticityTensor(const OptionSet & options);
 
 protected:
-  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+  /// Declare elastic constants (by resolving cross-references)
+  void declare_elastic_constant(LameParameter);
 
-  /// Young's modulus
-  const Scalar & _E;
+  /// Input elastic constant types (ordered according to LameParameter)
+  std::array<LameParameter, N> _constant_types;
 
-  /// Poisson's ratio
-  const Scalar & _nu;
+  /// Input elastic constants (ordered according to LameParameter)
+  std::array<const Scalar *, N> _constants;
+
+  /// Whether we need to calculate the derivative of the constants
+  std::array<bool, N> _need_derivs;
+
+private:
+  /// Input coefficients (without reordering)
+  const std::vector<CrossRef<Scalar>> _coefs;
+
+  /// Input coefficient types (without reordering)
+  const std::vector<LameParameter> _coef_types;
+
+  /// Flags to indicate whether coefficients are parameters or buffers
+  std::vector<bool> _coef_as_param;
+
+  /// Helper counter to fill out std::array
+  std::size_t _counter = 0;
 };
+
 } // namespace neml2

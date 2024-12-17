@@ -24,20 +24,24 @@
 
 #pragma once
 
-#include "neml2/models/solid_mechanics/Elasticity.h"
-#include "neml2/tensors/Rot.h"
+#include "neml2/models/solid_mechanics/elasticity/Elasticity.h"
 
 namespace neml2
 {
-class AnisotropicElasticity : public Elasticity
+class LinearIsotropicElasticity : public Elasticity
 {
 public:
   static OptionSet expected_options();
 
-  AnisotropicElasticity(const OptionSet & options);
+  LinearIsotropicElasticity(const OptionSet & options);
 
 protected:
-  /// The rotation (active convention)
-  const Variable<Rot> & _R;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+
+  /// Young's modulus
+  const Scalar & _E;
+
+  /// Poisson's ratio
+  const Scalar & _nu;
 };
 } // namespace neml2

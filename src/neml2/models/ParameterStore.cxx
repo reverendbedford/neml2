@@ -243,8 +243,11 @@ ParameterStore::declare_parameter(const std::string & name,
                       "a cross-reference.");
 }
 
+#define PARAMETERSTORE_INTANTIATE_TENSORBASE(T)                                                    \
+  template const T & ParameterStore::declare_parameter<T>(const std::string &, const T &)
+FOR_ALL_TENSORBASE(PARAMETERSTORE_INTANTIATE_TENSORBASE);
+
 #define PARAMETERSTORE_INTANTIATE_PRIMITIVETENSOR(T)                                               \
-  template const T & ParameterStore::declare_parameter<T>(const std::string &, const T &, bool);   \
   template const T & ParameterStore::declare_parameter<T>(                                         \
       const std::string &, const CrossRef<T> &, bool);                                             \
   template const T & ParameterStore::declare_parameter<T>(                                         \

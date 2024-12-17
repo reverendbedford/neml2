@@ -89,7 +89,7 @@
   []
   [elastic_tensor]
     type = IsotropicElasticityTensor
-    coefficient_types = 'youngs_modulus poissons_ratio'
+    coefficient_types = 'YOUNGS_MODULUS POISSONS_RATIO'
     coefficients = '1e5 0.25'
   []
   [elasticity]

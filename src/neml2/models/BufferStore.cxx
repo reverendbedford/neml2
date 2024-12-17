@@ -113,9 +113,9 @@ BufferStore::declare_buffer(const std::string & name, const std::string & input_
       "the buffer type can either be a plain type or a cross-reference.");
 }
 
-#define BUFFERSTORE_INTANTIATE_PRIMITIVETENSOR(T)                                                  \
+#define BUFFERSTORE_INTANTIATE_TENSORBASE(T)                                                       \
   template const T & BufferStore::declare_buffer<T>(const std::string &, const T &);               \
   template const T & BufferStore::declare_buffer<T>(const std::string &, const CrossRef<T> &);     \
   template const T & BufferStore::declare_buffer<T>(const std::string &, const std::string &)
-FOR_ALL_PRIMITIVETENSOR(BUFFERSTORE_INTANTIATE_PRIMITIVETENSOR);
+FOR_ALL_TENSORBASE(BUFFERSTORE_INTANTIATE_TENSORBASE);
 } // namespace neml2

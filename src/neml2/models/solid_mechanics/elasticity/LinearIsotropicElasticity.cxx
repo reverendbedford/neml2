@@ -22,7 +22,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/models/solid_mechanics/LinearIsotropicElasticity.h"
+#include "neml2/models/solid_mechanics/elasticity/LinearIsotropicElasticity.h"
 #include "neml2/tensors/SSR4.h"
 #include "neml2/misc/math.h"
 
