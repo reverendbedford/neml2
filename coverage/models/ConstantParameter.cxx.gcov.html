@@ -31,18 +31,18 @@
             <td class="headerValue">coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">15</td>
+            <td class="headerCovTableEntry">6</td>
             <td class="headerCovTableEntry">17</td>
-            <td class="headerCovTableEntryMed">88.2 %</td>
+            <td class="headerCovTableEntryLo">35.3 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-16 23:27:01</td>
+            <td class="headerValue">2024-12-17 15:47:54</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">24</td>
+            <td class="headerCovTableEntry">20</td>
             <td class="headerCovTableEntry">60</td>
-            <td class="headerCovTableEntryLo">40.0 %</td>
+            <td class="headerCovTableEntryLo">33.3 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -93,38 +93,38 @@
 <a name="31"><span class="lineNum">      31 </span>            : </a>
 <a name="32"><span class="lineNum">      32 </span>            : template &lt;typename T&gt;</a>
 <a name="33"><span class="lineNum">      33 </span>            : OptionSet</a>
-<a name="34"><span class="lineNum">      34 </span><span class="lineCov">        120 : ConstantParameter&lt;T&gt;::expected_options()</span></a>
+<a name="34"><span class="lineNum">      34 </span><span class="lineCov">        100 : ConstantParameter&lt;T&gt;::expected_options()</span></a>
 <a name="35"><span class="lineNum">      35 </span>            : {</a>
-<a name="36"><span class="lineNum">      36 </span><span class="lineCov">        120 :   OptionSet options = NonlinearParameter&lt;T&gt;::expected_options();</span></a>
-<a name="37"><span class="lineNum">      37 </span><span class="lineCov">        120 :   options.doc() = &quot;A parameter that is just a constant value, generally used to refer to a &quot;</span></a>
+<a name="36"><span class="lineNum">      36 </span><span class="lineCov">        100 :   OptionSet options = NonlinearParameter&lt;T&gt;::expected_options();</span></a>
+<a name="37"><span class="lineNum">      37 </span><span class="lineCov">        100 :   options.doc() = &quot;A parameter that is just a constant value, generally used to refer to a &quot;</span></a>
 <a name="38"><span class="lineNum">      38 </span>            :                   &quot;parameter in more than one downstream object.&quot;;</a>
 <a name="39"><span class="lineNum">      39 </span>            : </a>
-<a name="40"><span class="lineNum">      40 </span><span class="lineCov">        120 :   options.set_parameter&lt;CrossRef&lt;T&gt;&gt;(&quot;value&quot;);</span></a>
-<a name="41"><span class="lineNum">      41 </span><span class="lineCov">        120 :   options.set(&quot;value&quot;).doc() = &quot;The constant value of the parameter&quot;;</span></a>
-<a name="42"><span class="lineNum">      42 </span><span class="lineCov">        120 :   return options;</span></a>
+<a name="40"><span class="lineNum">      40 </span><span class="lineCov">        100 :   options.set_parameter&lt;CrossRef&lt;T&gt;&gt;(&quot;value&quot;);</span></a>
+<a name="41"><span class="lineNum">      41 </span><span class="lineCov">        100 :   options.set(&quot;value&quot;).doc() = &quot;The constant value of the parameter&quot;;</span></a>
+<a name="42"><span class="lineNum">      42 </span><span class="lineCov">        100 :   return options;</span></a>
 <a name="43"><span class="lineNum">      43 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="44"><span class="lineNum">      44 </span>            : </a>
 <a name="45"><span class="lineNum">      45 </span>            : template &lt;typename T&gt;</a>
-<a name="46"><span class="lineNum">      46 </span><span class="lineCov">          5 : ConstantParameter&lt;T&gt;::ConstantParameter(const OptionSet &amp; options)</span></a>
+<a name="46"><span class="lineNum">      46 </span><span class="lineNoCov">          0 : ConstantParameter&lt;T&gt;::ConstantParameter(const OptionSet &amp; options)</span></a>
 <a name="47"><span class="lineNum">      47 </span>            :   : NonlinearParameter&lt;T&gt;(options),</a>
-<a name="48"><span class="lineNum">      48 </span><span class="lineCov">          5 :     _value(this-&gt;template declare_parameter&lt;T&gt;(&quot;value&quot;, &quot;value&quot;, /*allow_nonlinear=*/true))</span></a>
+<a name="48"><span class="lineNum">      48 </span><span class="lineNoCov">          0 :     _value(this-&gt;template declare_parameter&lt;T&gt;(&quot;value&quot;, &quot;value&quot;, /*allow_nonlinear=*/true))</span></a>
 <a name="49"><span class="lineNum">      49 </span>            : {</a>
-<a name="50"><span class="lineNum">      50 </span><span class="lineCov">          5 : }</span></a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="51"><span class="lineNum">      51 </span>            : </a>
 <a name="52"><span class="lineNum">      52 </span>            : template &lt;typename T&gt;</a>
 <a name="53"><span class="lineNum">      53 </span>            : void</a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">         15 : ConstantParameter&lt;T&gt;::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineNoCov">          0 : ConstantParameter&lt;T&gt;::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
 <a name="55"><span class="lineNum">      55 </span>            : {</a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">         15 :   if (out)</span></a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">         13 :     this-&gt;_p = _value;</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineNoCov">          0 :   if (out)</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineNoCov">          0 :     this-&gt;_p = _value;</span></a>
 <a name="58"><span class="lineNum">      58 </span>            : </a>
-<a name="59"><span class="lineNum">      59 </span><span class="lineCov">         15 :   if (dout_din)</span></a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          2 :     if (const auto value = this-&gt;nl_param(&quot;value&quot;))</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineNoCov">          0 :   if (dout_din)</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineNoCov">          0 :     if (const auto value = this-&gt;nl_param(&quot;value&quot;))</span></a>
 <a name="61"><span class="lineNum">      61 </span><span class="lineNoCov">          0 :       this-&gt;_p.d(*value) = T::identity_map(value-&gt;options());</span></a>
 <a name="62"><span class="lineNum">      62 </span>            : </a>
 <a name="63"><span class="lineNum">      63 </span>            :   // This is zero</a>
 <a name="64"><span class="lineNum">      64 </span>            :   (void)d2out_din2;</a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">         15 : }</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="66"><span class="lineNum">      66 </span>            : } // namespace neml2</a>
 </pre>
       </td>

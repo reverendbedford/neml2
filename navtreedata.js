@@ -37,6 +37,7 @@ var NAVTREE =
       [ "Python Package", "python-package.html", null ]
     ] ],
     [ "Developer Guide", "usergroup1.html", [
+      [ "Development Environment", "dev-env.html", null ],
       [ "Naming Conventions", "naming-conventions.html", null ],
       [ "Custom Model", "custom-model.html", null ],
       [ "Testing", "testing.html", null ],
@@ -87,8 +88,8 @@ var NAVTREEINDEX =
 "classneml2_1_1TransientDriver.html",
 "classneml2_1_1VariableBase.html#ac611e9005573935f98920cd61bfe8dff",
 "classneml2_1_1ZerosPrimitiveTensor.html",
-"namespaceneml2.html#aa6ec3f8c60d5a9533748fcbbe81fe414",
-"structneml2_1_1NonlinearSolver_1_1Result.html"
+"namespaceneml2.html#aa68fbccb989b8836eb57f34a2b022b52",
+"structneml2_1_1IntraOpThread.html#aa844e1d225b733f7e4801037380e8dbf"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -31,18 +31,18 @@
             <td class="headerValue">coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">35</td>
+            <td class="headerCovTableEntry">14</td>
             <td class="headerCovTableEntry">36</td>
-            <td class="headerCovTableEntryHi">97.2 %</td>
+            <td class="headerCovTableEntryLo">38.9 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-16 23:27:01</td>
+            <td class="headerValue">2024-12-17 15:47:54</td>
             <td></td>
             <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">1</td>
             <td class="headerCovTableEntry">3</td>
-            <td class="headerCovTableEntry">3</td>
-            <td class="headerCovTableEntryHi">100.0 %</td>
+            <td class="headerCovTableEntryLo">33.3 %</td>
           </tr>
           <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -96,65 +96,65 @@
 <a name="34"><span class="lineNum">      34 </span>            : register_NEML2_object(PlasticVorticity);</a>
 <a name="35"><span class="lineNum">      35 </span>            : </a>
 <a name="36"><span class="lineNum">      36 </span>            : OptionSet</a>
-<a name="37"><span class="lineNum">      37 </span><span class="lineCov">          6 : PlasticVorticity::expected_options()</span></a>
+<a name="37"><span class="lineNum">      37 </span><span class="lineCov">          5 : PlasticVorticity::expected_options()</span></a>
 <a name="38"><span class="lineNum">      38 </span>            : {</a>
-<a name="39"><span class="lineNum">      39 </span><span class="lineCov">          6 :   OptionSet options = Model::expected_options();</span></a>
+<a name="39"><span class="lineNum">      39 </span><span class="lineCov">          5 :   OptionSet options = Model::expected_options();</span></a>
 <a name="40"><span class="lineNum">      40 </span>            : </a>
-<a name="41"><span class="lineNum">      41 </span><span class="lineCov">          6 :   options.doc() = &quot;Caclulates the plastic vorcitity as \\f$ w^p = \\sum_{i=1}^{n_{slip}} &quot;</span></a>
+<a name="41"><span class="lineNum">      41 </span><span class="lineCov">          5 :   options.doc() = &quot;Caclulates the plastic vorcitity as \\f$ w^p = \\sum_{i=1}^{n_{slip}} &quot;</span></a>
 <a name="42"><span class="lineNum">      42 </span>            :                   &quot;\\dot{\\gamma}_i Q \\operatorname{skew}{\\left(d_i \\otimes n_i \\right)} Q^T &quot;</a>
 <a name="43"><span class="lineNum">      43 </span>            :                   &quot;\\f$ with \\f$ d^p \\f$ the plastic deformation rate, \\f$ \\dot{\\gamma}_i &quot;</a>
 <a name="44"><span class="lineNum">      44 </span>            :                   &quot;\\f$ the slip rate on the ith slip system, \\f$Q \\f$ the orientation, \\f$ d_i &quot;</a>
-<a name="45"><span class="lineNum">      45 </span><span class="lineCov">          6 :                   &quot;\\f$ the slip system direction, and \\f$ n_i \\f$ the slip system normal.&quot;;</span></a>
+<a name="45"><span class="lineNum">      45 </span><span class="lineCov">          5 :                   &quot;\\f$ the slip system direction, and \\f$ n_i \\f$ the slip system normal.&quot;;</span></a>
 <a name="46"><span class="lineNum">      46 </span>            : </a>
-<a name="47"><span class="lineNum">      47 </span><span class="lineCov">          6 :   options.set_output(&quot;plastic_vorticity&quot;) = VariableName(STATE, &quot;internal&quot;, &quot;plastic_vorticity&quot;);</span></a>
-<a name="48"><span class="lineNum">      48 </span><span class="lineCov">          6 :   options.set(&quot;plastic_vorticity&quot;).doc() = &quot;The name of the plastic vorticity tensor&quot;;</span></a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineCov">          5 :   options.set_output(&quot;plastic_vorticity&quot;) = VariableName(STATE, &quot;internal&quot;, &quot;plastic_vorticity&quot;);</span></a>
+<a name="48"><span class="lineNum">      48 </span><span class="lineCov">          5 :   options.set(&quot;plastic_vorticity&quot;).doc() = &quot;The name of the plastic vorticity tensor&quot;;</span></a>
 <a name="49"><span class="lineNum">      49 </span>            : </a>
-<a name="50"><span class="lineNum">      50 </span><span class="lineCov">          6 :   options.set_input(&quot;orientation&quot;) = VariableName(STATE, &quot;orientation_matrix&quot;);</span></a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">          6 :   options.set(&quot;orientation&quot;).doc() = &quot;The name of the orientation matrix tensor&quot;;</span></a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineCov">          5 :   options.set_input(&quot;orientation&quot;) = VariableName(STATE, &quot;orientation_matrix&quot;);</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineCov">          5 :   options.set(&quot;orientation&quot;).doc() = &quot;The name of the orientation matrix tensor&quot;;</span></a>
 <a name="52"><span class="lineNum">      52 </span>            : </a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">          6 :   options.set_input(&quot;slip_rates&quot;) = VariableName(STATE, &quot;internal&quot;, &quot;slip_rates&quot;);</span></a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          6 :   options.set(&quot;slip_rates&quot;).doc() = &quot;The name of the tensor containg the current slip rates&quot;;</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineCov">          5 :   options.set_input(&quot;slip_rates&quot;) = VariableName(STATE, &quot;internal&quot;, &quot;slip_rates&quot;);</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          5 :   options.set(&quot;slip_rates&quot;).doc() = &quot;The name of the tensor containg the current slip rates&quot;;</span></a>
 <a name="55"><span class="lineNum">      55 </span>            : </a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">          6 :   options.set&lt;std::string&gt;(&quot;crystal_geometry_name&quot;) = &quot;crystal_geometry&quot;;</span></a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">         12 :   options.set(&quot;crystal_geometry_name&quot;).doc() =</span></a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">          6 :       &quot;The name of the Data object containing the crystallographic information for the material&quot;;</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">          5 :   options.set&lt;std::string&gt;(&quot;crystal_geometry_name&quot;) = &quot;crystal_geometry&quot;;</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">         10 :   options.set(&quot;crystal_geometry_name&quot;).doc() =</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">          5 :       &quot;The name of the Data object containing the crystallographic information for the material&quot;;</span></a>
 <a name="59"><span class="lineNum">      59 </span>            : </a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          6 :   return options;</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          5 :   return options;</span></a>
 <a name="61"><span class="lineNum">      61 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="62"><span class="lineNum">      62 </span>            : </a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">          2 : PlasticVorticity::PlasticVorticity(const OptionSet &amp; options)</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineNoCov">          0 : PlasticVorticity::PlasticVorticity(const OptionSet &amp; options)</span></a>
 <a name="64"><span class="lineNum">      64 </span>            :   : Model(options),</a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">          6 :     _crystal_geometry(register_data&lt;crystallography::CrystalGeometry&gt;(</span></a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          2 :         options.get&lt;std::string&gt;(&quot;crystal_geometry_name&quot;))),</span></a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          2 :     _Wp(declare_output_variable&lt;WR2&gt;(&quot;plastic_vorticity&quot;)),</span></a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">          2 :     _R(declare_input_variable&lt;R2&gt;(&quot;orientation&quot;)),</span></a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">          4 :     _gamma_dot(declare_input_variable&lt;Scalar&gt;(&quot;slip_rates&quot;, _crystal_geometry.nslip()))</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineNoCov">          0 :     _crystal_geometry(register_data&lt;crystallography::CrystalGeometry&gt;(</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineNoCov">          0 :         options.get&lt;std::string&gt;(&quot;crystal_geometry_name&quot;))),</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineNoCov">          0 :     _Wp(declare_output_variable&lt;WR2&gt;(&quot;plastic_vorticity&quot;)),</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineNoCov">          0 :     _R(declare_input_variable&lt;R2&gt;(&quot;orientation&quot;)),</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineNoCov">          0 :     _gamma_dot(declare_input_variable&lt;Scalar&gt;(&quot;slip_rates&quot;, _crystal_geometry.nslip()))</span></a>
 <a name="70"><span class="lineNum">      70 </span>            : {</a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">          2 : }</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="72"><span class="lineNum">      72 </span>            : </a>
 <a name="73"><span class="lineNum">      73 </span>            : void</a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineCov">        309 : PlasticVorticity::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineNoCov">          0 : PlasticVorticity::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
 <a name="75"><span class="lineNum">      75 </span>            : {</a>
-<a name="76"><span class="lineNum">      76 </span><span class="lineCov">        309 :   neml_assert_dbg(!d2out_din2, &quot;Second derivative not implemented.&quot;);</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineNoCov">          0 :   neml_assert_dbg(!d2out_din2, &quot;Second derivative not implemented.&quot;);</span></a>
 <a name="77"><span class="lineNum">      77 </span>            : </a>
-<a name="78"><span class="lineNum">      78 </span><span class="lineCov">        309 :   const auto Wp_crystal = math::batch_sum(_gamma_dot * _crystal_geometry.W(), -1);</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineNoCov">          0 :   const auto Wp_crystal = math::batch_sum(_gamma_dot * _crystal_geometry.W(), -1);</span></a>
 <a name="79"><span class="lineNum">      79 </span>            : </a>
-<a name="80"><span class="lineNum">      80 </span><span class="lineCov">        309 :   if (out)</span></a>
-<a name="81"><span class="lineNum">      81 </span><span class="lineCov">        309 :     _Wp = Wp_crystal.rotate(_R);</span></a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineNoCov">          0 :   if (out)</span></a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineNoCov">          0 :     _Wp = Wp_crystal.rotate(_R);</span></a>
 <a name="82"><span class="lineNum">      82 </span>            : </a>
-<a name="83"><span class="lineNum">      83 </span><span class="lineCov">        309 :   if (dout_din)</span></a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineNoCov">          0 :   if (dout_din)</span></a>
 <a name="84"><span class="lineNum">      84 </span>            :   {</a>
-<a name="85"><span class="lineNum">      85 </span><span class="lineCov">         63 :     if (_gamma_dot.is_dependent())</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineNoCov">          0 :     if (_gamma_dot.is_dependent())</span></a>
 <a name="86"><span class="lineNum">      86 </span>            :     {</a>
-<a name="87"><span class="lineNum">      87 </span><span class="lineCov">        126 :       const auto d_Wp_d_gamma_dot = _crystal_geometry.W().rotate(R2(_R).batch_unsqueeze(-1));</span></a>
-<a name="88"><span class="lineNum">      88 </span><span class="lineCov">         63 :       const auto B = d_Wp_d_gamma_dot.batch_sizes().slice(0, -1);</span></a>
-<a name="89"><span class="lineNum">      89 </span><span class="lineCov">         63 :       _Wp.d(_gamma_dot) = Tensor(d_Wp_d_gamma_dot, B).base_transpose(-1, -2);</span></a>
-<a name="90"><span class="lineNum">      90 </span><span class="lineCov">         63 :     }</span></a>
+<a name="87"><span class="lineNum">      87 </span><span class="lineNoCov">          0 :       const auto d_Wp_d_gamma_dot = _crystal_geometry.W().rotate(R2(_R).batch_unsqueeze(-1));</span></a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineNoCov">          0 :       const auto B = d_Wp_d_gamma_dot.batch_sizes().slice(0, -1);</span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineNoCov">          0 :       _Wp.d(_gamma_dot) = Tensor(d_Wp_d_gamma_dot, B).base_transpose(-1, -2);</span></a>
+<a name="90"><span class="lineNum">      90 </span><span class="lineNoCov">          0 :     }</span></a>
 <a name="91"><span class="lineNum">      91 </span>            : </a>
-<a name="92"><span class="lineNum">      92 </span><span class="lineCov">         63 :     if (_R.is_dependent())</span></a>
-<a name="93"><span class="lineNum">      93 </span><span class="lineCov">         63 :       _Wp.d(_R) = Wp_crystal.drotate(_R);</span></a>
+<a name="92"><span class="lineNum">      92 </span><span class="lineNoCov">          0 :     if (_R.is_dependent())</span></a>
+<a name="93"><span class="lineNum">      93 </span><span class="lineNoCov">          0 :       _Wp.d(_R) = Wp_crystal.drotate(_R);</span></a>
 <a name="94"><span class="lineNum">      94 </span>            :   }</a>
-<a name="95"><span class="lineNum">      95 </span><span class="lineCov">        309 : }</span></a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="96"><span class="lineNum">      96 </span>            : } // namespace neml2</a>
 </pre>
       </td>

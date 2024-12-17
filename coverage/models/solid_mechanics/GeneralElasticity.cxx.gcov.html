@@ -31,18 +31,18 @@
             <td class="headerValue">coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">32</td>
+            <td class="headerCovTableEntry">7</td>
             <td class="headerCovTableEntry">33</td>
-            <td class="headerCovTableEntryHi">97.0 %</td>
+            <td class="headerCovTableEntryLo">21.2 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-16 23:27:01</td>
+            <td class="headerValue">2024-12-17 15:47:54</td>
             <td></td>
             <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">1</td>
             <td class="headerCovTableEntry">3</td>
-            <td class="headerCovTableEntry">3</td>
-            <td class="headerCovTableEntryHi">100.0 %</td>
+            <td class="headerCovTableEntryLo">33.3 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -93,61 +93,61 @@
 <a name="31"><span class="lineNum">      31 </span>            : register_NEML2_object(GeneralElasticity);</a>
 <a name="32"><span class="lineNum">      32 </span>            : </a>
 <a name="33"><span class="lineNum">      33 </span>            : OptionSet</a>
-<a name="34"><span class="lineNum">      34 </span><span class="lineCov">          6 : GeneralElasticity::expected_options()</span></a>
+<a name="34"><span class="lineNum">      34 </span><span class="lineCov">          5 : GeneralElasticity::expected_options()</span></a>
 <a name="35"><span class="lineNum">      35 </span>            : {</a>
-<a name="36"><span class="lineNum">      36 </span><span class="lineCov">          6 :   OptionSet options = AnisotropicElasticity::expected_options();</span></a>
-<a name="37"><span class="lineNum">      37 </span><span class="lineCov">          6 :   options.doc() += &quot; This verion implements a general relation using the elasticity tensor, &quot;</span></a>
-<a name="38"><span class="lineNum">      38 </span><span class="lineCov">          6 :                    &quot;expressed as an SSR4 object&quot;;</span></a>
+<a name="36"><span class="lineNum">      36 </span><span class="lineCov">          5 :   OptionSet options = AnisotropicElasticity::expected_options();</span></a>
+<a name="37"><span class="lineNum">      37 </span><span class="lineCov">          5 :   options.doc() += &quot; This verion implements a general relation using the elasticity tensor, &quot;</span></a>
+<a name="38"><span class="lineNum">      38 </span><span class="lineCov">          5 :                    &quot;expressed as an SSR4 object&quot;;</span></a>
 <a name="39"><span class="lineNum">      39 </span>            : </a>
-<a name="40"><span class="lineNum">      40 </span><span class="lineCov">          6 :   options.set_parameter&lt;CrossRef&lt;SSR4&gt;&gt;(&quot;elastic_stiffness_tensor&quot;);</span></a>
-<a name="41"><span class="lineNum">      41 </span><span class="lineCov">          6 :   options.set(&quot;elastic_stiffness_tensor&quot;).doc() = &quot;Elastic stiffness tensor&quot;;</span></a>
+<a name="40"><span class="lineNum">      40 </span><span class="lineCov">          5 :   options.set_parameter&lt;CrossRef&lt;SSR4&gt;&gt;(&quot;elastic_stiffness_tensor&quot;);</span></a>
+<a name="41"><span class="lineNum">      41 </span><span class="lineCov">          5 :   options.set(&quot;elastic_stiffness_tensor&quot;).doc() = &quot;Elastic stiffness tensor&quot;;</span></a>
 <a name="42"><span class="lineNum">      42 </span>            : </a>
-<a name="43"><span class="lineNum">      43 </span><span class="lineCov">          6 :   return options;</span></a>
+<a name="43"><span class="lineNum">      43 </span><span class="lineCov">          5 :   return options;</span></a>
 <a name="44"><span class="lineNum">      44 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="45"><span class="lineNum">      45 </span>            : </a>
-<a name="46"><span class="lineNum">      46 </span><span class="lineCov">          5 : GeneralElasticity::GeneralElasticity(const OptionSet &amp; options)</span></a>
+<a name="46"><span class="lineNum">      46 </span><span class="lineNoCov">          0 : GeneralElasticity::GeneralElasticity(const OptionSet &amp; options)</span></a>
 <a name="47"><span class="lineNum">      47 </span>            :   : AnisotropicElasticity(options),</a>
-<a name="48"><span class="lineNum">      48 </span><span class="lineCov">          5 :     _T(declare_parameter&lt;SSR4&gt;(&quot;T&quot;, &quot;elastic_stiffness_tensor&quot;, /*allow nonlinear=*/true))</span></a>
+<a name="48"><span class="lineNum">      48 </span><span class="lineNoCov">          0 :     _T(declare_parameter&lt;SSR4&gt;(&quot;T&quot;, &quot;elastic_stiffness_tensor&quot;, /*allow nonlinear=*/true))</span></a>
 <a name="49"><span class="lineNum">      49 </span>            : {</a>
-<a name="50"><span class="lineNum">      50 </span><span class="lineCov">          5 : }</span></a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="51"><span class="lineNum">      51 </span>            : </a>
 <a name="52"><span class="lineNum">      52 </span>            : void</a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">        255 : GeneralElasticity::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineNoCov">          0 : GeneralElasticity::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
 <a name="54"><span class="lineNum">      54 </span>            : {</a>
-<a name="55"><span class="lineNum">      55 </span><span class="lineCov">        255 :   neml_assert_dbg(!d2out_din2, &quot;GeneralElasticity doesn't implement second derivatives.&quot;);</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineNoCov">          0 :   neml_assert_dbg(!d2out_din2, &quot;GeneralElasticity doesn't implement second derivatives.&quot;);</span></a>
 <a name="56"><span class="lineNum">      56 </span>            : </a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">        255 :   const auto A = _T.rotate(_R);</span></a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">        255 :   const auto Ainv = _compliance ? A.inverse() : SSR4();</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineNoCov">          0 :   const auto A = _T.rotate(_R);</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineNoCov">          0 :   const auto Ainv = _compliance ? A.inverse() : SSR4();</span></a>
 <a name="59"><span class="lineNum">      59 </span>            : </a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">        255 :   if (out)</span></a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">        252 :     _to = (_compliance ? Ainv : A) * _from;</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineNoCov">          0 :   if (out)</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineNoCov">          0 :     _to = (_compliance ? Ainv : A) * _from;</span></a>
 <a name="62"><span class="lineNum">      62 </span>            : </a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">        255 :   if (dout_din)</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineNoCov">          0 :   if (dout_din)</span></a>
 <a name="64"><span class="lineNum">      64 </span>            :   {</a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">          5 :     if (_from.is_dependent())</span></a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          5 :       _to.d(_from) = _compliance ? Ainv : A;</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineNoCov">          0 :     if (_from.is_dependent())</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineNoCov">          0 :       _to.d(_from) = _compliance ? Ainv : A;</span></a>
 <a name="67"><span class="lineNum">      67 </span>            : </a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">          5 :     if (_R.is_dependent())</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineNoCov">          0 :     if (_R.is_dependent())</span></a>
 <a name="69"><span class="lineNum">      69 </span>            :     {</a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          5 :       const auto dA_dR = _T.drotate(_R);</span></a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">          5 :       if (_compliance)</span></a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineCov">          8 :         _to.d(_R) = Tensor(torch::einsum(&quot;...ijkl,...klm,...j&quot;, {A.dinverse(), dA_dR, _from}),</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineNoCov">          0 :       const auto dA_dR = _T.drotate(_R);</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineNoCov">          0 :       if (_compliance)</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineNoCov">          0 :         _to.d(_R) = Tensor(torch::einsum(&quot;...ijkl,...klm,...j&quot;, {A.dinverse(), dA_dR, _from}),</span></a>
 <a name="73"><span class="lineNum">      73 </span>            :                            A.batch_sizes());</a>
 <a name="74"><span class="lineNum">      74 </span>            :       else</a>
-<a name="75"><span class="lineNum">      75 </span><span class="lineCov">          9 :         _to.d(_R) = Tensor(torch::einsum(&quot;...ijk,...j&quot;, {dA_dR, _from}), A.batch_sizes());</span></a>
-<a name="76"><span class="lineNum">      76 </span><span class="lineCov">          5 :     }</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineNoCov">          0 :         _to.d(_R) = Tensor(torch::einsum(&quot;...ijk,...j&quot;, {dA_dR, _from}), A.batch_sizes());</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineNoCov">          0 :     }</span></a>
 <a name="77"><span class="lineNum">      77 </span>            : </a>
-<a name="78"><span class="lineNum">      78 </span><span class="lineCov">          5 :     if (const auto * const T = nl_param(&quot;T&quot;))</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineNoCov">          0 :     if (const auto * const T = nl_param(&quot;T&quot;))</span></a>
 <a name="79"><span class="lineNum">      79 </span>            :     {</a>
-<a name="80"><span class="lineNum">      80 </span><span class="lineCov">          2 :       const auto dA_dT = _T.drotate_self(_R);</span></a>
-<a name="81"><span class="lineNum">      81 </span><span class="lineCov">          2 :       if (_compliance)</span></a>
-<a name="82"><span class="lineNum">      82 </span><span class="lineCov">          4 :         _to.d(*T) = Tensor(torch::einsum(&quot;...ijkl,...klmn,...j&quot;, {A.dinverse(), dA_dT, _from}),</span></a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineNoCov">          0 :       const auto dA_dT = _T.drotate_self(_R);</span></a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineNoCov">          0 :       if (_compliance)</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineNoCov">          0 :         _to.d(*T) = Tensor(torch::einsum(&quot;...ijkl,...klmn,...j&quot;, {A.dinverse(), dA_dT, _from}),</span></a>
 <a name="83"><span class="lineNum">      83 </span>            :                            A.batch_sizes());</a>
 <a name="84"><span class="lineNum">      84 </span>            :       else</a>
-<a name="85"><span class="lineNum">      85 </span><span class="lineCov">          3 :         _to.d(*T) = Tensor(torch::einsum(&quot;...ijkl,...j&quot;, {dA_dT, _from}), A.batch_sizes());</span></a>
-<a name="86"><span class="lineNum">      86 </span><span class="lineCov">          2 :     }</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineNoCov">          0 :         _to.d(*T) = Tensor(torch::einsum(&quot;...ijkl,...j&quot;, {dA_dT, _from}), A.batch_sizes());</span></a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineNoCov">          0 :     }</span></a>
 <a name="87"><span class="lineNum">      87 </span>            :   }</a>
-<a name="88"><span class="lineNum">      88 </span><span class="lineCov">        255 : }</span></a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="89"><span class="lineNum">      89 </span>            : } // namespace neml2</a>
 </pre>
       </td>

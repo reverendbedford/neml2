@@ -1,5 +1,6 @@
 var NAVTREEINDEX16 =
 {
+"namespacemath.html#a573d838a1b22edc4de0fdd7f4d507079":[9,0,3,173],
 "namespacemath.html#a577e4eac272482279f97a55d3742d2fd":[9,0,3,317],
 "namespacemath.html#a57e2baddce60a23dfec6876d16b5fafb":[9,0,3,27],
 "namespacemath.html#a589b3e5a7220d085ea68b86e9eb50338":[9,0,3,283],
@@ -248,6 +249,5 @@ var NAVTREEINDEX16 =
 "usergroup0.html":[2],
 "usergroup1.html":[3],
 "usergroup2.html":[4],
-"usergroup3.html":[5],
-"usergroup4.html":[6]
+"usergroup3.html":[5]
 };

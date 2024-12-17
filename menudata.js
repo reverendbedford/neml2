@@ -30,6 +30,7 @@ var menudata={children:[
 {text:"C++ Backend",url:"cpp-backend.html"},
 {text:"Python Package",url:"python-package.html"}]},
 {text:"Developer Guide",url:"usergroup1.html",children:[
+{text:"Development Environment",url:"dev-env.html"},
 {text:"Naming Conventions",url:"naming-conventions.html"},
 {text:"Custom Model",url:"custom-model.html"},
 {text:"Testing",url:"testing.html"},

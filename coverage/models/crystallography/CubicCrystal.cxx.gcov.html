@@ -31,18 +31,18 @@
             <td class="headerValue">coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">13</td>
+            <td class="headerCovTableEntry">9</td>
             <td class="headerCovTableEntry">14</td>
-            <td class="headerCovTableEntryHi">92.9 %</td>
+            <td class="headerCovTableEntryLo">64.3 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-16 23:27:01</td>
+            <td class="headerValue">2024-12-17 15:47:54</td>
             <td></td>
             <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">1</td>
             <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntryHi">100.0 %</td>
+            <td class="headerCovTableEntryLo">50.0 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -95,28 +95,28 @@
 <a name="33"><span class="lineNum">      33 </span>            : register_NEML2_object(CubicCrystal);</a>
 <a name="34"><span class="lineNum">      34 </span>            : </a>
 <a name="35"><span class="lineNum">      35 </span>            : OptionSet</a>
-<a name="36"><span class="lineNum">      36 </span><span class="lineCov">          6 : CubicCrystal::expected_options()</span></a>
+<a name="36"><span class="lineNum">      36 </span><span class="lineCov">          5 : CubicCrystal::expected_options()</span></a>
 <a name="37"><span class="lineNum">      37 </span>            : {</a>
-<a name="38"><span class="lineNum">      38 </span><span class="lineCov">          6 :   OptionSet options = CrystalGeometry::expected_options();</span></a>
-<a name="39"><span class="lineNum">      39 </span><span class="lineCov">          6 :   options.doc() =</span></a>
-<a name="40"><span class="lineNum">      40 </span><span class="lineCov">          6 :       &quot;A specialization of the general CrystalGeometry class defining a cubic crystal system.&quot;;</span></a>
+<a name="38"><span class="lineNum">      38 </span><span class="lineCov">          5 :   OptionSet options = CrystalGeometry::expected_options();</span></a>
+<a name="39"><span class="lineNum">      39 </span><span class="lineCov">          5 :   options.doc() =</span></a>
+<a name="40"><span class="lineNum">      40 </span><span class="lineCov">          5 :       &quot;A specialization of the general CrystalGeometry class defining a cubic crystal system.&quot;;</span></a>
 <a name="41"><span class="lineNum">      41 </span>            : </a>
-<a name="42"><span class="lineNum">      42 </span><span class="lineCov">          6 :   options.set(&quot;crystal_class&quot;).suppressed() = true;</span></a>
-<a name="43"><span class="lineNum">      43 </span><span class="lineCov">          6 :   options.set(&quot;lattice_vectors&quot;).suppressed() = true;</span></a>
+<a name="42"><span class="lineNum">      42 </span><span class="lineCov">          5 :   options.set(&quot;crystal_class&quot;).suppressed() = true;</span></a>
+<a name="43"><span class="lineNum">      43 </span><span class="lineCov">          5 :   options.set(&quot;lattice_vectors&quot;).suppressed() = true;</span></a>
 <a name="44"><span class="lineNum">      44 </span>            : </a>
-<a name="45"><span class="lineNum">      45 </span><span class="lineCov">          6 :   options.set&lt;CrossRef&lt;Scalar&gt;&gt;(&quot;lattice_parameter&quot;);</span></a>
-<a name="46"><span class="lineNum">      46 </span><span class="lineCov">          6 :   options.set(&quot;lattice_parameter&quot;).doc() = &quot;The lattice parameter&quot;;</span></a>
+<a name="45"><span class="lineNum">      45 </span><span class="lineCov">          5 :   options.set&lt;CrossRef&lt;Scalar&gt;&gt;(&quot;lattice_parameter&quot;);</span></a>
+<a name="46"><span class="lineNum">      46 </span><span class="lineCov">          5 :   options.set(&quot;lattice_parameter&quot;).doc() = &quot;The lattice parameter&quot;;</span></a>
 <a name="47"><span class="lineNum">      47 </span>            : </a>
-<a name="48"><span class="lineNum">      48 </span><span class="lineCov">          6 :   return options;</span></a>
+<a name="48"><span class="lineNum">      48 </span><span class="lineCov">          5 :   return options;</span></a>
 <a name="49"><span class="lineNum">      49 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="50"><span class="lineNum">      50 </span>            : </a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">         24 : CubicCrystal::CubicCrystal(const OptionSet &amp; options)</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineNoCov">          0 : CubicCrystal::CubicCrystal(const OptionSet &amp; options)</span></a>
 <a name="52"><span class="lineNum">      52 </span>            :   : CrystalGeometry(</a>
 <a name="53"><span class="lineNum">      53 </span>            :         options,</a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">         48 :         symmetry_operations_from_orbifold(&quot;432&quot;),</span></a>
-<a name="55"><span class="lineNum">      55 </span><span class="lineCov">         72 :         Vec(torch::Tensor(R2::fill(options.get&lt;CrossRef&lt;Scalar&gt;&gt;(&quot;lattice_parameter&quot;)))))</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineNoCov">          0 :         symmetry_operations_from_orbifold(&quot;432&quot;),</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineNoCov">          0 :         Vec(torch::Tensor(R2::fill(options.get&lt;CrossRef&lt;Scalar&gt;&gt;(&quot;lattice_parameter&quot;)))))</span></a>
 <a name="56"><span class="lineNum">      56 </span>            : {</a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">         24 : }</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="58"><span class="lineNum">      58 </span>            : </a>
 <a name="59"><span class="lineNum">      59 </span>            : } // namespace neml2</a>
 </pre>

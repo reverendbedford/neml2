@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['package_0',['Python Package',['../python-package.html',1,'']]],
-  ['python_20package_1',['Python Package',['../python-package.html',1,'']]]
+  ['naming_20conventions_0',['Naming Conventions',['../naming-conventions.html',1,'']]],
+  ['neml2_1',['NEML2',['../index.html',1,'']]]
 ];

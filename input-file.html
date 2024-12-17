@@ -114,7 +114,7 @@ $(function(){initNavTree('input-file.html',''); initResizable(); });
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
 <ul><li class="level1"><a href="#input-file-syntax">Syntax</a></li>
-<li class="level1"><a href="#autotoc_md43">Special syntax</a></li>
+<li class="level1"><a href="#autotoc_md48">Special syntax</a></li>
 <li class="level1"><a href="#cross-referencing">Cross-Referencing</a></li>
 </ul>
 </div>
@@ -149,7 +149,7 @@ Syntax</h1>
 <div class="line">[]</div>
 </div><!-- fragment --><p> defines a tensor named "E" under the <code>[Tensors]</code> block and a model named "elasticity" under the <code>[Models]</code> block. Notice that an object (in this case the tensor named "E" under the <code>[Tensors]</code> section) can be referenced by an input option (in this case "youngs_modulus") by its name, and this mechanism is referred to as <a class="el" href="#cross-referencing">cross-referencing</a>. The <a class="el" href="syntax-tensors.html">Syntax Documentation</a> provides a complete list of objects that can be defined by an input file. The <a class="el" href="system-tensors.html">System Documentation</a> provides detailed explanation of each system.</p>
 <dl class="section note"><dt>Note</dt><dd>The ordering of objects, i.e., the sequence objects appear in the input file, does not change their behavior.</dd></dl>
-<h1><a class="anchor" id="autotoc_md43"></a>
+<h1><a class="anchor" id="autotoc_md48"></a>
 Special syntax</h1>
 <p><b>Boolean</b>: Oftentimes the behavior of the object is preferrably controlled by a boolean flag. However, since the HIT format only allows (array of) integer, floating-point number, and string, a special syntax shall be reserved for boolean values. In NEML2 input files, a string with value "true" can be parsed into a boolean <code>true</code>, and a string with value "false" can be parsed into a boolean <code>false</code>.</p>
 <dl class="section note"><dt>Note</dt><dd>On the other hand, other commonly used boolean flags such as "on"/"off", "1"/"0", "True"/"False", etc., cannot be parsed into boolean values.</dd></dl>

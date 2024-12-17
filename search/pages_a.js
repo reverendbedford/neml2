@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['questions_0',['Frequently Asked Questions',['../faq.html',1,'']]]
+  ['package_0',['Python Package',['../python-package.html',1,'']]],
+  ['python_20package_1',['Python Package',['../python-package.html',1,'']]]
 ];
