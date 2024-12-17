@@ -37,7 +37,6 @@ jobs:
       matrix:
         os: [ubuntu-22.04, macos-latest]
     runs-on: ${{ matrix.os }}
-    if: "!cancelled()"
     steps:
       - uses: actions/checkout@v4
         with:

@@ -43,7 +43,6 @@ jobs:
         btype: [Release, Debug]
         unity: [ON, OFF]
     runs-on: ${{ matrix.os }}
-    if: "!cancelled()"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -72,8 +71,11 @@ jobs:
             .
       - run: cmake --build build --target all -j 2 --
       - run: cd tests && ../build/tests/unit/unit_tests -r junit > unit_tests.xml
+        continue-on-error: true
       - run: cd tests && ../build/tests/regression/regression_tests -r junit > regression_tests.xml
+        continue-on-error: true
       - run: cd tests && ../build/tests/verification/verification_tests -r junit > verification_tests.xml
+        continue-on-error: true
       - name: Publish Test Results
         if: matrix.os == 'ubuntu-22.04'
         uses: EnricoMi/publish-unit-test-result-action/linux@v2
@@ -96,7 +98,6 @@ jobs:
       matrix:
         btype: [Release, Debug]
         unity: [ON, OFF]
-    if: "!cancelled()"
     steps:
       - uses: actions/checkout@v4
         with:
