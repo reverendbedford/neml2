@@ -72,6 +72,9 @@ Finally, compile NEML2.
 cmake --build --preset release
 ```
 
+\note
+If the generator was configured to be "Unix Makefiles" (the default for Unix-based operating systems), an additional `-j N` option could be passed through the commandline to accelerate the build process by running `N` jobs in parallel.
+
 The compiled NEML2 can be installed as a system library.
 
 ```
