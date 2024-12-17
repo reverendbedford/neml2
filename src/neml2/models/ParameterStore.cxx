@@ -24,7 +24,6 @@
 
 #include "neml2/models/ParameterStore.h"
 #include "neml2/models/NonlinearParameter.h"
-#include "neml2/tensors/macros.h"
 #include "neml2/models/Variable.h"
 
 namespace neml2
@@ -61,6 +60,7 @@ ParameterStore::set_parameters(const std::map<std::string, Tensor> & param_value
 TensorValueBase &
 ParameterStore::get_parameter(const std::string & name)
 {
+  neml_assert(_object->host() == _object, "This method should only be called on the host model.");
   auto * base_ptr = _param_values.query_value(name);
   neml_assert(base_ptr, "Parameter named ", name, " does not exist.");
   return *base_ptr;
@@ -69,6 +69,7 @@ ParameterStore::get_parameter(const std::string & name)
 const TensorValueBase &
 ParameterStore::get_parameter(const std::string & name) const
 {
+  neml_assert(_object->host() == _object, "This method should only be called on the host model.");
   const auto * base_ptr = _param_values.query_value(name);
   neml_assert(base_ptr, "Parameter named ", name, " does not exist.");
   return *base_ptr;
@@ -136,54 +137,34 @@ ParameterStore::named_nonlinear_parameter_models(bool recursive) const
 
 template <typename T, typename>
 const T &
-ParameterStore::declare_parameter(const std::string & name,
-                                  const std::string & input_option_name,
-                                  bool allow_nonlinear)
+ParameterStore::declare_parameter(const std::string & name, const T & rawval)
 {
-  if (_object_options.contains<T>(input_option_name))
-    return declare_parameter(name, _object_options.get<T>(input_option_name));
+  if (_object->host() != _object)
+    return _object->host<ParameterStore>()->declare_parameter(
+        _object->name() + parameter_name_separator() + name, rawval);
 
-  if (_object_options.contains<CrossRef<T>>(input_option_name))
-    return declare_parameter_crossref<T>(
-        name, _object_options.get<CrossRef<T>>(input_option_name), allow_nonlinear);
+  TensorValueBase * base_ptr = nullptr;
 
-  throw NEMLException("Internal error in declare_parameter");
-}
-
-template <typename T, typename>
-std::vector<const T *>
-ParameterStore::declare_parameters(const std::string & name,
-                                   const std::string & input_option_name,
-                                   bool allow_nonlinear)
-{
-
-  if (_object_options.contains<std::vector<T>>(input_option_name))
+  // If the parameter already exists, get it
+  if (_param_values.has_key(name))
+    base_ptr = &get_parameter(name);
+  // If the parameter doesn't exist, create it
+  else
   {
-    const auto vals = _object_options.get<std::vector<T>>(input_option_name);
-    std::vector<const T *> params(vals.size());
-    for (std::size_t i = 0; i < vals.size(); ++i)
-      params[i] = &declare_parameter(name + "_" + utils::stringify(i), vals[i]);
-    return params;
+    auto val = std::make_unique<TensorValue<T>>(rawval);
+    base_ptr = _param_values.set_pointer(name, std::move(val));
   }
 
-  if (_object_options.contains<std::vector<CrossRef<T>>>(input_option_name))
-  {
-    const auto vals = _object_options.get<std::vector<CrossRef<T>>>(input_option_name);
-    std::vector<const T *> params(vals.size());
-    for (std::size_t i = 0; i < vals.size(); ++i)
-      params[i] = &declare_parameter_crossref<T>(
-          name + "_" + utils::stringify(i), vals[i], allow_nonlinear);
-    return params;
-  }
-
-  throw NEMLException("Internal error in declare_parameters");
+  auto ptr = dynamic_cast<TensorValue<T> *>(base_ptr);
+  neml_assert(ptr, "Internal error: Failed to cast parameter to a concrete type.");
+  return ptr->value();
 }
 
 template <typename T, typename>
 const T &
-ParameterStore::declare_parameter_crossref(const std::string & name,
-                                           const CrossRef<T> & crossref,
-                                           bool allow_nonlinear)
+ParameterStore::declare_parameter(const std::string & name,
+                                  const CrossRef<T> & crossref,
+                                  bool allow_nonlinear)
 {
   try
   {
@@ -242,12 +223,31 @@ ParameterStore::declare_parameter_crossref(const std::string & name,
   }
 }
 
+template <typename T, typename>
+const T &
+ParameterStore::declare_parameter(const std::string & name,
+                                  const std::string & input_option_name,
+                                  bool allow_nonlinear)
+{
+  if (_object_options.contains<T>(input_option_name))
+    return declare_parameter(name, _object_options.get<T>(input_option_name));
+
+  if (_object_options.contains<CrossRef<T>>(input_option_name))
+    return declare_parameter(
+        name, _object_options.get<CrossRef<T>>(input_option_name), allow_nonlinear);
+
+  throw NEMLException("Trying to register parameter named " + name + " from input option named " +
+                      input_option_name + " of type " + utils::demangle(typeid(T).name()) +
+                      ". Make sure you provided the correct parameter name, option name, and "
+                      "parameter type. Note that the parameter type can either be a plain type or "
+                      "a cross-reference.");
+}
+
 #define PARAMETERSTORE_INTANTIATE_PRIMITIVETENSOR(T)                                               \
+  template const T & ParameterStore::declare_parameter<T>(const std::string &, const T &, bool);   \
   template const T & ParameterStore::declare_parameter<T>(                                         \
-      const std::string &, const std::string &, bool);                                             \
-  template std::vector<const T *> ParameterStore::declare_parameters<T>(                           \
-      const std::string &, const std::string &, bool);                                             \
-  template const T & ParameterStore::declare_parameter_crossref<T>(                                \
-      const std::string &, const CrossRef<T> &, bool)
+      const std::string &, const CrossRef<T> &, bool);                                             \
+  template const T & ParameterStore::declare_parameter<T>(                                         \
+      const std::string &, const std::string &, bool)
 FOR_ALL_PRIMITIVETENSOR(PARAMETERSTORE_INTANTIATE_PRIMITIVETENSOR);
 } // namespace neml2

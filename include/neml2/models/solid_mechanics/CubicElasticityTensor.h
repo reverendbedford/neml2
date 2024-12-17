@@ -24,8 +24,6 @@
 
 #pragma once
 
-#include <tuple>
-
 #include "neml2/models/solid_mechanics/ElasticityTensor.h"
 
 namespace neml2
@@ -40,14 +38,35 @@ public:
 
   CubicElasticityTensor(const OptionSet & options);
 
+  void diagnose(std::vector<Diagnosis> &) const override;
+
+  using ConversionResult = std::tuple<Scalar, Scalar, Scalar, Scalar>;
+
+  ///@{
+  /// @name Conversion functions from various parameterizations to cubic constants
+  static ConversionResult E_nu_mu_to_C1(const Scalar & E, const Scalar & nu, const Scalar & mu);
+  static ConversionResult E_nu_mu_to_C2(const Scalar & E, const Scalar & nu, const Scalar & mu);
+  static ConversionResult E_nu_mu_to_C3(const Scalar & E, const Scalar & nu, const Scalar & mu);
+  ///@}
+
 protected:
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
-  /// Convert input to Lame parameter C1 with derivatives
-  std::tuple<Scalar, Scalar, Scalar, Scalar> convert_to_C1();
-  /// Convert input to Lame parameter C2 with derivatives
-  std::tuple<Scalar, Scalar, Scalar, Scalar> convert_to_C2();
-  /// Convert input to Lame parameter C3 with derivatives
-  std::tuple<Scalar, Scalar, Scalar, Scalar> convert_to_C3();
+  /// Convert input to cubic constants with derivatives
+  std::tuple<CubicElasticityTensor::ConversionResult,
+             CubicElasticityTensor::ConversionResult,
+             CubicElasticityTensor::ConversionResult>
+  convert() const;
+
+private:
+  using Converter = ConversionResult (*)(const Scalar &, const Scalar &, const Scalar &);
+
+  /// Conversion table from lame parameters to cubic constants
+  const std::map<std::tuple<ParamType, ParamType, ParamType>,
+                 std::tuple<Converter, Converter, Converter>>
+      _converters = {{{ParamType::YOUNGS, ParamType::POISSONS, ParamType::SHEAR},
+                      {&CubicElasticityTensor::E_nu_mu_to_C1,
+                       &CubicElasticityTensor::E_nu_mu_to_C2,
+                       &CubicElasticityTensor::E_nu_mu_to_C3}}};
 };
 } // namespace neml2

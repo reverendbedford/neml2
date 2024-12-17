@@ -43,50 +43,69 @@ public:
     INVALID
   };
 
+  const std::map<ParamType, std::string> param_name = {
+      {ParamType::YOUNGS, "E"}, {ParamType::POISSONS, "nu"}, {ParamType::SHEAR, "mu"}};
+
   static OptionSet expected_options();
 
   ElasticityTensor(const OptionSet & options);
 
 protected:
-  /// Return the coefficients in a requested order, along with the indices to remap back to the original order
-  std::tuple<std::vector<Scalar>, std::vector<size_t>>
-  remap(const std::vector<ParamType> & order) const;
+  // /// Return the coefficients in a requested order, along with the indices to remap back to the original order
+  // std::tuple<std::vector<Scalar>, std::vector<size_t>>
+  // remap(const std::vector<ParamType> & order) const;
 
-  /// Trivial helper function to reorder derivatives
-  std::vector<Scalar> reorder_derivs(const std::vector<Scalar> & derivs,
-                                     const std::vector<size_t> & order) const;
+  // /// Trivial helper function to reorder derivatives
+  // std::vector<Scalar> reorder_derivs(const std::vector<Scalar> & derivs,
+  //                                    const std::vector<size_t> & order) const;
 
-  template <std::size_t... I>
-  auto vector_to_tuple_impl(const std::vector<Scalar> & v, std::index_sequence<I...>) const
-  {
-    return std::make_tuple(v[I]...);
-  }
+  // template <std::size_t... I>
+  // auto vector_to_tuple_impl(const std::vector<Scalar> & v, std::index_sequence<I...>) const
+  // {
+  //   return std::make_tuple(v[I]...);
+  // }
 
-  template <std::size_t N>
-  auto vector_to_tuple(const std::vector<Scalar> & v) const
-  {
-    if (v.size() != N)
-    {
-      throw std::runtime_error("Vector size mismatch");
-    }
-    return vector_to_tuple_impl(v, std::make_index_sequence<N>{});
-  }
+  // template <std::size_t N>
+  // auto vector_to_tuple(const std::vector<Scalar> & v) const
+  // {
+  //   if (v.size() != N)
+  //   {
+  //     throw std::runtime_error("Vector size mismatch");
+  //   }
+  //   return vector_to_tuple_impl(v, std::make_index_sequence<N>{});
+  // }
 
-  /// Combined helper to return coefficients and derivatives in a requested order
-  template <std::size_t N>
-  auto combine_and_reorder(const Scalar & c,
-                           const std::vector<Scalar> & derivs,
-                           const std::vector<size_t> & order) const
-  {
-    auto derivs_ordered = reorder_derivs(derivs, order);
-    return std::tuple_cat(std::make_tuple(c), vector_to_tuple<N>(derivs_ordered));
-  }
+  // /// Combined helper to return coefficients and derivatives in a requested order
+  // template <std::size_t N>
+  // auto combine_and_reorder(const Scalar & c,
+  //                          const std::vector<Scalar> & derivs,
+  //                          const std::vector<size_t> & order) const
+  // {
+  //   auto derivs_ordered = reorder_derivs(derivs, order);
+  //   return std::tuple_cat(std::make_tuple(c), vector_to_tuple<N>(derivs_ordered));
+  // }
 
-  /// Input coefficients
-  const std::vector<const Scalar *> _coef;
+  /// Declare elastic constants (by resolving cross-references)
+  void declare_elastic_constants();
 
-  /// Input coefficient types
+  /// Input elastic constant types (ordered according to ParamType)
+  std::vector<ParamType> _constant_types;
+
+  /// Input elastic constant names (ordered according to ParamType)
+  std::vector<std::string> _constant_names;
+
+  /// Input elastic constants (ordered according to ParamType)
+  std::vector<const Scalar *> _constants;
+
+private:
+  /// Input coefficients (without reordering)
+  const std::vector<CrossRef<Scalar>> _coefs;
+
+  /// Input coefficient types (without reordering)
   const std::vector<ParamType> _coef_types;
+
+  /// Flags to indicate whether coefficients are parameters or buffers
+  std::vector<bool> _coef_as_param;
 };
 
 } // namespace neml2

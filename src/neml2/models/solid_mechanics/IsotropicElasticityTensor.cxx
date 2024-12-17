@@ -43,8 +43,17 @@ IsotropicElasticityTensor::expected_options()
 IsotropicElasticityTensor::IsotropicElasticityTensor(const OptionSet & options)
   : ElasticityTensor(options)
 {
-  neml_assert(_coef_types.size() == 2,
-              "IsotropicElasticityTensor requires exactly two input parameters.");
+}
+
+void
+IsotropicElasticityTensor::diagnose(std::vector<Diagnosis> & diagnostics) const
+{
+  ElasticityTensor::diagnose(diagnostics);
+
+  diagnostic_assert(diagnostics,
+                    _constants.size() == 2,
+                    "IsotropicElasticityTensor requires two and only two elastic constants, got ",
+                    _constants.size());
 }
 
 void
@@ -52,52 +61,61 @@ IsotropicElasticityTensor::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "IsotropicElasticityTensor doesn't implement second derivatives.");
 
-  const auto [lambda, dl_dp1, dl_dp2] = convert_to_lambda();
-  const auto [mu, dm_dp1, dm_dp2] = convert_to_mu();
+  const auto [lambda_and_derivs, mu_and_derivs] = convert();
+  const auto [lambda, dlambda_dp1, dlambda_dp2] = lambda_and_derivs;
+  const auto [mu, dmu_dp1, dmu_dp2] = mu_and_derivs;
 
-  auto Iv = SSR4::identity_vol(lambda.options());
-  auto Is = SSR4::identity_sym(mu.options());
+  const auto Iv = SSR4::identity_vol(lambda.options());
+  const auto Is = SSR4::identity_sym(mu.options());
 
   if (out)
     _p = 3.0 * lambda * Iv + 2.0 * mu * Is;
 
   if (dout_din)
   {
-    if (const auto * const p1 = nl_param("coef_0"))
-      _p.d(*p1) = 3.0 * dl_dp1 * Iv + 2.0 * dm_dp1 * Is;
+    if (const auto * const p1 = nl_param(_constant_names[0]))
+      _p.d(*p1) = 3.0 * dlambda_dp1 * Iv + 2.0 * dmu_dp1 * Is;
 
-    if (const auto * const p2 = nl_param("coef_1"))
-      _p.d(*p2) = 3.0 * dl_dp2 * Iv + 2.0 * dm_dp2 * Is;
+    if (const auto * const p2 = nl_param(_constant_names[0]))
+      _p.d(*p2) = 3.0 * dlambda_dp2 * Iv + 2.0 * dmu_dp2 * Is;
   }
 }
 
-std::tuple<Scalar, Scalar, Scalar>
-IsotropicElasticityTensor::convert_to_lambda()
+std::pair<IsotropicElasticityTensor::ConversionResult, IsotropicElasticityTensor::ConversionResult>
+IsotropicElasticityTensor::convert() const
 {
-  auto [coefs, order] = remap({ParamType::YOUNGS, ParamType::POISSONS});
-
-  const auto & p1 = coefs[0];
-  const auto & p2 = coefs[1];
-
-  auto value = p1 * p2 / ((1 + p2) * (1 - 2 * p2));
-  std::vector<Scalar> derivs = {-p2 / (2 * p2 * p2 + p2 - 1),
-                                (p1 + 2 * p1 * p2 * p2) /
-                                    ((2 * p2 * p2 + p2 - 1) * (2 * p2 * p2 + p2 - 1))};
-
-  return combine_and_reorder<2>(value, derivs, order);
+  const auto dispatch_key = std::make_pair(_constant_types[0], _constant_types[1]);
+  neml_assert(_converters.count(dispatch_key) == 1,
+              "Conversion from ",
+              _constant_names[0],
+              " and ",
+              _constant_names[1],
+              " is not supported.");
+  auto [lambda, mu] = _converters.at(dispatch_key);
+  const auto & c0 = _constants[0];
+  const auto & c1 = _constants[1];
+  return {lambda(c0, c1), mu(c0, c1)};
 }
-std::tuple<Scalar, Scalar, Scalar>
-IsotropicElasticityTensor::convert_to_mu()
+
+IsotropicElasticityTensor::ConversionResult
+IsotropicElasticityTensor::E_nu_to_lambda(const Scalar & E, const Scalar & nu)
 {
-  auto [coefs, order] = remap({ParamType::YOUNGS, ParamType::POISSONS});
+  const auto lambda = E * nu / ((1 + nu) * (1 - 2 * nu));
+  const auto dlambda_dE = -nu / (2 * nu * nu + nu - 1);
+  const auto dlambda_dnu =
+      (E + 2 * E * nu * nu) / ((2 * nu * nu + nu - 1) * (2 * nu * nu + nu - 1));
 
-  const auto & p1 = coefs[0];
-  const auto & p2 = coefs[1];
+  return {lambda, dlambda_dE, dlambda_dnu};
+}
 
-  auto value = p1 / (2 * (1 + p2));
-  std::vector<Scalar> derivs = {1.0 / (2.0 + 2 * p2), -p1 / (2 * (1 + p2) * (1 + p2))};
+IsotropicElasticityTensor::ConversionResult
+IsotropicElasticityTensor::E_nu_to_mu(const Scalar & E, const Scalar & nu)
+{
+  const auto mu = E / (2 * (1 + nu));
+  const auto dmu_dE = 1.0 / (2.0 + 2 * nu);
+  const auto dmu_dnu = -E / (2 * (1 + nu) * (1 + nu));
 
-  return combine_and_reorder<2>(value, derivs, order);
+  return {mu, dmu_dE, dmu_dnu};
 }
 
 } // namespace neml2

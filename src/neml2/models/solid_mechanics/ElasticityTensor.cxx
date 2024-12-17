@@ -50,48 +50,68 @@ ElasticityTensor::expected_options()
   options.set_parameter<std::vector<CrossRef<Scalar>>>("coefficients");
   options.set("coefficients").doc() = "Coefficients used to define the elasticity tensor";
 
+  options.set<std::vector<bool>>("coefficient_as_parameter") = {true};
+  options.set("coefficient_as_parameter").doc() =
+      "Whether to treat the coefficients as (trainable) parameters. Default is true. Setting this "
+      "option to false will treat the coefficients as buffers.";
+
   return options;
 }
 
 ElasticityTensor::ElasticityTensor(const OptionSet & options)
   : NonlinearParameter<SSR4>(options),
-    _coef(declare_parameters<Scalar>("coef", "coefficients", /*allow_nonlinear=*/true)),
-    _coef_types(options.get<MultiEnumSelection>("coefficient_types").as<ParamType>())
+    _coefs(options.get<std::vector<CrossRef<Scalar>>>("coefficients")),
+    _coef_types(options.get<MultiEnumSelection>("coefficient_types").as<ParamType>()),
+    _coef_as_param(options.get<std::vector<bool>>("coefficient_as_parameter")),
+    _used(_coefs.size(), false)
 {
-  neml_assert(_coef_types.size() == _coef.size(),
-              "Number of coefficient types must match number of coefficients.");
+  neml_assert(_coef_types.size() == _coefs.size(),
+              "Number of coefficient types (",
+              _coef_types.size(),
+              ") does not match number of coefficients (",
+              _coefs.size(),
+              ").");
+  neml_assert(_coef_as_param.size() == 1 || _coef_as_param.size() == _coefs.size(),
+              "Number of coefficient as parameter flags (",
+              _coef_as_param.size(),
+              ") does not match number of coefficients (",
+              _coefs.size(),
+              "). If only one flag is provided, it will be used for all coefficients.");
+  if (_coef_as_param.size() == 1)
+    _coef_as_param.resize(_coefs.size(), _coef_as_param[0]);
+
+  // Fill out _constants, _constant_types, and _constant_names by sorting the coefficients according
+  // to the order defined by ParamType
+  declare_elastic_constants();
 }
 
-std::tuple<std::vector<Scalar>, std::vector<size_t>>
-ElasticityTensor::remap(const std::vector<ParamType> & order) const
+void
+ElasticityTensor::declare_elastic_constants()
 {
-  std::vector<Scalar> coef;
-  std::vector<size_t> remap;
-
-  for (auto & o : order)
+  for (std::size_t i = 0; i < _coefs.size(); i++)
   {
-    auto it = std::find(_coef_types.begin(), _coef_types.end(), o);
-    neml_assert(it != _coef_types.end(),
-                "Required coefficient type for constructing the elasticity tensor not found in "
-                "provided input.");
-    auto i = std::distance(_coef_types.begin(), it);
-    coef.push_back(*_coef[i]);
-    remap.push_back(i);
-  }
+    neml_assert(_coef_types[i] != ParamType::INVALID,
+                "Invalid coefficient type provided for coefficient ",
+                i,
+                ".");
 
-  return std::make_tuple(coef, remap);
-}
+    const auto & ptype = _coef_types[i];
 
-std::vector<Scalar>
-ElasticityTensor::reorder_derivs(const std::vector<Scalar> & derivs,
-                                 const std::vector<size_t> & order) const
-{
-  std::vector<Scalar> out(derivs.size());
-  for (size_t i = 0; i < derivs.size(); i++)
-  {
-    out[order[i]] = derivs[i];
+    neml_assert(std::find(_constant_types.begin(), _constant_types.end(), ptype) ==
+                    _constant_types.end(),
+                "Duplicate coefficient type provided for coefficient ",
+                i,
+                ".");
+
+    const auto & pname = param_name.at(ptype);
+    const auto * pval = _coef_as_param[i]
+                            ? &declare_parameter(pname, _coefs[i], /*allow_nonlinear*/ true)
+                            : &declare_buffer(pname, _coefs[i]);
+
+    _constant_types.push_back(ptype);
+    _constant_names.push_back(pname);
+    _constants.push_back(pval);
   }
-  return out;
 }
 
 } // namespace neml2

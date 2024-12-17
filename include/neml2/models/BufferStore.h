@@ -60,8 +60,10 @@ public:
   ///}@
 
   /// Get a writable reference of a buffer
-  template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
-  TensorValue<T> & get_buffer(const std::string & name);
+  TensorValueBase & get_buffer(const std::string & name);
+
+  /// Get a read-only reference of a buffer
+  const TensorValueBase & get_buffer(const std::string & name) const;
 
 protected:
   /**
@@ -82,7 +84,7 @@ protected:
    * @tparam T Buffer type. See @ref statically-shaped-tensor for supported types.
    * @param name Buffer name
    * @param rawval Buffer value
-   * @return Reference to buffer
+   * @return T The value of the registered buffer.
    */
   template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
   const T & declare_buffer(const std::string & name, const T & rawval);
@@ -90,10 +92,22 @@ protected:
   /**
    * @brief Declare a buffer.
    *
-   * Note that all buffers are stored in the host (the object exposed to users). An object may be
-   * used multiple times in the host, and the same buffer may be declared multiple times. That is
-   * allowed, but only the first call to declare_buffer constructs the buffer value, and subsequent
-   * calls only returns a reference to the existing buffer.
+   * Similar to the previous method, but additionally handles the resolution of cross-referenced
+   * parameters.
+   *
+   * @tparam T Buffer type. See @ref statically-shaped-tensor for supported types.
+   * @param name Buffer name.
+   * @param crossref The cross-ref'ed "string" that defines the value of the buffer.
+   * @return T The value of the registered buffer.
+   */
+  template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
+  const T & declare_buffer(const std::string & name, const CrossRef<T> & crossref);
+
+  /**
+   * @brief Declare a buffer.
+   *
+   * Similar to the previous methods, but this method takes care of the high-level logic to directly
+   * construct a buffer from the input option.
    *
    * @tparam T Buffer type. See @ref statically-shaped-tensor for supported types.
    * @param name Buffer name
@@ -118,53 +132,5 @@ private:
   /// The actual storage for all the buffers
   Storage<std::string, TensorValueBase> _buffer_values;
 };
-
-template <typename T, typename>
-TensorValue<T> &
-BufferStore::get_buffer(const std::string & name)
-{
-  neml_assert(_object->host() == _object, "This method should only be called on the host model.");
-
-  auto base_ptr = _buffer_values.query_value(name);
-  neml_assert(base_ptr, "Buffer named ", name, " does not exist.");
-  auto ptr = dynamic_cast<TensorValue<T> *>(base_ptr);
-  neml_assert_dbg(ptr, "Internal error: Failed to cast buffer to a concrete type.");
-  return *ptr;
-}
-
-template <typename T, typename>
-const T &
-BufferStore::declare_buffer(const std::string & name, const T & rawval)
-{
-  if (_object->host() != _object)
-    return _object->host<BufferStore>()->declare_buffer(
-        _object->name() + buffer_name_separator() + name, rawval);
-
-  // If the buffer already exists, return its reference
-  if (_buffer_values.has_key(name))
-    return get_buffer<T>(name).value();
-
-  auto val = std::make_unique<TensorValue<T>>(rawval);
-  auto base_ptr = _buffer_values.set_pointer(name, std::move(val));
-  auto ptr = dynamic_cast<TensorValue<T> *>(base_ptr);
-  neml_assert(ptr, "Internal error: Failed to cast buffer to a concrete type.");
-  return ptr->value();
-}
-
-template <typename T, typename>
-const T &
-BufferStore::declare_buffer(const std::string & name, const std::string & input_option_name)
-{
-  if (_object_options.contains<T>(input_option_name))
-    return declare_buffer(name, _object_options.get<T>(input_option_name));
-  else if (_object_options.contains<CrossRef<T>>(input_option_name))
-    return declare_buffer(name, T(_object_options.get<CrossRef<T>>(input_option_name)));
-
-  throw NEMLException(
-      "Trying to register buffer named " + name + " from input option named " + input_option_name +
-      " of type " + utils::demangle(typeid(T).name()) +
-      ". Make sure you provided the correct buffer name, option name, and buffer type. Note that "
-      "the buffer type can either be a plain type, a cross-reference, or an interpolator.");
-}
 
 } // namespace neml2

@@ -24,8 +24,6 @@
 
 #pragma once
 
-#include <tuple>
-
 #include "neml2/models/solid_mechanics/ElasticityTensor.h"
 
 namespace neml2
@@ -40,12 +38,30 @@ public:
 
   IsotropicElasticityTensor(const OptionSet & options);
 
+  void diagnose(std::vector<Diagnosis> &) const override;
+
+  using ConversionResult = std::tuple<Scalar, Scalar, Scalar>;
+
+  ///@{
+  /// @name Conversion functions from various parameterizations to lambda and mu
+  static ConversionResult E_nu_to_lambda(const Scalar & E, const Scalar & nu);
+  static ConversionResult E_nu_to_mu(const Scalar & E, const Scalar & nu);
+  ///@}
+
 protected:
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
-  /// Convert input to Lame parameter lambda with derivatives
-  std::tuple<Scalar, Scalar, Scalar> convert_to_lambda();
-  /// Convert input to Lame parameter mu with derivatives
-  std::tuple<Scalar, Scalar, Scalar> convert_to_mu();
+  /// Convert input to Lame parameter lambda and mu with derivatives
+  std::pair<IsotropicElasticityTensor::ConversionResult,
+            IsotropicElasticityTensor::ConversionResult>
+  convert() const;
+
+private:
+  using Converter = ConversionResult (*)(const Scalar &, const Scalar &);
+
+  /// Conversion table from any pair of lame parameters to lambda and mu
+  const std::map<std::pair<ParamType, ParamType>, std::pair<Converter, Converter>> _converters = {
+      {{ParamType::YOUNGS, ParamType::POISSONS},
+       {&IsotropicElasticityTensor::E_nu_to_lambda, &IsotropicElasticityTensor::E_nu_to_mu}}};
 };
 } // namespace neml2
