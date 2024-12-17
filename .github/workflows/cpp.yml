@@ -43,6 +43,7 @@ jobs:
         btype: [Release, Debug]
         unity: [ON, OFF]
     runs-on: ${{ matrix.os }}
+    if: "!cancelled()"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -53,7 +54,12 @@ jobs:
       - uses: jwlawson/actions-setup-cmake@v2
         with:
           cmake-version: "3.28"
-      - run: pip install torch==2.5.1
+      - name: Install PyTorch (Ubuntu)
+        if: matrix.os == 'ubuntu-22.04'
+        run: pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
+      - name: Install PyTorch (MacOS)
+        if: matrix.os == 'macos-latest'
+        run: pip install torch==2.5.1
       - run: |
           cmake \
             -DCMAKE_BUILD_TYPE=${{ matrix.btype }} \
@@ -66,11 +72,8 @@ jobs:
             .
       - run: cmake --build build --target all -j 2 --
       - run: cd tests && ../build/tests/unit/unit_tests -r junit > unit_tests.xml
-        continue-on-error: true
       - run: cd tests && ../build/tests/regression/regression_tests -r junit > regression_tests.xml
-        continue-on-error: true
       - run: cd tests && ../build/tests/verification/verification_tests -r junit > verification_tests.xml
-        continue-on-error: true
       - name: Publish Test Results
         if: matrix.os == 'ubuntu-22.04'
         uses: EnricoMi/publish-unit-test-result-action/linux@v2
@@ -93,6 +96,7 @@ jobs:
       matrix:
         btype: [Release, Debug]
         unity: [ON, OFF]
+    if: "!cancelled()"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -103,7 +107,8 @@ jobs:
       - uses: jwlawson/actions-setup-cmake@v2
         with:
           cmake-version: "3.28"
-      - run: pip install torch==2.5.1
+      - name: Install PyTorch
+        run: pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
       - run: |
           cmake \
             -DCMAKE_BUILD_TYPE=${{ matrix.btype }} \

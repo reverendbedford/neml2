@@ -103,5 +103,9 @@ endif()
 
 # Documentation
 if(NEML2_DOC)
+      if(NOT NEML2_PYBIND)
+            message(FATAL_ERROR "Documentation requires Python bindings (NEML2_PYBIND=ON)")
+      endif()
+
       add_subdirectory(doc)
 endif()

@@ -9,6 +9,7 @@
       <tab type="user" url="../python-package.html" title="Python Package"/>
     </tab>
     <tab type="usergroup" title="Developer Guide">
+      <tab type="user" url="../dev-env.html" title="Development Environment"/>
       <tab type="user" url="../naming-conventions.html" title="Naming Conventions"/>
       <tab type="user" url="../custom-model.html" title="Custom Model"/>
       <tab type="user" url="../testing.html" title="Testing"/>

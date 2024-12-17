@@ -1,6 +1,6 @@
 # Frequently Asked Questions {#faq}
 
-## How do I run a NEML2 input file?
+## How do I run a NEML2 input file? {#runner}
 
 NEML2 is designed as a _library_, not a _program_: The core library itself cannot be used as a standalone program to parse and evaluate a material model defined in an input file. However, we acknowledge this common need and therefore provide two convenient options for users to effectively use NEML2 as a standalone program:
 1. The NEML2 Runner: As documented in [build customization](@ref install-build-customization), the `NEML2_RUNNER` CMake option can be turned on to create a simple runner for parsing, diagnosing, running and profiling NEML2 material models. Once the runner is built, an executable will be placed inside the `runner` directory under the build directory. Invoking the executable without any additional argument or with the `-h` or `--help` argument will print out the usage message:

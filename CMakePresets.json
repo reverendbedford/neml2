@@ -1,0 +1,114 @@
+{
+  "version": 8,
+  "configurePresets": [
+    {
+      "name": "dev",
+      "displayName": "Development",
+      "description": "C++ backend, Python binding, tests, and documentation",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "installDir": "${sourceDir}/install/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "NEML2_TESTS": "ON",
+        "NEML2_RUNNER": "OFF",
+        "NEML2_CPU_PROFILER": "OFF",
+        "NEML2_PYBIND": "ON",
+        "NEML2_DOC": "ON"
+      }
+    },
+    {
+      "name": "benchmark",
+      "displayName": "Benchmark",
+      "description": "Runner for benchmarking and profiling",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "NEML2_TESTS": "ON",
+        "NEML2_RUNNER": "ON",
+        "NEML2_CPU_PROFILER": "ON",
+        "NEML2_PYBIND": "OFF",
+        "NEML2_DOC": "OFF"
+      }
+    },
+    {
+      "name": "coverage",
+      "displayName": "Coverage",
+      "description": "Generate coverage report from unit tests",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Coverage",
+        "NEML2_TESTS": "ON",
+        "NEML2_RUNNER": "OFF",
+        "NEML2_CPU_PROFILER": "OFF",
+        "NEML2_PYBIND": "OFF",
+        "NEML2_DOC": "OFF"
+      }
+    },
+    {
+      "name": "release",
+      "displayName": "Release",
+      "description": "Production build with HTML documentation for C++ backend and Python bindings",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "NEML2_TESTS": "OFF",
+        "NEML2_RUNNER": "OFF",
+        "NEML2_CPU_PROFILER": "OFF",
+        "NEML2_PYBIND": "OFF",
+        "NEML2_DOC": "OFF"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "dev-cpp",
+      "displayName": "C++ Backend",
+      "description": "C++ backend with tests",
+      "configurePreset": "dev",
+      "targets": [
+        "unit_tests",
+        "regression_tests",
+        "verification_tests"
+      ]
+    },
+    {
+      "name": "dev-python",
+      "displayName": "Python Bindings",
+      "description": "Python bindings with tests",
+      "configurePreset": "dev",
+      "targets": [
+        "python-stub"
+      ]
+    },
+    {
+      "name": "dev-doc",
+      "displayName": "Documentation",
+      "description": "HTML documentation",
+      "configurePreset": "dev",
+      "targets": [
+        "html"
+      ]
+    },
+    {
+      "name": "benchmark",
+      "displayName": "Benchmarking and profiling",
+      "description": "Runner and tests linked against gperftools CPU profiler",
+      "configurePreset": "benchmark"
+    },
+    {
+      "name": "coverage",
+      "displayName": "C++ Backend",
+      "description": "C++ backend with tests",
+      "configurePreset": "coverage",
+      "targets": [
+        "unit_tests"
+      ]
+    },
+    {
+      "name": "release",
+      "displayName": "C++ Library",
+      "description": "C++ Library only",
+      "configurePreset": "release"
+    }
+  ]
+}
