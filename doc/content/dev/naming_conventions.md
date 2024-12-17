@@ -4,12 +4,16 @@
 
 ## Reserved axis names
 
-Recall that NEML2 models operates on _labeled tensors_, and that the collection of labels (with their corresponding layout) is called an labeled axis ([LabeledAxis](@ref neml2::LabeledAxis)). NEML2 predefines 5 sub-axes to categorize all the input, output and intermediate variables:
+Recall that NEML2 models operates on _labeled tensors_, and that the collection of labels (with their corresponding layout) is called an labeled axis ([LabeledAxis](@ref neml2::LabeledAxis)). NEML2 predefines 6 sub-axes to categorize all the input, output and intermediate variables:
 - State \f$\mathcal{S}\f$ (axis name `state`): Variables collectively characterizing the current _state_ of the material subject to given external forces. The state variables are usually the output of a physically meaningful material model.
 - Forces \f$\mathcal{F}\f$ (axis name `forces`): Variables defining the _external_ forces that drive the response of the material.
 - Old state \f$\mathcal{S}_n\f$ (axis name `old_state`): The state variables _prior to_ the current material update. In the time-discrete setting, these are the state variables from the previous time step.
 - Old forces \f$\mathcal{F}_n\f$ (axis name `old_forces`): The external forces _prior to_ the current material update. In the time-discrete setting, these are the forces from the previous time step.
 - Residual \f$\mathcal{R}\f$ (axis name `residual`): The residual defines an _implicit_ model/function. An implicit model is updated by solving for the state variables that result in zero residual.
+- Parameters \f$\mathcal{P}\f$ (axis name `parameters`): The (nonlinear) parameters.
+
+\note
+When authoring C++ source code, it is recommended to avoid hard-coding reserved axis names as pure strings. Instead, inlined `const` string names (defined in `neml2/models/LabeledAxisAccessor.h`) shall be used wherever possible, they are `STATE`, `OLD_STATE`, `FORCES`, `OLD_FORCES`, `RESIDUAL`, and `PARAMETERS` whose names are self-explanatory.
 
 ## Variable naming conventions
 
