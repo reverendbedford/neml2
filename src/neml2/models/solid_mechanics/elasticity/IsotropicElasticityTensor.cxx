@@ -31,7 +31,7 @@ register_NEML2_object(IsotropicElasticityTensor);
 OptionSet
 IsotropicElasticityTensor::expected_options()
 {
-  OptionSet options = ElasticityTensor<NonlinearParameter<SSR4>, 2>::expected_options();
+  OptionSet options = ElasticityInterface<NonlinearParameter<SSR4>, 2>::expected_options();
   options.doc() = "This class defines an isotropic elasticity tensor using two parameters."
                   "  Various options are available for which two parameters to provide.";
 
@@ -39,7 +39,7 @@ IsotropicElasticityTensor::expected_options()
 }
 
 IsotropicElasticityTensor::IsotropicElasticityTensor(const OptionSet & options)
-  : ElasticityTensor<NonlinearParameter<SSR4>, 2>(options),
+  : ElasticityInterface<NonlinearParameter<SSR4>, 2>(options),
     _converter(_constant_types, _need_derivs)
 {
 }

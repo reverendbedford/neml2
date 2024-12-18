@@ -100,7 +100,8 @@ LinearCombination<T>::LinearCombination(const OptionSet & options)
   {
     const auto & coef_ref = coef_refs.size() == 1 ? coef_refs[0] : coef_refs[i];
     if (coef_as_param[i])
-      _coefs[i] = &declare_parameter<Scalar>("c_" + std::to_string(i), coef_ref);
+      _coefs[i] =
+          &declare_parameter<Scalar>("c_" + std::to_string(i), coef_ref, /*allow_nonlinear=*/true);
     else
       _coefs[i] = &declare_buffer<Scalar>("c_" + std::to_string(i), coef_ref);
   }
@@ -122,8 +123,13 @@ LinearCombination<T>::set_value(bool out, bool dout_din, bool d2out_din2)
   {
     const auto I = T::identity_map(_from[0]->options());
     for (std::size_t i = 0; i < _from.size(); i++)
+    {
       if (_from[i]->is_dependent())
         _to.d(*_from[i]) = (*_coefs[i]) * I;
+
+      if (const auto * const pi = nl_param("c_" + std::to_string(i)))
+        _to.d(*pi) = (*_from[i]);
+    }
   }
 
   if (d2out_din2)

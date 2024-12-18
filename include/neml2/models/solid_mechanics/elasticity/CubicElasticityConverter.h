@@ -46,7 +46,11 @@ public:
 
   CubicElasticityConverter(const ConverterKey & parameterization,
                            const DerivativeFlagType & deriv_requested)
-    : ElasticityConverter<3>(table, parameterization, deriv_requested)
+    : ElasticityConverter<3>(
+          table,
+          {ElasticConstant::CUBIC_C1, ElasticConstant::CUBIC_C2, ElasticConstant::CUBIC_C3},
+          parameterization,
+          deriv_requested)
   {
   }
 };

@@ -31,7 +31,7 @@ register_NEML2_object(CubicElasticityTensor);
 OptionSet
 CubicElasticityTensor::expected_options()
 {
-  OptionSet options = ElasticityTensor<NonlinearParameter<SSR4>, 3>::expected_options();
+  OptionSet options = ElasticityInterface<NonlinearParameter<SSR4>, 3>::expected_options();
   options.doc() = "This class defines a cubic anisotropic elasticity tensor using three parameters."
                   "  Various options are available for which three parameters to provide.";
 
@@ -39,7 +39,7 @@ CubicElasticityTensor::expected_options()
 }
 
 CubicElasticityTensor::CubicElasticityTensor(const OptionSet & options)
-  : ElasticityTensor<NonlinearParameter<SSR4>, 3>(options),
+  : ElasticityInterface<NonlinearParameter<SSR4>, 3>(options),
     _converter(_constant_types, _need_derivs)
 {
 }

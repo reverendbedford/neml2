@@ -31,7 +31,7 @@ register_NEML2_object(LinearIsotropicElasticJ2TrialStressUpdate);
 OptionSet
 LinearIsotropicElasticJ2TrialStressUpdate::expected_options()
 {
-  OptionSet options = Model::expected_options();
+  OptionSet options = ElasticityInterface<Model, 2>::expected_options();
 
   options.doc() = "Update the trial stress under the assumptions of J2 plasticity and isotropic "
                   "linear elasticity";
@@ -47,27 +47,25 @@ LinearIsotropicElasticJ2TrialStressUpdate::expected_options()
   options.set("updated_trial_stress").doc() =
       "Trial stress corrected for the current increment of plastic deformation";
 
-  options.set_parameter<CrossRef<Scalar>>("shear_modulus");
-  options.set("shear_modulus").doc() = "Shear modulus";
-
   return options;
 }
 
 LinearIsotropicElasticJ2TrialStressUpdate::LinearIsotropicElasticJ2TrialStressUpdate(
     const OptionSet & options)
-  : Model(options),
+  : ElasticityInterface<Model, 2>(options),
     _elastic_trial_stress(declare_input_variable<Scalar>("elastic_trial_stress")),
     _inelastic_strain(declare_input_variable<Scalar>("equivalent_plastic_strain")),
     _inelastic_strain_old(declare_input_variable<Scalar>(_inelastic_strain.name().old())),
     _updated_trial_stress(declare_output_variable<Scalar>("updated_trial_stress")),
-    _G(declare_parameter<Scalar>("G", "shear_modulus", /*allow_nonlinear=*/true))
+    _converter(_constant_types, _need_derivs)
 {
 }
 
 void
 LinearIsotropicElasticJ2TrialStressUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-  const auto three_shear = 3.0 * _G;
+  const auto [G, dG] = _converter.convert(_constants, ElasticConstant::SHEAR_MODULUS);
+  const auto three_shear = 3.0 * G;
 
   if (out)
     _updated_trial_stress =
@@ -85,8 +83,11 @@ LinearIsotropicElasticJ2TrialStressUpdate::set_value(bool out, bool dout_din, bo
     if (_inelastic_strain_old.is_dependent())
       _updated_trial_stress.d(_inelastic_strain_old) = three_shear;
 
-    if (const auto * const p = nl_param("G"))
-      _updated_trial_stress.d(*p) = -3.0 * (_inelastic_strain - _inelastic_strain_old);
+    if (const auto * const p1 = nl_param(neml2::name(_constant_types[0])))
+      _updated_trial_stress.d(*p1) = -3.0 * dG[0] * (_inelastic_strain - _inelastic_strain_old);
+
+    if (const auto * const p2 = nl_param(neml2::name(_constant_types[1])))
+      _updated_trial_stress.d(*p2) = -3.0 * dG[1] * (_inelastic_strain - _inelastic_strain_old);
   }
 
   if (d2out_din2)

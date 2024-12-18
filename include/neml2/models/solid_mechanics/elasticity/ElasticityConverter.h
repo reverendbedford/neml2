@@ -34,18 +34,23 @@
 
 namespace neml2
 {
-enum class LameParameter : std::uint8_t
+enum class ElasticConstant : std::uint8_t
 {
   INVALID = 0,
+  // Isotropic
   LAME_LAMBDA = 1,
   BULK_MODULUS = 2,
   SHEAR_MODULUS = 3,
   YOUNGS_MODULUS = 4,
   POISSONS_RATIO = 5,
-  P_WAVE_MODULUS = 6
+  P_WAVE_MODULUS = 6,
+  // Cubic symmetry
+  CUBIC_C1 = 7,
+  CUBIC_C2 = 8,
+  CUBIC_C3 = 9
 };
 
-std::string name(LameParameter p);
+std::string name(ElasticConstant p);
 
 /**
  * @brief Base class for converters responsible for converting between different parameterizations
@@ -64,23 +69,26 @@ public:
   using ConversionType = std::pair<Scalar, DerivativeType>;
   using ResultType = std::array<ConversionType, N>;
 
-  using ConverterKey = std::array<LameParameter, N>;
+  using ConverterKey = std::array<ElasticConstant, N>;
   using ConverterType = ConversionType (*)(const InputType &, const DerivativeFlagType &);
   using ConversionTableType = std::map<ConverterKey, std::array<ConverterType, N>>;
 
   ElasticityConverter(const ConversionTableType & table,
-                      const ConverterKey & parameterization,
+                      const ConverterKey & output_parameterization,
+                      const ConverterKey & input_parameterization,
                       const DerivativeFlagType & deriv_requested)
-    : _deriv_requested(deriv_requested)
+    : _output_parameterization(output_parameterization),
+      _deriv_requested(deriv_requested)
   {
-    assert_ascending(parameterization);
-    neml_assert(table.count(parameterization),
+    assert_ascending(output_parameterization);
+    assert_ascending(input_parameterization);
+    neml_assert(table.count(input_parameterization),
                 "Parameterization not found in the conversion table. This typically means that the "
                 "given combination of Lame parameters is not yet supported.");
-    _converters = table.at(parameterization);
+    _converters = table.at(input_parameterization);
   }
 
-  /// Convert input to Lame parameter lambda and mu with derivatives
+  /// Convert input to independent elastic constants with derivatives
   ResultType convert(const InputType & input) const
   {
     ResultType ret{};
@@ -89,13 +97,28 @@ public:
     return ret;
   }
 
-  /// Convert input to Lame parameter lambda and mu with derivatives
+  /// Convert input to independent elastic constants with derivatives
   ResultType convert(const InputPtrType & input) const
   {
     InputType input_values{};
     for (std::size_t i = 0; i < N; ++i)
       input_values[i] = *input[i];
     return convert(input_values);
+  }
+
+  /// Convert input to a single elastic constant with derivatives
+  ConversionType convert(const InputType & input, const ElasticConstant p) const
+  {
+    return _converters[find_index(p)](input, _deriv_requested);
+  }
+
+  /// Convert input to a single elastic constant with derivatives
+  ConversionType convert(const InputPtrType & input, const ElasticConstant p) const
+  {
+    InputType input_values{};
+    for (std::size_t i = 0; i < N; ++i)
+      input_values[i] = *input[i];
+    return convert(input_values, p);
   }
 
 private:
@@ -109,7 +132,19 @@ private:
                   "POISSONS_RATIO, P_WAVE_MODULUS.");
   }
 
-  // Default initialize the flags (false)
+  /// Find the index of a Lame parameter in the output parameterization
+  std::size_t find_index(ElasticConstant p) const
+  {
+    auto it = std::find(_output_parameterization.begin(), _output_parameterization.end(), p);
+    neml_assert(it != _output_parameterization.end(),
+                "Internal error: Lame parameter not found in the output parameterization.");
+    return std::distance(_output_parameterization.begin(), it);
+  }
+
+  /// Output parameterization
+  const ConverterKey _output_parameterization;
+
+  /// Flags to indicate which derivatives are requested
   const DerivativeFlagType _deriv_requested = {};
 
   /// Converter

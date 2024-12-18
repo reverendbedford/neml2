@@ -27,7 +27,9 @@
 namespace neml2
 {
 const CubicElasticityConverter::ConversionTableType CubicElasticityConverter::table = {
-    {{LameParameter::SHEAR_MODULUS, LameParameter::YOUNGS_MODULUS, LameParameter::POISSONS_RATIO},
+    {{ElasticConstant::SHEAR_MODULUS,
+      ElasticConstant::YOUNGS_MODULUS,
+      ElasticConstant::POISSONS_RATIO},
      {&CubicElasticityConverter::G_E_nu_to_C1,
       &CubicElasticityConverter::G_E_nu_to_C2,
       &CubicElasticityConverter::G_E_nu_to_C3}},
@@ -42,7 +44,7 @@ CubicElasticityConverter::G_E_nu_to_C1(const InputType & input, const Derivative
 
   const auto C1 = E / ((1 + nu) * (1 - 2 * nu)) * (1 - nu);
   const auto dC1_dG = deriv[0] ? Scalar::zeros(G.options()) : Scalar();
-  const auto dC1_dE = deriv[1] ? 1.0 / ((1 + nu) * (1 - 2 * nu)) * (1 - nu) : Scalar();
+  const auto dC1_dE = deriv[1] ? C1 / E : Scalar();
   const auto dC1_dnu = deriv[2] ? (-2.0 * (nu - 2.0) * nu * E) /
                                       ((2.0 * nu * nu + nu - 1) * (2.0 * nu * nu + nu - 1))
                                 : Scalar();
@@ -59,7 +61,7 @@ CubicElasticityConverter::G_E_nu_to_C2(const InputType & input, const Derivative
 
   const auto C2 = E / ((1 + nu) * (1 - 2 * nu)) * nu;
   const auto dC2_dG = deriv[0] ? Scalar::zeros(G.options()) : Scalar();
-  const auto dC2_dE = deriv[1] ? 1.0 / ((1 + nu) * (1 - 2 * nu)) * nu : Scalar();
+  const auto dC2_dE = deriv[1] ? C2 / E : Scalar();
   const auto dC2_dnu =
       deriv[2] ? (2 * nu * nu * E + E) / ((2.0 * nu * nu + nu - 1) * (2.0 * nu * nu + nu - 1))
                : Scalar();

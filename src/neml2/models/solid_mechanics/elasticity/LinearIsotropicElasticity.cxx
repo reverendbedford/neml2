@@ -32,7 +32,7 @@ register_NEML2_object(LinearIsotropicElasticity);
 OptionSet
 LinearIsotropicElasticity::expected_options()
 {
-  OptionSet options = ElasticityTensor<Elasticity, 2>::expected_options();
+  OptionSet options = ElasticityInterface<Elasticity, 2>::expected_options();
   options.doc() += " for linear isotropic material. \\f$ \\boldsymbol{\\sigma} = K \\tr "
                    "\\boldsymbol{\\varepsilon}_e + 2 G \\text{dev} \\boldsymbol{\\varepsilon}_e "
                    "\\f$, where \\f$ K \\f$ and \\f$ G \\f$ are bulk and shear moduli, "
@@ -42,7 +42,7 @@ LinearIsotropicElasticity::expected_options()
 }
 
 LinearIsotropicElasticity::LinearIsotropicElasticity(const OptionSet & options)
-  : ElasticityTensor<Elasticity, 2>(options),
+  : ElasticityInterface<Elasticity, 2>(options),
     _converter(_constant_types, _need_derivs)
 {
 }

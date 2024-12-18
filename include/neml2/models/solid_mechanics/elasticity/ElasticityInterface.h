@@ -35,21 +35,21 @@ namespace neml2
  * @tparam N Number of independent elastic constants
  */
 template <class Derived, std::size_t N>
-class ElasticityTensor : public Derived
+class ElasticityInterface : public Derived
 {
 public:
   static OptionSet expected_options();
 
-  ElasticityTensor(const OptionSet & options);
+  ElasticityInterface(const OptionSet & options);
 
 protected:
   /// Declare elastic constants (by resolving cross-references)
-  void declare_elastic_constant(LameParameter);
+  void declare_elastic_constant(ElasticConstant);
 
-  /// Input elastic constant types (ordered according to LameParameter)
-  std::array<LameParameter, N> _constant_types;
+  /// Input elastic constant types (ordered according to ElasticConstant)
+  std::array<ElasticConstant, N> _constant_types;
 
-  /// Input elastic constants (ordered according to LameParameter)
+  /// Input elastic constants (ordered according to ElasticConstant)
   std::array<const Scalar *, N> _constants;
 
   /// Whether we need to calculate the derivative of the constants
@@ -60,7 +60,7 @@ private:
   const std::vector<CrossRef<Scalar>> _coefs;
 
   /// Input coefficient types (without reordering)
-  const std::vector<LameParameter> _coef_types;
+  const std::vector<ElasticConstant> _coef_types;
 
   /// Flags to indicate whether coefficients are parameters or buffers
   std::vector<bool> _coef_as_param;
@@ -79,7 +79,7 @@ namespace neml2
 {
 template <class Derived, std::size_t N>
 OptionSet
-ElasticityTensor<Derived, N>::expected_options()
+ElasticityInterface<Derived, N>::expected_options()
 {
   OptionSet options = Derived::expected_options();
 
@@ -90,13 +90,13 @@ ElasticityTensor<Derived, N>::expected_options()
                                      "POISSONS_RATIO",
                                      "P_WAVE_MODULUS",
                                      "INVALID"},
-                                    {static_cast<int>(LameParameter::LAME_LAMBDA),
-                                     static_cast<int>(LameParameter::BULK_MODULUS),
-                                     static_cast<int>(LameParameter::SHEAR_MODULUS),
-                                     static_cast<int>(LameParameter::YOUNGS_MODULUS),
-                                     static_cast<int>(LameParameter::POISSONS_RATIO),
-                                     static_cast<int>(LameParameter::P_WAVE_MODULUS),
-                                     static_cast<int>(LameParameter::INVALID)},
+                                    {static_cast<int>(ElasticConstant::LAME_LAMBDA),
+                                     static_cast<int>(ElasticConstant::BULK_MODULUS),
+                                     static_cast<int>(ElasticConstant::SHEAR_MODULUS),
+                                     static_cast<int>(ElasticConstant::YOUNGS_MODULUS),
+                                     static_cast<int>(ElasticConstant::POISSONS_RATIO),
+                                     static_cast<int>(ElasticConstant::P_WAVE_MODULUS),
+                                     static_cast<int>(ElasticConstant::INVALID)},
                                     {"INVALID"});
   options.set<MultiEnumSelection>("coefficient_types") = type_selection;
   options.set("coefficient_types").doc() =
@@ -114,10 +114,10 @@ ElasticityTensor<Derived, N>::expected_options()
 }
 
 template <class Derived, std::size_t N>
-ElasticityTensor<Derived, N>::ElasticityTensor(const OptionSet & options)
+ElasticityInterface<Derived, N>::ElasticityInterface(const OptionSet & options)
   : Derived(options),
     _coefs(options.get<std::vector<CrossRef<Scalar>>>("coefficients")),
-    _coef_types(options.get<MultiEnumSelection>("coefficient_types").as<LameParameter>()),
+    _coef_types(options.get<MultiEnumSelection>("coefficient_types").as<ElasticConstant>()),
     _coef_as_param(options.get<std::vector<bool>>("coefficient_as_parameter"))
 {
   neml_assert(_coefs.size() == N, "Expected ", N, " coefficients, got ", _coefs.size(), ".");
@@ -138,13 +138,13 @@ ElasticityTensor<Derived, N>::ElasticityTensor(const OptionSet & options)
     _coef_as_param.resize(N, _coef_as_param[0]);
 
   // Fill out _constants, _constant_types, and _constant_names by sorting the coefficients according
-  // to the order defined by LameParameter
-  declare_elastic_constant(LameParameter::LAME_LAMBDA);
-  declare_elastic_constant(LameParameter::BULK_MODULUS);
-  declare_elastic_constant(LameParameter::SHEAR_MODULUS);
-  declare_elastic_constant(LameParameter::YOUNGS_MODULUS);
-  declare_elastic_constant(LameParameter::POISSONS_RATIO);
-  declare_elastic_constant(LameParameter::P_WAVE_MODULUS);
+  // to the order defined by ElasticConstant
+  declare_elastic_constant(ElasticConstant::LAME_LAMBDA);
+  declare_elastic_constant(ElasticConstant::BULK_MODULUS);
+  declare_elastic_constant(ElasticConstant::SHEAR_MODULUS);
+  declare_elastic_constant(ElasticConstant::YOUNGS_MODULUS);
+  declare_elastic_constant(ElasticConstant::POISSONS_RATIO);
+  declare_elastic_constant(ElasticConstant::P_WAVE_MODULUS);
 
   // Figure out which coefficients need derivatives
   for (std::size_t i = 0; i < _constant_types.size(); i++)
@@ -153,11 +153,11 @@ ElasticityTensor<Derived, N>::ElasticityTensor(const OptionSet & options)
 
 template <class Derived, std::size_t N>
 void
-ElasticityTensor<Derived, N>::declare_elastic_constant(LameParameter ptype)
+ElasticityInterface<Derived, N>::declare_elastic_constant(ElasticConstant ptype)
 {
   for (std::size_t i = 0; i < _coefs.size(); i++)
   {
-    neml_assert(_coef_types[i] != LameParameter::INVALID,
+    neml_assert(_coef_types[i] != ElasticConstant::INVALID,
                 "Invalid coefficient type provided for coefficient ",
                 i,
                 ".");

@@ -45,7 +45,10 @@ public:
 
   IsotropicElasticityConverter(const ConverterKey & parameterization,
                                const DerivativeFlagType & deriv_requested)
-    : ElasticityConverter<2>(table, parameterization, deriv_requested)
+    : ElasticityConverter<2>(table,
+                             {ElasticConstant::BULK_MODULUS, ElasticConstant::SHEAR_MODULUS},
+                             parameterization,
+                             deriv_requested)
   {
   }
 };

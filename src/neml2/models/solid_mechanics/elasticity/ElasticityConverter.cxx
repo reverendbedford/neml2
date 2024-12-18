@@ -27,22 +27,28 @@
 namespace neml2
 {
 std::string
-name(LameParameter p)
+name(ElasticConstant p)
 {
   switch (p)
   {
-    case LameParameter::BULK_MODULUS:
+    case ElasticConstant::BULK_MODULUS:
       return "K";
-    case LameParameter::YOUNGS_MODULUS:
+    case ElasticConstant::YOUNGS_MODULUS:
       return "E";
-    case LameParameter::LAME_LAMBDA:
+    case ElasticConstant::LAME_LAMBDA:
       return "lambda";
-    case LameParameter::SHEAR_MODULUS:
+    case ElasticConstant::SHEAR_MODULUS:
       return "G";
-    case LameParameter::POISSONS_RATIO:
+    case ElasticConstant::POISSONS_RATIO:
       return "nu";
-    case LameParameter::P_WAVE_MODULUS:
+    case ElasticConstant::P_WAVE_MODULUS:
       return "M";
+    case ElasticConstant::CUBIC_C1:
+      return "C1";
+    case ElasticConstant::CUBIC_C2:
+      return "C2";
+    case ElasticConstant::CUBIC_C3:
+      return "C3";
     default:
       return "INVALID";
   }

@@ -13,6 +13,7 @@
 [Models]
   [model]
     type = LinearIsotropicElasticJ2TrialStressUpdate
-    shear_modulus = 0.769230769
+    coefficients = '2 0.3'
+    coefficient_types = 'YOUNGS_MODULUS POISSONS_RATIO'
   []
 []

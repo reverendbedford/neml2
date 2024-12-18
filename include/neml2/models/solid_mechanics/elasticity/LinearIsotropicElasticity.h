@@ -25,12 +25,12 @@
 #pragma once
 
 #include "neml2/models/solid_mechanics/elasticity/Elasticity.h"
-#include "neml2/models/solid_mechanics/elasticity/ElasticityTensor.h"
+#include "neml2/models/solid_mechanics/elasticity/ElasticityInterface.h"
 #include "neml2/models/solid_mechanics/elasticity/IsotropicElasticityConverter.h"
 
 namespace neml2
 {
-class LinearIsotropicElasticity : public ElasticityTensor<Elasticity, 2>
+class LinearIsotropicElasticity : public ElasticityInterface<Elasticity, 2>
 {
 public:
   static OptionSet expected_options();

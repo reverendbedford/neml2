@@ -27,7 +27,7 @@
 namespace neml2
 {
 const IsotropicElasticityConverter::ConversionTableType IsotropicElasticityConverter::table = {
-    {{LameParameter::YOUNGS_MODULUS, LameParameter::POISSONS_RATIO},
+    {{ElasticConstant::YOUNGS_MODULUS, ElasticConstant::POISSONS_RATIO},
      {&IsotropicElasticityConverter::E_nu_to_K, &IsotropicElasticityConverter::E_nu_to_G}}};
 
 IsotropicElasticityConverter::ConversionType
