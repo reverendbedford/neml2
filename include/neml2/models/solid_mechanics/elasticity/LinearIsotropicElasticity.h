@@ -25,10 +25,12 @@
 #pragma once
 
 #include "neml2/models/solid_mechanics/elasticity/Elasticity.h"
+#include "neml2/models/solid_mechanics/elasticity/ElasticityTensor.h"
+#include "neml2/models/solid_mechanics/elasticity/IsotropicElasticityConverter.h"
 
 namespace neml2
 {
-class LinearIsotropicElasticity : public Elasticity
+class LinearIsotropicElasticity : public ElasticityTensor<Elasticity, 2>
 {
 public:
   static OptionSet expected_options();
@@ -38,10 +40,6 @@ public:
 protected:
   void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
-  /// Young's modulus
-  const Scalar & _E;
-
-  /// Poisson's ratio
-  const Scalar & _nu;
+  const IsotropicElasticityConverter _converter;
 };
 } // namespace neml2

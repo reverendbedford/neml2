@@ -1,7 +1,7 @@
 [Models]
   [model]
     type = LinearIsotropicElasticity
-    youngs_modulus = 100
-    poisson_ratio = 0.3
+    coefficients = '100 0.3'
+    coefficient_types = 'YOUNGS_MODULUS POISSONS_RATIO'
   []
 []

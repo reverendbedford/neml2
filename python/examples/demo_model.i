@@ -148,7 +148,7 @@
   [flowrate]
     type = KocksMeckingFlowSwitch
     g0 = 'g0'
-    rate_independent_flow_rate = 'state/internal/gamma_rate_ri' 
+    rate_independent_flow_rate = 'state/internal/gamma_rate_ri'
     rate_dependent_flow_rate = 'state/internal/gamma_rate_rd'
     sharpness = 100.0
   []
@@ -171,8 +171,8 @@
   []
   [elasticity]
     type = LinearIsotropicElasticity
-    youngs_modulus = 1e5
-    poisson_ratio = 0.3
+    coefficients = '1e5 0.3'
+    coefficient_types = 'YOUNGS_MODULUS POISSONS_RATIO'
     rate_form = true
   []
   [integrate_stress]
@@ -204,7 +204,7 @@
     models = "isoharden elasticity g
               mandel_stress vonmises
               yield yield_zero normality eprate Eprate Erate Eerate
-              ri_flowrate rd_flowrate flowrate integrate_ep integrate_stress effective_strain_rate 
+              ri_flowrate rd_flowrate flowrate integrate_ep integrate_stress effective_strain_rate
               mixed mixed_old rename"
   []
 []

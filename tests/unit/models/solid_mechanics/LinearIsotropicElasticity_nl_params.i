@@ -33,8 +33,8 @@
   []
   [model0]
     type = LinearIsotropicElasticity
-    youngs_modulus = 'E'
-    poisson_ratio = 'nu'
+    coefficients = 'E nu'
+    coefficient_types = 'YOUNGS_MODULUS POISSONS_RATIO'
   []
   [model]
     type = ComposedModel

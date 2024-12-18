@@ -24,6 +24,7 @@
 
 #pragma once
 
+#include "neml2/models/NonlinearParameter.h"
 #include "neml2/models/solid_mechanics/elasticity/ElasticityTensor.h"
 #include "neml2/models/solid_mechanics/elasticity/CubicElasticityConverter.h"
 
@@ -32,7 +33,7 @@ namespace neml2
 /**
  * @brief Define an cubic symmetry elasticity tensor in various ways
  */
-class CubicElasticityTensor : public ElasticityTensor<3>
+class CubicElasticityTensor : public ElasticityTensor<NonlinearParameter<SSR4>, 3>
 {
 public:
   static OptionSet expected_options();

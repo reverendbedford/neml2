@@ -28,22 +28,19 @@ namespace neml2
 {
 const IsotropicElasticityConverter::ConversionTableType IsotropicElasticityConverter::table = {
     {{LameParameter::YOUNGS_MODULUS, LameParameter::POISSONS_RATIO},
-     {&IsotropicElasticityConverter::E_nu_to_lambda, &IsotropicElasticityConverter::E_nu_to_G}}};
+     {&IsotropicElasticityConverter::E_nu_to_K, &IsotropicElasticityConverter::E_nu_to_G}}};
 
 IsotropicElasticityConverter::ConversionType
-IsotropicElasticityConverter::E_nu_to_lambda(const InputType & input,
-                                             const DerivativeFlagType & deriv)
+IsotropicElasticityConverter::E_nu_to_K(const InputType & input, const DerivativeFlagType & deriv)
 {
   const auto & E = input[0];
   const auto & nu = input[1];
 
-  const auto lambda = E * nu / ((1 + nu) * (1 - 2 * nu));
-  const auto dlambda_dE = deriv[0] ? -nu / (2 * nu * nu + nu - 1) : Scalar();
-  const auto dlambda_dnu =
-      deriv[1] ? (E + 2 * E * nu * nu) / ((2 * nu * nu + nu - 1) * (2 * nu * nu + nu - 1))
-               : Scalar();
+  const auto K = E / 3 / (1 - 2 * nu);
+  const auto dK_dE = deriv[0] ? K / E : Scalar();
+  const auto dK_dnu = deriv[1] ? 6 * K * K / E : Scalar();
 
-  return {lambda, {dlambda_dE, dlambda_dnu}};
+  return {K, {dK_dE, dK_dnu}};
 }
 
 IsotropicElasticityConverter::ConversionType
@@ -53,8 +50,8 @@ IsotropicElasticityConverter::E_nu_to_G(const InputType & input, const Derivativ
   const auto & nu = input[1];
 
   const auto G = E / (2 * (1 + nu));
-  const auto dG_dE = deriv[0] ? 1.0 / (2.0 + 2 * nu) : Scalar();
-  const auto dG_dnu = deriv[1] ? -E / (2 * (1 + nu) * (1 + nu)) : Scalar();
+  const auto dG_dE = deriv[0] ? G / E : Scalar();
+  const auto dG_dnu = deriv[1] ? -G / (1 + nu) : Scalar();
 
   return {G, {dG_dE, dG_dnu}};
 }

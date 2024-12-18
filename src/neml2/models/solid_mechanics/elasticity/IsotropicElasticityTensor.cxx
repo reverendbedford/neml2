@@ -31,15 +31,15 @@ register_NEML2_object(IsotropicElasticityTensor);
 OptionSet
 IsotropicElasticityTensor::expected_options()
 {
-  OptionSet options = ElasticityTensor<2>::expected_options();
-  options.doc() += "  This class defines an isotropic elasticity tensor using two parameters."
-                   "  Various options are available for which two parameters to provide.";
+  OptionSet options = ElasticityTensor<NonlinearParameter<SSR4>, 2>::expected_options();
+  options.doc() = "This class defines an isotropic elasticity tensor using two parameters."
+                  "  Various options are available for which two parameters to provide.";
 
   return options;
 }
 
 IsotropicElasticityTensor::IsotropicElasticityTensor(const OptionSet & options)
-  : ElasticityTensor<2>(options),
+  : ElasticityTensor<NonlinearParameter<SSR4>, 2>(options),
     _converter(_constant_types, _need_derivs)
 {
 }
@@ -49,23 +49,23 @@ IsotropicElasticityTensor::set_value(bool out, bool dout_din, bool d2out_din2)
 {
   neml_assert_dbg(!d2out_din2, "IsotropicElasticityTensor doesn't implement second derivatives.");
 
-  const auto [lambda_and_dlambda, G_and_dG] = _converter.convert(_constants);
-  const auto & [lambda, dlambda] = lambda_and_dlambda;
+  const auto [K_and_dK, G_and_dG] = _converter.convert(_constants);
+  const auto & [K, dK] = K_and_dK;
   const auto & [G, dG] = G_and_dG;
 
-  const auto Iv = SSR4::identity_vol(lambda.options());
-  const auto Is = SSR4::identity_sym(G.options());
+  const auto Iv = SSR4::identity_vol(K.options());
+  const auto Id = SSR4::identity_dev(G.options());
 
   if (out)
-    _p = 3.0 * lambda * Iv + 2.0 * G * Is;
+    _p = 3.0 * K * Iv + 2.0 * G * Id;
 
   if (dout_din)
   {
     if (const auto * const p1 = nl_param(neml2::name(_constant_types[0])))
-      _p.d(*p1) = 3.0 * dlambda[0] * Iv + 2.0 * dG[0] * Is;
+      _p.d(*p1) = 3.0 * dK[0] * Iv + 2.0 * dG[0] * Id;
 
     if (const auto * const p2 = nl_param(neml2::name(_constant_types[1])))
-      _p.d(*p2) = 3.0 * dlambda[1] * Iv + 2.0 * dG[1] * Is;
+      _p.d(*p2) = 3.0 * dK[1] * Iv + 2.0 * dG[1] * Id;
   }
 }
 

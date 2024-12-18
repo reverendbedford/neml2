@@ -24,6 +24,7 @@
 
 #pragma once
 
+#include "neml2/models/NonlinearParameter.h"
 #include "neml2/models/solid_mechanics/elasticity/ElasticityTensor.h"
 #include "neml2/models/solid_mechanics/elasticity/IsotropicElasticityConverter.h"
 
@@ -32,7 +33,7 @@ namespace neml2
 /**
  * @brief Define an isotropoic elasticity tensor in various ways
  */
-class IsotropicElasticityTensor : public ElasticityTensor<2>
+class IsotropicElasticityTensor : public ElasticityTensor<NonlinearParameter<SSR4>, 2>
 {
 public:
   static OptionSet expected_options();

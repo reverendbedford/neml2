@@ -43,8 +43,8 @@ However, from times to times, the composed model may become overwhelmingly compl
   []
   [elasticity_1]
     type = LinearIsotropicElasticity
-    youngs_modulus = 1e5
-    poisson_ratio = 0.25
+    coefficients = '1e5 0.25'
+    coefficient_types = 'YOUNGS_MODULUS POISSONS_RATIO'
     strain = 'state/elastic_strain'
     stress = 'state/internal/cauchy_stress'
   []
@@ -101,8 +101,8 @@ However, from times to times, the composed model may become overwhelmingly compl
   []
   [elasticity_2]
     type = LinearIsotropicElasticity
-    youngs_modulus = 1e5
-    poisson_ratio = 0.25
+    coefficients = '1e5 0.25'
+    coefficient_types = 'YOUNGS_MODULUS POISSONS_RATIO'
     strain = 'forces/tmp/elastic_strain'
     stress = 'state/internal/cauchy_stress'
   []
