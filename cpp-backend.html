@@ -126,8 +126,8 @@ Loading a model from an input file</h1>
 <div class="fragment"><div class="line">[Models]</div>
 <div class="line">  [model]</div>
 <div class="line">    type = LinearIsotropicElasticity</div>
-<div class="line">    youngs_modulus = 100</div>
-<div class="line">    poisson_ratio = 0.3</div>
+<div class="line">    coefficients = <span class="stringliteral">&#39;100 0.3&#39;</span></div>
+<div class="line">    coefficient_types = <span class="stringliteral">&#39;YOUNGS_MODULUS POISSONS_RATIO&#39;</span></div>
 <div class="line">    strain = <span class="stringliteral">&#39;forces/E&#39;</span></div>
 <div class="line">    stress = <span class="stringliteral">&#39;state/S&#39;</span></div>
 <div class="line">  []</div>

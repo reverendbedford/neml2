@@ -925,9 +925,18 @@ CopyWWR4</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1CopyVariable.html">link</a></p>
 <h2><a class="anchor" id="cubicelasticitytensor"></a>
 CubicElasticityTensor</h2>
-<p>Define an elasticity tensor in terms of other parameters. This class defines a cubic anisotropic elasticity tensor using three parameters. Various options are available for which three parameters to provide. </p><details >
+<p>This class defines a cubic anisotropic elasticity tensor using three parameters. Various options are available for which three parameters to provide. </p><details >
 <summary >
-<code>coefficient_types</code> Types for each parameter, options are: INVALID shear_modulus poissons_ratio youngs_modulus </summary>
+<code>coefficient_as_parameter</code> Whether to treat the coefficients as (trainable) parameters. Default is true. Setting this option to false will treat the coefficients as buffers.</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of bool</li>
+<li><u>Default</u>: 1 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>coefficient_types</code> Types for each parameter, options are: INVALID P_WAVE_MODULUS POISSONS_RATIO YOUNGS_MODULUS SHEAR_MODULUS BULK_MODULUS LAME_LAMBDA </summary>
 <p></p>
 <ul>
 <li><u>Type</u>: MultiEnumSelection</li>
@@ -1261,9 +1270,18 @@ ImplicitUpdate</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ImplicitUpdate.html">link</a></p>
 <h2><a class="anchor" id="isotropicelasticitytensor"></a>
 IsotropicElasticityTensor</h2>
-<p>Define an elasticity tensor in terms of other parameters. This class defines an isotropic elasticity tensor using two parameters. Various options are available for which two parameters to provide. </p><details >
+<p>This class defines an isotropic elasticity tensor using two parameters. Various options are available for which two parameters to provide. </p><details >
 <summary >
-<code>coefficient_types</code> Types for each parameter, options are: INVALID shear_modulus poissons_ratio youngs_modulus </summary>
+<code>coefficient_as_parameter</code> Whether to treat the coefficients as (trainable) parameters. Default is true. Setting this option to false will treat the coefficients as buffers.</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of bool</li>
+<li><u>Default</u>: 1 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>coefficient_types</code> Types for each parameter, options are: INVALID P_WAVE_MODULUS POISSONS_RATIO YOUNGS_MODULUS SHEAR_MODULUS BULK_MODULUS LAME_LAMBDA </summary>
 <p></p>
 <ul>
 <li><u>Type</u>: MultiEnumSelection</li>
@@ -1572,6 +1590,32 @@ KocksMeckingYieldStress</h2>
 LinearIsotropicElasticJ2TrialStressUpdate</h2>
 <p>Update the trial stress under the assumptions of J2 plasticity and isotropic linear elasticity </p><details >
 <summary >
+<code>coefficient_as_parameter</code> Whether to treat the coefficients as (trainable) parameters. Default is true. Setting this option to false will treat the coefficients as buffers.</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of bool</li>
+<li><u>Default</u>: 1 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>coefficient_types</code> Types for each parameter, options are: INVALID P_WAVE_MODULUS POISSONS_RATIO YOUNGS_MODULUS SHEAR_MODULUS BULK_MODULUS LAME_LAMBDA </summary>
+<p></p>
+<ul>
+<li><u>Type</u>: MultiEnumSelection</li>
+<li><u>Default</u>: INVALID </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>coefficients</code> 🇵 Coefficients used to define the elasticity tensor</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of Scalar 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
 <code>elastic_trial_stress</code> 🇮 Initial trial stress assuming a purely elastic step</summary>
 <p></p>
 <ul>
@@ -1590,14 +1634,6 @@ LinearIsotropicElasticJ2TrialStressUpdate</h2>
 </details>
 <details >
 <summary >
-<code>poisson_ratio</code> 🇵 Poisson's ratio</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: Scalar 🔗 </li>
-</ul>
-</details>
-<details >
-<summary >
 <code>updated_trial_stress</code> 🇴 Trial stress corrected for the current increment of plastic deformation</summary>
 <p></p>
 <ul>
@@ -1605,32 +1641,42 @@ LinearIsotropicElasticJ2TrialStressUpdate</h2>
 <li><u>Default</u>: state/s </li>
 </ul>
 </details>
-<details >
-<summary >
-<code>youngs_modulus</code> 🇵 Young's modulus</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: Scalar 🔗 </li>
-</ul>
-</details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearIsotropicElasticJ2TrialStressUpdate.html">link</a></p>
 <h2><a class="anchor" id="linearisotropicelasticity"></a>
 LinearIsotropicElasticity</h2>
-<p>Relate elastic strain to stress for linear isotropic material. \( \boldsymbol{\sigma} = K \tr \boldsymbol{\varepsilon}_e + 2 G \text{dev} \boldsymbol{\varepsilon}_e \), where \( K \) and \( G \) are bulk and shear moduli, respectively. For convenience, this object only requests Young's modulus and Poisson's ratio, and handles the Lame parameter conversion behind the scenes. </p><details >
+<p>Relate elastic strain to stress for linear isotropic material. \( \boldsymbol{\sigma} = K \tr \boldsymbol{\varepsilon}_e + 2 G \text{dev} \boldsymbol{\varepsilon}_e \), where \( K \) and \( G \) are bulk and shear moduli, respectively. Other pairs of Lame parameters are also supported. </p><details >
+<summary >
+<code>coefficient_as_parameter</code> Whether to treat the coefficients as (trainable) parameters. Default is true. Setting this option to false will treat the coefficients as buffers.</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of bool</li>
+<li><u>Default</u>: 1 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>coefficient_types</code> Types for each parameter, options are: INVALID P_WAVE_MODULUS POISSONS_RATIO YOUNGS_MODULUS SHEAR_MODULUS BULK_MODULUS LAME_LAMBDA </summary>
+<p></p>
+<ul>
+<li><u>Type</u>: MultiEnumSelection</li>
+<li><u>Default</u>: INVALID </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>coefficients</code> 🇵 Coefficients used to define the elasticity tensor</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: list of Scalar 🔗 </li>
+</ul>
+</details>
+<details >
 <summary >
 <code>compliance</code> Whether the model defines the compliance relationship, i.e., mapping from stress to elastic strain. When set to false (default), the model maps elastic strain to stress.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: bool</li>
 <li><u>Default</u>: false </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>poisson_ratio</code> 🇵 Poisson's ratio</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >
@@ -1658,14 +1704,6 @@ LinearIsotropicElasticity</h2>
 <ul>
 <li><u>Type</u>: variable name</li>
 <li><u>Default</u>: state/S </li>
-</ul>
-</details>
-<details >
-<summary >
-<code>youngs_modulus</code> 🇵 Young's modulus</summary>
-<p></p>
-<ul>
-<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LinearIsotropicElasticity.html">link</a></p>
@@ -2651,20 +2689,19 @@ SR2Invariant</h2>
 SR2LinearCombination</h2>
 <p>Calculate linear combination of multiple SR2 tensors as \( u = c_i v_i \) (Einstein summation assumed), where \( c_i \) are the coefficients, and \( v_i \) are the variables to be summed. </p><details >
 <summary >
-<code>coefficients</code> 🇵 Weights associated with each variable</summary>
+<code>coefficient_as_parameter</code> By default, the coefficients are declared as buffers. Set this option to true to declare them as (trainable) parameters. This option takes a list of booleans, one for each coefficient. When the length of this list is 1, the boolean applies to all coefficients.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: list of Scalar 🔗</li>
-<li><u>Default</u>: 1 </li>
+<li><u>Type</u>: list of bool </li>
 </ul>
 </details>
 <details >
 <summary >
-<code>coefficients_as_parameters</code> By default, the coefficients are declared as buffers. Set this option to true to declare them as (trainable) parameters.</summary>
+<code>coefficients</code> 🇵 Weights associated with each variable. This option takes a list of weights, one for each coefficient. When the length of this list is 1, the same weight applies to all coefficients.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
+<li><u>Type</u>: list of Scalar 🔗</li>
+<li><u>Default</u>: 1 </li>
 </ul>
 </details>
 <details >
@@ -2996,20 +3033,19 @@ ScalarInputParameter</h2>
 ScalarLinearCombination</h2>
 <p>Calculate linear combination of multiple Scalar tensors as \( u = c_i v_i \) (Einstein summation assumed), where \( c_i \) are the coefficients, and \( v_i \) are the variables to be summed. </p><details >
 <summary >
-<code>coefficients</code> 🇵 Weights associated with each variable</summary>
+<code>coefficient_as_parameter</code> By default, the coefficients are declared as buffers. Set this option to true to declare them as (trainable) parameters. This option takes a list of booleans, one for each coefficient. When the length of this list is 1, the boolean applies to all coefficients.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: list of Scalar 🔗</li>
-<li><u>Default</u>: 1 </li>
+<li><u>Type</u>: list of bool </li>
 </ul>
 </details>
 <details >
 <summary >
-<code>coefficients_as_parameters</code> By default, the coefficients are declared as buffers. Set this option to true to declare them as (trainable) parameters.</summary>
+<code>coefficients</code> 🇵 Weights associated with each variable. This option takes a list of weights, one for each coefficient. When the length of this list is 1, the same weight applies to all coefficients.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
+<li><u>Type</u>: list of Scalar 🔗</li>
+<li><u>Default</u>: 1 </li>
 </ul>
 </details>
 <details >
@@ -3403,20 +3439,19 @@ VecInputParameter</h2>
 VecLinearCombination</h2>
 <p>Calculate linear combination of multiple Vec tensors as \( u = c_i v_i \) (Einstein summation assumed), where \( c_i \) are the coefficients, and \( v_i \) are the variables to be summed. </p><details >
 <summary >
-<code>coefficients</code> 🇵 Weights associated with each variable</summary>
+<code>coefficient_as_parameter</code> By default, the coefficients are declared as buffers. Set this option to true to declare them as (trainable) parameters. This option takes a list of booleans, one for each coefficient. When the length of this list is 1, the boolean applies to all coefficients.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: list of Scalar 🔗</li>
-<li><u>Default</u>: 1 </li>
+<li><u>Type</u>: list of bool </li>
 </ul>
 </details>
 <details >
 <summary >
-<code>coefficients_as_parameters</code> By default, the coefficients are declared as buffers. Set this option to true to declare them as (trainable) parameters.</summary>
+<code>coefficients</code> 🇵 Weights associated with each variable. This option takes a list of weights, one for each coefficient. When the length of this list is 1, the same weight applies to all coefficients.</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: bool</li>
-<li><u>Default</u>: false </li>
+<li><u>Type</u>: list of Scalar 🔗</li>
+<li><u>Default</u>: 1 </li>
 </ul>
 </details>
 <details >

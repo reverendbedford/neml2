@@ -43,10 +43,11 @@ var searchData=
   ['is_5fsolve_5fdependent_40',['is_solve_dependent',['../classneml2_1_1VariableBase.html#a86b4759cb72a574e455a04fe93c23f0c',1,'neml2::VariableBase']]],
   ['is_5fstate_41',['is_state',['../classneml2_1_1LabeledAxisAccessor.html#a2669d1f91b798f16b2d82c7d6726c277',1,'neml2::LabeledAxisAccessor::is_state()'],['../classneml2_1_1VariableBase.html#a2669d1f91b798f16b2d82c7d6726c277',1,'neml2::VariableBase::is_state()']]],
   ['isotropic_5fe_5fnu_42',['isotropic_E_nu',['../classneml2_1_1SSR4.html#ad318e161a620ac1bb046547a9151d421',1,'neml2::SSR4::isotropic_E_nu(const Scalar &amp;E, const Scalar &amp;nu)'],['../classneml2_1_1SSR4.html#a59ee7b3e3b14a4957f5621abfd8e3d9c',1,'neml2::SSR4::isotropic_E_nu(const Real &amp;E, const Real &amp;nu, const torch::TensorOptions &amp;options=default_tensor_options())']]],
-  ['isotropicelasticitytensor_43',['IsotropicElasticityTensor',['../classneml2_1_1IsotropicElasticityTensor.html#a5eff99954cf1ce4b9a63855d799b627d',1,'neml2::IsotropicElasticityTensor']]],
-  ['isotropichardening_44',['IsotropicHardening',['../classneml2_1_1IsotropicHardening.html#aa1a9bb4383495d684fe4c362ebcfe33e',1,'neml2::IsotropicHardening']]],
-  ['isotropichardeningstaticrecovery_45',['IsotropicHardeningStaticRecovery',['../classneml2_1_1IsotropicHardeningStaticRecovery.html#a8a19cd6eaa12b7992fae66918f834dda',1,'neml2::IsotropicHardeningStaticRecovery']]],
-  ['item_46',['Item',['../structneml2_1_1DependencyResolver_1_1Item.html#ac2aaf6a52e177eb13e1f32ef094073ad',1,'neml2::DependencyResolver::Item']]],
-  ['item_5fconsumers_47',['item_consumers',['../classneml2_1_1DependencyResolver.html#a201b2fcc14bade0611c6d90841748bec',1,'neml2::DependencyResolver']]],
-  ['item_5fproviders_48',['item_providers',['../classneml2_1_1DependencyResolver.html#af1717716528c1f3fee2ab3b3314d767e',1,'neml2::DependencyResolver']]]
+  ['isotropicelasticityconverter_43',['IsotropicElasticityConverter',['../classneml2_1_1IsotropicElasticityConverter.html#a486ef71e3933d7683025b187b00cb8e7',1,'neml2::IsotropicElasticityConverter']]],
+  ['isotropicelasticitytensor_44',['IsotropicElasticityTensor',['../classneml2_1_1IsotropicElasticityTensor.html#a5eff99954cf1ce4b9a63855d799b627d',1,'neml2::IsotropicElasticityTensor']]],
+  ['isotropichardening_45',['IsotropicHardening',['../classneml2_1_1IsotropicHardening.html#aa1a9bb4383495d684fe4c362ebcfe33e',1,'neml2::IsotropicHardening']]],
+  ['isotropichardeningstaticrecovery_46',['IsotropicHardeningStaticRecovery',['../classneml2_1_1IsotropicHardeningStaticRecovery.html#a8a19cd6eaa12b7992fae66918f834dda',1,'neml2::IsotropicHardeningStaticRecovery']]],
+  ['item_47',['Item',['../structneml2_1_1DependencyResolver_1_1Item.html#ac2aaf6a52e177eb13e1f32ef094073ad',1,'neml2::DependencyResolver::Item']]],
+  ['item_5fconsumers_48',['item_consumers',['../classneml2_1_1DependencyResolver.html#a201b2fcc14bade0611c6d90841748bec',1,'neml2::DependencyResolver']]],
+  ['item_5fproviders_49',['item_providers',['../classneml2_1_1DependencyResolver.html#af1717716528c1f3fee2ab3b3314d767e',1,'neml2::DependencyResolver']]]
 ];

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['failure_0',['FAILURE',['../classneml2_1_1NonlinearSolver.html#ae652fbd48bfccbcc4f573e8d45529404a36fc6065a3e970bc3e6b2e59da52bf2a',1,'neml2::NonlinearSolver']]],
-  ['for_5fall_5ftensorbase_5fcomma_1',['FOR_ALL_TENSORBASE_COMMA',['../namespaceneml2.html#a9b44248b88341f8c9cafe5d9d822a443a6c51418de157b011117e28b5e664dbfc',1,'neml2']]]
+  ['effective_5fstrain_0',['EFFECTIVE_STRAIN',['../classneml2_1_1SR2Invariant.html#a979d38b05f49ac1c94292c258ed4fb36ade414d1f5640413d7f7f5f9c37e8e88a',1,'neml2::SR2Invariant']]]
 ];

@@ -143,11 +143,11 @@ Syntax</h1>
 <div class="line">[Models]</div>
 <div class="line">  [elasticity]</div>
 <div class="line">    type = LinearIsotropicElasticity</div>
-<div class="line">    youngs_modulus = <span class="stringliteral">&#39;E&#39;</span></div>
-<div class="line">    poisson_ratio = 0.3</div>
+<div class="line">    coefficients = <span class="stringliteral">&#39;E 0.3&#39;</span></div>
+<div class="line">    coefficient_types = <span class="stringliteral">&#39;YOUNGS_MODULUS POISSONS_RATIO&#39;</span></div>
 <div class="line">  []</div>
 <div class="line">[]</div>
-</div><!-- fragment --><p> defines a tensor named "E" under the <code>[Tensors]</code> block and a model named "elasticity" under the <code>[Models]</code> block. Notice that an object (in this case the tensor named "E" under the <code>[Tensors]</code> section) can be referenced by an input option (in this case "youngs_modulus") by its name, and this mechanism is referred to as <a class="el" href="#cross-referencing">cross-referencing</a>. The <a class="el" href="syntax-tensors.html">Syntax Documentation</a> provides a complete list of objects that can be defined by an input file. The <a class="el" href="system-tensors.html">System Documentation</a> provides detailed explanation of each system.</p>
+</div><!-- fragment --><p> defines a tensor named "E" under the <code>[Tensors]</code> block and a model named "elasticity" under the <code>[Models]</code> block. Notice that an object (in this case the tensor named "E" under the <code>[Tensors]</code> section) can be referenced by an input option (in this case "coefficients") by its name, and this mechanism is referred to as <a class="el" href="#cross-referencing">cross-referencing</a>. The <a class="el" href="syntax-tensors.html">Syntax Documentation</a> provides a complete list of objects that can be defined by an input file. The <a class="el" href="system-tensors.html">System Documentation</a> provides detailed explanation of each system.</p>
 <dl class="section note"><dt>Note</dt><dd>The ordering of objects, i.e., the sequence objects appear in the input file, does not change their behavior.</dd></dl>
 <h1><a class="anchor" id="autotoc_md49"></a>
 Special syntax</h1>

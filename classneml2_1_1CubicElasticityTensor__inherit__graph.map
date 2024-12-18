@@ -1,7 +1,7 @@
 <map id="CubicElasticityTensor" name="CubicElasticityTensor">
-<area shape="rect" id="Node000001" title="Define an cubic symmetry elasticity tensor in various ways." alt="" coords="860,169,1020,194"/>
-<area shape="rect" id="Node000002" href="$classneml2_1_1ElasticityTensor.html" title="Superclass for defining elasticity tensors in terms of other parameters." alt="" coords="688,169,812,194"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="826,179,860,179,860,184,826,184"/>
+<area shape="rect" id="Node000001" title="Define an cubic symmetry elasticity tensor in various ways." alt="" coords="903,169,1063,194"/>
+<area shape="rect" id="Node000002" href="$classneml2_1_1ElasticityInterface.html" title=" " alt="" coords="688,154,855,209"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="869,179,903,179,903,184,869,184"/>
 <area shape="rect" id="Node000003" href="$classneml2_1_1NonlinearParameter.html" title=" " alt="" coords="488,161,640,201"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="654,179,688,179,688,184,654,184"/>
 <area shape="rect" id="Node000004" href="$classneml2_1_1Model.html" title="The base class for all constitutive models." alt="" coords="377,169,440,194"/>
