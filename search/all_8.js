@@ -9,7 +9,7 @@ var searchData=
   ['get_5fobject_6',['get_object',['../classneml2_1_1Factory.html#a74bb9b4d395d11402735117f5aef4d7b',1,'neml2::Factory']]],
   ['get_5fobject_5fptr_7',['get_object_ptr',['../classneml2_1_1Factory.html#a95c47d292bea9037c83f2320ec3582db',1,'neml2::Factory']]],
   ['get_5fparameter_8',['get_parameter',['../classneml2_1_1ParameterStore.html#a8c1f0318b14b2c89f483e10161c3c10c',1,'neml2::ParameterStore::get_parameter(const std::string &amp;name)'],['../classneml2_1_1ParameterStore.html#a60154f948f092f7b1484a3148c9ed316',1,'neml2::ParameterStore::get_parameter(const std::string &amp;name) const']]],
-  ['graph_20style_9',['Customizing graph style',['../model-visualization.html#autotoc_md14',1,'']]],
+  ['graph_20style_9',['Customizing graph style',['../model-visualization.html#autotoc_md15',1,'']]],
   ['gtnyieldfunction_10',['GTNYieldFunction',['../classneml2_1_1GTNYieldFunction.html',1,'GTNYieldFunction'],['../classneml2_1_1GTNYieldFunction.html#af58c56c00ee14094ef09c2943a4bc417',1,'neml2::GTNYieldFunction::GTNYieldFunction()'],['../syntax-models.html#gtnyieldfunction',1,'GTNYieldFunction']]],
   ['guide_11',['Installation Guide',['../install.html',1,'']]],
   ['gursoncavitation_12',['GursonCavitation',['../classneml2_1_1GursonCavitation.html',1,'GursonCavitation'],['../classneml2_1_1GursonCavitation.html#a59881fd209ee558acef9e5aa56871d6d',1,'neml2::GursonCavitation::GursonCavitation()'],['../syntax-models.html#gursoncavitation',1,'GursonCavitation']]]

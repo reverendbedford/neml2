@@ -113,14 +113,14 @@ $(function(){initNavTree('cpp-backend.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md44">Loading a model from an input file</a></li>
-<li class="level1"><a href="#autotoc_md45">Inspecting model information</a></li>
-<li class="level1"><a href="#autotoc_md46">Evaluate the model</a></li>
-<li class="level1"><a href="#autotoc_md47">Model parameters</a></li>
+<ul><li class="level1"><a href="#autotoc_md45">Loading a model from an input file</a></li>
+<li class="level1"><a href="#autotoc_md46">Inspecting model information</a></li>
+<li class="level1"><a href="#autotoc_md47">Evaluate the model</a></li>
+<li class="level1"><a href="#autotoc_md48">Model parameters</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md__2home_2runner_2work_2neml2_2neml2_2doc_2content_2user_2cpp"></a></p>
-<h1><a class="anchor" id="autotoc_md44"></a>
+<h1><a class="anchor" id="autotoc_md45"></a>
 Loading a model from an input file</h1>
 <p>The following input file defines a linear isotropic elasticity material model:</p>
 <div class="fragment"><div class="line">[Models]</div>
@@ -147,7 +147,7 @@ Loading a model from an input file</h1>
 <div class="line">  <span class="keywordflow">return</span> 0;</div>
 <div class="line">}</div>
 <div class="ttc" id="anamespaceneml2_html_a1e499dee97d6a66663f60dd4a65b9f1a"><div class="ttname"><a href="namespaceneml2.html#a1e499dee97d6a66663f60dd4a65b9f1a">neml2::load_model</a></div><div class="ttdeci">Model &amp; load_model(const std::filesystem::path &amp;path, const std::string &amp;mname)</div><div class="ttdoc">A convenient function to load an input file and get a model.</div><div class="ttdef"><b>Definition</b> Factory.cxx:66</div></div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md45"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md46"></a>
 Inspecting model information</h1>
 <p>Once the model is loaded, it can be streamed to provide a high-level summary of the model, i.e., </p><div class="fragment"><div class="line">std::cout &lt;&lt; model &lt;&lt; std::endl;</div>
 </div><!-- fragment --><p> The example model produces the following summary </p><div class="fragment"><div class="line">Name:       model</div>
@@ -157,7 +157,7 @@ Inspecting model information</h1>
 <div class="line">Output:     state/S [SR2]</div>
 <div class="line">Parameters: E [Scalar]</div>
 <div class="line">            nu [Scalar]</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md46"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md47"></a>
 Evaluate the model</h1>
 <p>Suppose we want to perform 3 material updates simultaneously, the input variables shall have a batch size of 3 (refer to the <a class="el" href="system-tensors.html">tensor system documentation</a> for more detailed explanation on the term "batch"). The following code constructs the 3 input strains and performs 3 material updates <em>simultaneously</em>.</p>
 <div class="fragment"><div class="line"><span class="keyword">auto</span> strain_name = <a class="code hl_typedef" href="namespaceneml2.html#a5cf0dc3e9d16378ebe48923973730e54">neml2::VariableName</a>(<span class="stringliteral">&quot;forces&quot;</span>, <span class="stringliteral">&quot;E&quot;</span>);</div>
@@ -190,7 +190,7 @@ Evaluate the model</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyLeft"><a class="el" href="classneml2_1_1Model.html#a326e09c3f398872d1bfec46b02377111" title="Evalute the model and compute its first and second derivatives.">neml2::Model::value_and_dvalue_and_d2value</a>   </td><td class="markdownTableBodyCenter">\(\checkmark\)   </td><td class="markdownTableBodyCenter">\(\checkmark\)   </td><td class="markdownTableBodyCenter">\(\checkmark\)   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md47"></a>
+<h1><a class="anchor" id="autotoc_md48"></a>
 Model parameters</h1>
 <p>Each model contains zero or more parameters. The parameters are initialized with values specified in the input file. In the above example, the elasticity model contains two parameters: <code>E</code> and <code>nu</code>. Model parameters can be retrieved using the <a class="el" href="classneml2_1_1ParameterStore.html#a8c1f0318b14b2c89f483e10161c3c10c" title="Get a writable reference of a parameter.">neml2::Model::get_parameter</a> method, the parameter value can be updated using the assignment operator, and automatic differentiation can be used to track the derivatives w.r.t. a parameter: </p><div class="fragment"><div class="line"><span class="keyword">auto</span> &amp; E = model.get_parameter(<span class="stringliteral">&quot;E&quot;</span>);</div>
 <div class="line">E = <a class="code hl_function" href="classneml2_1_1PrimitiveTensor.html#a02437fba177741bfc48dc160c8c28676">neml2::Scalar::full</a>(200.0);</div>

@@ -118,9 +118,10 @@ $(function(){initNavTree('dev-env.html',''); initResizable(); });
 <li class="level2"><a href="#autotoc_md8">Writing documentation</a></li>
 <li class="level2"><a href="#autotoc_md9">Benchmarking</a></li>
 <li class="level2"><a href="#autotoc_md10">Coverage</a></li>
+<li class="level2"><a href="#autotoc_md11">Overriding presets</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md11">Code formatting and linting</a></li>
+<li class="level1"><a href="#autotoc_md12">Code formatting and linting</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md__2home_2runner_2work_2neml2_2neml2_2doc_2content_2dev_2dev__env"></a></p>
@@ -132,7 +133,7 @@ Configure and build (revisted)</h1>
 </div><!-- fragment --><p> which uses the CMake preset named "release". The configure and build commands can take other CMake presets in the following form</p>
 <div class="fragment"><div class="line">cmake --preset {configurePreset} -S .</div>
 <div class="line">cmake --build --preset {buildPreset}</div>
-</div><!-- fragment --><p> where <code>{configurePreset}</code> and <code>buildPreset</code> should be substituted with a configure preset and a build preset, respectively. In addition to the "release" preset, NEML2 offers a few configure and build presets useful for typical development workflows, defined in <code>CMakePresets.json</code>. Typical workflows and their corresponding presets are listed below.</p>
+</div><!-- fragment --><p> where <code>{configurePreset}</code> and <code>{buildPreset}</code> should be substituted with a configure preset and a build preset, respectively. In addition to the "release" preset, NEML2 offers a few configure and build presets useful for typical development workflows, defined in <code>CMakePresets.json</code>. Typical workflows and their corresponding presets are listed below.</p>
 <h2><a class="anchor" id="autotoc_md6"></a>
 Developing the C++ backend</h2>
 <div class="fragment"><div class="line">cmake --preset dev -S .</div>
@@ -160,7 +161,15 @@ Coverage</h2>
 <div class="fragment"><div class="line">cmake --preset coverage -S .</div>
 <div class="line">cmake --build coverage</div>
 </div><!-- fragment --><p> The unit testing executable is built with coverage flags set. Standard code coverage tools such as <code>gcov</code> and <code>lcov</code> can be used to capture and record coverage data.</p>
-<h1><a class="anchor" id="autotoc_md11"></a>
+<h2><a class="anchor" id="autotoc_md11"></a>
+Overriding presets</h2>
+<p>While the default presets should cover most of the development workflows, it is sometimes necessary to override certain options at various stages. In general, there are three ways of overriding the preset:</p><ul>
+<li>Command line options</li>
+<li>Environment variables</li>
+<li><a href="https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html">CMakeUserPresets.json</a></li>
+</ul>
+<p>All three options are fully supported by the cmake-tools vscode extension.</p>
+<h1><a class="anchor" id="autotoc_md12"></a>
 Code formatting and linting</h1>
 <p>The C++ source code is formatted using <code>clang-format</code>. A <code>.clang-format</code> file is provided at the repository root specifying the formatting requirements. When using an IDE providing plugins or extensions to formatting C++ source code, it is important to</p><ol type="1">
 <li>Point the plugin/extension to use the <code>.clang-format</code> file located at NEML2's repository root.</li>

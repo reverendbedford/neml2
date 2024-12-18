@@ -113,7 +113,7 @@ $(function(){initNavTree('python-package.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md__2home_2runner_2work_2neml2_2neml2_2doc_2content_2user_2python"></a> </p><dl class="section note"><dt>Note</dt><dd>The NEML2 Python package is experimental. APIs are expected to change.</dd></dl>
-<h1><a class="anchor" id="autotoc_md49"></a>
+<h1><a class="anchor" id="autotoc_md50"></a>
 Load and evaluate a model from input file</h1>
 <p>With the NEML2 Python package, the same input file in the other <a class="el" href="cpp-backend.html">tutorial</a> can be directly used in a Python script. The Python APIs closely ressembles the C++ APIs. For example, the previous C++ example translates to the following Python script.</p>
 <div class="fragment"><div class="line"><span class="keyword">import</span> neml2</div>
@@ -133,7 +133,7 @@ Load and evaluate a model from input file</h1>
 <div class="ttc" id="anamespaceneml2_1_1math_html"><div class="ttname"><a href="namespaceneml2_1_1math.html">neml2::math</a></div><div class="ttdef"><b>Definition</b> math.cxx:33</div></div>
 <div class="ttc" id="anamespaceneml2_html_a1e499dee97d6a66663f60dd4a65b9f1a"><div class="ttname"><a href="namespaceneml2.html#a1e499dee97d6a66663f60dd4a65b9f1a">neml2::load_model</a></div><div class="ttdeci">Model &amp; load_model(const std::filesystem::path &amp;path, const std::string &amp;mname)</div><div class="ttdoc">A convenient function to load an input file and get a model.</div><div class="ttdef"><b>Definition</b> Factory.cxx:66</div></div>
 </div><!-- fragment --><p>All is the same in the equivalent C++ example, the above Python script parses the input file named "input.i", loads the linear elasticity model named "model", constructs 3 strain tensors, and finally performs the 3 material updates simultaneously.</p>
-<h1><a class="anchor" id="autotoc_md50"></a>
+<h1><a class="anchor" id="autotoc_md51"></a>
 Model parameters</h1>
 <p>Model parameters can be modified in a similar fashion. One notable difference is that, in Python, model parameters can be directly accessed as class attributes, i.e., </p><div class="fragment"><div class="line">E = model.E</div>
 <div class="line">E.set_(Scalar.full(200.0))</div>

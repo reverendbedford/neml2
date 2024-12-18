@@ -113,13 +113,13 @@ $(function(){initNavTree('install.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md20">Prerequisites</a></li>
-<li class="level1"><a href="#autotoc_md21">Dependencies</a><ul><li class="level2"><a href="#autotoc_md22">Required dependencies</a></li>
-<li class="level2"><a href="#autotoc_md23">Optional dependencies</a></li>
+<ul><li class="level1"><a href="#autotoc_md21">Prerequisites</a></li>
+<li class="level1"><a href="#autotoc_md22">Dependencies</a><ul><li class="level2"><a href="#autotoc_md23">Required dependencies</a></li>
+<li class="level2"><a href="#autotoc_md24">Optional dependencies</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#install-user">Build and install</a><ul><li class="level2"><a href="#autotoc_md24">C++ backend</a></li>
-<li class="level2"><a href="#autotoc_md25">Python package</a></li>
+<li class="level1"><a href="#install-user">Build and install</a><ul><li class="level2"><a href="#autotoc_md25">C++ backend</a></li>
+<li class="level2"><a href="#autotoc_md26">Python package</a></li>
 </ul>
 </li>
 <li class="level1"><a href="#install-build-customization">Build customization</a></li>
@@ -127,15 +127,15 @@ $(function(){initNavTree('install.html',''); initResizable(); });
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md__2home_2runner_2work_2neml2_2neml2_2doc_2content_2install"></a></p>
-<h1><a class="anchor" id="autotoc_md20"></a>
+<h1><a class="anchor" id="autotoc_md21"></a>
 Prerequisites</h1>
 <p>Compiling the NEML2 core library requires</p><ul>
 <li>A C++ compiler with C++17 support</li>
 <li>CMake &gt;= 3.28</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md21"></a>
+<h1><a class="anchor" id="autotoc_md22"></a>
 Dependencies</h1>
-<h2><a class="anchor" id="autotoc_md22"></a>
+<h2><a class="anchor" id="autotoc_md23"></a>
 Required dependencies</h2>
 <ul>
 <li><a href="https://pytorch.org/get-started/locally/">PyTorch</a>, version 2.5.1.</li>
@@ -147,7 +147,7 @@ Required dependencies</h2>
 <dl class="section note"><dt>Note</dt><dd>The libTorch distributions from the official website come with two flavors: "Pre-cxx11 ABI" and "cxx11 ABI". Both variants are supported by NEML2. If you are unsure, we recommend the one with "cxx11 ABI".</dd></dl>
 <p>If no PyTorch installation can be detected and <code>LIBTORCH_DIR</code> is not set at configure time, the NEML2 CMake script will automatically download and use the libTorch obtained from the official website. Note, however, that this method only works on Linux and Mac systems.</p>
 <dl class="section note"><dt>Note</dt><dd>We strive to keep up with the rapid development of PyTorch. The NEML2 PyTorch dependency is updated on a quarterly basis. If there is a particular version of PyTorch you'd like to use which is found to be incompatible with NEML2, please feel free to <a href="https://github.com/applied-material-modeling/neml2/issues">create an issue</a>.</dd></dl>
-<h2><a class="anchor" id="autotoc_md23"></a>
+<h2><a class="anchor" id="autotoc_md24"></a>
 Optional dependencies</h2>
 <dl class="section note"><dt>Note</dt><dd>No action is needed to manually obtain the optional dependencies. The compatible optional dependencies will be automatically downloaded and configured by CMake depending on the build customization.</dd></dl>
 <ul>
@@ -170,7 +170,7 @@ Optional dependencies</h2>
 <h1><a class="anchor" id="install-user"></a>
 Build and install</h1>
 <dl class="section note"><dt>Note</dt><dd>NEML2 is available both as a C++ library and as a Python package. Instructions for building and installing each variant are provided below. If you only need one of them, the other can be skipped.</dd></dl>
-<h2><a class="anchor" id="autotoc_md24"></a>
+<h2><a class="anchor" id="autotoc_md25"></a>
 C++ backend</h2>
 <p>First, obtain the NEML2 source code.</p>
 <div class="fragment"><div class="line">git clone https://github.com/applied-material-modeling/neml2.git</div>
@@ -180,11 +180,12 @@ C++ backend</h2>
 <div class="fragment"><div class="line">cmake --preset release -S .</div>
 </div><!-- fragment --><p>Finally, compile NEML2.</p>
 <div class="fragment"><div class="line">cmake --build --preset release</div>
-</div><!-- fragment --><p>The compiled NEML2 can be installed as a system library.</p>
+</div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>If the generator was configured to be "Unix Makefiles" (the default for Unix-based operating systems), an additional <code>-j N</code> option could be passed through the commandline to accelerate the build process by running <code>N</code> jobs in parallel.</dd></dl>
+<p>The compiled NEML2 can be installed as a system library.</p>
 <div class="fragment"><div class="line">cmake --install build/release --prefix /usr/local</div>
 </div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>The <code>--prefix</code> option specifies the path where NEML2 will be installed. Write permission is needed for the installation path.</dd></dl>
 <p>For more fine-grained control over the configure, build, and install commands, please refer to the <a href="https://cmake.org/cmake/help/latest/guide/user-interaction/index.html">CMake User Interaction Guide</a>.</p>
-<h2><a class="anchor" id="autotoc_md25"></a>
+<h2><a class="anchor" id="autotoc_md26"></a>
 Python package</h2>
 <p>NEML2 also provides an <em>experimental</em> Python package which provides bindings for the primitive tensors and parsers for deserializing and running material models. Package source distributions are available on PyPI, but package wheels are currently not built and uploaded to PyPI.</p>
 <p>To install the NEML2 Python package, run the following command at the repository's root. Note that unlike the C++ backend, we do not expose any interface for customizing the build. The default configuration is already optimized for building the Python package.</p>
