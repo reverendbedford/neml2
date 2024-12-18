@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">8</td>
-            <td class="headerCovTableEntry">22</td>
-            <td class="headerCovTableEntryLo">36.4 %</td>
+            <td class="headerCovTableEntry">20</td>
+            <td class="headerCovTableEntryLo">40.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-17 20:18:03</td>
+            <td class="headerValue">2024-12-18 03:10:03</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -124,14 +124,13 @@
 <a name="62"><span class="lineNum">      62 </span>            : </a>
 <a name="63"><span class="lineNum">      63 </span><span class="lineNoCov">          0 :   if (dout_din)</span></a>
 <a name="64"><span class="lineNum">      64 </span>            :   {</a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineNoCov">          0 :     auto I = R2(torch::eye(3, A.options()));</span></a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineNoCov">          0 :     _output.d(_input) = 0.5 * math::skew_to_full(I, 1);</span></a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineNoCov">          0 :   }</span></a>
-<a name="68"><span class="lineNum">      68 </span>            : </a>
-<a name="69"><span class="lineNum">      69 </span>            :   // Second derivative is zero</a>
-<a name="70"><span class="lineNum">      70 </span>            :   (void)d2out_din2;</a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="72"><span class="lineNum">      72 </span>            : } // namespace neml2</a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineNoCov">          0 :     _output.d(_input) = 0.5 * math::skew_to_full(R2::identity(A.options()), 1);</span></a>
+<a name="66"><span class="lineNum">      66 </span>            :   }</a>
+<a name="67"><span class="lineNum">      67 </span>            : </a>
+<a name="68"><span class="lineNum">      68 </span>            :   // Second derivative is zero</a>
+<a name="69"><span class="lineNum">      69 </span>            :   (void)d2out_din2;</a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="71"><span class="lineNum">      71 </span>            : } // namespace neml2</a>
 </pre>
       </td>
     </tr>
