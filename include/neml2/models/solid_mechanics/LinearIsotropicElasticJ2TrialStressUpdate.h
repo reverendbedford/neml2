@@ -58,10 +58,7 @@ protected:
   /// output (updated) trial stress
   Variable<Scalar> & _updated_trial_stress;
 
-  /// Young's modulus
-  const Scalar & _E;
-
-  /// Poisson's ratio
-  const Scalar & _nu;
+  /// Shear modulus
+  const Scalar & _G;
 };
 } // namespace neml2

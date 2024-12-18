@@ -47,11 +47,8 @@ LinearIsotropicElasticJ2TrialStressUpdate::expected_options()
   options.set("updated_trial_stress").doc() =
       "Trial stress corrected for the current increment of plastic deformation";
 
-  options.set_parameter<CrossRef<Scalar>>("youngs_modulus");
-  options.set("youngs_modulus").doc() = "Young's modulus";
-
-  options.set_parameter<CrossRef<Scalar>>("poisson_ratio");
-  options.set("poisson_ratio").doc() = "Poisson's ratio";
+  options.set_parameter<CrossRef<Scalar>>("shear_modulus");
+  options.set("shear_modulus").doc() = "Shear modulus";
 
   return options;
 }
@@ -63,15 +60,14 @@ LinearIsotropicElasticJ2TrialStressUpdate::LinearIsotropicElasticJ2TrialStressUp
     _inelastic_strain(declare_input_variable<Scalar>("equivalent_plastic_strain")),
     _inelastic_strain_old(declare_input_variable<Scalar>(_inelastic_strain.name().old())),
     _updated_trial_stress(declare_output_variable<Scalar>("updated_trial_stress")),
-    _E(declare_parameter<Scalar>("E", "youngs_modulus", /*allow_nonlinear=*/false)),
-    _nu(declare_parameter<Scalar>("nu", "poisson_ratio", /*allow_nonlinear=*/false))
+    _G(declare_parameter<Scalar>("G", "shear_modulus", /*allow_nonlinear=*/true))
 {
 }
 
 void
 LinearIsotropicElasticJ2TrialStressUpdate::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-  const auto three_shear = 3.0 * _E / (2.0 * (1.0 + _nu));
+  const auto three_shear = 3.0 * _G;
 
   if (out)
     _updated_trial_stress =
@@ -88,6 +84,9 @@ LinearIsotropicElasticJ2TrialStressUpdate::set_value(bool out, bool dout_din, bo
 
     if (_inelastic_strain_old.is_dependent())
       _updated_trial_stress.d(_inelastic_strain_old) = three_shear;
+
+    if (const auto * const p = nl_param("G"))
+      _updated_trial_stress.d(*p) = -3.0 * (_inelastic_strain - _inelastic_strain_old);
   }
 
   if (d2out_din2)

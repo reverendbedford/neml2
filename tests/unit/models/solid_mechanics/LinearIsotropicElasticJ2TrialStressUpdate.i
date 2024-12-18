@@ -13,7 +13,6 @@
 [Models]
   [model]
     type = LinearIsotropicElasticJ2TrialStressUpdate
-    youngs_modulus = 2
-    poisson_ratio = 0.3
+    shear_modulus = 0.769230769
   []
 []

@@ -174,8 +174,7 @@ nbatch = 20
   #####################################################################################
   [trial_stress_update]
     type = LinearIsotropicElasticJ2TrialStressUpdate
-    youngs_modulus = 1e5
-    poisson_ratio = 0.3
+    shear_modulus = 38461.538461538
     elastic_trial_stress = 'forces/s'
     equivalent_plastic_strain = 'state/ep'
     updated_trial_stress = 'state/s'
