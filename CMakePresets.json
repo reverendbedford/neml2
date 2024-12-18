@@ -105,17 +105,12 @@
       ]
     },
     {
-      "name": "release-cpp",
-      "displayName": "C++ Library",
-      "description": "C++ Library only",
-      "configurePreset": "release"
-    },
-    {
-      "name": "release-python",
-      "displayName": "Python Bindings",
-      "description": "Python bindings with tests",
+      "name": "release",
+      "displayName": "Release",
+      "description": "C++ Library and Python bindings",
       "configurePreset": "release",
       "targets": [
+        "neml2",
         "python-stub"
       ]
     }
