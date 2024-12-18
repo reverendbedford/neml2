@@ -261,7 +261,7 @@ var namespaceneml2 =
     ] ],
     [ "LameParameter", "namespaceneml2.html#af1eb47580f6903f95b1950285e0dc9c4", [
       [ "INVALID", "namespaceneml2.html#af1eb47580f6903f95b1950285e0dc9c4accc0377a8afbf50e7094f5c23a8af223", null ],
-      [ "LAME_FIRST_CONSTANT", "namespaceneml2.html#af1eb47580f6903f95b1950285e0dc9c4a7f3e73e23e3f609768a4c4a30192e09d", null ],
+      [ "LAME_LAMBDA", "namespaceneml2.html#af1eb47580f6903f95b1950285e0dc9c4aa8539431d0cad436cc119d8bfb1ce511", null ],
       [ "BULK_MODULUS", "namespaceneml2.html#af1eb47580f6903f95b1950285e0dc9c4aa07b7de9748936bc5a62fc0e68ae7b00", null ],
       [ "SHEAR_MODULUS", "namespaceneml2.html#af1eb47580f6903f95b1950285e0dc9c4a972fa2a1baf1fc1221cc43c9f8eb8725", null ],
       [ "YOUNGS_MODULUS", "namespaceneml2.html#af1eb47580f6903f95b1950285e0dc9c4aa222f480b0c4c3139222259bcc7d879b", null ],
