@@ -54,7 +54,7 @@
         "NEML2_TESTS": "OFF",
         "NEML2_RUNNER": "OFF",
         "NEML2_CPU_PROFILER": "OFF",
-        "NEML2_PYBIND": "OFF",
+        "NEML2_PYBIND": "ON",
         "NEML2_DOC": "OFF"
       }
     }
@@ -106,9 +106,13 @@
     },
     {
       "name": "release",
-      "displayName": "C++ Library",
-      "description": "C++ Library only",
-      "configurePreset": "release"
+      "displayName": "Release",
+      "description": "C++ Library and Python bindings",
+      "configurePreset": "release",
+      "targets": [
+        "neml2",
+        "python-stub"
+      ]
     }
   ]
 }
