@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-18 03:27:56</td>
+            <td class="headerValue">2024-12-18 12:21:18</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -94,7 +94,7 @@
 <a name="32"><span class="lineNum">      32 </span>            : OptionSet</a>
 <a name="33"><span class="lineNum">      33 </span><span class="lineCov">          5 : LinearIsotropicElasticity::expected_options()</span></a>
 <a name="34"><span class="lineNum">      34 </span>            : {</a>
-<a name="35"><span class="lineNum">      35 </span><span class="lineCov">          5 :   OptionSet options = ElasticityTensor&lt;Elasticity, 2&gt;::expected_options();</span></a>
+<a name="35"><span class="lineNum">      35 </span><span class="lineCov">          5 :   OptionSet options = ElasticityInterface&lt;Elasticity, 2&gt;::expected_options();</span></a>
 <a name="36"><span class="lineNum">      36 </span><span class="lineCov">          5 :   options.doc() += &quot; for linear isotropic material. \\f$ \\boldsymbol{\\sigma} = K \\tr &quot;</span></a>
 <a name="37"><span class="lineNum">      37 </span>            :                    &quot;\\boldsymbol{\\varepsilon}_e + 2 G \\text{dev} \\boldsymbol{\\varepsilon}_e &quot;</a>
 <a name="38"><span class="lineNum">      38 </span>            :                    &quot;\\f$, where \\f$ K \\f$ and \\f$ G \\f$ are bulk and shear moduli, &quot;</a>
@@ -104,7 +104,7 @@
 <a name="42"><span class="lineNum">      42 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="43"><span class="lineNum">      43 </span>            : </a>
 <a name="44"><span class="lineNum">      44 </span><span class="lineNoCov">          0 : LinearIsotropicElasticity::LinearIsotropicElasticity(const OptionSet &amp; options)</span></a>
-<a name="45"><span class="lineNum">      45 </span>            :   : ElasticityTensor&lt;Elasticity, 2&gt;(options),</a>
+<a name="45"><span class="lineNum">      45 </span>            :   : ElasticityInterface&lt;Elasticity, 2&gt;(options),</a>
 <a name="46"><span class="lineNum">      46 </span><span class="lineNoCov">          0 :     _converter(_constant_types, _need_derivs)</span></a>
 <a name="47"><span class="lineNum">      47 </span>            : {</a>
 <a name="48"><span class="lineNum">      48 </span><span class="lineNoCov">          0 : }</span></a>

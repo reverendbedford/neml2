@@ -36,7 +36,7 @@ var annotated =
       [ "Eigenstrain", "classneml2_1_1Eigenstrain.html", "classneml2_1_1Eigenstrain" ],
       [ "Elasticity", "classneml2_1_1Elasticity.html", "classneml2_1_1Elasticity" ],
       [ "ElasticityConverter", "classneml2_1_1ElasticityConverter.html", "classneml2_1_1ElasticityConverter" ],
-      [ "ElasticityTensor", "classneml2_1_1ElasticityTensor.html", "classneml2_1_1ElasticityTensor" ],
+      [ "ElasticityInterface", "classneml2_1_1ElasticityInterface.html", "classneml2_1_1ElasticityInterface" ],
       [ "ElasticStrainRate", "classneml2_1_1ElasticStrainRate.html", "classneml2_1_1ElasticStrainRate" ],
       [ "EmptyPrimitiveTensor", "classneml2_1_1EmptyPrimitiveTensor.html", "classneml2_1_1EmptyPrimitiveTensor" ],
       [ "EmptyTensor", "classneml2_1_1EmptyTensor.html", "classneml2_1_1EmptyTensor" ],

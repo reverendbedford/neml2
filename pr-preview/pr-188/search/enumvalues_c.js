@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['youngs_5fmodulus_0',['YOUNGS_MODULUS',['../namespaceneml2.html#af1eb47580f6903f95b1950285e0dc9c4aa222f480b0c4c3139222259bcc7d879b',1,'neml2']]]
+  ['vonmises_0',['VONMISES',['../classneml2_1_1SR2Invariant.html#a979d38b05f49ac1c94292c258ed4fb36a64af7596b9f83e64122fdcc92dda8765',1,'neml2::SR2Invariant']]]
 ];

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-18 03:27:56</td>
+            <td class="headerValue">2024-12-18 12:21:18</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -100,31 +100,31 @@
 <a name="38"><span class="lineNum">      38 </span><span class="lineCov">         50 :     _candidate_map.emplace(candidate, count++);</span></a>
 <a name="39"><span class="lineNum">      39 </span><span class="lineCov">         20 : }</span></a>
 <a name="40"><span class="lineNum">      40 </span>            : </a>
-<a name="41"><span class="lineNum">      41 </span><span class="lineCov">         24 : EnumSelectionBase::EnumSelectionBase(const std::vector&lt;std::string&gt; &amp; candidates,</span></a>
-<a name="42"><span class="lineNum">      42 </span><span class="lineCov">         24 :                                      const std::vector&lt;int&gt; &amp; values)</span></a>
+<a name="41"><span class="lineNum">      41 </span><span class="lineCov">         29 : EnumSelectionBase::EnumSelectionBase(const std::vector&lt;std::string&gt; &amp; candidates,</span></a>
+<a name="42"><span class="lineNum">      42 </span><span class="lineCov">         29 :                                      const std::vector&lt;int&gt; &amp; values)</span></a>
 <a name="43"><span class="lineNum">      43 </span>            : {</a>
-<a name="44"><span class="lineNum">      44 </span><span class="lineCov">         24 :   neml_assert(candidates.size() == values.size(),</span></a>
+<a name="44"><span class="lineNum">      44 </span><span class="lineCov">         29 :   neml_assert(candidates.size() == values.size(),</span></a>
 <a name="45"><span class="lineNum">      45 </span>            :               &quot;In (Multi)EnumSelection, number of candidates must match the number of values.&quot;);</a>
 <a name="46"><span class="lineNum">      46 </span>            : </a>
-<a name="47"><span class="lineNum">      47 </span><span class="lineCov">         24 :   std::set&lt;std::string&gt; candidates_set(candidates.begin(), candidates.end());</span></a>
-<a name="48"><span class="lineNum">      48 </span><span class="lineCov">         24 :   neml_assert(candidates_set.size() == candidates.size(),</span></a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineCov">         29 :   std::set&lt;std::string&gt; candidates_set(candidates.begin(), candidates.end());</span></a>
+<a name="48"><span class="lineNum">      48 </span><span class="lineCov">         29 :   neml_assert(candidates_set.size() == candidates.size(),</span></a>
 <a name="49"><span class="lineNum">      49 </span>            :               &quot;Candidates of (Multi)EnumSelection must be unique.&quot;);</a>
 <a name="50"><span class="lineNum">      50 </span>            : </a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">         24 :   std::set&lt;int&gt; values_set(values.begin(), values.end());</span></a>
-<a name="52"><span class="lineNum">      52 </span><span class="lineCov">         24 :   neml_assert(values_set.size() == values.size(), &quot;Values of (Multi)EnumSelection must be unique.&quot;);</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineCov">         29 :   std::set&lt;int&gt; values_set(values.begin(), values.end());</span></a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineCov">         29 :   neml_assert(values_set.size() == values.size(), &quot;Values of (Multi)EnumSelection must be unique.&quot;);</span></a>
 <a name="53"><span class="lineNum">      53 </span>            : </a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">        168 :   for (size_t i = 0; i &lt; candidates.size(); i++)</span></a>
-<a name="55"><span class="lineNum">      55 </span><span class="lineCov">        144 :     _candidate_map.emplace(candidates[i], values[i]);</span></a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">         24 : }</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">        208 :   for (size_t i = 0; i &lt; candidates.size(); i++)</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">        179 :     _candidate_map.emplace(candidates[i], values[i]);</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">         29 : }</span></a>
 <a name="57"><span class="lineNum">      57 </span>            : </a>
 <a name="58"><span class="lineNum">      58 </span>            : std::string</a>
-<a name="59"><span class="lineNum">      59 </span><span class="lineCov">         88 : EnumSelectionBase::candidates_str() const</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">         98 : EnumSelectionBase::candidates_str() const</span></a>
 <a name="60"><span class="lineNum">      60 </span>            : {</a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">         88 :   std::stringstream ss;</span></a>
-<a name="62"><span class="lineNum">      62 </span><span class="lineCov">        476 :   for (const auto &amp; [e, v] : _candidate_map)</span></a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">        388 :     ss &lt;&lt; e &lt;&lt; &quot; &quot;;</span></a>
-<a name="64"><span class="lineNum">      64 </span><span class="lineCov">        176 :   return ss.str();</span></a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">         88 : }</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">         98 :   std::stringstream ss;</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">        556 :   for (const auto &amp; [e, v] : _candidate_map)</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">        458 :     ss &lt;&lt; e &lt;&lt; &quot; &quot;;</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">        196 :   return ss.str();</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">         98 : }</span></a>
 <a name="66"><span class="lineNum">      66 </span>            : } // namesace neml2</a>
 </pre>
       </td>

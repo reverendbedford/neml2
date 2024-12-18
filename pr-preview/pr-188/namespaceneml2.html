@@ -198,8 +198,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1ElasticityConverter.html">ElasticityConverter</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for converters responsible for converting between different parameterizations of the linear elasticity tensor in different symmetry groups.  <a href="classneml2_1_1ElasticityConverter.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1ElasticityTensor.html">ElasticityTensor</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interface for objects defining elasticity tensors in terms of other parameters.  <a href="classneml2_1_1ElasticityTensor.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1ElasticityInterface.html">ElasticityInterface</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interface for objects defining elasticity tensors in terms of other parameters.  <a href="classneml2_1_1ElasticityInterface.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1ElasticStrainRate.html">ElasticStrainRate</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the elastic strain rate from crystal model kinematics.  <a href="classneml2_1_1ElasticStrainRate.html#details">More...</a><br /></td></tr>
@@ -684,18 +684,22 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:ab600865ffa5d3681d723ef019d109535"><td class="mdescLeft">&#160;</td><td class="mdescRight">Role in a function definition.  <a href="#ab600865ffa5d3681d723ef019d109535">More...</a><br /></td></tr>
 <tr class="separator:ab600865ffa5d3681d723ef019d109535"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1eb47580f6903f95b1950285e0dc9c4" id="r_af1eb47580f6903f95b1950285e0dc9c4"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af1eb47580f6903f95b1950285e0dc9c4">LameParameter</a> : std::uint8_t { <br />
-&#160;&#160;<a class="el" href="#af1eb47580f6903f95b1950285e0dc9c4accc0377a8afbf50e7094f5c23a8af223">INVALID</a> = 0
-, <a class="el" href="#af1eb47580f6903f95b1950285e0dc9c4aa8539431d0cad436cc119d8bfb1ce511">LAME_LAMBDA</a> = 1
-, <a class="el" href="#af1eb47580f6903f95b1950285e0dc9c4aa07b7de9748936bc5a62fc0e68ae7b00">BULK_MODULUS</a> = 2
-, <a class="el" href="#af1eb47580f6903f95b1950285e0dc9c4a972fa2a1baf1fc1221cc43c9f8eb8725">SHEAR_MODULUS</a> = 3
+<tr class="memitem:a341ec45d106079ad26352fd5912d5dd8" id="r_a341ec45d106079ad26352fd5912d5dd8"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a341ec45d106079ad26352fd5912d5dd8">ElasticConstant</a> : std::uint8_t { <br />
+&#160;&#160;<a class="el" href="#a341ec45d106079ad26352fd5912d5dd8accc0377a8afbf50e7094f5c23a8af223">INVALID</a> = 0
+, <a class="el" href="#a341ec45d106079ad26352fd5912d5dd8aa8539431d0cad436cc119d8bfb1ce511">LAME_LAMBDA</a> = 1
+, <a class="el" href="#a341ec45d106079ad26352fd5912d5dd8aa07b7de9748936bc5a62fc0e68ae7b00">BULK_MODULUS</a> = 2
+, <a class="el" href="#a341ec45d106079ad26352fd5912d5dd8a972fa2a1baf1fc1221cc43c9f8eb8725">SHEAR_MODULUS</a> = 3
 , <br />
-&#160;&#160;<a class="el" href="#af1eb47580f6903f95b1950285e0dc9c4aa222f480b0c4c3139222259bcc7d879b">YOUNGS_MODULUS</a> = 4
-, <a class="el" href="#af1eb47580f6903f95b1950285e0dc9c4a998f240e468b18558ee03fe396177b91">POISSONS_RATIO</a> = 5
-, <a class="el" href="#af1eb47580f6903f95b1950285e0dc9c4a7b39e71b2711a11f2de7eb56d19fe08c">P_WAVE_MODULUS</a> = 6
+&#160;&#160;<a class="el" href="#a341ec45d106079ad26352fd5912d5dd8aa222f480b0c4c3139222259bcc7d879b">YOUNGS_MODULUS</a> = 4
+, <a class="el" href="#a341ec45d106079ad26352fd5912d5dd8a998f240e468b18558ee03fe396177b91">POISSONS_RATIO</a> = 5
+, <a class="el" href="#a341ec45d106079ad26352fd5912d5dd8a7b39e71b2711a11f2de7eb56d19fe08c">P_WAVE_MODULUS</a> = 6
+, <a class="el" href="#a341ec45d106079ad26352fd5912d5dd8a18ba88b152f31aeb6d96aa88396e5418">CUBIC_C1</a> = 7
+, <br />
+&#160;&#160;<a class="el" href="#a341ec45d106079ad26352fd5912d5dd8aeca3b043bb293cee684afbe1973adb7a">CUBIC_C2</a> = 8
+, <a class="el" href="#a341ec45d106079ad26352fd5912d5dd8aaf26005922148b8154e989cb3fe0f4ab">CUBIC_C3</a> = 9
 <br />
  }</td></tr>
-<tr class="separator:af1eb47580f6903f95b1950285e0dc9c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a341ec45d106079ad26352fd5912d5dd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b44248b88341f8c9cafe5d9d822a443" id="r_a9b44248b88341f8c9cafe5d9d822a443"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9b44248b88341f8c9cafe5d9d822a443">TensorType</a> : int8_t { <a class="el" href="#a9b44248b88341f8c9cafe5d9d822a443a6c51418de157b011117e28b5e664dbfc">FOR_ALL_TENSORBASE_COMMA</a> =(_tensor_type_enum)
 , <a class="el" href="#a9b44248b88341f8c9cafe5d9d822a443aa938666e7a4985ce45a25b2435fceb2f">kUknown</a>
  }</td></tr>
@@ -878,8 +882,8 @@ Functions</h2></td></tr>
 <tr class="separator:a0ee933458a058628ec04b9e7d2d51f24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afdb6713f5ff610c32c75a44a0f38e8ee" id="r_afdb6713f5ff610c32c75a44a0f38e8ee"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afdb6713f5ff610c32c75a44a0f38e8ee">register_NEML2_object</a> (<a class="el" href="classneml2_1_1CubicElasticityTensor.html">CubicElasticityTensor</a>)</td></tr>
 <tr class="separator:afdb6713f5ff610c32c75a44a0f38e8ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0eacf1a6ebbbb73841e58269133206f8" id="r_a0eacf1a6ebbbb73841e58269133206f8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0eacf1a6ebbbb73841e58269133206f8">name</a> (<a class="el" href="#af1eb47580f6903f95b1950285e0dc9c4">LameParameter</a> <a class="el" href="classneml2_1_1CrossRef.html">p</a>)</td></tr>
-<tr class="separator:a0eacf1a6ebbbb73841e58269133206f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5424759a4a25bd0e2f60628d260abb81" id="r_a5424759a4a25bd0e2f60628d260abb81"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5424759a4a25bd0e2f60628d260abb81">name</a> (<a class="el" href="#a341ec45d106079ad26352fd5912d5dd8">ElasticConstant</a> <a class="el" href="classneml2_1_1CrossRef.html">p</a>)</td></tr>
+<tr class="separator:a5424759a4a25bd0e2f60628d260abb81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5aef17a4a1a9b5a83e77c19dbfcf8a39" id="r_a5aef17a4a1a9b5a83e77c19dbfcf8a39"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5aef17a4a1a9b5a83e77c19dbfcf8a39">register_NEML2_object</a> (<a class="el" href="classneml2_1_1GeneralElasticity.html">GeneralElasticity</a>)</td></tr>
 <tr class="separator:a5aef17a4a1a9b5a83e77c19dbfcf8a39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87d2a1951f51dd82cb626535eb7a9ced" id="r_a87d2a1951f51dd82cb626535eb7a9ced"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a87d2a1951f51dd82cb626535eb7a9ced">register_NEML2_object</a> (<a class="el" href="classneml2_1_1IsotropicElasticityTensor.html">IsotropicElasticityTensor</a>)</td></tr>
@@ -1659,6 +1663,40 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a341ec45d106079ad26352fd5912d5dd8" name="a341ec45d106079ad26352fd5912d5dd8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a341ec45d106079ad26352fd5912d5dd8">&#9670;&#160;</a></span>ElasticConstant</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">enum</a> <a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="#a341ec45d106079ad26352fd5912d5dd8">ElasticConstant</a> : std::uint8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a341ec45d106079ad26352fd5912d5dd8accc0377a8afbf50e7094f5c23a8af223" name="a341ec45d106079ad26352fd5912d5dd8accc0377a8afbf50e7094f5c23a8af223"></a>INVALID&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a341ec45d106079ad26352fd5912d5dd8aa8539431d0cad436cc119d8bfb1ce511" name="a341ec45d106079ad26352fd5912d5dd8aa8539431d0cad436cc119d8bfb1ce511"></a>LAME_LAMBDA&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a341ec45d106079ad26352fd5912d5dd8aa07b7de9748936bc5a62fc0e68ae7b00" name="a341ec45d106079ad26352fd5912d5dd8aa07b7de9748936bc5a62fc0e68ae7b00"></a>BULK_MODULUS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a341ec45d106079ad26352fd5912d5dd8a972fa2a1baf1fc1221cc43c9f8eb8725" name="a341ec45d106079ad26352fd5912d5dd8a972fa2a1baf1fc1221cc43c9f8eb8725"></a>SHEAR_MODULUS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a341ec45d106079ad26352fd5912d5dd8aa222f480b0c4c3139222259bcc7d879b" name="a341ec45d106079ad26352fd5912d5dd8aa222f480b0c4c3139222259bcc7d879b"></a>YOUNGS_MODULUS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a341ec45d106079ad26352fd5912d5dd8a998f240e468b18558ee03fe396177b91" name="a341ec45d106079ad26352fd5912d5dd8a998f240e468b18558ee03fe396177b91"></a>POISSONS_RATIO&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a341ec45d106079ad26352fd5912d5dd8a7b39e71b2711a11f2de7eb56d19fe08c" name="a341ec45d106079ad26352fd5912d5dd8a7b39e71b2711a11f2de7eb56d19fe08c"></a>P_WAVE_MODULUS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a341ec45d106079ad26352fd5912d5dd8a18ba88b152f31aeb6d96aa88396e5418" name="a341ec45d106079ad26352fd5912d5dd8a18ba88b152f31aeb6d96aa88396e5418"></a>CUBIC_C1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a341ec45d106079ad26352fd5912d5dd8aeca3b043bb293cee684afbe1973adb7a" name="a341ec45d106079ad26352fd5912d5dd8aeca3b043bb293cee684afbe1973adb7a"></a>CUBIC_C2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a341ec45d106079ad26352fd5912d5dd8aaf26005922148b8154e989cb3fe0f4ab" name="a341ec45d106079ad26352fd5912d5dd8aaf26005922148b8154e989cb3fe0f4ab"></a>CUBIC_C3&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
 <a id="ab600865ffa5d3681d723ef019d109535" name="ab600865ffa5d3681d723ef019d109535"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab600865ffa5d3681d723ef019d109535">&#9670;&#160;</a></span>FType</h2>
 
@@ -1687,37 +1725,6 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="ab600865ffa5d3681d723ef019d109535a50a87f0d71f7221582dad4bf507a0f34" name="ab600865ffa5d3681d723ef019d109535a50a87f0d71f7221582dad4bf507a0f34"></a>OUTPUT&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ab600865ffa5d3681d723ef019d109535abf1d4bbf6ed8626603df4a7cac94ee8c" name="ab600865ffa5d3681d723ef019d109535abf1d4bbf6ed8626603df4a7cac94ee8c"></a>PARAMETER&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ab600865ffa5d3681d723ef019d109535a17de626bcae5109bb2f7a66dfc4a8a1d" name="ab600865ffa5d3681d723ef019d109535a17de626bcae5109bb2f7a66dfc4a8a1d"></a>BUFFER&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-</div>
-</div>
-<a id="af1eb47580f6903f95b1950285e0dc9c4" name="af1eb47580f6903f95b1950285e0dc9c4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af1eb47580f6903f95b1950285e0dc9c4">&#9670;&#160;</a></span>LameParameter</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">enum</a> <a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="#af1eb47580f6903f95b1950285e0dc9c4">LameParameter</a> : std::uint8_t</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="af1eb47580f6903f95b1950285e0dc9c4accc0377a8afbf50e7094f5c23a8af223" name="af1eb47580f6903f95b1950285e0dc9c4accc0377a8afbf50e7094f5c23a8af223"></a>INVALID&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="af1eb47580f6903f95b1950285e0dc9c4aa8539431d0cad436cc119d8bfb1ce511" name="af1eb47580f6903f95b1950285e0dc9c4aa8539431d0cad436cc119d8bfb1ce511"></a>LAME_LAMBDA&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="af1eb47580f6903f95b1950285e0dc9c4aa07b7de9748936bc5a62fc0e68ae7b00" name="af1eb47580f6903f95b1950285e0dc9c4aa07b7de9748936bc5a62fc0e68ae7b00"></a>BULK_MODULUS&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="af1eb47580f6903f95b1950285e0dc9c4a972fa2a1baf1fc1221cc43c9f8eb8725" name="af1eb47580f6903f95b1950285e0dc9c4a972fa2a1baf1fc1221cc43c9f8eb8725"></a>SHEAR_MODULUS&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="af1eb47580f6903f95b1950285e0dc9c4aa222f480b0c4c3139222259bcc7d879b" name="af1eb47580f6903f95b1950285e0dc9c4aa222f480b0c4c3139222259bcc7d879b"></a>YOUNGS_MODULUS&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="af1eb47580f6903f95b1950285e0dc9c4a998f240e468b18558ee03fe396177b91" name="af1eb47580f6903f95b1950285e0dc9c4a998f240e468b18558ee03fe396177b91"></a>POISSONS_RATIO&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="af1eb47580f6903f95b1950285e0dc9c4a7b39e71b2711a11f2de7eb56d19fe08c" name="af1eb47580f6903f95b1950285e0dc9c4a7b39e71b2711a11f2de7eb56d19fe08c"></a>P_WAVE_MODULUS&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
@@ -2727,8 +2734,8 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
 
 </div>
 </div>
-<a id="a0eacf1a6ebbbb73841e58269133206f8" name="a0eacf1a6ebbbb73841e58269133206f8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0eacf1a6ebbbb73841e58269133206f8">&#9670;&#160;</a></span>name()</h2>
+<a id="a5424759a4a25bd0e2f60628d260abb81" name="a5424759a4a25bd0e2f60628d260abb81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5424759a4a25bd0e2f60628d260abb81">&#9670;&#160;</a></span>name()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2736,7 +2743,7 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
         <tr>
           <td class="memname">std::string name </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="#af1eb47580f6903f95b1950285e0dc9c4">LameParameter</a></td>          <td class="paramname"><span class="paramname"><em>p</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="#a341ec45d106079ad26352fd5912d5dd8">ElasticConstant</a></td>          <td class="paramname"><span class="paramname"><em>p</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>

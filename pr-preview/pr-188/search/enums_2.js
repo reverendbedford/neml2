@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['lameparameter_0',['LameParameter',['../namespaceneml2.html#af1eb47580f6903f95b1950285e0dc9c4',1,'neml2']]]
+  ['itype_0',['IType',['../classneml2_1_1SR2Invariant.html#a979d38b05f49ac1c94292c258ed4fb36',1,'neml2::SR2Invariant']]]
 ];

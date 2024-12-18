@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-18 03:27:56</td>
+            <td class="headerValue">2024-12-18 12:21:18</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">9</td>
@@ -103,9 +103,9 @@
 <a name="41"><span class="lineNum">      41 </span>            : }</a>
 <a name="42"><span class="lineNum">      42 </span>            : </a>
 <a name="43"><span class="lineNum">      43 </span>            : bool</a>
-<a name="44"><span class="lineNum">      44 </span><span class="lineCov">      10685 : OptionSet::contains(const std::string &amp; name) const</span></a>
+<a name="44"><span class="lineNum">      44 </span><span class="lineCov">      10695 : OptionSet::contains(const std::string &amp; name) const</span></a>
 <a name="45"><span class="lineNum">      45 </span>            : {</a>
-<a name="46"><span class="lineNum">      46 </span><span class="lineCov">      10685 :   return _values.find(name) != _values.end();</span></a>
+<a name="46"><span class="lineNum">      46 </span><span class="lineCov">      10695 :   return _values.find(name) != _values.end();</span></a>
 <a name="47"><span class="lineNum">      47 </span>            : }</a>
 <a name="48"><span class="lineNum">      48 </span>            : </a>
 <a name="49"><span class="lineNum">      49 </span>            : const OptionSet::OptionBase &amp;</a>
@@ -121,15 +121,15 @@
 <a name="59"><span class="lineNum">      59 </span>            : }</a>
 <a name="60"><span class="lineNum">      60 </span>            : </a>
 <a name="61"><span class="lineNum">      61 </span>            : OptionSet::OptionBase &amp;</a>
-<a name="62"><span class="lineNum">      62 </span><span class="lineCov">      10685 : OptionSet::set(const std::string &amp; name)</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">      10695 : OptionSet::set(const std::string &amp; name)</span></a>
 <a name="63"><span class="lineNum">      63 </span>            : {</a>
-<a name="64"><span class="lineNum">      64 </span><span class="lineCov">      10685 :   neml_assert(this-&gt;contains(name),</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">      10695 :   neml_assert(this-&gt;contains(name),</span></a>
 <a name="65"><span class="lineNum">      65 </span>            :               &quot;ERROR: no option named \&quot;&quot;,</a>
 <a name="66"><span class="lineNum">      66 </span>            :               name,</a>
 <a name="67"><span class="lineNum">      67 </span>            :               &quot;\&quot; found.\n\nKnown options:\n&quot;,</a>
 <a name="68"><span class="lineNum">      68 </span>            :               *this);</a>
 <a name="69"><span class="lineNum">      69 </span>            : </a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">      10685 :   return *_values[name];</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">      10695 :   return *_values[name];</span></a>
 <a name="71"><span class="lineNum">      71 </span>            : }</a>
 <a name="72"><span class="lineNum">      72 </span>            : </a>
 <a name="73"><span class="lineNum">      73 </span>            : LabeledAxisAccessor &amp;</a>
@@ -175,8 +175,8 @@
 <a name="113"><span class="lineNum">     113 </span>            : void</a>
 <a name="114"><span class="lineNum">     114 </span><span class="lineCov">       2037 : OptionSet::operator+=(const OptionSet &amp; source)</span></a>
 <a name="115"><span class="lineNum">     115 </span>            : {</a>
-<a name="116"><span class="lineNum">     116 </span><span class="lineCov">      14140 :   for (const auto &amp; [key, value] : source._values)</span></a>
-<a name="117"><span class="lineNum">     117 </span><span class="lineCov">      12103 :     _values[key] = value-&gt;clone();</span></a>
+<a name="116"><span class="lineNum">     116 </span><span class="lineCov">      14154 :   for (const auto &amp; [key, value] : source._values)</span></a>
+<a name="117"><span class="lineNum">     117 </span><span class="lineCov">      12117 :     _values[key] = value-&gt;clone();</span></a>
 <a name="118"><span class="lineNum">     118 </span><span class="lineCov">       2037 : }</span></a>
 <a name="119"><span class="lineNum">     119 </span>            : </a>
 <a name="120"><span class="lineNum">     120 </span>            : void</a>

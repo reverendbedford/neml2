@@ -49,7 +49,7 @@ var searchData=
   ['shadow_46',['shadow',['../classneml2_1_1Rot.html#a41dd7c511da1e82eba83dc4cd1cbbc95',1,'neml2::Rot']]],
   ['shaped_20tensor_47',['Dynamically shaped tensor',['../system-tensors.html#dynamically-shaped-tensor',1,'']]],
   ['shaped_20tensors_48',['Statically shaped tensors',['../system-tensors.html#statically-shaped-tensor',1,'']]],
-  ['shear_5fmodulus_49',['SHEAR_MODULUS',['../namespaceneml2.html#af1eb47580f6903f95b1950285e0dc9c4a972fa2a1baf1fc1221cc43c9f8eb8725',1,'neml2']]],
+  ['shear_5fmodulus_49',['SHEAR_MODULUS',['../namespaceneml2.html#a341ec45d106079ad26352fd5912d5dd8a972fa2a1baf1fc1221cc43c9f8eb8725',1,'neml2']]],
   ['sign_50',['sign',['../namespaceneml2_1_1math.html#af3aef05870ac5771679007c32b6dd353',1,'neml2::math']]],
   ['singlesliphardeningrule_51',['SingleSlipHardeningRule',['../classneml2_1_1SingleSlipHardeningRule.html',1,'SingleSlipHardeningRule'],['../classneml2_1_1SingleSlipHardeningRule.html#aeb7078e3a0471d8f4e1c1f8311721438',1,'neml2::SingleSlipHardeningRule::SingleSlipHardeningRule()']]],
   ['singleslipstrengthmap_52',['SingleSlipStrengthMap',['../classneml2_1_1SingleSlipStrengthMap.html',1,'SingleSlipStrengthMap'],['../classneml2_1_1SingleSlipStrengthMap.html#a5e272c461221c6370de3f3b1d7b79223',1,'neml2::SingleSlipStrengthMap::SingleSlipStrengthMap()'],['../syntax-models.html#singleslipstrengthmap',1,'SingleSlipStrengthMap']]],

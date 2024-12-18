@@ -70,7 +70,7 @@ var namespaceneml2 =
     [ "Eigenstrain", "classneml2_1_1Eigenstrain.html", "classneml2_1_1Eigenstrain" ],
     [ "Elasticity", "classneml2_1_1Elasticity.html", "classneml2_1_1Elasticity" ],
     [ "ElasticityConverter", "classneml2_1_1ElasticityConverter.html", "classneml2_1_1ElasticityConverter" ],
-    [ "ElasticityTensor", "classneml2_1_1ElasticityTensor.html", "classneml2_1_1ElasticityTensor" ],
+    [ "ElasticityInterface", "classneml2_1_1ElasticityInterface.html", "classneml2_1_1ElasticityInterface" ],
     [ "ElasticStrainRate", "classneml2_1_1ElasticStrainRate.html", "classneml2_1_1ElasticStrainRate" ],
     [ "EmptyPrimitiveTensor", "classneml2_1_1EmptyPrimitiveTensor.html", "classneml2_1_1EmptyPrimitiveTensor" ],
     [ "EmptyTensor", "classneml2_1_1EmptyTensor.html", "classneml2_1_1EmptyTensor" ],
@@ -252,21 +252,24 @@ var namespaceneml2 =
     [ "VecLinearCombination", "namespaceneml2.html#ab62e48ab12c1e2e3882f6972ec6a40f3", null ],
     [ "VecLinearInterpolation", "namespaceneml2.html#a2370832dfc07ec4f0f48246b373dcd5e", null ],
     [ "VecVariableRate", "namespaceneml2.html#a8756e09cb8eba7dea1046b64b85c8bf6", null ],
+    [ "ElasticConstant", "namespaceneml2.html#a341ec45d106079ad26352fd5912d5dd8", [
+      [ "INVALID", "namespaceneml2.html#a341ec45d106079ad26352fd5912d5dd8accc0377a8afbf50e7094f5c23a8af223", null ],
+      [ "LAME_LAMBDA", "namespaceneml2.html#a341ec45d106079ad26352fd5912d5dd8aa8539431d0cad436cc119d8bfb1ce511", null ],
+      [ "BULK_MODULUS", "namespaceneml2.html#a341ec45d106079ad26352fd5912d5dd8aa07b7de9748936bc5a62fc0e68ae7b00", null ],
+      [ "SHEAR_MODULUS", "namespaceneml2.html#a341ec45d106079ad26352fd5912d5dd8a972fa2a1baf1fc1221cc43c9f8eb8725", null ],
+      [ "YOUNGS_MODULUS", "namespaceneml2.html#a341ec45d106079ad26352fd5912d5dd8aa222f480b0c4c3139222259bcc7d879b", null ],
+      [ "POISSONS_RATIO", "namespaceneml2.html#a341ec45d106079ad26352fd5912d5dd8a998f240e468b18558ee03fe396177b91", null ],
+      [ "P_WAVE_MODULUS", "namespaceneml2.html#a341ec45d106079ad26352fd5912d5dd8a7b39e71b2711a11f2de7eb56d19fe08c", null ],
+      [ "CUBIC_C1", "namespaceneml2.html#a341ec45d106079ad26352fd5912d5dd8a18ba88b152f31aeb6d96aa88396e5418", null ],
+      [ "CUBIC_C2", "namespaceneml2.html#a341ec45d106079ad26352fd5912d5dd8aeca3b043bb293cee684afbe1973adb7a", null ],
+      [ "CUBIC_C3", "namespaceneml2.html#a341ec45d106079ad26352fd5912d5dd8aaf26005922148b8154e989cb3fe0f4ab", null ]
+    ] ],
     [ "FType", "namespaceneml2.html#ab600865ffa5d3681d723ef019d109535", [
       [ "NONE", "namespaceneml2.html#ab600865ffa5d3681d723ef019d109535ab50339a10e1de285ac99d4c3990b8693", null ],
       [ "INPUT", "namespaceneml2.html#ab600865ffa5d3681d723ef019d109535aa84cc046d48610b05c21fd3670d0c829", null ],
       [ "OUTPUT", "namespaceneml2.html#ab600865ffa5d3681d723ef019d109535a50a87f0d71f7221582dad4bf507a0f34", null ],
       [ "PARAMETER", "namespaceneml2.html#ab600865ffa5d3681d723ef019d109535abf1d4bbf6ed8626603df4a7cac94ee8c", null ],
       [ "BUFFER", "namespaceneml2.html#ab600865ffa5d3681d723ef019d109535a17de626bcae5109bb2f7a66dfc4a8a1d", null ]
-    ] ],
-    [ "LameParameter", "namespaceneml2.html#af1eb47580f6903f95b1950285e0dc9c4", [
-      [ "INVALID", "namespaceneml2.html#af1eb47580f6903f95b1950285e0dc9c4accc0377a8afbf50e7094f5c23a8af223", null ],
-      [ "LAME_LAMBDA", "namespaceneml2.html#af1eb47580f6903f95b1950285e0dc9c4aa8539431d0cad436cc119d8bfb1ce511", null ],
-      [ "BULK_MODULUS", "namespaceneml2.html#af1eb47580f6903f95b1950285e0dc9c4aa07b7de9748936bc5a62fc0e68ae7b00", null ],
-      [ "SHEAR_MODULUS", "namespaceneml2.html#af1eb47580f6903f95b1950285e0dc9c4a972fa2a1baf1fc1221cc43c9f8eb8725", null ],
-      [ "YOUNGS_MODULUS", "namespaceneml2.html#af1eb47580f6903f95b1950285e0dc9c4aa222f480b0c4c3139222259bcc7d879b", null ],
-      [ "POISSONS_RATIO", "namespaceneml2.html#af1eb47580f6903f95b1950285e0dc9c4a998f240e468b18558ee03fe396177b91", null ],
-      [ "P_WAVE_MODULUS", "namespaceneml2.html#af1eb47580f6903f95b1950285e0dc9c4a7b39e71b2711a11f2de7eb56d19fe08c", null ]
     ] ],
     [ "TensorType", "namespaceneml2.html#a9b44248b88341f8c9cafe5d9d822a443", [
       [ "FOR_ALL_TENSORBASE_COMMA", "namespaceneml2.html#a9b44248b88341f8c9cafe5d9d822a443a6c51418de157b011117e28b5e664dbfc", null ],
@@ -322,7 +325,7 @@ var namespaceneml2 =
     [ "load_input", "namespaceneml2.html#ae26cd3cedac7d43bddad9f8502bbe6bf", null ],
     [ "load_model", "namespaceneml2.html#a1e499dee97d6a66663f60dd4a65b9f1a", null ],
     [ "machine_precision", "namespaceneml2.html#a7ed9e5d4e37beced5aab31ecc7c9938c", null ],
-    [ "name", "namespaceneml2.html#a0eacf1a6ebbbb73841e58269133206f8", null ],
+    [ "name", "namespaceneml2.html#a5424759a4a25bd0e2f60628d260abb81", null ],
     [ "neml_assert", "namespaceneml2.html#aff159a9e16da5dae0dd544b4d0e7eb83", null ],
     [ "neml_assert_batch_broadcastable", "namespaceneml2.html#a1bb607f742a1f0534565aea94bd73989", null ],
     [ "neml_assert_batch_broadcastable", "namespaceneml2.html#a21c3b81de0e8f2398e344016c74441a9", null ],

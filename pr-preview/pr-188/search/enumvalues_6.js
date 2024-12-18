@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['maxiter_0',['MAXITER',['../classneml2_1_1NonlinearSolver.html#ae652fbd48bfccbcc4f573e8d45529404a347bf8d2b0493640fc3012e63e5a1b4a',1,'neml2::NonlinearSolver']]]
+  ['lame_5flambda_0',['LAME_LAMBDA',['../namespaceneml2.html#a341ec45d106079ad26352fd5912d5dd8aa8539431d0cad436cc119d8bfb1ce511',1,'neml2']]]
 ];
