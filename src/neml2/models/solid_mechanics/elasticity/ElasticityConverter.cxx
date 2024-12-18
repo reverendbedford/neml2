@@ -35,7 +35,7 @@ name(LameParameter p)
       return "K";
     case LameParameter::YOUNGS_MODULUS:
       return "E";
-    case LameParameter::LAME_FIRST_CONSTANT:
+    case LameParameter::LAME_LAMBDA:
       return "lambda";
     case LameParameter::SHEAR_MODULUS:
       return "G";

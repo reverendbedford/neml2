@@ -37,7 +37,7 @@ namespace neml2
 enum class LameParameter : std::uint8_t
 {
   INVALID = 0,
-  LAME_FIRST_CONSTANT = 1,
+  LAME_LAMBDA = 1,
   BULK_MODULUS = 2,
   SHEAR_MODULUS = 3,
   YOUNGS_MODULUS = 4,
@@ -103,11 +103,10 @@ private:
   void assert_ascending(const ConverterKey & ps) const
   {
     for (std::size_t i = 1; i < N; ++i)
-      neml_assert(
-          static_cast<std::uint8_t>(ps[i]) > static_cast<std::uint8_t>(ps[i - 1]),
-          "Internal error: ElasticityConverters only accept Lame parameters sorted in the "
-          "following order: LAME_FIRST_CONSTANT, BULK_MODULUS, SHEAR_MODULUS, YOUNGS_MODULUS, "
-          "POISSONS_RATIO, P_WAVE_MODULUS.");
+      neml_assert(static_cast<std::uint8_t>(ps[i]) > static_cast<std::uint8_t>(ps[i - 1]),
+                  "Internal error: ElasticityConverters only accept Lame parameters sorted in the "
+                  "following order: LAME_LAMBDA, BULK_MODULUS, SHEAR_MODULUS, YOUNGS_MODULUS, "
+                  "POISSONS_RATIO, P_WAVE_MODULUS.");
   }
 
   // Default initialize the flags (false)

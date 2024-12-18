@@ -83,14 +83,14 @@ ElasticityTensor<Derived, N>::expected_options()
 {
   OptionSet options = Derived::expected_options();
 
-  MultiEnumSelection type_selection({"LAME_FIRST_CONSTANT",
+  MultiEnumSelection type_selection({"LAME_LAMBDA",
                                      "BULK_MODULUS",
                                      "SHEAR_MODULUS",
                                      "YOUNGS_MODULUS",
                                      "POISSONS_RATIO",
                                      "P_WAVE_MODULUS",
                                      "INVALID"},
-                                    {static_cast<int>(LameParameter::LAME_FIRST_CONSTANT),
+                                    {static_cast<int>(LameParameter::LAME_LAMBDA),
                                      static_cast<int>(LameParameter::BULK_MODULUS),
                                      static_cast<int>(LameParameter::SHEAR_MODULUS),
                                      static_cast<int>(LameParameter::YOUNGS_MODULUS),
@@ -139,7 +139,7 @@ ElasticityTensor<Derived, N>::ElasticityTensor(const OptionSet & options)
 
   // Fill out _constants, _constant_types, and _constant_names by sorting the coefficients according
   // to the order defined by LameParameter
-  declare_elastic_constant(LameParameter::LAME_FIRST_CONSTANT);
+  declare_elastic_constant(LameParameter::LAME_LAMBDA);
   declare_elastic_constant(LameParameter::BULK_MODULUS);
   declare_elastic_constant(LameParameter::SHEAR_MODULUS);
   declare_elastic_constant(LameParameter::YOUNGS_MODULUS);
