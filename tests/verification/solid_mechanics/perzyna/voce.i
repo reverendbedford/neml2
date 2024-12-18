@@ -95,8 +95,8 @@
   []
   [elasticity]
     type = LinearIsotropicElasticity
-    youngs_modulus = 124000
-    poisson_ratio = 0.32
+    coefficients = '124000 0.32'
+    coefficient_types = 'YOUNGS_MODULUS POISSONS_RATIO'
     rate_form = true
   []
   [integrate_stress]

@@ -34,12 +34,12 @@ All NEML2 capabilities that can be defined through the input file fall under a n
 [Models]
   [elasticity]
     type = LinearIsotropicElasticity
-    youngs_modulus = 'E'
-    poisson_ratio = 0.3
+    coefficients = 'E 0.3'
+    coefficient_types = 'YOUNGS_MODULUS POISSONS_RATIO'
   []
 []
 ```
-defines a tensor named "E" under the `[Tensors]` block and a model named "elasticity" under the `[Models]` block. Notice that an object (in this case the tensor named "E" under the `[Tensors]` section) can be referenced by an input option (in this case "youngs_modulus") by its name, and this mechanism is referred to as [cross-referencing](@ref cross-referencing). The [Syntax Documentation](@ref syntax-tensors) provides a complete list of objects that can be defined by an input file. The [System Documentation](@ref system-tensors) provides detailed explanation of each system.
+defines a tensor named "E" under the `[Tensors]` block and a model named "elasticity" under the `[Models]` block. Notice that an object (in this case the tensor named "E" under the `[Tensors]` section) can be referenced by an input option (in this case "coefficients") by its name, and this mechanism is referred to as [cross-referencing](@ref cross-referencing). The [Syntax Documentation](@ref syntax-tensors) provides a complete list of objects that can be defined by an input file. The [System Documentation](@ref system-tensors) provides detailed explanation of each system.
 
 \note
 The ordering of objects, i.e., the sequence objects appear in the input file, does not change their behavior.

@@ -24,22 +24,35 @@
 
 #pragma once
 
-#include "neml2/models/solid_mechanics/AnisotropicElasticity.h"
-#include "neml2/tensors/SSR4.h"
+#include "neml2/models/solid_mechanics/elasticity/ElasticityConverter.h"
 
 namespace neml2
 {
-class GeneralElasticity : public AnisotropicElasticity
+/**
+ * @brief Converter for linearized elastic constants assuming cubic symmetry
+ */
+class CubicElasticityConverter : public ElasticityConverter<3>
 {
 public:
-  static OptionSet expected_options();
+  ///@{
+  /// @name Conversion functions from various parameterizations to cubic constants
+  static ConversionType G_E_nu_to_C1(const InputType &, const DerivativeFlagType &);
+  static ConversionType G_E_nu_to_C2(const InputType &, const DerivativeFlagType &);
+  static ConversionType G_E_nu_to_C3(const InputType &, const DerivativeFlagType &);
+  ///@}
 
-  GeneralElasticity(const OptionSet & options);
+  /// Conversion table
+  static const ConversionTableType table;
 
-protected:
-  void set_value(bool out, bool dout_din, bool d2out_din2) override;
-
-  /// Stiffness tensor
-  const SSR4 & _T;
+  CubicElasticityConverter(const ConverterKey & parameterization,
+                           const DerivativeFlagType & deriv_requested)
+    : ElasticityConverter<3>(
+          table,
+          {ElasticConstant::CUBIC_C1, ElasticConstant::CUBIC_C2, ElasticConstant::CUBIC_C3},
+          parameterization,
+          deriv_requested)
+  {
+  }
 };
+
 } // namespace neml2

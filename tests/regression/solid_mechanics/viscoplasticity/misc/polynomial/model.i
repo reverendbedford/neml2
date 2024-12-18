@@ -138,8 +138,8 @@
   []
   [trial_cauchy_stress]
     type = LinearIsotropicElasticity
-    youngs_modulus = 1e5
-    poisson_ratio = 0.3
+    coefficients = '1e5 0.3'
+    coefficient_types = 'YOUNGS_MODULUS POISSONS_RATIO'
     strain = 'forces/Ee'
     stress = 'forces/S'
   []
@@ -183,8 +183,8 @@
   []
   [cauchy_stress]
     type = LinearIsotropicElasticity
-    youngs_modulus = 1e5
-    poisson_ratio = 0.3
+    coefficients = '1e5 0.3'
+    coefficient_types = 'YOUNGS_MODULUS POISSONS_RATIO'
     strain = 'state/Ee'
     stress = 'state/S'
   []

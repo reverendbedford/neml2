@@ -108,8 +108,8 @@ nbatch = 20
   []
   [trial_cauchy_stress]
     type = LinearIsotropicElasticity
-    youngs_modulus = 1e5
-    poisson_ratio = 0.3
+    coefficients = '1e5 0.3'
+    coefficient_types = 'YOUNGS_MODULUS POISSONS_RATIO'
     strain = 'forces/Ee'
     stress = 'forces/S'
   []
@@ -159,8 +159,8 @@ nbatch = 20
   []
   [cauchy_stress]
     type = LinearIsotropicElasticity
-    youngs_modulus = 1e5
-    poisson_ratio = 0.3
+    coefficients = '1e5 0.3'
+    coefficient_types = 'YOUNGS_MODULUS POISSONS_RATIO'
     strain = 'state/Ee'
     stress = 'state/S'
   []
@@ -174,8 +174,8 @@ nbatch = 20
   #####################################################################################
   [trial_stress_update]
     type = LinearIsotropicElasticJ2TrialStressUpdate
-    youngs_modulus = 1e5
-    poisson_ratio = 0.3
+    coefficients = '1e5 0.3'
+    coefficient_types = 'YOUNGS_MODULUS POISSONS_RATIO'
     elastic_trial_stress = 'forces/s'
     equivalent_plastic_strain = 'state/ep'
     updated_trial_stress = 'state/s'

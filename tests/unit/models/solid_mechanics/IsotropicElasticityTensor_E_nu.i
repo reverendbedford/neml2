@@ -30,7 +30,7 @@
   []
   [p]
     type = IsotropicElasticityTensor
-    coefficient_types = 'youngs_modulus poissons_ratio'
+    coefficient_types = 'YOUNGS_MODULUS POISSONS_RATIO'
     coefficients = 'E nu'
   []
   [model]

@@ -17,26 +17,26 @@
   []
   [elasticity1]
     type = LinearIsotropicElasticity
-    youngs_modulus = 'E1'
-    poisson_ratio = 0.3
+    coefficients = 'E1 0.3'
+    coefficient_types = 'YOUNGS_MODULUS POISSONS_RATIO'
     stress = 'state/S1'
   []
   [elasticity2]
     type = LinearIsotropicElasticity
-    youngs_modulus = 'E2'
-    poisson_ratio = 0.3
+    coefficients = 'E2 0.3'
+    coefficient_types = 'YOUNGS_MODULUS POISSONS_RATIO'
     stress = 'state/S2'
   []
   [elasticity2_another]
     type = LinearIsotropicElasticity
-    youngs_modulus = 'E2'
-    poisson_ratio = 0.3
+    coefficients = 'E2 0.3'
+    coefficient_types = 'YOUNGS_MODULUS POISSONS_RATIO'
     stress = 'state/S2_another'
   []
   [elasticity3]
     type = LinearIsotropicElasticity
-    youngs_modulus = 'E3'
-    poisson_ratio = 0.3
+    coefficients = 'E3 0.3'
+    coefficient_types = 'YOUNGS_MODULUS POISSONS_RATIO'
     stress = 'state/S3'
   []
   [model1]

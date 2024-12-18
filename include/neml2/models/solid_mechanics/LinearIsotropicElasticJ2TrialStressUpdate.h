@@ -25,6 +25,8 @@
 #pragma once
 
 #include "neml2/models/Model.h"
+#include "neml2/models/solid_mechanics/elasticity/ElasticityInterface.h"
+#include "neml2/models/solid_mechanics/elasticity/IsotropicElasticityConverter.h"
 
 namespace neml2
 {
@@ -35,7 +37,7 @@ namespace neml2
  * This allows the construction of fully scalar return mapping models for
  * isotropic materials.
  */
-class LinearIsotropicElasticJ2TrialStressUpdate : public Model
+class LinearIsotropicElasticJ2TrialStressUpdate : public ElasticityInterface<Model, 2>
 {
 public:
   static OptionSet expected_options();
@@ -58,10 +60,7 @@ protected:
   /// output (updated) trial stress
   Variable<Scalar> & _updated_trial_stress;
 
-  /// Young's modulus
-  const Scalar & _E;
-
-  /// Poisson's ratio
-  const Scalar & _nu;
+  /// Converter between elastic constants
+  const IsotropicElasticityConverter _converter;
 };
 } // namespace neml2

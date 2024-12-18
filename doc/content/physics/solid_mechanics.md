@@ -26,8 +26,8 @@ Below is an example input file that defines a linear elasticity model.
 [Models]
   [model]
     type = LinearIsotropicElasticity
-    youngs_modulus = 100
-    poisson_ratio = 0.3
+    coefficients = '100 0.3'
+    coefficient_types = 'YOUNGS_MODULUS POISSONS_RATIO'
   []
 []
 ```
@@ -63,8 +63,8 @@ This complementarity condition is implemented by the object `RateIndependentPlas
   []
   [elasticity]
     type = LinearIsotropicElasticity
-    youngs_modulus = 1e5
-    poisson_ratio = 0.3
+    coefficients = '1e5 0.3'
+    coefficient_types = 'YOUNGS_MODULUS POISSONS_RATIO'
   []
   [vonmises]
     type = SR2Invariant
@@ -138,8 +138,8 @@ The Perzyna model is implemented by the object `PerzynaPlasticFlowRate`. A compl
   []
   [elasticity]
     type = LinearIsotropicElasticity
-    youngs_modulus = 1e5
-    poisson_ratio = 0.3
+    coefficients = '1e5 0.3'
+    coefficient_types = 'YOUNGS_MODULUS POISSONS_RATIO'
   []
   [vonmises]
     type = SR2Invariant

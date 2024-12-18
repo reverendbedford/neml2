@@ -32,13 +32,13 @@ A model unit test examines the outputs of a `Model` given a predefined set of in
 All input files for model unit tests should be stored inside `tests/unit/models`. Every input file with the `.i` extension will be automatically discovered and executed. To run all the model unit tests, use the following commands
 ```
 cd tests
-../build/unit/unit_tests models
+../build/dev/unit/unit_tests models
 ```
 
 To run a specific model unit test, use the `-c` command line option followed by the relative location of the input file, i.e.
 ```
 cd tests
-../build/unit/unit_tests models -c solid_mechanics/LinearIsotropicElasticity.i
+../build/dev/unit/unit_tests models -c solid_mechanics/LinearIsotropicElasticity.i
 ```
 
 ### Regression tests {#testing-regression-tests}
@@ -48,12 +48,12 @@ A model regression test runs a `Model` using a user specified driver. The result
 Each input file for model regression tests should be stored inside a separate folder inside `tests/regression`. Every input file with the `.i` extension will be automatically discovered and executed. To run all the model regression tests, use the `regression_tests` executable followed by the physics module, i.e.
 ```
 cd tests
-../build/regression/regression_tests "solid mechanics"
+../build/dev/regression/regression_tests "solid mechanics"
 ```
 To run a specific model regression test, use the `-c` command line option followed by the relative location of the input file, i.e.
 ```
 cd tests
-../build/regression/regression_tests "solid mechanics" -c viscoplasticity/chaboche/model.i
+../build/dev/regression/regression_tests "solid mechanics" -c viscoplasticity/chaboche/model.i
 ```
 Note that the regression test expects an option `reference` which specifies the relative location to the reference solution.
 
@@ -64,13 +64,13 @@ The model verification test is similar to the model regression test in terms of 
 Each input file for model verification tests should be stored inside a separate folder inside `tests/verification`. Every input file with the `.i` extension will be automatically discovered and executed. To run all the model verification tests, use the `verification_tests` executable followed by the physics module, i.e.
 ```
 cd tests
-../build/verification/verification_tests "solid mechanics"
+../build/dev/verification/verification_tests "solid mechanics"
 ```
 
 To run a specific model verification test, use the `-c` command line option followed by the relative location of the input file, i.e.
 ```
 cd tests
-../build/verification/verification_tests "solid mechanics" -c chaboche/chaboche.i
+../build/dev/verification/verification_tests "solid mechanics" -c chaboche/chaboche.i
 ```
 The regression test compares variables (specified using the `variables` option) against reference values (specified using the `references` option). The reference variables can be read using input objects with type `VTestTimeSeries`.
 

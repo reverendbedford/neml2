@@ -121,10 +121,27 @@ protected:
   /**
    * @brief Declare a parameter.
    *
-   * Note that all parameters are stored in the host (the object exposed to users). An object may be
-   * used multiple times in the host, and the same parameter may be declared multiple times. That is
-   * allowed, but only the first call to declare_parameter constructs the parameter value, and
-   * subsequent calls only returns a reference to the existing parameter.
+   * Similar to the previous method, but additionally handles the resolution of cross-referenced
+   * parameters. Two attempts are made sequentially: first, the method tries to resolve
+   * `CrossRef<T>` into `T` directly; if that fails, the method tries to resolve `CrossRef<T>` into
+   * a nonlinear parameter where the raw string stored in the cross-ref is treated as the name of
+   * the model that defines the nonlinear parameter.
+   *
+   * @tparam T Parameter type. See @ref statically-shaped-tensor for supported types.
+   * @param name Name of the model parameter.
+   * @param crossref The cross-ref'ed "string" that defines the value of the model parameter.
+   * @param allow_nonlinear Whether allows coupling with a nonlinear parameter
+   * @return T The value of the registered model parameter.
+   */
+  template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
+  const T &
+  declare_parameter(const std::string & name, const CrossRef<T> & crossref, bool allow_nonlinear);
+
+  /**
+   * @brief Declare a parameter.
+   *
+   * Similar to the previous methods, but this method takes care of the high-level logic to directly
+   * construct a (possibly nonlinear) parameter from the input option.
    *
    * @tparam T Parameter type. See @ref statically-shaped-tensor for supported types.
    * @param name Name of the model parameter.
@@ -138,15 +155,6 @@ protected:
                               const std::string & input_option_name,
                               bool allow_nonlinear = false);
 
-  /**
-   * @brief Declare multiple parameters.
-   * @see neml2::ParameterStore::declare_parameter
-   */
-  template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
-  std::vector<const T *> declare_parameters(const std::string & name,
-                                            const std::string & input_option_name,
-                                            bool allow_nonlinear = false);
-
   /// Map from nonlinear parameter names to their corresponding variable views
   std::map<std::string, const VariableBase *> _nl_params;
 
@@ -154,12 +162,6 @@ protected:
   std::map<std::string, Model *> _nl_param_models;
 
 private:
-  ///elper method to declare a cross-referenced parameter.
-  template <typename T, typename = typename std::enable_if_t<std::is_base_of_v<TensorBase<T>, T>>>
-  const T & declare_parameter_crossref(const std::string & name,
-                                       const CrossRef<T> & crossref,
-                                       bool allow_nonlinear);
-
   NEML2Object * _object;
 
   /**
@@ -173,30 +175,5 @@ private:
   /// The actual storage for all the parameters
   Storage<std::string, TensorValueBase> _param_values;
 };
-
-template <typename T, typename>
-const T &
-ParameterStore::declare_parameter(const std::string & name, const T & rawval)
-{
-  if (_object->host() != _object)
-    return _object->host<ParameterStore>()->declare_parameter(
-        _object->name() + parameter_name_separator() + name, rawval);
-
-  TensorValueBase * base_ptr = nullptr;
-
-  // If the parameter already exists, get it
-  if (_param_values.has_key(name))
-    base_ptr = &get_parameter(name);
-  // If the parameter doesn't exist, create it
-  else
-  {
-    auto val = std::make_unique<TensorValue<T>>(rawval);
-    base_ptr = _param_values.set_pointer(name, std::move(val));
-  }
-
-  auto ptr = dynamic_cast<TensorValue<T> *>(base_ptr);
-  neml_assert(ptr, "Internal error: Failed to cast parameter to a concrete type.");
-  return ptr->value();
-}
 
 } // namespace neml2

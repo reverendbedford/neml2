@@ -124,8 +124,8 @@
   []
   [elasticity]
     type = LinearIsotropicElasticity
-    youngs_modulus = 1e5
-    poisson_ratio = 0.3
+    coefficients = '1e5 0.3'
+    coefficient_types = 'YOUNGS_MODULUS POISSONS_RATIO'
     strain = "state/elastic_strain"
     stress = "state/internal/cauchy_stress"
   []

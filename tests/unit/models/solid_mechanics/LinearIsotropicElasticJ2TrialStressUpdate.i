@@ -13,7 +13,7 @@
 [Models]
   [model]
     type = LinearIsotropicElasticJ2TrialStressUpdate
-    youngs_modulus = 2
-    poisson_ratio = 0.3
+    coefficients = '2 0.3'
+    coefficient_types = 'YOUNGS_MODULUS POISSONS_RATIO'
   []
 []

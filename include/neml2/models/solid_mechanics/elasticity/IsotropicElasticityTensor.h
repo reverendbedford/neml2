@@ -24,20 +24,25 @@
 
 #pragma once
 
-#include "neml2/models/solid_mechanics/Elasticity.h"
-#include "neml2/tensors/Rot.h"
+#include "neml2/models/NonlinearParameter.h"
+#include "neml2/models/solid_mechanics/elasticity/ElasticityInterface.h"
+#include "neml2/models/solid_mechanics/elasticity/IsotropicElasticityConverter.h"
 
 namespace neml2
 {
-class AnisotropicElasticity : public Elasticity
+/**
+ * @brief Define an isotropoic elasticity tensor in various ways
+ */
+class IsotropicElasticityTensor : public ElasticityInterface<NonlinearParameter<SSR4>, 2>
 {
 public:
   static OptionSet expected_options();
 
-  AnisotropicElasticity(const OptionSet & options);
+  IsotropicElasticityTensor(const OptionSet & options);
 
 protected:
-  /// The rotation (active convention)
-  const Variable<Rot> & _R;
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+
+  const IsotropicElasticityConverter _converter;
 };
 } // namespace neml2

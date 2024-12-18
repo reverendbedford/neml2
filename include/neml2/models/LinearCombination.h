@@ -45,14 +45,8 @@ protected:
   /// The input variables (to be summed)
   std::vector<const Variable<T> *> _from;
 
-  /// Whether to declare coefficients as parameters
-  const bool _coef_as_param;
-
   /// Scaling coefficient for each term
-  const Tensor & _coef;
-
-private:
-  Tensor make_coef(const OptionSet & options) const;
+  std::vector<const Scalar *> _coefs;
 };
 
 typedef LinearCombination<Scalar> ScalarLinearCombination;

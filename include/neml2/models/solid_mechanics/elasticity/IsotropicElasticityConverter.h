@@ -24,24 +24,33 @@
 
 #pragma once
 
-#include "neml2/models/solid_mechanics/Elasticity.h"
+#include "neml2/models/solid_mechanics/elasticity/ElasticityConverter.h"
 
 namespace neml2
 {
-class LinearIsotropicElasticity : public Elasticity
+/**
+ * @brief Converter for linearized elastic constants assuming isotropic symmetry
+ */
+class IsotropicElasticityConverter : public ElasticityConverter<2>
 {
 public:
-  static OptionSet expected_options();
+  ///@{
+  /// @name Conversion functions from various parameterizations to K and mu
+  static ConversionType E_nu_to_K(const InputType &, const DerivativeFlagType &);
+  static ConversionType E_nu_to_G(const InputType &, const DerivativeFlagType &);
+  ///@}
 
-  LinearIsotropicElasticity(const OptionSet & options);
+  /// Conversion table
+  static const ConversionTableType table;
 
-protected:
-  void set_value(bool out, bool dout_din, bool d2out_din2) override;
-
-  /// Young's modulus
-  const Scalar & _E;
-
-  /// Poisson's ratio
-  const Scalar & _nu;
+  IsotropicElasticityConverter(const ConverterKey & parameterization,
+                               const DerivativeFlagType & deriv_requested)
+    : ElasticityConverter<2>(table,
+                             {ElasticConstant::BULK_MODULUS, ElasticConstant::SHEAR_MODULUS},
+                             parameterization,
+                             deriv_requested)
+  {
+  }
 };
+
 } // namespace neml2

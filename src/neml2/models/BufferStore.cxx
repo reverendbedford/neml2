@@ -40,10 +40,82 @@ BufferStore::named_buffers()
   return _buffer_values;
 }
 
+TensorValueBase &
+BufferStore::get_buffer(const std::string & name)
+{
+  neml_assert(_object->host() == _object, "This method should only be called on the host model.");
+  auto * base_ptr = _buffer_values.query_value(name);
+  neml_assert(base_ptr, "Buffer named ", name, " does not exist.");
+  return *base_ptr;
+}
+
+const TensorValueBase &
+BufferStore::get_buffer(const std::string & name) const
+{
+  neml_assert(_object->host() == _object, "This method should only be called on the host model.");
+  const auto * base_ptr = _buffer_values.query_value(name);
+  neml_assert(base_ptr, "Buffer named ", name, " does not exist.");
+  return *base_ptr;
+}
+
 void
 BufferStore::send_buffers_to(const torch::TensorOptions & options)
 {
   for (auto && [name, buffer] : _buffer_values)
     buffer.to_(options);
 }
+
+template <typename T, typename>
+const T &
+BufferStore::declare_buffer(const std::string & name, const T & rawval)
+{
+  if (_object->host() != _object)
+    return _object->host<BufferStore>()->declare_buffer(
+        _object->name() + buffer_name_separator() + name, rawval);
+
+  TensorValueBase * base_ptr = nullptr;
+
+  // If the buffer already exists, return its reference
+  if (_buffer_values.has_key(name))
+    base_ptr = &get_buffer(name);
+  else
+  {
+    auto val = std::make_unique<TensorValue<T>>(rawval);
+    base_ptr = _buffer_values.set_pointer(name, std::move(val));
+  }
+
+  auto ptr = dynamic_cast<TensorValue<T> *>(base_ptr);
+  neml_assert(ptr, "Internal error: Failed to cast buffer to a concrete type.");
+  return ptr->value();
+}
+
+template <typename T, typename>
+const T &
+BufferStore::declare_buffer(const std::string & name, const CrossRef<T> & crossref)
+{
+  return declare_buffer(name, T(crossref));
+}
+
+template <typename T, typename>
+const T &
+BufferStore::declare_buffer(const std::string & name, const std::string & input_option_name)
+{
+  if (_object_options.contains<T>(input_option_name))
+    return declare_buffer(name, _object_options.get<T>(input_option_name));
+
+  if (_object_options.contains<CrossRef<T>>(input_option_name))
+    return declare_buffer(name, T(_object_options.get<CrossRef<T>>(input_option_name)));
+
+  throw NEMLException(
+      "Trying to register buffer named " + name + " from input option named " + input_option_name +
+      " of type " + utils::demangle(typeid(T).name()) +
+      ". Make sure you provided the correct buffer name, option name, and buffer type. Note that "
+      "the buffer type can either be a plain type or a cross-reference.");
+}
+
+#define BUFFERSTORE_INTANTIATE_TENSORBASE(T)                                                       \
+  template const T & BufferStore::declare_buffer<T>(const std::string &, const T &);               \
+  template const T & BufferStore::declare_buffer<T>(const std::string &, const CrossRef<T> &);     \
+  template const T & BufferStore::declare_buffer<T>(const std::string &, const std::string &)
+FOR_ALL_TENSORBASE(BUFFERSTORE_INTANTIATE_TENSORBASE);
 } // namespace neml2

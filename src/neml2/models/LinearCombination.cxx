@@ -52,12 +52,16 @@ LinearCombination<T>::expected_options()
   options.set("to_var").doc() = "The sum";
 
   options.set_parameter<std::vector<CrossRef<Scalar>>>("coefficients") = {CrossRef<Scalar>("1")};
-  options.set("coefficients").doc() = "Weights associated with each variable";
+  options.set("coefficients").doc() =
+      "Weights associated with each variable. This option takes a list of weights, one for each "
+      "coefficient. When the length of this list is 1, the same weight applies to all "
+      "coefficients.";
 
-  options.set<bool>("coefficients_as_parameters") = false;
-  options.set("coefficients_as_parameters").doc() =
+  options.set<std::vector<bool>>("coefficient_as_parameter") = {false};
+  options.set("coefficient_as_parameter").doc() =
       "By default, the coefficients are declared as buffers. Set this option to true to declare "
-      "them as (trainable) parameters.";
+      "them as (trainable) parameters. This option takes a list of booleans, one for each "
+      "coefficient. When the length of this list is 1, the boolean applies to all coefficients.";
 
   return options;
 }
@@ -65,51 +69,67 @@ LinearCombination<T>::expected_options()
 template <typename T>
 LinearCombination<T>::LinearCombination(const OptionSet & options)
   : Model(options),
-    _to(declare_output_variable<T>("to_var")),
-    _coef_as_param(options.get<bool>("coefficients_as_parameters")),
-    _coef(_coef_as_param ? declare_parameter<Tensor>("c", make_coef(options))
-                         : declare_buffer<Tensor>("c", make_coef(options)))
+    _to(declare_output_variable<T>("to_var"))
 {
   for (const auto & fv : options.get<std::vector<VariableName>>("from_var"))
     _from.push_back(&declare_input_variable<T>(fv));
-}
 
-template <typename T>
-Tensor
-LinearCombination<T>::make_coef(const OptionSet & options) const
-{
-  const auto coefs_in = options.get<std::vector<CrossRef<Scalar>>>("coefficients");
-  const std::vector<Scalar> coefs(coefs_in.begin(), coefs_in.end());
-  const std::vector<Tensor> coefs_tensors(coefs.begin(), coefs.end());
-  return math::base_stack(coefs_tensors);
+  auto coef_as_param = options.get<std::vector<bool>>("coefficient_as_parameter");
+  neml_assert(coef_as_param.size() == 1 || coef_as_param.size() == _from.size(),
+              "Expected 1 or ",
+              _from.size(),
+              " entries in coefficient_as_parameter, got ",
+              coef_as_param.size(),
+              ".");
+
+  // Expand the list of booleans to match the number of coefficients
+  if (coef_as_param.size() == 1)
+    coef_as_param = std::vector<bool>(_from.size(), coef_as_param[0]);
+
+  const auto coef_refs = options.get<std::vector<CrossRef<Scalar>>>("coefficients");
+  neml_assert(coef_refs.size() == 1 || coef_refs.size() == _from.size(),
+              "Expected 1 or ",
+              _from.size(),
+              " coefficients, got ",
+              coef_refs.size(),
+              ".");
+
+  // Declare parameters or buffers
+  _coefs.resize(_from.size());
+  for (std::size_t i = 0; i < _from.size(); i++)
+  {
+    const auto & coef_ref = coef_refs.size() == 1 ? coef_refs[0] : coef_refs[i];
+    if (coef_as_param[i])
+      _coefs[i] =
+          &declare_parameter<Scalar>("c_" + std::to_string(i), coef_ref, /*allow_nonlinear=*/true);
+    else
+      _coefs[i] = &declare_buffer<Scalar>("c_" + std::to_string(i), coef_ref);
+  }
 }
 
 template <typename T>
 void
 LinearCombination<T>::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-  const Size N = _from.size();
-
   if (out)
   {
-    std::vector<Tensor> vals;
-    for (auto from_var : _from)
-      vals.push_back(from_var->value());
-
-    // Broadcast and expand batch shape
-    const auto batch_sizes = utils::broadcast_batch_sizes(vals);
-    for (auto & val : vals)
-      val = val.batch_expand(batch_sizes);
-
-    _to = math::batch_sum(Scalar(_coef, 1) * math::batch_stack(vals, -1), -1);
+    auto value = (*_coefs[0]) * (*_from[0]);
+    for (std::size_t i = 1; i < _from.size(); i++)
+      value = value + (*_coefs[i]) * (*_from[i]);
+    _to = value;
   }
 
   if (dout_din)
   {
-    const auto deriv = Scalar(_coef, 1) * T::identity_map(_coef.options()).batch_expand(N);
-    for (Size i = 0; i < N; i++)
+    const auto I = T::identity_map(_from[0]->options());
+    for (std::size_t i = 0; i < _from.size(); i++)
+    {
       if (_from[i]->is_dependent())
-        _to.d(*_from[i]) = deriv.batch_index({indexing::Ellipsis, i});
+        _to.d(*_from[i]) = (*_coefs[i]) * I;
+
+      if (const auto * const pi = nl_param("c_" + std::to_string(i)))
+        _to.d(*pi) = (*_from[i]);
+    }
   }
 
   if (d2out_din2)

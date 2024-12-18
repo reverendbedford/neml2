@@ -22,25 +22,38 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/models/solid_mechanics/AnisotropicElasticity.h"
+#include "neml2/models/solid_mechanics/elasticity/IsotropicElasticityConverter.h"
 
 namespace neml2
 {
-OptionSet
-AnisotropicElasticity::expected_options()
+const IsotropicElasticityConverter::ConversionTableType IsotropicElasticityConverter::table = {
+    {{ElasticConstant::YOUNGS_MODULUS, ElasticConstant::POISSONS_RATIO},
+     {&IsotropicElasticityConverter::E_nu_to_K, &IsotropicElasticityConverter::E_nu_to_G}}};
+
+IsotropicElasticityConverter::ConversionType
+IsotropicElasticityConverter::E_nu_to_K(const InputType & input, const DerivativeFlagType & deriv)
 {
-  OptionSet options = Elasticity::expected_options();
-  options.doc() = "Relates elastic strain to stress with some non-isotropic tensor.";
+  const auto & E = input[0];
+  const auto & nu = input[1];
 
-  options.set_input("orientation") = VariableName(STATE, "orientation");
-  options.set("orientation").doc() = "Active convention orientation from reference to current";
+  const auto K = E / 3 / (1 - 2 * nu);
+  const auto dK_dE = deriv[0] ? K / E : Scalar();
+  const auto dK_dnu = deriv[1] ? 6 * K * K / E : Scalar();
 
-  return options;
+  return {K, {dK_dE, dK_dnu}};
 }
 
-AnisotropicElasticity::AnisotropicElasticity(const OptionSet & options)
-  : Elasticity(options),
-    _R(declare_input_variable<Rot>("orientation"))
+IsotropicElasticityConverter::ConversionType
+IsotropicElasticityConverter::E_nu_to_G(const InputType & input, const DerivativeFlagType & deriv)
 {
+  const auto & E = input[0];
+  const auto & nu = input[1];
+
+  const auto G = E / (2 * (1 + nu));
+  const auto dG_dE = deriv[0] ? G / E : Scalar();
+  const auto dG_dnu = deriv[1] ? -G / (1 + nu) : Scalar();
+
+  return {G, {dG_dE, dG_dnu}};
 }
+
 } // namespace neml2

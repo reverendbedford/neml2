@@ -22,32 +22,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
-
-#include <tuple>
-
-#include "neml2/models/solid_mechanics/ElasticityTensor.h"
+#include "neml2/models/solid_mechanics/elasticity/AnisotropicElasticity.h"
 
 namespace neml2
 {
-/**
- * @brief Define an cubic symmetry elasticity tensor in various ways
- */
-class CubicElasticityTensor : public ElasticityTensor
+OptionSet
+AnisotropicElasticity::expected_options()
 {
-public:
-  static OptionSet expected_options();
+  OptionSet options = Elasticity::expected_options();
+  options.doc() = "Relates elastic strain to stress with some non-isotropic tensor.";
 
-  CubicElasticityTensor(const OptionSet & options);
+  options.set_input("orientation") = VariableName(STATE, "orientation");
+  options.set("orientation").doc() = "Active convention orientation from reference to current";
 
-protected:
-  void set_value(bool out, bool dout_din, bool d2out_din2) override;
+  return options;
+}
 
-  /// Convert input to Lame parameter C1 with derivatives
-  std::tuple<Scalar, Scalar, Scalar, Scalar> convert_to_C1();
-  /// Convert input to Lame parameter C2 with derivatives
-  std::tuple<Scalar, Scalar, Scalar, Scalar> convert_to_C2();
-  /// Convert input to Lame parameter C3 with derivatives
-  std::tuple<Scalar, Scalar, Scalar, Scalar> convert_to_C3();
-};
+AnisotropicElasticity::AnisotropicElasticity(const OptionSet & options)
+  : Elasticity(options),
+    _R(declare_input_variable<Rot>("orientation"))
+{
+}
 } // namespace neml2

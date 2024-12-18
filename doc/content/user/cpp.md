@@ -10,8 +10,8 @@ The following input file defines a linear isotropic elasticity material model:
 [Models]
   [model]
     type = LinearIsotropicElasticity
-    youngs_modulus = 100
-    poisson_ratio = 0.3
+    coefficients = '100 0.3'
+    coefficient_types = 'YOUNGS_MODULUS POISSONS_RATIO'
     strain = 'forces/E'
     stress = 'state/S'
   []

@@ -64,8 +64,8 @@
   []
   [elasticity]
     type = LinearIsotropicElasticity
-    youngs_modulus = 120000
-    poisson_ratio = 0.3
+    coefficients = '120000 0.3'
+    coefficient_types = 'YOUNGS_MODULUS POISSONS_RATIO'
   []
   [mandel_stress]
     type = IsotropicMandelStress
