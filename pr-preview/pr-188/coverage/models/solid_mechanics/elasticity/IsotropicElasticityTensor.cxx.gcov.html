@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-17 23:05:38</td>
+            <td class="headerValue">2024-12-18 02:47:52</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -93,15 +93,15 @@
 <a name="31"><span class="lineNum">      31 </span>            : OptionSet</a>
 <a name="32"><span class="lineNum">      32 </span><span class="lineCov">          5 : IsotropicElasticityTensor::expected_options()</span></a>
 <a name="33"><span class="lineNum">      33 </span>            : {</a>
-<a name="34"><span class="lineNum">      34 </span><span class="lineCov">          5 :   OptionSet options = ElasticityTensor&lt;2&gt;::expected_options();</span></a>
-<a name="35"><span class="lineNum">      35 </span><span class="lineCov">          5 :   options.doc() += &quot;  This class defines an isotropic elasticity tensor using two parameters.&quot;</span></a>
-<a name="36"><span class="lineNum">      36 </span><span class="lineCov">          5 :                    &quot;  Various options are available for which two parameters to provide.&quot;;</span></a>
+<a name="34"><span class="lineNum">      34 </span><span class="lineCov">          5 :   OptionSet options = ElasticityTensor&lt;NonlinearParameter&lt;SSR4&gt;, 2&gt;::expected_options();</span></a>
+<a name="35"><span class="lineNum">      35 </span><span class="lineCov">          5 :   options.doc() = &quot;This class defines an isotropic elasticity tensor using two parameters.&quot;</span></a>
+<a name="36"><span class="lineNum">      36 </span><span class="lineCov">          5 :                   &quot;  Various options are available for which two parameters to provide.&quot;;</span></a>
 <a name="37"><span class="lineNum">      37 </span>            : </a>
 <a name="38"><span class="lineNum">      38 </span><span class="lineCov">          5 :   return options;</span></a>
 <a name="39"><span class="lineNum">      39 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="40"><span class="lineNum">      40 </span>            : </a>
 <a name="41"><span class="lineNum">      41 </span><span class="lineNoCov">          0 : IsotropicElasticityTensor::IsotropicElasticityTensor(const OptionSet &amp; options)</span></a>
-<a name="42"><span class="lineNum">      42 </span>            :   : ElasticityTensor&lt;2&gt;(options),</a>
+<a name="42"><span class="lineNum">      42 </span>            :   : ElasticityTensor&lt;NonlinearParameter&lt;SSR4&gt;, 2&gt;(options),</a>
 <a name="43"><span class="lineNum">      43 </span><span class="lineNoCov">          0 :     _converter(_constant_types, _need_derivs)</span></a>
 <a name="44"><span class="lineNum">      44 </span>            : {</a>
 <a name="45"><span class="lineNum">      45 </span><span class="lineNoCov">          0 : }</span></a>
@@ -111,23 +111,23 @@
 <a name="49"><span class="lineNum">      49 </span>            : {</a>
 <a name="50"><span class="lineNum">      50 </span><span class="lineNoCov">          0 :   neml_assert_dbg(!d2out_din2, &quot;IsotropicElasticityTensor doesn't implement second derivatives.&quot;);</span></a>
 <a name="51"><span class="lineNum">      51 </span>            : </a>
-<a name="52"><span class="lineNum">      52 </span><span class="lineNoCov">          0 :   const auto [lambda_and_dlambda, G_and_dG] = _converter.convert(_constants);</span></a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineNoCov">          0 :   const auto &amp; [lambda, dlambda] = lambda_and_dlambda;</span></a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineNoCov">          0 :   const auto [K_and_dK, G_and_dG] = _converter.convert(_constants);</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineNoCov">          0 :   const auto &amp; [K, dK] = K_and_dK;</span></a>
 <a name="54"><span class="lineNum">      54 </span><span class="lineNoCov">          0 :   const auto &amp; [G, dG] = G_and_dG;</span></a>
 <a name="55"><span class="lineNum">      55 </span>            : </a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineNoCov">          0 :   const auto Iv = SSR4::identity_vol(lambda.options());</span></a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineNoCov">          0 :   const auto Is = SSR4::identity_sym(G.options());</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineNoCov">          0 :   const auto Iv = SSR4::identity_vol(K.options());</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineNoCov">          0 :   const auto Id = SSR4::identity_dev(G.options());</span></a>
 <a name="58"><span class="lineNum">      58 </span>            : </a>
 <a name="59"><span class="lineNum">      59 </span><span class="lineNoCov">          0 :   if (out)</span></a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineNoCov">          0 :     _p = 3.0 * lambda * Iv + 2.0 * G * Is;</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineNoCov">          0 :     _p = 3.0 * K * Iv + 2.0 * G * Id;</span></a>
 <a name="61"><span class="lineNum">      61 </span>            : </a>
 <a name="62"><span class="lineNum">      62 </span><span class="lineNoCov">          0 :   if (dout_din)</span></a>
 <a name="63"><span class="lineNum">      63 </span>            :   {</a>
 <a name="64"><span class="lineNum">      64 </span><span class="lineNoCov">          0 :     if (const auto * const p1 = nl_param(neml2::name(_constant_types[0])))</span></a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineNoCov">          0 :       _p.d(*p1) = 3.0 * dlambda[0] * Iv + 2.0 * dG[0] * Is;</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineNoCov">          0 :       _p.d(*p1) = 3.0 * dK[0] * Iv + 2.0 * dG[0] * Id;</span></a>
 <a name="66"><span class="lineNum">      66 </span>            : </a>
 <a name="67"><span class="lineNum">      67 </span><span class="lineNoCov">          0 :     if (const auto * const p2 = nl_param(neml2::name(_constant_types[1])))</span></a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineNoCov">          0 :       _p.d(*p2) = 3.0 * dlambda[1] * Iv + 2.0 * dG[1] * Is;</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineNoCov">          0 :       _p.d(*p2) = 3.0 * dK[1] * Iv + 2.0 * dG[1] * Id;</span></a>
 <a name="69"><span class="lineNum">      69 </span>            :   }</a>
 <a name="70"><span class="lineNum">      70 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="71"><span class="lineNum">      71 </span>            : </a>

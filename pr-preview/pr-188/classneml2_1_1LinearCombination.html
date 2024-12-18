@@ -619,12 +619,9 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a79a8fbaa50dd449086cd18acc2f31d41" id="r_a79a8fbaa50dd449086cd18acc2f31d41"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Variable.html">Variable</a>&lt; T &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a79a8fbaa50dd449086cd18acc2f31d41">_from</a></td></tr>
 <tr class="memdesc:a79a8fbaa50dd449086cd18acc2f31d41"><td class="mdescLeft">&#160;</td><td class="mdescRight">The input variables (to be summed)  <br /></td></tr>
 <tr class="separator:a79a8fbaa50dd449086cd18acc2f31d41"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91989e70e5aab7502ff57e5feed1c592" id="r_a91989e70e5aab7502ff57e5feed1c592"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a91989e70e5aab7502ff57e5feed1c592">_coef_as_param</a></td></tr>
-<tr class="memdesc:a91989e70e5aab7502ff57e5feed1c592"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to declare coefficients as parameters.  <br /></td></tr>
-<tr class="separator:a91989e70e5aab7502ff57e5feed1c592"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae10cd115cdcf6e7873bc86590246671a" id="r_ae10cd115cdcf6e7873bc86590246671a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae10cd115cdcf6e7873bc86590246671a">_coef</a></td></tr>
-<tr class="memdesc:ae10cd115cdcf6e7873bc86590246671a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scaling coefficient for each term.  <br /></td></tr>
-<tr class="separator:ae10cd115cdcf6e7873bc86590246671a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1016e20fea475ba849e10e3b28eaaa3d" id="r_a1016e20fea475ba849e10e3b28eaaa3d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1016e20fea475ba849e10e3b28eaaa3d">_coefs</a></td></tr>
+<tr class="memdesc:a1016e20fea475ba849e10e3b28eaaa3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scaling coefficient for each term.  <br /></td></tr>
+<tr class="separator:a1016e20fea475ba849e10e3b28eaaa3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classneml2_1_1Model"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classneml2_1_1Model')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classneml2_1_1Model.html">Model</a></td></tr>
 <tr class="memitem:a3c97529c21f71bb6268fb4e45ec97dcb inherit pro_attribs_classneml2_1_1Model" id="r_a3c97529c21f71bb6268fb4e45ec97dcb"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classneml2_1_1Model.html">Model</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1Model.html#a3c97529c21f71bb6268fb4e45ec97dcb">_registered_models</a></td></tr>
 <tr class="memdesc:a3c97529c21f71bb6268fb4e45ec97dcb inherit pro_attribs_classneml2_1_1Model"><td class="mdescLeft">&#160;</td><td class="mdescRight">Models <em>this</em> model may use during its evaluation.  <br /></td></tr>
@@ -749,8 +746,8 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T &gt;
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="ae10cd115cdcf6e7873bc86590246671a" name="ae10cd115cdcf6e7873bc86590246671a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae10cd115cdcf6e7873bc86590246671a">&#9670;&#160;</a></span>_coef</h2>
+<a id="a1016e20fea475ba849e10e3b28eaaa3d" name="a1016e20fea475ba849e10e3b28eaaa3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1016e20fea475ba849e10e3b28eaaa3d">&#9670;&#160;</a></span>_coefs</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -761,7 +758,7 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T &gt;
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&amp; _coef</td>
+          <td class="memname">std::vector&lt;<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> *&gt; _coefs</td>
         </tr>
       </table>
   </td>
@@ -772,32 +769,6 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T &gt;
 </div><div class="memdoc">
 
 <p>Scaling coefficient for each term. </p>
-
-</div>
-</div>
-<a id="a91989e70e5aab7502ff57e5feed1c592" name="a91989e70e5aab7502ff57e5feed1c592"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a91989e70e5aab7502ff57e5feed1c592">&#9670;&#160;</a></span>_coef_as_param</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">bool</a> _coef_as_param</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Whether to declare coefficients as parameters. </p>
 
 </div>
 </div>

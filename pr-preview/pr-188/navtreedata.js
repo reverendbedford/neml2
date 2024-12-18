@@ -80,16 +80,16 @@ var NAVTREEINDEX =
 "classneml2_1_1DependencyResolver.html#acb0aa5aef7ca2b96310dd488f657c7b1",
 "classneml2_1_1FredrickArmstrongPlasticHardening.html#a7c331f34f795c3179b7c0ecf187b438b",
 "classneml2_1_1KocksMeckingRateSensitivity.html#af5600a36813e455aefee72bec1d574fb",
-"classneml2_1_1LinearSingleSlipHardeningRule.html#aac5316d1527042c16b3ba4a781b5d8c4",
-"classneml2_1_1NewtonWithTrustRegion.html#a3c6b0e7bf794e3b8230aaaa4fc420226",
-"classneml2_1_1OptionSet_1_1Option.html#a71fb08fcb7e4eebdcf161cc75fa8210d",
-"classneml2_1_1R2Base.html#a0986d8c834d94f1ed51b3eed0d95a763",
-"classneml2_1_1SlipStrengthMap.html",
-"classneml2_1_1Transformable.html",
-"classneml2_1_1VariableBase.html#aa28c7d84e10814bdfacefa6cd35db197",
-"classneml2_1_1WWR4.html#adc28cfde0ac29bb8956d8c29ef76438b",
-"namespaceneml2.html#a90023c4b9c19cd471d4603a07a52954e",
-"structneml2_1_1InterOpThread.html#a13b4565d1d44ffe56bfd7ccc17b5fb10"
+"classneml2_1_1LinspacePrimitiveTensor.html",
+"classneml2_1_1NewtonWithTrustRegion.html#a5905abc7435f27a7860795f7abb96340",
+"classneml2_1_1OptionSet_1_1Option.html#a9681b4de0a8572cf68ac6025484bfcef",
+"classneml2_1_1R2Base.html#a1d647b1be0d93bdc7ba14ecf4f85dfe9",
+"classneml2_1_1SlipStrengthMap.html#a14b85a3eea3ab3411cc2a7dbafa4a06f",
+"classneml2_1_1Transformable.html#a2015a73dabd206a9a68a209bceaae958",
+"classneml2_1_1VariableBase.html#aaf277ecb7976703957be4430e2708d1f",
+"classneml2_1_1YieldFunction.html#a07724eae929f7eb773bb89bfb9f4015d",
+"namespaceneml2.html#a9607c95f046fe1abb739963043e86659",
+"structneml2_1_1InterOpThread.html#a4306319a36d03b9f78285f0900dc01c4"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

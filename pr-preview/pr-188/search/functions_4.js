@@ -1,7 +1,7 @@
 var searchData=
 [
   ['e_5fnu_5fto_5fg_0',['E_nu_to_G',['../classneml2_1_1IsotropicElasticityConverter.html#a7e4981b9a70a8792ce42797d776f3e2b',1,'neml2::IsotropicElasticityConverter']]],
-  ['e_5fnu_5fto_5flambda_1',['E_nu_to_lambda',['../classneml2_1_1IsotropicElasticityConverter.html#ae1a5c3e66ff38f02918d96657b53e96a',1,'neml2::IsotropicElasticityConverter']]],
+  ['e_5fnu_5fto_5fk_1',['E_nu_to_K',['../classneml2_1_1IsotropicElasticityConverter.html#a68cf860fdefa293aee6a1801badef16f',1,'neml2::IsotropicElasticityConverter']]],
   ['eigenstrain_2',['Eigenstrain',['../classneml2_1_1Eigenstrain.html#a18f4cbcf3b9a6c956004d773d7a16054',1,'neml2::Eigenstrain']]],
   ['elasticity_3',['Elasticity',['../classneml2_1_1Elasticity.html#ae6854480d821b7a53c5a0e1b2b779b18',1,'neml2::Elasticity']]],
   ['elasticityconverter_4',['ElasticityConverter',['../classneml2_1_1ElasticityConverter.html#a6d41a75ae39c01d7273152129469003b',1,'neml2::ElasticityConverter']]],
