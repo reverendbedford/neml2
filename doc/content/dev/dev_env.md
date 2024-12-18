@@ -16,7 +16,7 @@ which uses the CMake preset named "release". The configure and build commands ca
 cmake --preset {configurePreset} -S .
 cmake --build --preset {buildPreset}
 ```
-where `{configurePreset}` and `buildPreset` should be substituted with a configure preset and a build preset, respectively.
+where `{configurePreset}` and `{buildPreset}` should be substituted with a configure preset and a build preset, respectively.
 In addition to the "release" preset, NEML2 offers a few configure and build presets useful for typical development workflows, defined in `CMakePresets.json`. Typical workflows and their corresponding presets are listed below.
 
 ### Developing the C++ backend
@@ -64,6 +64,15 @@ cmake --preset coverage -S .
 cmake --build coverage
 ```
 The unit testing executable is built with coverage flags set. Standard code coverage tools such as `gcov` and `lcov` can be used to capture and record coverage data.
+
+### Overriding presets
+
+While the default presets should cover most of the development workflows, it is sometimes necessary to override certain options at various stages. In general, there are three ways of overriding the preset:
+- Command line options
+- Environment variables
+- [CMakeUserPresets.json](https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html)
+
+All three options are fully supported by the cmake-tools vscode extension.
 
 ## Code formatting and linting
 
