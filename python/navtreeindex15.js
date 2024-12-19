@@ -1,5 +1,7 @@
 var NAVTREEINDEX15 =
 {
+"classtensors_1_1WWR4.html#a59c25c752bab8b8ba669f176cc795b2f":[9,0,5,61,8],
+"classtensors_1_1WWR4.html#a59c25c752bab8b8ba669f176cc795b2f":[9,1,2,61,8],
 "classtensors_1_1WWR4.html#a5a140021b3b28947b491784b3af8e860":[9,1,2,61,19],
 "classtensors_1_1WWR4.html#a5a140021b3b28947b491784b3af8e860":[9,0,5,61,19],
 "classtensors_1_1WWR4.html#a5eba84d267f52548d5d5ceff6f0fc28f":[9,1,2,61,33],
@@ -247,7 +249,5 @@ var NAVTREEINDEX15 =
 "namespacemath.html#a532648dfa3d189a23a0495ccdc556b30":[9,0,3,306],
 "namespacemath.html#a5368eadfbe55e4ca08f565a5be98d5d5":[9,0,3,81],
 "namespacemath.html#a54994f146a1655517138901efd9f7fed":[9,0,3,341],
-"namespacemath.html#a54fb4304b64ce84ddb4c319a43c12148":[9,0,3,320],
-"namespacemath.html#a55833a6f3186e06018ab975ac264781f":[9,0,3,339],
-"namespacemath.html#a559e332edbc650757eca194bc83dd5b6":[9,0,3,33]
+"namespacemath.html#a54fb4304b64ce84ddb4c319a43c12148":[9,0,3,320]
 };
