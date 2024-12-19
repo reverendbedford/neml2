@@ -60,6 +60,7 @@ var searchData=
   ['build_20revisted_57',['Configure and build (revisted)',['../dev-env.html#autotoc_md5',1,'']]],
   ['builder_58',['builder',['../classneml2_1_1Registry.html#a5e569192804822d0600e223341202e0a',1,'neml2::Registry']]],
   ['buildptr_59',['BuildPtr',['../namespaceneml2.html#af62feabaf2151de89d0a76a2995f8b4d',1,'neml2']]],
-  ['burgers_60',['burgers',['../classneml2_1_1crystallography_1_1CrystalGeometry.html#a6e6ca00752e0b1f1e377b78c81df8d1c',1,'neml2::crystallography::CrystalGeometry']]],
-  ['bvv_61',['bvv',['../namespaceneml2_1_1math.html#ad1e6d18c57469ef034e57bde0e6cfdf6',1,'neml2::math']]]
+  ['bulk_5fmodulus_60',['BULK_MODULUS',['../namespaceneml2.html#a341ec45d106079ad26352fd5912d5dd8aa07b7de9748936bc5a62fc0e68ae7b00',1,'neml2']]],
+  ['burgers_61',['burgers',['../classneml2_1_1crystallography_1_1CrystalGeometry.html#a6e6ca00752e0b1f1e377b78c81df8d1c',1,'neml2::crystallography::CrystalGeometry']]],
+  ['bvv_62',['bvv',['../namespaceneml2_1_1math.html#ad1e6d18c57469ef034e57bde0e6cfdf6',1,'neml2::math']]]
 ];

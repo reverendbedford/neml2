@@ -9,5 +9,6 @@ var searchData=
   ['crystalgeometry_6',['CrystalGeometry',['../classneml2_1_1crystallography_1_1CrystalGeometry.html',1,'neml2::crystallography']]],
   ['crystalmean_7',['CrystalMean',['../classneml2_1_1CrystalMean.html',1,'neml2']]],
   ['cubiccrystal_8',['CubicCrystal',['../classneml2_1_1crystallography_1_1CubicCrystal.html',1,'neml2::crystallography']]],
-  ['cubicelasticitytensor_9',['CubicElasticityTensor',['../classneml2_1_1CubicElasticityTensor.html',1,'neml2']]]
+  ['cubicelasticityconverter_9',['CubicElasticityConverter',['../classneml2_1_1CubicElasticityConverter.html',1,'neml2']]],
+  ['cubicelasticitytensor_10',['CubicElasticityTensor',['../classneml2_1_1CubicElasticityTensor.html',1,'neml2']]]
 ];

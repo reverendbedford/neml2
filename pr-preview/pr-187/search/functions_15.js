@@ -14,13 +14,11 @@ var searchData=
   ['variablebase_11',['VariableBase',['../classneml2_1_1VariableBase.html#a57cafb050efed4623c3e7dcb71da3f89',1,'neml2::VariableBase::VariableBase()=default'],['../classneml2_1_1VariableBase.html#a8b0f31b9ba94f987e745bdc99a38185e',1,'neml2::VariableBase::VariableBase(const VariableBase &amp;)=delete'],['../classneml2_1_1VariableBase.html#a0b9a69d2c3c1056201943aaf8663b7fa',1,'neml2::VariableBase::VariableBase(VariableBase &amp;&amp;)=delete'],['../classneml2_1_1VariableBase.html#a8e7b732ae8bb189a0ca4344e27a77150',1,'neml2::VariableBase::VariableBase(VariableName name_in, Model *owner, TensorShapeRef list_shape)']]],
   ['variablerate_12',['VariableRate',['../classneml2_1_1VariableRate.html#a8db7d3c0537d457d33629f45e6d51107',1,'neml2::VariableRate']]],
   ['variablestore_13',['VariableStore',['../classneml2_1_1VariableStore.html#a662f632667b6333411b100b91391e9cb',1,'neml2::VariableStore::VariableStore(OptionSet options, Model *object)'],['../classneml2_1_1VariableStore.html#a8722ff5e19bba3f8705979539454033b',1,'neml2::VariableStore::VariableStore(const VariableStore &amp;)=delete'],['../classneml2_1_1VariableStore.html#adf6e2c9f7e0845efcdb28bec1542e5a5',1,'neml2::VariableStore::VariableStore(VariableStore &amp;&amp;)=delete']]],
-  ['vec_14',['Vec',['../classneml2_1_1Vec.html#aa69f2a3f859de9dc04a1c397779dd2c3',1,'neml2::Vec']]],
-  ['vec_15',['vec',['../classneml2_1_1LabeledAxisAccessor.html#adf530e2062ae5cc2a1064ab8a8e7708c',1,'neml2::LabeledAxisAccessor']]],
+  ['vec_14',['vec',['../classneml2_1_1LabeledAxisAccessor.html#adf530e2062ae5cc2a1064ab8a8e7708c',1,'neml2::LabeledAxisAccessor']]],
+  ['vec_15',['Vec',['../classneml2_1_1Vec.html#aa69f2a3f859de9dc04a1c397779dd2c3',1,'neml2::Vec']]],
   ['vector_5fnorm_16',['vector_norm',['../namespaceneml2_1_1math_1_1linalg.html#a5fb10d0b446b13cbe3a7d0a7a6496737',1,'neml2::math::linalg']]],
-  ['vector_5fto_5ftuple_17',['vector_to_tuple',['../classneml2_1_1ElasticityTensor.html#afb529d531a21ec75a4daec6a07f85c4a',1,'neml2::ElasticityTensor']]],
-  ['vector_5fto_5ftuple_5fimpl_18',['vector_to_tuple_impl',['../classneml2_1_1ElasticityTensor.html#a4935d2258c295350961ede35f417e60d',1,'neml2::ElasticityTensor']]],
-  ['vectorassembler_19',['VectorAssembler',['../classneml2_1_1VectorAssembler.html#a71bd6157ed64e4ce783ececc1c2d7b8a',1,'neml2::VectorAssembler']]],
-  ['voceisotropichardening_20',['VoceIsotropicHardening',['../classneml2_1_1VoceIsotropicHardening.html#a654bb13e32847efd903cf8bf5d101829',1,'neml2::VoceIsotropicHardening']]],
-  ['vocesinglesliphardeningrule_21',['VoceSingleSlipHardeningRule',['../classneml2_1_1VoceSingleSlipHardeningRule.html#a6ca33d27bed25ccabfa2a8f34c8a060f',1,'neml2::VoceSingleSlipHardeningRule']]],
-  ['vol_22',['vol',['../classneml2_1_1SR2.html#ad0bef00f6b9d8b2ba9adce9c373c7b2e',1,'neml2::SR2']]]
+  ['vectorassembler_17',['VectorAssembler',['../classneml2_1_1VectorAssembler.html#a71bd6157ed64e4ce783ececc1c2d7b8a',1,'neml2::VectorAssembler']]],
+  ['voceisotropichardening_18',['VoceIsotropicHardening',['../classneml2_1_1VoceIsotropicHardening.html#a654bb13e32847efd903cf8bf5d101829',1,'neml2::VoceIsotropicHardening']]],
+  ['vocesinglesliphardeningrule_19',['VoceSingleSlipHardeningRule',['../classneml2_1_1VoceSingleSlipHardeningRule.html#a6ca33d27bed25ccabfa2a8f34c8a060f',1,'neml2::VoceSingleSlipHardeningRule']]],
+  ['vol_20',['vol',['../classneml2_1_1SR2.html#ad0bef00f6b9d8b2ba9adce9c373c7b2e',1,'neml2::SR2']]]
 ];

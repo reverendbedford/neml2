@@ -148,24 +148,24 @@ Catch tests</h2>
 Unit tests</h2>
 <p>A model unit test examines the outputs of a <code>Model</code> given a predefined set of inputs. Model unit tests can be directly designed using the input file syntax with the <code>ModelUnitTest</code> type. A variety of checks can be turned on and off based on input file options. To list a few: <code>check_first_derivatives</code> compares the implemented first order derivatives of the model against finite-differencing results, and the test is marked as passing only if the two derivatives are within tolerances specified with <code>derivative_abs_tol</code> and <code>derivative_rel_tol</code>; if <code>check_cuda</code> is set to <code>true</code>, all checks are repeated a second time on GPU (if available).</p>
 <p>All input files for model unit tests should be stored inside <code>tests/unit/models</code>. Every input file with the <code>.i</code> extension will be automatically discovered and executed. To run all the model unit tests, use the following commands </p><div class="fragment"><div class="line">cd tests</div>
-<div class="line">../build/unit/unit_tests models</div>
+<div class="line">../build/dev/unit/unit_tests models</div>
 </div><!-- fragment --><p>To run a specific model unit test, use the <code>-c</code> command line option followed by the relative location of the input file, i.e. </p><div class="fragment"><div class="line">cd tests</div>
-<div class="line">../build/unit/unit_tests models -c solid_mechanics/LinearIsotropicElasticity.i</div>
+<div class="line">../build/dev/unit/unit_tests models -c solid_mechanics/LinearIsotropicElasticity.i</div>
 </div><!-- fragment --><h2><a class="anchor" id="testing-regression-tests"></a>
 Regression tests</h2>
 <p>A model regression test runs a <code>Model</code> using a user specified driver. The results are compared against a predefined reference (stored on the disk checked into the repository). The test passes only if the current results are the same as the predefined reference (again within specified tolerances). The regression tests ensure the consistency of implementations across commits. Currently, <code>TransientRegression</code> is the only supported type of regression test.</p>
 <p>Each input file for model regression tests should be stored inside a separate folder inside <code>tests/regression</code>. Every input file with the <code>.i</code> extension will be automatically discovered and executed. To run all the model regression tests, use the <code>regression_tests</code> executable followed by the physics module, i.e. </p><div class="fragment"><div class="line">cd tests</div>
-<div class="line">../build/regression/regression_tests &quot;solid mechanics&quot;</div>
+<div class="line">../build/dev/regression/regression_tests &quot;solid mechanics&quot;</div>
 </div><!-- fragment --><p> To run a specific model regression test, use the <code>-c</code> command line option followed by the relative location of the input file, i.e. </p><div class="fragment"><div class="line">cd tests</div>
-<div class="line">../build/regression/regression_tests &quot;solid mechanics&quot; -c viscoplasticity/chaboche/model.i</div>
+<div class="line">../build/dev/regression/regression_tests &quot;solid mechanics&quot; -c viscoplasticity/chaboche/model.i</div>
 </div><!-- fragment --><p> Note that the regression test expects an option <code>reference</code> which specifies the relative location to the reference solution.</p>
 <h2><a class="anchor" id="testing-verification-tests"></a>
 Verification tests</h2>
 <p>The model verification test is similar to the model regression test in terms of workflow. The difference is the a verification test defines the reference solution using NEML, the predecessor of NEML2. Since NEML was developed with strict software assurance, the verification tests ensure that the migration from NEML to NEML2 does not cause any regression in software quality.</p>
 <p>Each input file for model verification tests should be stored inside a separate folder inside <code>tests/verification</code>. Every input file with the <code>.i</code> extension will be automatically discovered and executed. To run all the model verification tests, use the <code>verification_tests</code> executable followed by the physics module, i.e. </p><div class="fragment"><div class="line">cd tests</div>
-<div class="line">../build/verification/verification_tests &quot;solid mechanics&quot;</div>
+<div class="line">../build/dev/verification/verification_tests &quot;solid mechanics&quot;</div>
 </div><!-- fragment --><p>To run a specific model verification test, use the <code>-c</code> command line option followed by the relative location of the input file, i.e. </p><div class="fragment"><div class="line">cd tests</div>
-<div class="line">../build/verification/verification_tests &quot;solid mechanics&quot; -c chaboche/chaboche.i</div>
+<div class="line">../build/dev/verification/verification_tests &quot;solid mechanics&quot; -c chaboche/chaboche.i</div>
 </div><!-- fragment --><p> The regression test compares variables (specified using the <code>variables</code> option) against reference values (specified using the <code>references</code> option). The reference variables can be read using input objects with type <code>VTestTimeSeries</code>.</p>
 <h1><a class="anchor" id="autotoc_md20"></a>
 Python package</h1>

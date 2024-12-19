@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">89</td>
+            <td class="headerCovTableEntry">91</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-18 03:10:03</td>
+            <td class="headerValue">2024-12-19 20:46:22</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -200,46 +200,50 @@
 <a name="138"><span class="lineNum">     138 </span><span class="lineNoCov">          0 : VariableStore::assign_output_derivatives(const DerivMap &amp; derivs)</span></a>
 <a name="139"><span class="lineNum">     139 </span>            : {</a>
 <a name="140"><span class="lineNum">     140 </span><span class="lineNoCov">          0 :   for (const auto &amp; [yvar, deriv] : derivs)</span></a>
-<a name="141"><span class="lineNum">     141 </span><span class="lineNoCov">          0 :     output_variable(yvar).derivatives().insert(deriv.begin(), deriv.end());</span></a>
-<a name="142"><span class="lineNum">     142 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="143"><span class="lineNum">     143 </span>            : </a>
-<a name="144"><span class="lineNum">     144 </span>            : ValueMap</a>
-<a name="145"><span class="lineNum">     145 </span><span class="lineNoCov">          0 : VariableStore::collect_input() const</span></a>
-<a name="146"><span class="lineNum">     146 </span>            : {</a>
-<a name="147"><span class="lineNum">     147 </span><span class="lineNoCov">          0 :   ValueMap vals;</span></a>
-<a name="148"><span class="lineNum">     148 </span><span class="lineNoCov">          0 :   for (auto &amp;&amp; [name, var] : input_variables())</span></a>
-<a name="149"><span class="lineNum">     149 </span><span class="lineNoCov">          0 :     vals[name] = var.tensor();</span></a>
-<a name="150"><span class="lineNum">     150 </span><span class="lineNoCov">          0 :   return vals;</span></a>
-<a name="151"><span class="lineNum">     151 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="152"><span class="lineNum">     152 </span>            : </a>
-<a name="153"><span class="lineNum">     153 </span>            : ValueMap</a>
-<a name="154"><span class="lineNum">     154 </span><span class="lineNoCov">          0 : VariableStore::collect_output() const</span></a>
-<a name="155"><span class="lineNum">     155 </span>            : {</a>
-<a name="156"><span class="lineNum">     156 </span><span class="lineNoCov">          0 :   ValueMap vals;</span></a>
-<a name="157"><span class="lineNum">     157 </span><span class="lineNoCov">          0 :   for (auto &amp;&amp; [name, var] : output_variables())</span></a>
-<a name="158"><span class="lineNum">     158 </span><span class="lineNoCov">          0 :     vals[name] = var.tensor();</span></a>
-<a name="159"><span class="lineNum">     159 </span><span class="lineNoCov">          0 :   return vals;</span></a>
-<a name="160"><span class="lineNum">     160 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="161"><span class="lineNum">     161 </span>            : </a>
-<a name="162"><span class="lineNum">     162 </span>            : DerivMap</a>
-<a name="163"><span class="lineNum">     163 </span><span class="lineNoCov">          0 : VariableStore::collect_output_derivatives() const</span></a>
-<a name="164"><span class="lineNum">     164 </span>            : {</a>
-<a name="165"><span class="lineNum">     165 </span><span class="lineNoCov">          0 :   DerivMap derivs;</span></a>
-<a name="166"><span class="lineNum">     166 </span><span class="lineNoCov">          0 :   for (auto &amp;&amp; [name, var] : output_variables())</span></a>
-<a name="167"><span class="lineNum">     167 </span><span class="lineNoCov">          0 :     derivs[name] = var.derivatives();</span></a>
-<a name="168"><span class="lineNum">     168 </span><span class="lineNoCov">          0 :   return derivs;</span></a>
-<a name="169"><span class="lineNum">     169 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="170"><span class="lineNum">     170 </span>            : </a>
-<a name="171"><span class="lineNum">     171 </span>            : SecDerivMap</a>
-<a name="172"><span class="lineNum">     172 </span><span class="lineNoCov">          0 : VariableStore::collect_output_second_derivatives() const</span></a>
-<a name="173"><span class="lineNum">     173 </span>            : {</a>
-<a name="174"><span class="lineNum">     174 </span><span class="lineNoCov">          0 :   SecDerivMap sec_derivs;</span></a>
-<a name="175"><span class="lineNum">     175 </span><span class="lineNoCov">          0 :   for (auto &amp;&amp; [name, var] : output_variables())</span></a>
-<a name="176"><span class="lineNum">     176 </span><span class="lineNoCov">          0 :     sec_derivs[name] = var.second_derivatives();</span></a>
-<a name="177"><span class="lineNum">     177 </span><span class="lineNoCov">          0 :   return sec_derivs;</span></a>
-<a name="178"><span class="lineNum">     178 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="179"><span class="lineNum">     179 </span>            : </a>
-<a name="180"><span class="lineNum">     180 </span>            : } // namespace neml2</a>
+<a name="141"><span class="lineNum">     141 </span>            :   {</a>
+<a name="142"><span class="lineNum">     142 </span><span class="lineNoCov">          0 :     auto &amp; y = output_variable(yvar);</span></a>
+<a name="143"><span class="lineNum">     143 </span><span class="lineNoCov">          0 :     for (const auto &amp; [xvar, val] : deriv)</span></a>
+<a name="144"><span class="lineNum">     144 </span><span class="lineNoCov">          0 :       y.derivatives().insert_or_assign(xvar, val.clone());</span></a>
+<a name="145"><span class="lineNum">     145 </span>            :   }</a>
+<a name="146"><span class="lineNum">     146 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="147"><span class="lineNum">     147 </span>            : </a>
+<a name="148"><span class="lineNum">     148 </span>            : ValueMap</a>
+<a name="149"><span class="lineNum">     149 </span><span class="lineNoCov">          0 : VariableStore::collect_input() const</span></a>
+<a name="150"><span class="lineNum">     150 </span>            : {</a>
+<a name="151"><span class="lineNum">     151 </span><span class="lineNoCov">          0 :   ValueMap vals;</span></a>
+<a name="152"><span class="lineNum">     152 </span><span class="lineNoCov">          0 :   for (auto &amp;&amp; [name, var] : input_variables())</span></a>
+<a name="153"><span class="lineNum">     153 </span><span class="lineNoCov">          0 :     vals[name] = var.tensor();</span></a>
+<a name="154"><span class="lineNum">     154 </span><span class="lineNoCov">          0 :   return vals;</span></a>
+<a name="155"><span class="lineNum">     155 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="156"><span class="lineNum">     156 </span>            : </a>
+<a name="157"><span class="lineNum">     157 </span>            : ValueMap</a>
+<a name="158"><span class="lineNum">     158 </span><span class="lineNoCov">          0 : VariableStore::collect_output() const</span></a>
+<a name="159"><span class="lineNum">     159 </span>            : {</a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineNoCov">          0 :   ValueMap vals;</span></a>
+<a name="161"><span class="lineNum">     161 </span><span class="lineNoCov">          0 :   for (auto &amp;&amp; [name, var] : output_variables())</span></a>
+<a name="162"><span class="lineNum">     162 </span><span class="lineNoCov">          0 :     vals[name] = var.tensor();</span></a>
+<a name="163"><span class="lineNum">     163 </span><span class="lineNoCov">          0 :   return vals;</span></a>
+<a name="164"><span class="lineNum">     164 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="165"><span class="lineNum">     165 </span>            : </a>
+<a name="166"><span class="lineNum">     166 </span>            : DerivMap</a>
+<a name="167"><span class="lineNum">     167 </span><span class="lineNoCov">          0 : VariableStore::collect_output_derivatives() const</span></a>
+<a name="168"><span class="lineNum">     168 </span>            : {</a>
+<a name="169"><span class="lineNum">     169 </span><span class="lineNoCov">          0 :   DerivMap derivs;</span></a>
+<a name="170"><span class="lineNum">     170 </span><span class="lineNoCov">          0 :   for (auto &amp;&amp; [name, var] : output_variables())</span></a>
+<a name="171"><span class="lineNum">     171 </span><span class="lineNoCov">          0 :     derivs[name] = var.derivatives();</span></a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineNoCov">          0 :   return derivs;</span></a>
+<a name="173"><span class="lineNum">     173 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="174"><span class="lineNum">     174 </span>            : </a>
+<a name="175"><span class="lineNum">     175 </span>            : SecDerivMap</a>
+<a name="176"><span class="lineNum">     176 </span><span class="lineNoCov">          0 : VariableStore::collect_output_second_derivatives() const</span></a>
+<a name="177"><span class="lineNum">     177 </span>            : {</a>
+<a name="178"><span class="lineNum">     178 </span><span class="lineNoCov">          0 :   SecDerivMap sec_derivs;</span></a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineNoCov">          0 :   for (auto &amp;&amp; [name, var] : output_variables())</span></a>
+<a name="180"><span class="lineNum">     180 </span><span class="lineNoCov">          0 :     sec_derivs[name] = var.second_derivatives();</span></a>
+<a name="181"><span class="lineNum">     181 </span><span class="lineNoCov">          0 :   return sec_derivs;</span></a>
+<a name="182"><span class="lineNum">     182 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="183"><span class="lineNum">     183 </span>            : </a>
+<a name="184"><span class="lineNum">     184 </span>            : } // namespace neml2</a>
 </pre>
       </td>
     </tr>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['paramtype_0',['ParamType',['../classneml2_1_1ElasticityTensor.html#a3a023c0c27667e78ae521eb64f1c7c81',1,'neml2::ElasticityTensor']]]
+  ['itype_0',['IType',['../classneml2_1_1SR2Invariant.html#a979d38b05f49ac1c94292c258ed4fb36',1,'neml2::SR2Invariant']]]
 ];

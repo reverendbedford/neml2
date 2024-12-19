@@ -150,8 +150,8 @@ Elasticity</h1>
 <div class="fragment"><div class="line">[Models]</div>
 <div class="line">  [model]</div>
 <div class="line">    type = LinearIsotropicElasticity</div>
-<div class="line">    youngs_modulus = 100</div>
-<div class="line">    poisson_ratio = 0.3</div>
+<div class="line">    coefficients = <span class="stringliteral">&#39;100 0.3&#39;</span></div>
+<div class="line">    coefficient_types = <span class="stringliteral">&#39;YOUNGS_MODULUS POISSONS_RATIO&#39;</span></div>
 <div class="line">  []</div>
 <div class="line">[]</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md28"></a>
@@ -182,8 +182,8 @@ Consistent plasticity</h2>
 <div class="line">  []</div>
 <div class="line">  [elasticity]</div>
 <div class="line">    type = LinearIsotropicElasticity</div>
-<div class="line">    youngs_modulus = 1e5</div>
-<div class="line">    poisson_ratio = 0.3</div>
+<div class="line">    coefficients = &#39;1e5 0.3&#39;</div>
+<div class="line">    coefficient_types = &#39;YOUNGS_MODULUS POISSONS_RATIO&#39;</div>
 <div class="line">  []</div>
 <div class="line">  [vonmises]</div>
 <div class="line">    type = SR2Invariant</div>
@@ -252,8 +252,8 @@ Viscoplasticity</h2>
 <div class="line">  []</div>
 <div class="line">  [elasticity]</div>
 <div class="line">    type = LinearIsotropicElasticity</div>
-<div class="line">    youngs_modulus = 1e5</div>
-<div class="line">    poisson_ratio = 0.3</div>
+<div class="line">    coefficients = &#39;1e5 0.3&#39;</div>
+<div class="line">    coefficient_types = &#39;YOUNGS_MODULUS POISSONS_RATIO&#39;</div>
 <div class="line">  []</div>
 <div class="line">  [vonmises]</div>
 <div class="line">    type = SR2Invariant</div>

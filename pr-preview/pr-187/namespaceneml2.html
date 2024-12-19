@@ -167,6 +167,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1CrystalMean.html">CrystalMean</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1CubicElasticityConverter.html">CubicElasticityConverter</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converter for linearized elastic constants assuming cubic symmetry.  <a href="classneml2_1_1CubicElasticityConverter.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1CubicElasticityTensor.html">CubicElasticityTensor</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define an cubic symmetry elasticity tensor in various ways.  <a href="classneml2_1_1CubicElasticityTensor.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -192,8 +195,11 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1Elasticity.html">Elasticity</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1ElasticityTensor.html">ElasticityTensor</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Superclass for defining elasticity tensors in terms of other parameters.  <a href="classneml2_1_1ElasticityTensor.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1ElasticityConverter.html">ElasticityConverter</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for converters responsible for converting between different parameterizations of the linear elasticity tensor in different symmetry groups.  <a href="classneml2_1_1ElasticityConverter.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1ElasticityInterface.html">ElasticityInterface</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interface for objects defining elasticity tensors in terms of other parameters.  <a href="classneml2_1_1ElasticityInterface.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1ElasticStrainRate.html">ElasticStrainRate</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the elastic strain rate from crystal model kinematics.  <a href="classneml2_1_1ElasticStrainRate.html#details">More...</a><br /></td></tr>
@@ -261,6 +267,9 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The base class for interpolated nonlinear parameter.  <a href="classneml2_1_1Interpolation.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structneml2_1_1IntraOpThread.html">IntraOpThread</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1IsotropicElasticityConverter.html">IsotropicElasticityConverter</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converter for linearized elastic constants assuming isotropic symmetry.  <a href="classneml2_1_1IsotropicElasticityConverter.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classneml2_1_1IsotropicElasticityTensor.html">IsotropicElasticityTensor</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define an isotropoic elasticity tensor in various ways.  <a href="classneml2_1_1IsotropicElasticityTensor.html#details">More...</a><br /></td></tr>
@@ -687,6 +696,22 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:ab600865ffa5d3681d723ef019d109535"><td class="mdescLeft">&#160;</td><td class="mdescRight">Role in a function definition.  <a href="#ab600865ffa5d3681d723ef019d109535">More...</a><br /></td></tr>
 <tr class="separator:ab600865ffa5d3681d723ef019d109535"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a341ec45d106079ad26352fd5912d5dd8" id="r_a341ec45d106079ad26352fd5912d5dd8"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a341ec45d106079ad26352fd5912d5dd8">ElasticConstant</a> : std::uint8_t { <br />
+&#160;&#160;<a class="el" href="#a341ec45d106079ad26352fd5912d5dd8accc0377a8afbf50e7094f5c23a8af223">INVALID</a> = 0
+, <a class="el" href="#a341ec45d106079ad26352fd5912d5dd8aa8539431d0cad436cc119d8bfb1ce511">LAME_LAMBDA</a> = 1
+, <a class="el" href="#a341ec45d106079ad26352fd5912d5dd8aa07b7de9748936bc5a62fc0e68ae7b00">BULK_MODULUS</a> = 2
+, <a class="el" href="#a341ec45d106079ad26352fd5912d5dd8a972fa2a1baf1fc1221cc43c9f8eb8725">SHEAR_MODULUS</a> = 3
+, <br />
+&#160;&#160;<a class="el" href="#a341ec45d106079ad26352fd5912d5dd8aa222f480b0c4c3139222259bcc7d879b">YOUNGS_MODULUS</a> = 4
+, <a class="el" href="#a341ec45d106079ad26352fd5912d5dd8a998f240e468b18558ee03fe396177b91">POISSONS_RATIO</a> = 5
+, <a class="el" href="#a341ec45d106079ad26352fd5912d5dd8a7b39e71b2711a11f2de7eb56d19fe08c">P_WAVE_MODULUS</a> = 6
+, <a class="el" href="#a341ec45d106079ad26352fd5912d5dd8a18ba88b152f31aeb6d96aa88396e5418">CUBIC_C1</a> = 7
+, <br />
+&#160;&#160;<a class="el" href="#a341ec45d106079ad26352fd5912d5dd8aeca3b043bb293cee684afbe1973adb7a">CUBIC_C2</a> = 8
+, <a class="el" href="#a341ec45d106079ad26352fd5912d5dd8aaf26005922148b8154e989cb3fe0f4ab">CUBIC_C3</a> = 9
+<br />
+ }</td></tr>
+<tr class="separator:a341ec45d106079ad26352fd5912d5dd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b44248b88341f8c9cafe5d9d822a443" id="r_a9b44248b88341f8c9cafe5d9d822a443"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9b44248b88341f8c9cafe5d9d822a443">TensorType</a> : int8_t { <a class="el" href="#a9b44248b88341f8c9cafe5d9d822a443a6c51418de157b011117e28b5e664dbfc">FOR_ALL_TENSORBASE_COMMA</a> =(_tensor_type_enum)
 , <a class="el" href="#a9b44248b88341f8c9cafe5d9d822a443aa938666e7a4985ce45a25b2435fceb2f">kUknown</a>
  }</td></tr>
@@ -769,6 +794,8 @@ Functions</h2></td></tr>
 <tr class="separator:a2a02d5549e37f169ab6c447daa61783a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac58e0691066621ddf669bfafb256337e" id="r_ac58e0691066621ddf669bfafb256337e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac58e0691066621ddf669bfafb256337e">register_NEML2_object</a> (<a class="el" href="#ab7e62237ad422c358ebd5bfccfcffdf2">SR2BackwardEulerTimeIntegration</a>)</td></tr>
 <tr class="separator:ac58e0691066621ddf669bfafb256337e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace1cc249596dc11892449a2fc9f21cb3" id="r_ace1cc249596dc11892449a2fc9f21cb3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ace1cc249596dc11892449a2fc9f21cb3">FOR_ALL_TENSORBASE</a> (BUFFERSTORE_INTANTIATE_TENSORBASE)</td></tr>
+<tr class="separator:ace1cc249596dc11892449a2fc9f21cb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b751ad476c986414a4138c57474b38a" id="r_a4b751ad476c986414a4138c57474b38a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4b751ad476c986414a4138c57474b38a">register_NEML2_object</a> (<a class="el" href="classneml2_1_1ComposedModel.html">ComposedModel</a>)</td></tr>
 <tr class="separator:a4b751ad476c986414a4138c57474b38a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f277fe618fd03d07f0bb0292d62cc33" id="r_a5f277fe618fd03d07f0bb0292d62cc33"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5f277fe618fd03d07f0bb0292d62cc33">FOR_ALL_PRIMITIVETENSOR</a> (CONSTANTPARAMETER_REGISTER)</td></tr>
@@ -825,6 +852,8 @@ Functions</h2></td></tr>
 <tr class="separator:adaf729acffee13165dd8eb67cc6b2687"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ef9141f823ee94f0db123cd8b87c91c" id="r_a8ef9141f823ee94f0db123cd8b87c91c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8ef9141f823ee94f0db123cd8b87c91c">FOR_ALL_PRIMITIVETENSOR</a> (NONLINEARPARAMETER_INSTANTIATE_PRIMITIVETENSOR)</td></tr>
 <tr class="separator:a8ef9141f823ee94f0db123cd8b87c91c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a352bfea755fedbe267e88b461b412d31" id="r_a352bfea755fedbe267e88b461b412d31"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a352bfea755fedbe267e88b461b412d31">FOR_ALL_TENSORBASE</a> (PARAMETERSTORE_INTANTIATE_TENSORBASE)</td></tr>
+<tr class="separator:a352bfea755fedbe267e88b461b412d31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9f997dfa58f0ffb1586a4ae3692ce55" id="r_aa9f997dfa58f0ffb1586a4ae3692ce55"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa9f997dfa58f0ffb1586a4ae3692ce55">FOR_ALL_PRIMITIVETENSOR</a> (PARAMETERSTORE_INTANTIATE_PRIMITIVETENSOR)</td></tr>
 <tr class="separator:aa9f997dfa58f0ffb1586a4ae3692ce55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a971f5596b814310e373ef874c816f3ce" id="r_a971f5596b814310e373ef874c816f3ce"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a971f5596b814310e373ef874c816f3ce">register_NEML2_object</a> (<a class="el" href="classneml2_1_1R2toSR2.html">R2toSR2</a>)</td></tr>
@@ -869,16 +898,20 @@ Functions</h2></td></tr>
 <tr class="separator:a0ee933458a058628ec04b9e7d2d51f24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afdb6713f5ff610c32c75a44a0f38e8ee" id="r_afdb6713f5ff610c32c75a44a0f38e8ee"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afdb6713f5ff610c32c75a44a0f38e8ee">register_NEML2_object</a> (<a class="el" href="classneml2_1_1CubicElasticityTensor.html">CubicElasticityTensor</a>)</td></tr>
 <tr class="separator:afdb6713f5ff610c32c75a44a0f38e8ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33090f578b0288d6b13651e54de13542" id="r_a33090f578b0288d6b13651e54de13542"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a33090f578b0288d6b13651e54de13542">register_NEML2_object</a> (<a class="el" href="classneml2_1_1FredrickArmstrongPlasticHardening.html">FredrickArmstrongPlasticHardening</a>)</td></tr>
-<tr class="separator:a33090f578b0288d6b13651e54de13542"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5424759a4a25bd0e2f60628d260abb81" id="r_a5424759a4a25bd0e2f60628d260abb81"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5424759a4a25bd0e2f60628d260abb81">name</a> (<a class="el" href="#a341ec45d106079ad26352fd5912d5dd8">ElasticConstant</a> <a class="el" href="classneml2_1_1CrossRef.html">p</a>)</td></tr>
+<tr class="separator:a5424759a4a25bd0e2f60628d260abb81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5aef17a4a1a9b5a83e77c19dbfcf8a39" id="r_a5aef17a4a1a9b5a83e77c19dbfcf8a39"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5aef17a4a1a9b5a83e77c19dbfcf8a39">register_NEML2_object</a> (<a class="el" href="classneml2_1_1GeneralElasticity.html">GeneralElasticity</a>)</td></tr>
 <tr class="separator:a5aef17a4a1a9b5a83e77c19dbfcf8a39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87d2a1951f51dd82cb626535eb7a9ced" id="r_a87d2a1951f51dd82cb626535eb7a9ced"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a87d2a1951f51dd82cb626535eb7a9ced">register_NEML2_object</a> (<a class="el" href="classneml2_1_1IsotropicElasticityTensor.html">IsotropicElasticityTensor</a>)</td></tr>
+<tr class="separator:a87d2a1951f51dd82cb626535eb7a9ced"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e1b385394198ea3d11a70db9428e254" id="r_a7e1b385394198ea3d11a70db9428e254"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7e1b385394198ea3d11a70db9428e254">register_NEML2_object</a> (<a class="el" href="classneml2_1_1LinearIsotropicElasticity.html">LinearIsotropicElasticity</a>)</td></tr>
+<tr class="separator:a7e1b385394198ea3d11a70db9428e254"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33090f578b0288d6b13651e54de13542" id="r_a33090f578b0288d6b13651e54de13542"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a33090f578b0288d6b13651e54de13542">register_NEML2_object</a> (<a class="el" href="classneml2_1_1FredrickArmstrongPlasticHardening.html">FredrickArmstrongPlasticHardening</a>)</td></tr>
+<tr class="separator:a33090f578b0288d6b13651e54de13542"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e0203a7e92762b8862bd94e1bcf9fc8" id="r_a4e0203a7e92762b8862bd94e1bcf9fc8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4e0203a7e92762b8862bd94e1bcf9fc8">register_NEML2_object</a> (<a class="el" href="classneml2_1_1GTNYieldFunction.html">GTNYieldFunction</a>)</td></tr>
 <tr class="separator:a4e0203a7e92762b8862bd94e1bcf9fc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd070bbb9e3f37a417b161605267b4bb" id="r_afd070bbb9e3f37a417b161605267b4bb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afd070bbb9e3f37a417b161605267b4bb">register_NEML2_object</a> (<a class="el" href="classneml2_1_1GursonCavitation.html">GursonCavitation</a>)</td></tr>
 <tr class="separator:afd070bbb9e3f37a417b161605267b4bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87d2a1951f51dd82cb626535eb7a9ced" id="r_a87d2a1951f51dd82cb626535eb7a9ced"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a87d2a1951f51dd82cb626535eb7a9ced">register_NEML2_object</a> (<a class="el" href="classneml2_1_1IsotropicElasticityTensor.html">IsotropicElasticityTensor</a>)</td></tr>
-<tr class="separator:a87d2a1951f51dd82cb626535eb7a9ced"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a433f90f3cfa88d20e10f31e8e0395c77" id="r_a433f90f3cfa88d20e10f31e8e0395c77"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a433f90f3cfa88d20e10f31e8e0395c77">register_NEML2_object</a> (<a class="el" href="classneml2_1_1IsotropicMandelStress.html">IsotropicMandelStress</a>)</td></tr>
 <tr class="separator:a433f90f3cfa88d20e10f31e8e0395c77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1328bffe7f4c016de4d7bcb51546fbda" id="r_a1328bffe7f4c016de4d7bcb51546fbda"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1328bffe7f4c016de4d7bcb51546fbda">register_NEML2_object</a> (<a class="el" href="classneml2_1_1KocksMeckingActivationEnergy.html">KocksMeckingActivationEnergy</a>)</td></tr>
@@ -893,8 +926,6 @@ Functions</h2></td></tr>
 <tr class="separator:ae5933c466250fc0fb8ba1fd7bd2a3dd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c54d448d174b6219b72081300b5243a" id="r_a2c54d448d174b6219b72081300b5243a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2c54d448d174b6219b72081300b5243a">register_NEML2_object</a> (<a class="el" href="classneml2_1_1KocksMeckingYieldStress.html">KocksMeckingYieldStress</a>)</td></tr>
 <tr class="separator:a2c54d448d174b6219b72081300b5243a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e1b385394198ea3d11a70db9428e254" id="r_a7e1b385394198ea3d11a70db9428e254"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7e1b385394198ea3d11a70db9428e254">register_NEML2_object</a> (<a class="el" href="classneml2_1_1LinearIsotropicElasticity.html">LinearIsotropicElasticity</a>)</td></tr>
-<tr class="separator:a7e1b385394198ea3d11a70db9428e254"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4610784c04c375190accad5d05e17c8" id="r_aa4610784c04c375190accad5d05e17c8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa4610784c04c375190accad5d05e17c8">register_NEML2_object</a> (<a class="el" href="classneml2_1_1LinearIsotropicElasticJ2TrialStressUpdate.html">LinearIsotropicElasticJ2TrialStressUpdate</a>)</td></tr>
 <tr class="separator:aa4610784c04c375190accad5d05e17c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab37cb8522bc6d9468afcda17f0fdcd37" id="r_ab37cb8522bc6d9468afcda17f0fdcd37"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab37cb8522bc6d9468afcda17f0fdcd37">register_NEML2_object</a> (<a class="el" href="classneml2_1_1LinearIsotropicHardening.html">LinearIsotropicHardening</a>)</td></tr>
@@ -1124,62 +1155,62 @@ Functions</h2></td></tr>
 <tr class="memitem:a757bea80125dd3f4605a70ef8e624ce0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1Tensor.html">Tensor</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a757bea80125dd3f4605a70ef8e624ce0">list_derivative_outer_product_ab</a> (<a class="el" href="classneml2_1_1CrossRef.html">F</a> &amp;&amp;<a class="el" href="classneml2_1_1CrossRef.html">f</a>, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">T1</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">T2</a> &amp;b)</td></tr>
 <tr class="memdesc:a757bea80125dd3f4605a70ef8e624ce0"><td class="mdescLeft">&#160;</td><td class="mdescRight">outer product on lists where both inputs are list tensors  <br /></td></tr>
 <tr class="separator:a757bea80125dd3f4605a70ef8e624ce0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ce2a882bb0b6240b194faacf81faba5" id="r_a2ce2a882bb0b6240b194faacf81faba5"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
-<tr class="memitem:a2ce2a882bb0b6240b194faacf81faba5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a2ce2a882bb0b6240b194faacf81faba5">operator+</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &amp;b)</td></tr>
+<tr class="memitem:a2ce2a882bb0b6240b194faacf81faba5" id="r_a2ce2a882bb0b6240b194faacf81faba5"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
+<tr class="memitem:a2ce2a882bb0b6240b194faacf81faba5"><td class="memTemplItemLeft" align="right" valign="top">Derived&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a2ce2a882bb0b6240b194faacf81faba5">operator+</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &amp;b)</td></tr>
 <tr class="separator:a2ce2a882bb0b6240b194faacf81faba5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7877510eaa6baf2d518f322a492c49cb" id="r_a7877510eaa6baf2d518f322a492c49cb"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
-<tr class="memitem:a7877510eaa6baf2d518f322a492c49cb"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a7877510eaa6baf2d518f322a492c49cb">operator+</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;b)</td></tr>
+<tr class="memitem:a7877510eaa6baf2d518f322a492c49cb" id="r_a7877510eaa6baf2d518f322a492c49cb"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
+<tr class="memitem:a7877510eaa6baf2d518f322a492c49cb"><td class="memTemplItemLeft" align="right" valign="top">Derived&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a7877510eaa6baf2d518f322a492c49cb">operator+</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;b)</td></tr>
 <tr class="separator:a7877510eaa6baf2d518f322a492c49cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26af0953f831b5c56a2bb0f459ce90ac" id="r_a26af0953f831b5c56a2bb0f459ce90ac"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
-<tr class="memitem:a26af0953f831b5c56a2bb0f459ce90ac"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a26af0953f831b5c56a2bb0f459ce90ac">operator-</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &amp;b)</td></tr>
+<tr class="memitem:a26af0953f831b5c56a2bb0f459ce90ac" id="r_a26af0953f831b5c56a2bb0f459ce90ac"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
+<tr class="memitem:a26af0953f831b5c56a2bb0f459ce90ac"><td class="memTemplItemLeft" align="right" valign="top">Derived&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a26af0953f831b5c56a2bb0f459ce90ac">operator-</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &amp;b)</td></tr>
 <tr class="separator:a26af0953f831b5c56a2bb0f459ce90ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d452b479328821ba79bcf4f7cc7fc90" id="r_a7d452b479328821ba79bcf4f7cc7fc90"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
-<tr class="memitem:a7d452b479328821ba79bcf4f7cc7fc90"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a7d452b479328821ba79bcf4f7cc7fc90">operator-</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;b)</td></tr>
+<tr class="memitem:a7d452b479328821ba79bcf4f7cc7fc90" id="r_a7d452b479328821ba79bcf4f7cc7fc90"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
+<tr class="memitem:a7d452b479328821ba79bcf4f7cc7fc90"><td class="memTemplItemLeft" align="right" valign="top">Derived&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a7d452b479328821ba79bcf4f7cc7fc90">operator-</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;b)</td></tr>
 <tr class="separator:a7d452b479328821ba79bcf4f7cc7fc90"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6bcd9d0a13f9da883d3acda48448a4cf" id="r_a6bcd9d0a13f9da883d3acda48448a4cf"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
-<tr class="memitem:a6bcd9d0a13f9da883d3acda48448a4cf"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a6bcd9d0a13f9da883d3acda48448a4cf">operator*</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &amp;b)</td></tr>
+<tr class="memitem:a6bcd9d0a13f9da883d3acda48448a4cf" id="r_a6bcd9d0a13f9da883d3acda48448a4cf"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
+<tr class="memitem:a6bcd9d0a13f9da883d3acda48448a4cf"><td class="memTemplItemLeft" align="right" valign="top">Derived&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a6bcd9d0a13f9da883d3acda48448a4cf">operator*</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &amp;b)</td></tr>
 <tr class="separator:a6bcd9d0a13f9da883d3acda48448a4cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a08fec6a2b93ce75fdd72bc168af9b913" id="r_a08fec6a2b93ce75fdd72bc168af9b913"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
-<tr class="memitem:a08fec6a2b93ce75fdd72bc168af9b913"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a08fec6a2b93ce75fdd72bc168af9b913">operator*</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;b)</td></tr>
+<tr class="memitem:a08fec6a2b93ce75fdd72bc168af9b913" id="r_a08fec6a2b93ce75fdd72bc168af9b913"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
+<tr class="memitem:a08fec6a2b93ce75fdd72bc168af9b913"><td class="memTemplItemLeft" align="right" valign="top">Derived&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a08fec6a2b93ce75fdd72bc168af9b913">operator*</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;b)</td></tr>
 <tr class="separator:a08fec6a2b93ce75fdd72bc168af9b913"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9607c95f046fe1abb739963043e86659" id="r_a9607c95f046fe1abb739963043e86659"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
-<tr class="memitem:a9607c95f046fe1abb739963043e86659"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a9607c95f046fe1abb739963043e86659">operator/</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &amp;b)</td></tr>
+<tr class="memitem:a9607c95f046fe1abb739963043e86659" id="r_a9607c95f046fe1abb739963043e86659"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
+<tr class="memitem:a9607c95f046fe1abb739963043e86659"><td class="memTemplItemLeft" align="right" valign="top">Derived&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a9607c95f046fe1abb739963043e86659">operator/</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &amp;b)</td></tr>
 <tr class="separator:a9607c95f046fe1abb739963043e86659"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b2f1e249178e27acfca410853162ae5" id="r_a7b2f1e249178e27acfca410853162ae5"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
-<tr class="memitem:a7b2f1e249178e27acfca410853162ae5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a7b2f1e249178e27acfca410853162ae5">operator/</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;b)</td></tr>
+<tr class="memitem:a7b2f1e249178e27acfca410853162ae5" id="r_a7b2f1e249178e27acfca410853162ae5"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
+<tr class="memitem:a7b2f1e249178e27acfca410853162ae5"><td class="memTemplItemLeft" align="right" valign="top">Derived&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a7b2f1e249178e27acfca410853162ae5">operator/</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;b)</td></tr>
 <tr class="separator:a7b2f1e249178e27acfca410853162ae5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a06befad6e7014420747836b8a3ed2b" id="r_a4a06befad6e7014420747836b8a3ed2b"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
-<tr class="memitem:a4a06befad6e7014420747836b8a3ed2b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a4a06befad6e7014420747836b8a3ed2b">operator+</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp;b)</td></tr>
+<tr class="memitem:a4a06befad6e7014420747836b8a3ed2b" id="r_a4a06befad6e7014420747836b8a3ed2b"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
+<tr class="memitem:a4a06befad6e7014420747836b8a3ed2b"><td class="memTemplItemLeft" align="right" valign="top">Derived&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a4a06befad6e7014420747836b8a3ed2b">operator+</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp;b)</td></tr>
 <tr class="separator:a4a06befad6e7014420747836b8a3ed2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06e2063634ebdd3581529ac6fd136c8c" id="r_a06e2063634ebdd3581529ac6fd136c8c"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
-<tr class="memitem:a06e2063634ebdd3581529ac6fd136c8c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a06e2063634ebdd3581529ac6fd136c8c">operator+</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;b)</td></tr>
+<tr class="memitem:a06e2063634ebdd3581529ac6fd136c8c" id="r_a06e2063634ebdd3581529ac6fd136c8c"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
+<tr class="memitem:a06e2063634ebdd3581529ac6fd136c8c"><td class="memTemplItemLeft" align="right" valign="top">Derived&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a06e2063634ebdd3581529ac6fd136c8c">operator+</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;b)</td></tr>
 <tr class="separator:a06e2063634ebdd3581529ac6fd136c8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37ec09650332ebc7ad2d6945ae981b37" id="r_a37ec09650332ebc7ad2d6945ae981b37"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
-<tr class="memitem:a37ec09650332ebc7ad2d6945ae981b37"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a37ec09650332ebc7ad2d6945ae981b37">operator+</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;b)</td></tr>
+<tr class="memitem:a37ec09650332ebc7ad2d6945ae981b37" id="r_a37ec09650332ebc7ad2d6945ae981b37"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
+<tr class="memitem:a37ec09650332ebc7ad2d6945ae981b37"><td class="memTemplItemLeft" align="right" valign="top">Derived&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a37ec09650332ebc7ad2d6945ae981b37">operator+</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;b)</td></tr>
 <tr class="separator:a37ec09650332ebc7ad2d6945ae981b37"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06e7406a3a63c03be1a5cf4c6d31edde" id="r_a06e7406a3a63c03be1a5cf4c6d31edde"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
-<tr class="memitem:a06e7406a3a63c03be1a5cf4c6d31edde"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a06e7406a3a63c03be1a5cf4c6d31edde">operator-</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp;b)</td></tr>
+<tr class="memitem:a06e7406a3a63c03be1a5cf4c6d31edde" id="r_a06e7406a3a63c03be1a5cf4c6d31edde"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
+<tr class="memitem:a06e7406a3a63c03be1a5cf4c6d31edde"><td class="memTemplItemLeft" align="right" valign="top">Derived&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a06e7406a3a63c03be1a5cf4c6d31edde">operator-</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp;b)</td></tr>
 <tr class="separator:a06e7406a3a63c03be1a5cf4c6d31edde"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ec8635818b302586643a063b39a7619" id="r_a7ec8635818b302586643a063b39a7619"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
-<tr class="memitem:a7ec8635818b302586643a063b39a7619"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a7ec8635818b302586643a063b39a7619">operator-</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;b)</td></tr>
+<tr class="memitem:a7ec8635818b302586643a063b39a7619" id="r_a7ec8635818b302586643a063b39a7619"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
+<tr class="memitem:a7ec8635818b302586643a063b39a7619"><td class="memTemplItemLeft" align="right" valign="top">Derived&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a7ec8635818b302586643a063b39a7619">operator-</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;b)</td></tr>
 <tr class="separator:a7ec8635818b302586643a063b39a7619"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60e7ef973fffc6838ea4c1f71b521ee5" id="r_a60e7ef973fffc6838ea4c1f71b521ee5"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
-<tr class="memitem:a60e7ef973fffc6838ea4c1f71b521ee5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a60e7ef973fffc6838ea4c1f71b521ee5">operator-</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;b)</td></tr>
+<tr class="memitem:a60e7ef973fffc6838ea4c1f71b521ee5" id="r_a60e7ef973fffc6838ea4c1f71b521ee5"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
+<tr class="memitem:a60e7ef973fffc6838ea4c1f71b521ee5"><td class="memTemplItemLeft" align="right" valign="top">Derived&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a60e7ef973fffc6838ea4c1f71b521ee5">operator-</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;b)</td></tr>
 <tr class="separator:a60e7ef973fffc6838ea4c1f71b521ee5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75faa8ba8411efc3b2b720d90a3fddea" id="r_a75faa8ba8411efc3b2b720d90a3fddea"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
-<tr class="memitem:a75faa8ba8411efc3b2b720d90a3fddea"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a75faa8ba8411efc3b2b720d90a3fddea">operator*</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp;b)</td></tr>
+<tr class="memitem:a75faa8ba8411efc3b2b720d90a3fddea" id="r_a75faa8ba8411efc3b2b720d90a3fddea"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
+<tr class="memitem:a75faa8ba8411efc3b2b720d90a3fddea"><td class="memTemplItemLeft" align="right" valign="top">Derived&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a75faa8ba8411efc3b2b720d90a3fddea">operator*</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp;b)</td></tr>
 <tr class="separator:a75faa8ba8411efc3b2b720d90a3fddea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acacddf9597ea9935a387cffc05ccb30c" id="r_acacddf9597ea9935a387cffc05ccb30c"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
-<tr class="memitem:acacddf9597ea9935a387cffc05ccb30c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#acacddf9597ea9935a387cffc05ccb30c">operator*</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;b)</td></tr>
+<tr class="memitem:acacddf9597ea9935a387cffc05ccb30c" id="r_acacddf9597ea9935a387cffc05ccb30c"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
+<tr class="memitem:acacddf9597ea9935a387cffc05ccb30c"><td class="memTemplItemLeft" align="right" valign="top">Derived&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#acacddf9597ea9935a387cffc05ccb30c">operator*</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;b)</td></tr>
 <tr class="separator:acacddf9597ea9935a387cffc05ccb30c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3d06b91fffb3208abbb7d784208a066" id="r_ac3d06b91fffb3208abbb7d784208a066"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
-<tr class="memitem:ac3d06b91fffb3208abbb7d784208a066"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ac3d06b91fffb3208abbb7d784208a066">operator/</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp;b)</td></tr>
+<tr class="memitem:ac3d06b91fffb3208abbb7d784208a066" id="r_ac3d06b91fffb3208abbb7d784208a066"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
+<tr class="memitem:ac3d06b91fffb3208abbb7d784208a066"><td class="memTemplItemLeft" align="right" valign="top">Derived&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ac3d06b91fffb3208abbb7d784208a066">operator/</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp;b)</td></tr>
 <tr class="separator:ac3d06b91fffb3208abbb7d784208a066"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a95337ba06254907327a00b77731cb5e2" id="r_a95337ba06254907327a00b77731cb5e2"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
-<tr class="memitem:a95337ba06254907327a00b77731cb5e2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a95337ba06254907327a00b77731cb5e2">operator/</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;b)</td></tr>
+<tr class="memitem:a95337ba06254907327a00b77731cb5e2" id="r_a95337ba06254907327a00b77731cb5e2"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
+<tr class="memitem:a95337ba06254907327a00b77731cb5e2"><td class="memTemplItemLeft" align="right" valign="top">Derived&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a95337ba06254907327a00b77731cb5e2">operator/</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;b)</td></tr>
 <tr class="separator:a95337ba06254907327a00b77731cb5e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72e3deadef97ff2d3f6211242c52731e" id="r_a72e3deadef97ff2d3f6211242c52731e"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
-<tr class="memitem:a72e3deadef97ff2d3f6211242c52731e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a72e3deadef97ff2d3f6211242c52731e">operator/</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;b)</td></tr>
+<tr class="memitem:a72e3deadef97ff2d3f6211242c52731e" id="r_a72e3deadef97ff2d3f6211242c52731e"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </td></tr>
+<tr class="memitem:a72e3deadef97ff2d3f6211242c52731e"><td class="memTemplItemLeft" align="right" valign="top">Derived&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a72e3deadef97ff2d3f6211242c52731e">operator/</a> (<a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;a, <a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;b)</td></tr>
 <tr class="separator:a72e3deadef97ff2d3f6211242c52731e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5dc0f0436baf0e6cc30954004f998e4" id="r_ae5dc0f0436baf0e6cc30954004f998e4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae5dc0f0436baf0e6cc30954004f998e4">FOR_ALL_TENSORBASE</a> (_tensor_type_enum_specialize)</td></tr>
 <tr class="separator:ae5dc0f0436baf0e6cc30954004f998e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1648,6 +1679,40 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a341ec45d106079ad26352fd5912d5dd8" name="a341ec45d106079ad26352fd5912d5dd8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a341ec45d106079ad26352fd5912d5dd8">&#9670;&#160;</a></span>ElasticConstant</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">enum</a> <a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="#a341ec45d106079ad26352fd5912d5dd8">ElasticConstant</a> : std::uint8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a341ec45d106079ad26352fd5912d5dd8accc0377a8afbf50e7094f5c23a8af223" name="a341ec45d106079ad26352fd5912d5dd8accc0377a8afbf50e7094f5c23a8af223"></a>INVALID&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a341ec45d106079ad26352fd5912d5dd8aa8539431d0cad436cc119d8bfb1ce511" name="a341ec45d106079ad26352fd5912d5dd8aa8539431d0cad436cc119d8bfb1ce511"></a>LAME_LAMBDA&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a341ec45d106079ad26352fd5912d5dd8aa07b7de9748936bc5a62fc0e68ae7b00" name="a341ec45d106079ad26352fd5912d5dd8aa07b7de9748936bc5a62fc0e68ae7b00"></a>BULK_MODULUS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a341ec45d106079ad26352fd5912d5dd8a972fa2a1baf1fc1221cc43c9f8eb8725" name="a341ec45d106079ad26352fd5912d5dd8a972fa2a1baf1fc1221cc43c9f8eb8725"></a>SHEAR_MODULUS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a341ec45d106079ad26352fd5912d5dd8aa222f480b0c4c3139222259bcc7d879b" name="a341ec45d106079ad26352fd5912d5dd8aa222f480b0c4c3139222259bcc7d879b"></a>YOUNGS_MODULUS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a341ec45d106079ad26352fd5912d5dd8a998f240e468b18558ee03fe396177b91" name="a341ec45d106079ad26352fd5912d5dd8a998f240e468b18558ee03fe396177b91"></a>POISSONS_RATIO&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a341ec45d106079ad26352fd5912d5dd8a7b39e71b2711a11f2de7eb56d19fe08c" name="a341ec45d106079ad26352fd5912d5dd8a7b39e71b2711a11f2de7eb56d19fe08c"></a>P_WAVE_MODULUS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a341ec45d106079ad26352fd5912d5dd8a18ba88b152f31aeb6d96aa88396e5418" name="a341ec45d106079ad26352fd5912d5dd8a18ba88b152f31aeb6d96aa88396e5418"></a>CUBIC_C1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a341ec45d106079ad26352fd5912d5dd8aeca3b043bb293cee684afbe1973adb7a" name="a341ec45d106079ad26352fd5912d5dd8aeca3b043bb293cee684afbe1973adb7a"></a>CUBIC_C2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a341ec45d106079ad26352fd5912d5dd8aaf26005922148b8154e989cb3fe0f4ab" name="a341ec45d106079ad26352fd5912d5dd8aaf26005922148b8154e989cb3fe0f4ab"></a>CUBIC_C3&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
 <a id="ab600865ffa5d3681d723ef019d109535" name="ab600865ffa5d3681d723ef019d109535"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab600865ffa5d3681d723ef019d109535">&#9670;&#160;</a></span>FType</h2>
 
@@ -2251,7 +2316,7 @@ template&lt;class... T&gt; </div>
 </div>
 </div>
 <a id="ae5dc0f0436baf0e6cc30954004f998e4" name="ae5dc0f0436baf0e6cc30954004f998e4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae5dc0f0436baf0e6cc30954004f998e4">&#9670;&#160;</a></span>FOR_ALL_TENSORBASE() <span class="overload">[1/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5dc0f0436baf0e6cc30954004f998e4">&#9670;&#160;</a></span>FOR_ALL_TENSORBASE() <span class="overload">[1/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2267,8 +2332,25 @@ template&lt;class... T&gt; </div>
 
 </div>
 </div>
+<a id="ace1cc249596dc11892449a2fc9f21cb3" name="ace1cc249596dc11892449a2fc9f21cb3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace1cc249596dc11892449a2fc9f21cb3">&#9670;&#160;</a></span>FOR_ALL_TENSORBASE() <span class="overload">[2/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FOR_ALL_TENSORBASE </td>
+          <td>(</td>
+          <td class="paramtype">BUFFERSTORE_INTANTIATE_TENSORBASE</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a01748f64c6cef2cd5d1fac05a7c778ed" name="a01748f64c6cef2cd5d1fac05a7c778ed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a01748f64c6cef2cd5d1fac05a7c778ed">&#9670;&#160;</a></span>FOR_ALL_TENSORBASE() <span class="overload">[2/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a01748f64c6cef2cd5d1fac05a7c778ed">&#9670;&#160;</a></span>FOR_ALL_TENSORBASE() <span class="overload">[3/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2285,7 +2367,7 @@ template&lt;class... T&gt; </div>
 </div>
 </div>
 <a id="ac50936df4a60bd70187a86dd8e2e956e" name="ac50936df4a60bd70187a86dd8e2e956e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac50936df4a60bd70187a86dd8e2e956e">&#9670;&#160;</a></span>FOR_ALL_TENSORBASE() <span class="overload">[3/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac50936df4a60bd70187a86dd8e2e956e">&#9670;&#160;</a></span>FOR_ALL_TENSORBASE() <span class="overload">[4/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2302,7 +2384,7 @@ template&lt;class... T&gt; </div>
 </div>
 </div>
 <a id="ac0467bed5f342fac9fee4ec1bdbf2c11" name="ac0467bed5f342fac9fee4ec1bdbf2c11"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac0467bed5f342fac9fee4ec1bdbf2c11">&#9670;&#160;</a></span>FOR_ALL_TENSORBASE() <span class="overload">[4/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0467bed5f342fac9fee4ec1bdbf2c11">&#9670;&#160;</a></span>FOR_ALL_TENSORBASE() <span class="overload">[5/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2319,7 +2401,7 @@ template&lt;class... T&gt; </div>
 </div>
 </div>
 <a id="a98f279f3c19bc275a4bcfc0aa2475b94" name="a98f279f3c19bc275a4bcfc0aa2475b94"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a98f279f3c19bc275a4bcfc0aa2475b94">&#9670;&#160;</a></span>FOR_ALL_TENSORBASE() <span class="overload">[5/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a98f279f3c19bc275a4bcfc0aa2475b94">&#9670;&#160;</a></span>FOR_ALL_TENSORBASE() <span class="overload">[6/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2328,6 +2410,23 @@ template&lt;class... T&gt; </div>
           <td class="memname">FOR_ALL_TENSORBASE </td>
           <td>(</td>
           <td class="paramtype">INSTANTIATE_VARIABLE</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a352bfea755fedbe267e88b461b412d31" name="a352bfea755fedbe267e88b461b412d31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a352bfea755fedbe267e88b461b412d31">&#9670;&#160;</a></span>FOR_ALL_TENSORBASE() <span class="overload">[7/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FOR_ALL_TENSORBASE </td>
+          <td>(</td>
+          <td class="paramtype">PARAMETERSTORE_INTANTIATE_TENSORBASE</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -2644,6 +2743,23 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
           <td class="memname"><a class="el" href="#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp; machine_precision </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5424759a4a25bd0e2f60628d260abb81" name="a5424759a4a25bd0e2f60628d260abb81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5424759a4a25bd0e2f60628d260abb81">&#9670;&#160;</a></span>name()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string name </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a341ec45d106079ad26352fd5912d5dd8">ElasticConstant</a></td>          <td class="paramname"><span class="paramname"><em>p</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -2991,12 +3107,12 @@ template&lt;typename... Args&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
+template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a> <a class="el" href="classneml2_1_1CrossRef.html">operator</a>* </td>
+          <td class="memname">Derived <a class="el" href="classneml2_1_1CrossRef.html">operator</a>* </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -3014,12 +3130,12 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class=
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
+template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a> <a class="el" href="classneml2_1_1CrossRef.html">operator</a>* </td>
+          <td class="memname">Derived <a class="el" href="classneml2_1_1CrossRef.html">operator</a>* </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -3129,17 +3245,17 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class=
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
+template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a> <a class="el" href="classneml2_1_1CrossRef.html">operator</a>* </td>
+          <td class="memname">Derived <a class="el" href="classneml2_1_1CrossRef.html">operator</a>* </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -3175,17 +3291,17 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class=
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
+template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a> <a class="el" href="classneml2_1_1CrossRef.html">operator</a>* </td>
+          <td class="memname">Derived <a class="el" href="classneml2_1_1CrossRef.html">operator</a>* </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -3326,17 +3442,17 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
+template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a> <a class="el" href="classneml2_1_1CrossRef.html">operator</a>+ </td>
+          <td class="memname">Derived <a class="el" href="classneml2_1_1CrossRef.html">operator</a>+ </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -3349,12 +3465,12 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class=
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
+template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a> <a class="el" href="classneml2_1_1CrossRef.html">operator</a>+ </td>
+          <td class="memname">Derived <a class="el" href="classneml2_1_1CrossRef.html">operator</a>+ </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -3372,12 +3488,12 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class=
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
+template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a> <a class="el" href="classneml2_1_1CrossRef.html">operator</a>+ </td>
+          <td class="memname">Derived <a class="el" href="classneml2_1_1CrossRef.html">operator</a>+ </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -3395,17 +3511,17 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class=
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
+template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a> <a class="el" href="classneml2_1_1CrossRef.html">operator</a>+ </td>
+          <td class="memname">Derived <a class="el" href="classneml2_1_1CrossRef.html">operator</a>+ </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -3418,17 +3534,17 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class=
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
+template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a> <a class="el" href="classneml2_1_1CrossRef.html">operator</a>+ </td>
+          <td class="memname">Derived <a class="el" href="classneml2_1_1CrossRef.html">operator</a>+ </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -3464,17 +3580,17 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
+template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a> <a class="el" href="classneml2_1_1CrossRef.html">operator</a>- </td>
+          <td class="memname">Derived <a class="el" href="classneml2_1_1CrossRef.html">operator</a>- </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -3487,12 +3603,12 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class=
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
+template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a> <a class="el" href="classneml2_1_1CrossRef.html">operator</a>- </td>
+          <td class="memname">Derived <a class="el" href="classneml2_1_1CrossRef.html">operator</a>- </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -3510,12 +3626,12 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class=
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
+template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a> <a class="el" href="classneml2_1_1CrossRef.html">operator</a>- </td>
+          <td class="memname">Derived <a class="el" href="classneml2_1_1CrossRef.html">operator</a>- </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -3533,17 +3649,17 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class=
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
+template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a> <a class="el" href="classneml2_1_1CrossRef.html">operator</a>- </td>
+          <td class="memname">Derived <a class="el" href="classneml2_1_1CrossRef.html">operator</a>- </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -3556,17 +3672,17 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class=
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
+template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a> <a class="el" href="classneml2_1_1CrossRef.html">operator</a>- </td>
+          <td class="memname">Derived <a class="el" href="classneml2_1_1CrossRef.html">operator</a>- </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -3602,17 +3718,17 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">typename</a> <a cla
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
+template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a> <a class="el" href="classneml2_1_1CrossRef.html">operator</a>/ </td>
+          <td class="memname">Derived <a class="el" href="classneml2_1_1CrossRef.html">operator</a>/ </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -3625,12 +3741,12 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class=
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
+template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a> <a class="el" href="classneml2_1_1CrossRef.html">operator</a>/ </td>
+          <td class="memname">Derived <a class="el" href="classneml2_1_1CrossRef.html">operator</a>/ </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -3648,12 +3764,12 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class=
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
+template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a> <a class="el" href="classneml2_1_1CrossRef.html">operator</a>/ </td>
+          <td class="memname">Derived <a class="el" href="classneml2_1_1CrossRef.html">operator</a>/ </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -3671,17 +3787,17 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class=
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
+template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a> <a class="el" href="classneml2_1_1CrossRef.html">operator</a>/ </td>
+          <td class="memname">Derived <a class="el" href="classneml2_1_1CrossRef.html">operator</a>/ </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="#a4b04262b81aa7d31eb5d2f607e2a35de">Real</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -3694,17 +3810,17 @@ template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class=
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
+template&lt;<a class="el" href="classneml2_1_1CrossRef.html">class</a> Derived , <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;!std::is_same_v&lt;Derived, Scalar&gt;&gt;, <a class="el" href="classneml2_1_1CrossRef.html">typename</a>  = typename std::enable_if_t&lt;std::is_base_of_v&lt;TensorBase&lt;Derived&gt;, Derived&gt;&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classneml2_1_1CrossRef.html">Derived</a> <a class="el" href="classneml2_1_1CrossRef.html">operator</a>/ </td>
+          <td class="memname">Derived <a class="el" href="classneml2_1_1CrossRef.html">operator</a>/ </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1Scalar.html">Scalar</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> <a class="el" href="classneml2_1_1CrossRef.html">Derived</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="classneml2_1_1CrossRef.html">const</a> Derived &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">

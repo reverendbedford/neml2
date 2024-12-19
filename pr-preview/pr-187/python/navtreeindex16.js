@@ -1,5 +1,7 @@
 var NAVTREEINDEX16 =
 {
+"classtensors_1_1WSR4BaseView.html#a43080b242de156a5409d4b58fc7d0c9c":[9,0,5,65,11],
+"classtensors_1_1WSR4BaseView.html#a43080b242de156a5409d4b58fc7d0c9c":[9,1,2,65,11],
 "classtensors_1_1WSR4BaseView.html#a456d216748fe14058921712ffaf56397":[9,1,2,65,1],
 "classtensors_1_1WSR4BaseView.html#a456d216748fe14058921712ffaf56397":[9,0,5,65,1],
 "classtensors_1_1WSR4BaseView.html#a4dbf39495ddf9c8c87b3f05cfcef14bb":[9,1,2,65,10],
@@ -247,7 +249,5 @@ var NAVTREEINDEX16 =
 "namespacemath.html#a0cb7d7089659e932852515d9694e6f75":[9,0,3,76],
 "namespacemath.html#a0d52c66a84821d106cb3a2b3067879ee":[9,0,3,269],
 "namespacemath.html#a0d724eb69423fbfec00d4d402332b93b":[9,0,3,75],
-"namespacemath.html#a0e4b5aa6abaf3832018391ea4b8f9a7b":[9,0,3,177],
-"namespacemath.html#a0eca0a0bd0dbdd4f06c881c5b9a4b888":[9,0,3,353],
-"namespacemath.html#a0f29f95537a2cff87c2dfedd3f290a1f":[9,0,3,374]
+"namespacemath.html#a0e4b5aa6abaf3832018391ea4b8f9a7b":[9,0,3,177]
 };
