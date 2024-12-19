@@ -153,6 +153,7 @@ var annotated =
       [ "SolvingNonlinearSystem", "structneml2_1_1SolvingNonlinearSystem.html", "structneml2_1_1SolvingNonlinearSystem" ],
       [ "SR2", "classneml2_1_1SR2.html", "classneml2_1_1SR2" ],
       [ "SR2Invariant", "classneml2_1_1SR2Invariant.html", "classneml2_1_1SR2Invariant" ],
+      [ "SR2toR2", "classneml2_1_1SR2toR2.html", "classneml2_1_1SR2toR2" ],
       [ "SSFR5", "classneml2_1_1SSFR5.html", null ],
       [ "SSR4", "classneml2_1_1SSR4.html", "classneml2_1_1SSR4" ],
       [ "SSSSR8", "classneml2_1_1SSSSR8.html", null ],
