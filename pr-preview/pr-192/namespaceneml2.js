@@ -7,7 +7,7 @@ var namespaceneml2 =
     ] ],
     [ "math", "namespaceneml2_1_1math.html", "namespaceneml2_1_1math" ],
     [ "utils", "namespaceneml2_1_1utils.html", [
-      [ "add_shapes", "namespaceneml2_1_1utils.html#a39eba50b2ce9eee228416c8ab4da7480", null ],
+      [ "add_shapes", "namespaceneml2_1_1utils.html#a6bdd32c38ddec0687c3d76bc94d66aaf", null ],
       [ "add_traceable_shapes", "namespaceneml2_1_1utils.html#a5038130bc61694a5e72e2db5257367f0", null ],
       [ "broadcast_batch_sizes", "namespaceneml2_1_1utils.html#a214101736bbb02516bdf2343235bb954", null ],
       [ "broadcast_sizes", "namespaceneml2_1_1utils.html#a5e87e925c45a555eeb66651f64eea064", null ],

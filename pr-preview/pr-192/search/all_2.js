@@ -13,7 +13,7 @@ var searchData=
   ['add_10',['add',['../classneml2_1_1Registry.html#adadcce9759678b439278443b8caea939',1,'neml2::Registry']]],
   ['add_5fadditional_5foutbound_5fitem_11',['add_additional_outbound_item',['../classneml2_1_1DependencyResolver.html#a4224c5895e0b6e80da6234b4e91678fd',1,'neml2::DependencyResolver']]],
   ['add_5fnode_12',['add_node',['../classneml2_1_1DependencyResolver.html#acb0aa5aef7ca2b96310dd488f657c7b1',1,'neml2::DependencyResolver']]],
-  ['add_5fshapes_13',['add_shapes',['../namespaceneml2_1_1utils.html#a39eba50b2ce9eee228416c8ab4da7480',1,'neml2::utils']]],
+  ['add_5fshapes_13',['add_shapes',['../namespaceneml2_1_1utils.html#a6bdd32c38ddec0687c3d76bc94d66aaf',1,'neml2::utils']]],
   ['add_5fsubaxis_14',['add_subaxis',['../classneml2_1_1LabeledAxis.html#a9ef3dbd45723da48b2e5430e5cda5761',1,'neml2::LabeledAxis']]],
   ['add_5ftraceable_5fshapes_15',['add_traceable_shapes',['../namespaceneml2_1_1utils.html#a5038130bc61694a5e72e2db5257367f0',1,'neml2::utils']]],
   ['add_5fvariable_16',['add_variable',['../classneml2_1_1LabeledAxis.html#a07d759b9d2d1837b012e9fd490bccce6',1,'neml2::LabeledAxis::add_variable(const LabeledAxisAccessor &amp;name, Size sz)'],['../classneml2_1_1LabeledAxis.html#ae8cc456982cf10887ad621134aa2b672',1,'neml2::LabeledAxis::add_variable(const LabeledAxisAccessor &amp;name)']]],
