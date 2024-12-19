@@ -1,5 +1,5 @@
 <map id="LiquidProductDiffusion1D" name="LiquidProductDiffusion1D">
-<area shape="rect" id="Node000001" title=" " alt="" coords="488,169,675,194"/>
+<area shape="rect" id="Node000001" title="Define the growth of the product thickness, based on 1D diffusion in a semi&#45;infinite medium." alt="" coords="488,169,675,194"/>
 <area shape="rect" id="Node000002" href="$classneml2_1_1Model.html" title="The base class for all constitutive models." alt="" coords="377,169,440,194"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="454,179,488,179,488,184,454,184"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="169,5,323,45"/>

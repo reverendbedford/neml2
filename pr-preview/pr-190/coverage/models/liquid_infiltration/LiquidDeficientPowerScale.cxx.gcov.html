@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-19 15:39:20</td>
+            <td class="headerValue">2024-12-19 21:43:22</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -101,20 +101,20 @@
 <a name="39"><span class="lineNum">      39 </span><span class="lineCov">          5 :       &quot;Current implementation assumed a simple power scale \\f$ \\frac{h_{Si}}{h_{SiC}}^p \\f$&quot;;</span></a>
 <a name="40"><span class="lineNum">      40 </span>            : </a>
 <a name="41"><span class="lineNum">      41 </span><span class="lineCov">          5 :   options.set_parameter&lt;CrossRef&lt;Scalar&gt;&gt;(&quot;liquid_molar_volume&quot;);</span></a>
-<a name="42"><span class="lineNum">      42 </span><span class="lineCov">          5 :   options.set(&quot;liquid_molar_volume&quot;).doc() = &quot;Infiltrated liquid's molar volume (mol/V).&quot;;</span></a>
-<a name="43"><span class="lineNum">      43 </span>            : </a>
-<a name="44"><span class="lineNum">      44 </span><span class="lineCov">          5 :   options.set_parameter&lt;CrossRef&lt;Scalar&gt;&gt;(&quot;power&quot;);</span></a>
-<a name="45"><span class="lineNum">      45 </span><span class="lineCov">          5 :   options.set(&quot;power&quot;).doc() = &quot;Power p in the model.&quot;;</span></a>
-<a name="46"><span class="lineNum">      46 </span>            : </a>
-<a name="47"><span class="lineNum">      47 </span><span class="lineCov">          5 :   options.set_input(&quot;inlet_gap&quot;) = VariableName(&quot;state&quot;, &quot;r1&quot;);</span></a>
-<a name="48"><span class="lineNum">      48 </span><span class="lineCov">          5 :   options.set(&quot;inlet_gap&quot;).doc() = &quot;The width of the RVE's inlet.&quot;;</span></a>
-<a name="49"><span class="lineNum">      49 </span>            : </a>
-<a name="50"><span class="lineNum">      50 </span><span class="lineCov">          5 :   options.set_input(&quot;product_height&quot;) = VariableName(&quot;state&quot;, &quot;h&quot;);</span></a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">          5 :   options.set(&quot;product_height&quot;).doc() = &quot;The product's height in the RVE.&quot;;</span></a>
-<a name="52"><span class="lineNum">      52 </span>            : </a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">          5 :   options.set_input(&quot;liquid_saturation&quot;) = VariableName(&quot;state&quot;, &quot;alpha&quot;);</span></a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">         10 :   options.set(&quot;liquid_saturation&quot;).doc() =</span></a>
-<a name="55"><span class="lineNum">      55 </span><span class="lineCov">          5 :       &quot;The current amount of the infiltrated liquid in the RVE.&quot;;</span></a>
+<a name="42"><span class="lineNum">      42 </span><span class="lineCov">         10 :   options.set(&quot;liquid_molar_volume&quot;).doc() =</span></a>
+<a name="43"><span class="lineNum">      43 </span><span class="lineCov">          5 :       &quot;Infiltrated liquid's molar volume, units of molar mass per volume.&quot;;</span></a>
+<a name="44"><span class="lineNum">      44 </span>            : </a>
+<a name="45"><span class="lineNum">      45 </span><span class="lineCov">          5 :   options.set_parameter&lt;CrossRef&lt;Scalar&gt;&gt;(&quot;power&quot;);</span></a>
+<a name="46"><span class="lineNum">      46 </span><span class="lineCov">          5 :   options.set(&quot;power&quot;).doc() = &quot;Power p in the model.&quot;;</span></a>
+<a name="47"><span class="lineNum">      47 </span>            : </a>
+<a name="48"><span class="lineNum">      48 </span><span class="lineCov">          5 :   options.set_input(&quot;inlet_gap&quot;) = VariableName(&quot;state&quot;, &quot;r1&quot;);</span></a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineCov">          5 :   options.set(&quot;inlet_gap&quot;).doc() = &quot;The width of the inlet.&quot;;</span></a>
+<a name="50"><span class="lineNum">      50 </span>            : </a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineCov">          5 :   options.set_input(&quot;product_height&quot;) = VariableName(&quot;state&quot;, &quot;h&quot;);</span></a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineCov">          5 :   options.set(&quot;product_height&quot;).doc() = &quot;The product's height.&quot;;</span></a>
+<a name="53"><span class="lineNum">      53 </span>            : </a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          5 :   options.set_input(&quot;liquid_saturation&quot;) = VariableName(&quot;state&quot;, &quot;alpha&quot;);</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">          5 :   options.set(&quot;liquid_saturation&quot;).doc() = &quot;The current amount of the infiltrated liquid.&quot;;</span></a>
 <a name="56"><span class="lineNum">      56 </span>            : </a>
 <a name="57"><span class="lineNum">      57 </span><span class="lineCov">          5 :   options.set_output(&quot;scale&quot;) = VariableName(&quot;state&quot;, &quot;scale&quot;);</span></a>
 <a name="58"><span class="lineNum">      58 </span><span class="lineCov">          5 :   options.set(&quot;scale&quot;).doc() = &quot;Scaling relation of the model.&quot;;</span></a>

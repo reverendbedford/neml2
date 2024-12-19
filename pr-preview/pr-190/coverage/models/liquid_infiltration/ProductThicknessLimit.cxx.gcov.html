@@ -31,13 +31,13 @@
             <td class="headerValue">coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">14</td>
-            <td class="headerCovTableEntry">31</td>
-            <td class="headerCovTableEntryLo">45.2 %</td>
+            <td class="headerCovTableEntry">13</td>
+            <td class="headerCovTableEntry">30</td>
+            <td class="headerCovTableEntryLo">43.3 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-19 15:39:20</td>
+            <td class="headerValue">2024-12-19 21:43:22</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -98,52 +98,51 @@
 <a name="36"><span class="lineNum">      36 </span><span class="lineCov">          5 :   options.doc() = &quot;Maximum allowable thickness for the product.&quot;;</span></a>
 <a name="37"><span class="lineNum">      37 </span>            : </a>
 <a name="38"><span class="lineNum">      38 </span><span class="lineCov">          5 :   options.set_parameter&lt;CrossRef&lt;Scalar&gt;&gt;(&quot;initial_porosity&quot;);</span></a>
-<a name="39"><span class="lineNum">      39 </span><span class="lineCov">         10 :   options.set(&quot;initial_porosity&quot;).doc() =</span></a>
-<a name="40"><span class="lineNum">      40 </span><span class="lineCov">          5 :       &quot;Initial porosity of the RVE in the absence of product and liquid.&quot;;</span></a>
-<a name="41"><span class="lineNum">      41 </span>            : </a>
-<a name="42"><span class="lineNum">      42 </span><span class="lineCov">          5 :   options.set_parameter&lt;CrossRef&lt;Scalar&gt;&gt;(&quot;product_thickness_growth_ratio&quot;);</span></a>
-<a name="43"><span class="lineNum">      43 </span><span class="lineCov">         10 :   options.set(&quot;product_thickness_growth_ratio&quot;).doc() =</span></a>
-<a name="44"><span class="lineNum">      44 </span>            :       &quot;Volume expansion ratio towards the liquid from the product - solid reactions.&quot;</a>
-<a name="45"><span class="lineNum">      45 </span><span class="lineCov">          5 :       &quot;Value should be between 0 and 1. For Si + C -&gt; SiC, set this to 0.576.&quot;;</span></a>
-<a name="46"><span class="lineNum">      46 </span>            : </a>
-<a name="47"><span class="lineNum">      47 </span><span class="lineCov">          5 :   options.set_input(&quot;product_thickness&quot;) = VariableName(&quot;state&quot;, &quot;delta&quot;);</span></a>
-<a name="48"><span class="lineNum">      48 </span><span class="lineCov">          5 :   options.set(&quot;product_thickness&quot;).doc() = &quot;Thickness of the product in the RVE&quot;;</span></a>
-<a name="49"><span class="lineNum">      49 </span>            : </a>
-<a name="50"><span class="lineNum">      50 </span><span class="lineCov">          5 :   options.set_output(&quot;limit_ratio&quot;) = VariableName(&quot;state&quot;, &quot;dratio&quot;);</span></a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">          5 :   options.set(&quot;limit_ratio&quot;).doc() = &quot;Maximum allowable thickness for the product.&quot;;</span></a>
-<a name="52"><span class="lineNum">      52 </span>            : </a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">          5 :   return options;</span></a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="55"><span class="lineNum">      55 </span>            : </a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineNoCov">          0 : ProductThicknessLimit::ProductThicknessLimit(const OptionSet &amp; options)</span></a>
-<a name="57"><span class="lineNum">      57 </span>            :   : Model(options),</a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineNoCov">          0 :     _phi0(declare_parameter&lt;Scalar&gt;(&quot;phi0&quot;, &quot;initial_porosity&quot;)),</span></a>
-<a name="59"><span class="lineNum">      59 </span><span class="lineNoCov">          0 :     _M(declare_parameter&lt;Scalar&gt;(&quot;M&quot;, &quot;product_thickness_growth_ratio&quot;)),</span></a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineNoCov">          0 :     _sqrtd(declare_input_variable&lt;Scalar&gt;(&quot;product_thickness&quot;)),</span></a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineNoCov">          0 :     _dra(declare_output_variable&lt;Scalar&gt;(&quot;limit_ratio&quot;))</span></a>
-<a name="62"><span class="lineNum">      62 </span>            : {</a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="64"><span class="lineNum">      64 </span>            : </a>
-<a name="65"><span class="lineNum">      65 </span>            : void</a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineNoCov">          0 : ProductThicknessLimit::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
-<a name="67"><span class="lineNum">      67 </span>            : {</a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineNoCov">          0 :   neml_assert_dbg(!d2out_din2, &quot;Second derivative not implemented.&quot;);</span></a>
-<a name="69"><span class="lineNum">      69 </span>            : </a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineNoCov">          0 :   auto limit1 = (1.0 - math::sqrt(_phi0)) / (1.0 - _M + machine_precision());</span></a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineNoCov">          0 :   auto limit2 = math::sqrt(_phi0) / (_M + machine_precision());</span></a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineNoCov">          0 :   auto dlimit = math::where(limit1 &lt; limit2, limit1, limit2);</span></a>
-<a name="73"><span class="lineNum">      73 </span>            : </a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineNoCov">          0 :   if (out)</span></a>
-<a name="75"><span class="lineNum">      75 </span>            :   {</a>
-<a name="76"><span class="lineNum">      76 </span><span class="lineNoCov">          0 :     _dra = _sqrtd * _sqrtd / (dlimit + machine_precision());</span></a>
-<a name="77"><span class="lineNum">      77 </span>            :   }</a>
-<a name="78"><span class="lineNum">      78 </span>            : </a>
-<a name="79"><span class="lineNum">      79 </span><span class="lineNoCov">          0 :   if (dout_din)</span></a>
-<a name="80"><span class="lineNum">      80 </span>            :   {</a>
-<a name="81"><span class="lineNum">      81 </span><span class="lineNoCov">          0 :     _dra.d(_sqrtd) = 2.0 * _sqrtd / (dlimit + machine_precision());</span></a>
-<a name="82"><span class="lineNum">      82 </span>            :   }</a>
-<a name="83"><span class="lineNum">      83 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="84"><span class="lineNum">      84 </span>            : }</a>
+<a name="39"><span class="lineNum">      39 </span><span class="lineCov">          5 :   options.set(&quot;initial_porosity&quot;).doc() = &quot;Initial porosity in the absence of product and liquid.&quot;;</span></a>
+<a name="40"><span class="lineNum">      40 </span>            : </a>
+<a name="41"><span class="lineNum">      41 </span><span class="lineCov">          5 :   options.set_parameter&lt;CrossRef&lt;Scalar&gt;&gt;(&quot;product_thickness_growth_ratio&quot;);</span></a>
+<a name="42"><span class="lineNum">      42 </span><span class="lineCov">         10 :   options.set(&quot;product_thickness_growth_ratio&quot;).doc() =</span></a>
+<a name="43"><span class="lineNum">      43 </span>            :       &quot;Volume expansion ratio towards the liquid from the product - solid reactions.&quot;</a>
+<a name="44"><span class="lineNum">      44 </span><span class="lineCov">          5 :       &quot;Value should be between 0 and 1. For Si + C -&gt; SiC, set this to 0.576.&quot;;</span></a>
+<a name="45"><span class="lineNum">      45 </span>            : </a>
+<a name="46"><span class="lineNum">      46 </span><span class="lineCov">          5 :   options.set_input(&quot;product_thickness&quot;) = VariableName(&quot;state&quot;, &quot;delta&quot;);</span></a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineCov">          5 :   options.set(&quot;product_thickness&quot;).doc() = &quot;Thickness of the product.&quot;;</span></a>
+<a name="48"><span class="lineNum">      48 </span>            : </a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineCov">          5 :   options.set_output(&quot;limit_ratio&quot;) = VariableName(&quot;state&quot;, &quot;dratio&quot;);</span></a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineCov">          5 :   options.set(&quot;limit_ratio&quot;).doc() = &quot;Maximum allowable thickness for the product.&quot;;</span></a>
+<a name="51"><span class="lineNum">      51 </span>            : </a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineCov">          5 :   return options;</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="54"><span class="lineNum">      54 </span>            : </a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineNoCov">          0 : ProductThicknessLimit::ProductThicknessLimit(const OptionSet &amp; options)</span></a>
+<a name="56"><span class="lineNum">      56 </span>            :   : Model(options),</a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineNoCov">          0 :     _phi0(declare_parameter&lt;Scalar&gt;(&quot;phi0&quot;, &quot;initial_porosity&quot;)),</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineNoCov">          0 :     _M(declare_parameter&lt;Scalar&gt;(&quot;M&quot;, &quot;product_thickness_growth_ratio&quot;)),</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineNoCov">          0 :     _sqrtd(declare_input_variable&lt;Scalar&gt;(&quot;product_thickness&quot;)),</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineNoCov">          0 :     _dra(declare_output_variable&lt;Scalar&gt;(&quot;limit_ratio&quot;))</span></a>
+<a name="61"><span class="lineNum">      61 </span>            : {</a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="63"><span class="lineNum">      63 </span>            : </a>
+<a name="64"><span class="lineNum">      64 </span>            : void</a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineNoCov">          0 : ProductThicknessLimit::set_value(bool out, bool dout_din, bool d2out_din2)</span></a>
+<a name="66"><span class="lineNum">      66 </span>            : {</a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineNoCov">          0 :   neml_assert_dbg(!d2out_din2, &quot;Second derivative not implemented.&quot;);</span></a>
+<a name="68"><span class="lineNum">      68 </span>            : </a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineNoCov">          0 :   auto limit1 = (1.0 - math::sqrt(_phi0)) / (1.0 - _M + machine_precision());</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineNoCov">          0 :   auto limit2 = math::sqrt(_phi0) / (_M + machine_precision());</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineNoCov">          0 :   auto dlimit = math::where(limit1 &lt; limit2, limit1, limit2);</span></a>
+<a name="72"><span class="lineNum">      72 </span>            : </a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineNoCov">          0 :   if (out)</span></a>
+<a name="74"><span class="lineNum">      74 </span>            :   {</a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineNoCov">          0 :     _dra = _sqrtd * _sqrtd / (dlimit + machine_precision());</span></a>
+<a name="76"><span class="lineNum">      76 </span>            :   }</a>
+<a name="77"><span class="lineNum">      77 </span>            : </a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineNoCov">          0 :   if (dout_din)</span></a>
+<a name="79"><span class="lineNum">      79 </span>            :   {</a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineNoCov">          0 :     _dra.d(_sqrtd) = 2.0 * _sqrtd / (dlimit + machine_precision());</span></a>
+<a name="81"><span class="lineNum">      81 </span>            :   }</a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="83"><span class="lineNum">      83 </span>            : }</a>
 </pre>
       </td>
     </tr>

@@ -12,7 +12,7 @@
 <area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="226,534,232,473,248,394,262,351,281,310,305,272,336,239,354,226,374,218,415,212,416,217,376,224,356,231,339,243,310,275,286,313,267,353,254,395,237,474,231,535"/>
 <area shape="rect" id="Node000008" href="$classneml2_1_1FillWR2.html" title="Create a filled WR2 from the input file." alt="" coords="413,252,484,277"/>
 <area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="227,534,237,481,255,415,270,380,287,346,309,315,336,288,353,276,373,269,412,262,413,267,375,274,356,281,339,292,313,319,292,349,274,382,260,417,242,483,233,535"/>
-<area shape="rect" id="Node000009" href="$classneml2_1_1FromTorchScript.html" title=" " alt="" coords="385,301,512,327"/>
+<area shape="rect" id="Node000009" href="$classneml2_1_1FromTorchScript.html" title="Read the tensors provided by a torch script file." alt="" coords="385,301,512,327"/>
 <area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="230,534,242,491,263,437,293,383,313,359,336,337,359,324,384,316,386,321,361,329,339,341,317,362,298,386,267,439,247,492,235,535"/>
 <area shape="rect" id="Node000012" href="$classneml2_1_1FullPrimitiveTensor.html" title="Create a full PrimitiveTensor of type T from the input file." alt="" coords="357,351,541,376"/>
 <area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="234,534,249,500,270,460,299,420,336,386,360,374,363,378,339,391,303,424,275,463,253,502,239,536"/>

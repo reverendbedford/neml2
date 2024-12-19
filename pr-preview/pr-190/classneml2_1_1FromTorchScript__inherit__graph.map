@@ -1,5 +1,5 @@
 <map id="FromTorchScript" name="FromTorchScript">
-<area shape="rect" id="Node000001" title=" " alt="" coords="139,152,265,177"/>
+<area shape="rect" id="Node000001" title="Read the tensors provided by a torch script file." alt="" coords="139,152,265,177"/>
 <area shape="rect" id="Node000004" href="$classneml2_1_1PrimitiveTensorFromTorchScript.html" title=" " alt="" coords="5,225,196,265"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="178,188,127,227,123,223,175,184"/>
 <area shape="rect" id="Node000005" href="$classneml2_1_1TensorFromTorchScript.html" title=" " alt="" coords="221,233,389,258"/>

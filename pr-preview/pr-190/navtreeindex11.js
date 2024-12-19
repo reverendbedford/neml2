@@ -1,5 +1,11 @@
 var NAVTREEINDEX11 =
 {
+"classneml2_1_1VariableStore.html#a2647f65e963a43929ba79bb6bb7dd7ac":[8,1,0,178,10],
+"classneml2_1_1VariableStore.html#a2bffc50bb9f876fc0393024042634394":[8,0,0,180,12],
+"classneml2_1_1VariableStore.html#a2bffc50bb9f876fc0393024042634394":[8,1,0,178,12],
+"classneml2_1_1VariableStore.html#a2d9f99f12586a01813872a32fd12c893":[8,0,0,180,5],
+"classneml2_1_1VariableStore.html#a2d9f99f12586a01813872a32fd12c893":[8,1,0,178,5],
+"classneml2_1_1VariableStore.html#a3b95f80628615e9fd70b3b8da7dc656f":[8,0,0,180,3],
 "classneml2_1_1VariableStore.html#a3b95f80628615e9fd70b3b8da7dc656f":[8,1,0,178,3],
 "classneml2_1_1VariableStore.html#a5211b18ee35729050e2d1d237a73c655":[8,0,0,180,26],
 "classneml2_1_1VariableStore.html#a5211b18ee35729050e2d1d237a73c655":[8,1,0,178,26],
@@ -205,8 +211,8 @@ var NAVTREEINDEX11 =
 "classneml2_1_1crystallography_1_1CrystalGeometry.html#a36bd73f4c085e0bb5a0a8695405dff24":[8,0,0,0,1,10],
 "classneml2_1_1crystallography_1_1CrystalGeometry.html#a513ecb69529b1e45d7927050805ea4fc":[8,0,0,0,1,18],
 "classneml2_1_1crystallography_1_1CrystalGeometry.html#a513ecb69529b1e45d7927050805ea4fc":[8,1,0,0,0,18],
-"classneml2_1_1crystallography_1_1CrystalGeometry.html#a52d799713603083bd5d375d255defe33":[8,0,0,0,1,3],
 "classneml2_1_1crystallography_1_1CrystalGeometry.html#a52d799713603083bd5d375d255defe33":[8,1,0,0,0,3],
+"classneml2_1_1crystallography_1_1CrystalGeometry.html#a52d799713603083bd5d375d255defe33":[8,0,0,0,1,3],
 "classneml2_1_1crystallography_1_1CrystalGeometry.html#a535a6b43fbd97119ba65e2136045e867":[8,0,0,0,1,12],
 "classneml2_1_1crystallography_1_1CrystalGeometry.html#a535a6b43fbd97119ba65e2136045e867":[8,1,0,0,0,12],
 "classneml2_1_1crystallography_1_1CrystalGeometry.html#a6e6ca00752e0b1f1e377b78c81df8d1c":[8,1,0,0,0,9],
@@ -243,11 +249,5 @@ var NAVTREEINDEX11 =
 "classneml2_1_1crystallography_1_1FillMillerIndex.html#afca1c70d1c8ecb06e2ffd205a4a71585":[8,1,0,0,2,0],
 "classneml2_1_1crystallography_1_1SymmetryFromOrbifold.html":[8,1,0,0,3],
 "classneml2_1_1crystallography_1_1SymmetryFromOrbifold.html":[8,0,0,0,4],
-"classneml2_1_1crystallography_1_1SymmetryFromOrbifold.html#a0e4da24515aef9f2e79bf3cefbf68aa7":[8,0,0,0,4,0],
-"classneml2_1_1crystallography_1_1SymmetryFromOrbifold.html#a0e4da24515aef9f2e79bf3cefbf68aa7":[8,1,0,0,3,0],
-"cpp-backend.html":[2,1],
-"custom-model.html":[3,2],
-"dev-env.html":[3,0],
-"faq.html":[7],
-"index.html":[]
+"classneml2_1_1crystallography_1_1SymmetryFromOrbifold.html#a0e4da24515aef9f2e79bf3cefbf68aa7":[8,0,0,0,4,0]
 };

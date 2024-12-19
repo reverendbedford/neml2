@@ -6,5 +6,5 @@ var classneml2_1_1NewtonWithLineSearch =
     [ "_linesearch_c", "classneml2_1_1NewtonWithLineSearch.html#a64de0d4d6e0a21b8da548ead69295187", null ],
     [ "_linesearch_miter", "classneml2_1_1NewtonWithLineSearch.html#adeec481f76ef105e31a77ee6a08f079c", null ],
     [ "_linesearch_sigma", "classneml2_1_1NewtonWithLineSearch.html#a7e563029d2910cc757143104b596c16d", null ],
-    [ "_type", "classneml2_1_1NewtonWithLineSearch.html#a4c686aa2e688932eb399b2ca0a9b39bb", null ]
+    [ "_type", "classneml2_1_1NewtonWithLineSearch.html#a7b1465cd44822beb46f1aff9c3b2a3f7", null ]
 ];

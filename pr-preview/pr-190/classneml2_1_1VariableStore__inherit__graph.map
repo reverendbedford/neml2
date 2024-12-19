@@ -10,7 +10,7 @@
 <area shape="poly" id="edge4_Node000002_Node000013" title=" " alt="" coords="193,1188,195,975,206,650,215,486,229,340,247,230,258,192,271,169,286,156,303,148,305,153,289,161,275,172,263,194,253,231,234,341,221,486,211,651,201,975,198,1188"/>
 <area shape="rect" id="Node000014" href="$classneml2_1_1BackwardEulerTimeIntegration.html" title=" " alt="" coords="273,183,535,209"/>
 <area shape="poly" id="edge5_Node000002_Node000014" title=" " alt="" coords="193,1188,196,983,207,675,217,519,231,381,248,276,259,240,271,218,284,207,288,211,275,222,264,242,254,277,236,382,222,519,213,675,202,984,198,1188"/>
-<area shape="rect" id="Node000015" href="$classneml2_1_1ChemMassBalance.html" title=" " alt="" coords="331,233,477,258"/>
+<area shape="rect" id="Node000015" href="$classneml2_1_1ChemMassBalance.html" title="Define the local chemical mass balance with chemical reactions." alt="" coords="331,233,477,258"/>
 <area shape="poly" id="edge6_Node000002_Node000015" title=" " alt="" coords="193,1188,197,992,209,700,219,552,232,421,249,322,260,289,271,268,298,249,330,240,331,245,300,254,275,271,265,291,255,324,237,422,224,552,214,700,202,993,198,1188"/>
 <area shape="rect" id="Node000016" href="$classneml2_1_1ComposedModel.html" title=" " alt="" coords="339,282,469,307"/>
 <area shape="poly" id="edge7_Node000002_Node000016" title=" " alt="" coords="193,1188,198,1002,210,725,220,585,234,462,250,369,260,337,271,317,286,305,302,297,338,289,339,294,304,302,289,309,275,320,265,339,255,370,239,463,226,586,216,725,203,1002,198,1188"/>
@@ -24,7 +24,7 @@
 <area shape="poly" id="edge11_Node000002_Node000021" title=" " alt="" coords="194,1188,201,1039,217,825,240,625,254,554,262,529,271,514,285,503,302,494,337,486,338,492,303,499,288,507,275,518,267,532,259,555,245,626,222,826,207,1040,199,1189"/>
 <area shape="rect" id="Node000022" href="$classneml2_1_1Elasticity.html" title=" " alt="" coords="363,529,445,554"/>
 <area shape="poly" id="edge12_Node000002_Node000022" title=" " alt="" coords="194,1188,203,1048,218,850,241,665,255,600,271,564,291,549,315,540,362,535,363,540,316,545,294,553,275,567,260,601,247,666,224,851,208,1048,199,1188"/>
-<area shape="rect" id="Node000026" href="$classneml2_1_1FischerBurmeister.html" title=" " alt="" coords="334,578,474,603"/>
+<area shape="rect" id="Node000026" href="$classneml2_1_1FischerBurmeister.html" title="Define the Fischer Burmeister Complementary Conditions." alt="" coords="334,578,474,603"/>
 <area shape="poly" id="edge13_Node000002_Node000026" title=" " alt="" coords="192,1188,193,1066,201,894,210,805,225,724,245,658,257,632,271,613,300,594,333,586,335,591,302,599,275,617,262,635,250,660,230,726,216,806,206,894,198,1066,197,1188"/>
 <area shape="rect" id="Node000027" href="$classneml2_1_1FixOrientation.html" title="Swap orientation plane when the singularity at &#160;is met with the modified Rodrigues vector." alt="" coords="347,627,461,653"/>
 <area shape="poly" id="edge14_Node000002_Node000027" title=" " alt="" coords="193,1188,194,1075,204,917,214,837,228,763,247,703,258,680,271,662,288,649,306,641,346,634,347,639,308,646,290,654,275,666,263,683,251,705,233,765,219,837,209,917,200,1075,198,1188"/>
@@ -38,7 +38,7 @@
 <area shape="poly" id="edge18_Node000002_Node000037" title=" " alt="" coords="195,1188,203,1112,218,1013,240,920,254,884,271,859,302,841,336,833,337,838,304,846,275,863,259,887,245,922,223,1014,208,1112,200,1188"/>
 <area shape="rect" id="Node000038" href="$classneml2_1_1ImplicitUpdate.html" title=" " alt="" coords="345,874,463,899"/>
 <area shape="poly" id="edge19_Node000002_Node000038" title=" " alt="" coords="196,1188,205,1122,221,1038,243,960,256,930,271,909,288,897,306,889,344,882,345,887,307,894,290,902,275,913,261,932,248,962,226,1039,211,1123,201,1189"/>
-<area shape="rect" id="Node000039" href="$classneml2_1_1InletGap.html" title=" " alt="" coords="365,923,443,949"/>
+<area shape="rect" id="Node000039" href="$classneml2_1_1InletGap.html" title="Define inlet gap where the liquid flows into." alt="" coords="365,923,443,949"/>
 <area shape="poly" id="edge20_Node000002_Node000039" title=" " alt="" coords="192,1188,196,1139,207,1076,217,1044,231,1012,249,983,272,958,293,944,317,936,365,931,366,936,319,941,295,949,275,962,253,986,235,1015,222,1046,212,1078,201,1139,198,1188"/>
 <area shape="rect" id="Node000040" href="$classneml2_1_1IsotropicHardening.html" title=" " alt="" coords="331,973,477,998"/>
 <area shape="poly" id="edge21_Node000002_Node000040" title=" " alt="" coords="195,1188,201,1148,214,1099,237,1050,253,1028,272,1009,300,992,331,984,332,989,302,997,275,1013,257,1031,242,1053,219,1101,206,1149,200,1189"/>
@@ -56,9 +56,9 @@
 <area shape="poly" id="edge27_Node000002_Node000051" title=" " alt="" coords="216,1237,242,1263,275,1286,313,1300,312,1305,272,1290,239,1267,212,1240"/>
 <area shape="rect" id="Node000052" href="$classneml2_1_1LinearIsotropicElasticJ2TrialStressUpdate.html" title="Update the trial stress under the assumptions of J2 plasticity and isotropic linear elasticity." alt="" coords="317,1351,491,1391"/>
 <area shape="poly" id="edge28_Node000002_Node000052" title=" " alt="" coords="207,1239,233,1289,252,1314,275,1335,295,1347,318,1356,316,1361,293,1352,272,1339,248,1318,229,1292,203,1242"/>
-<area shape="rect" id="Node000053" href="$classneml2_1_1LiquidDeficientPowerScale.html" title=" " alt="" coords="307,1415,501,1441"/>
+<area shape="rect" id="Node000053" href="$classneml2_1_1LiquidDeficientPowerScale.html" title="Define the diminising behaviour of the product growth from ideal situation." alt="" coords="307,1415,501,1441"/>
 <area shape="poly" id="edge29_Node000002_Node000053" title=" " alt="" coords="201,1240,208,1277,222,1321,244,1364,258,1384,275,1401,307,1418,305,1423,272,1405,254,1387,239,1367,217,1323,203,1278,196,1241"/>
-<area shape="rect" id="Node000054" href="$classneml2_1_1LiquidProductDiffusion1D.html" title=" " alt="" coords="311,1465,497,1490"/>
+<area shape="rect" id="Node000054" href="$classneml2_1_1LiquidProductDiffusion1D.html" title="Define the growth of the product thickness, based on 1D diffusion in a semi&#45;infinite medium." alt="" coords="311,1465,497,1490"/>
 <area shape="poly" id="edge30_Node000002_Node000054" title=" " alt="" coords="198,1241,203,1287,215,1344,238,1402,254,1428,275,1450,292,1461,311,1469,309,1474,289,1466,272,1454,250,1431,233,1404,210,1345,198,1288,193,1242"/>
 <area shape="rect" id="Node000055" href="$classneml2_1_1MandelStress.html" title=" " alt="" coords="349,1514,459,1539"/>
 <area shape="poly" id="edge31_Node000002_Node000055" title=" " alt="" coords="202,1240,212,1303,228,1381,249,1454,262,1481,275,1499,291,1511,309,1519,349,1526,348,1531,308,1524,289,1515,271,1503,257,1484,244,1455,223,1382,206,1304,196,1241"/>
@@ -78,13 +78,13 @@
 <area shape="poly" id="edge38_Node000002_Node000067" title=" " alt="" coords="199,1241,208,1377,224,1569,247,1748,261,1812,275,1845,289,1856,305,1864,341,1872,340,1877,303,1869,286,1861,271,1848,256,1813,242,1749,219,1570,203,1377,194,1241"/>
 <area shape="rect" id="Node000069" href="$classneml2_1_1PlasticVorticity.html" title="Calculate the plastic vorticity with the default crystal kinetics." alt="" coords="345,1909,463,1934"/>
 <area shape="poly" id="edge39_Node000002_Node000069" title=" " alt="" coords="199,1241,207,1387,223,1595,246,1789,260,1858,268,1881,275,1894,290,1906,307,1914,345,1922,344,1927,305,1919,287,1911,271,1898,263,1883,255,1859,240,1790,217,1596,202,1388,194,1242"/>
-<area shape="rect" id="Node000070" href="$classneml2_1_1ProductGeometricRelation.html" title=" " alt="" coords="307,1958,501,1983"/>
+<area shape="rect" id="Node000070" href="$classneml2_1_1ProductGeometricRelation.html" title="Define the relationship between the product saturation and its corresponding geometry." alt="" coords="307,1958,501,1983"/>
 <area shape="poly" id="edge40_Node000002_Node000070" title=" " alt="" coords="199,1241,206,1396,221,1620,244,1830,259,1904,267,1929,275,1944,290,1956,308,1964,306,1969,287,1960,271,1947,262,1931,254,1906,239,1831,216,1620,201,1396,194,1241"/>
-<area shape="rect" id="Node000071" href="$classneml2_1_1ProductGrowthWithLiquid.html" title=" " alt="" coords="311,2007,497,2033"/>
+<area shape="rect" id="Node000071" href="$classneml2_1_1ProductGrowthWithLiquid.html" title="Define the growth of the product height in the abundance of liquid to sustain the chemical reaction." alt="" coords="311,2007,497,2033"/>
 <area shape="poly" id="edge41_Node000002_Node000071" title=" " alt="" coords="199,1241,205,1406,220,1645,230,1765,243,1871,258,1951,266,1977,275,1993,292,2006,311,2014,309,2019,289,2010,271,1996,262,1979,253,1952,237,1872,225,1766,214,1646,200,1406,193,1242"/>
-<area shape="rect" id="Node000072" href="$classneml2_1_1ProductThicknessGrowthRate.html" title=" " alt="" coords="297,2057,511,2082"/>
+<area shape="rect" id="Node000072" href="$classneml2_1_1ProductThicknessGrowthRate.html" title="Define the residual associated with effective growth of the product thickness, accouting for liquid d..." alt="" coords="297,2057,511,2082"/>
 <area shape="poly" id="edge42_Node000002_Node000072" title=" " alt="" coords="199,1241,204,1415,218,1670,228,1799,241,1912,257,1997,266,2025,275,2042,298,2059,295,2063,271,2046,261,2027,252,1998,236,1912,223,1799,213,1671,199,1415,193,1241"/>
-<area shape="rect" id="Node000073" href="$classneml2_1_1ProductThicknessLimit.html" title=" " alt="" coords="319,2106,489,2131"/>
+<area shape="rect" id="Node000073" href="$classneml2_1_1ProductThicknessLimit.html" title="Define the maximum allowable of the product&#39;s thickness." alt="" coords="319,2106,489,2131"/>
 <area shape="poly" id="edge43_Node000002_Node000073" title=" " alt="" coords="198,1241,204,1423,216,1695,226,1831,240,1952,256,2043,265,2074,275,2092,295,2107,320,2116,318,2121,293,2111,271,2095,260,2076,251,2044,234,1953,221,1832,211,1695,198,1424,193,1241"/>
 <area shape="rect" id="Node000074" href="$classneml2_1_1RateIndependentPlasticFlowConstraint.html" title=" " alt="" coords="301,2156,507,2196"/>
 <area shape="poly" id="edge44_Node000002_Node000074" title=" " alt="" coords="198,1241,203,1432,216,1719,226,1864,239,1992,256,2089,265,2121,275,2141,302,2161,299,2165,271,2144,260,2123,250,2090,234,1992,221,1864,210,1719,198,1432,193,1241"/>

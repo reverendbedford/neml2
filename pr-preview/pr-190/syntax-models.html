@@ -492,7 +492,7 @@ ChabochePlasticHardening</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ChabochePlasticHardening.html">link</a></p>
 <h2><a class="anchor" id="chemmassbalance"></a>
 ChemMassBalance</h2>
-<p>Chemical mass balance of the infiltrated RVE model: \( total = current - switch * in + minus_reaction \) </p><details >
+<p>Chemical mass balance of the infiltrated model: \( total = current - switch * in + minus_reaction \) </p><details >
 <summary >
 <code>current</code> 🇮 The current mass rate in the system</summary>
 <p></p>
@@ -530,7 +530,7 @@ ChemMassBalance</h2>
 </details>
 <details >
 <summary >
-<code>total</code> 🇴 Chemical mass balance of the infiltrated RVE model.</summary>
+<code>total</code> 🇴 Chemical mass balance of the infiltrated model.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: variable name</li>
@@ -1349,9 +1349,9 @@ ImplicitUpdate</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ImplicitUpdate.html">link</a></p>
 <h2><a class="anchor" id="inletgap"></a>
 InletGap</h2>
-<p>The width of the RVE's inlet </p><details >
+<p>The width of the inlet </p><details >
 <summary >
-<code>initial_porosity</code> 🇵 Initial porosity of the RVE in the absence of product and liquid.</summary>
+<code>initial_porosity</code> 🇵 Initial porosity in the absence of product and liquid.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar 🔗 </li>
@@ -1359,7 +1359,7 @@ InletGap</h2>
 </details>
 <details >
 <summary >
-<code>inlet_gap</code> 🇴 Width of the RVE's inlet.</summary>
+<code>inlet_gap</code> 🇴 Width of the inlet.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: variable name</li>
@@ -1368,7 +1368,7 @@ InletGap</h2>
 </details>
 <details >
 <summary >
-<code>product_thickness</code> 🇮 Thickness of the product in the RVE.</summary>
+<code>product_thickness</code> 🇮 Thickness of the product.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: variable name</li>
@@ -1894,7 +1894,7 @@ LinearSingleSlipHardeningRule</h2>
 LiquidDeficientPowerScale</h2>
 <p>Scaling relations for product's thickness growth when the infiltrated liquid's height is less than the product's height. Current implementation assumed a simple power scale \( \frac{h_{Si}}{h_{SiC}}^p \) </p><details >
 <summary >
-<code>inlet_gap</code> 🇮 The width of the RVE's inlet.</summary>
+<code>inlet_gap</code> 🇮 The width of the inlet.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: variable name</li>
@@ -1903,7 +1903,7 @@ LiquidDeficientPowerScale</h2>
 </details>
 <details >
 <summary >
-<code>liquid_molar_volume</code> 🇵 Infiltrated liquid's molar volume (mol/V).</summary>
+<code>liquid_molar_volume</code> 🇵 Infiltrated liquid's molar volume, units of molar mass per volume.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar 🔗 </li>
@@ -1911,7 +1911,7 @@ LiquidDeficientPowerScale</h2>
 </details>
 <details >
 <summary >
-<code>liquid_saturation</code> 🇮 The current amount of the infiltrated liquid in the RVE.</summary>
+<code>liquid_saturation</code> 🇮 The current amount of the infiltrated liquid.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: variable name</li>
@@ -1928,7 +1928,7 @@ LiquidDeficientPowerScale</h2>
 </details>
 <details >
 <summary >
-<code>product_height</code> 🇮 The product's height in the RVE.</summary>
+<code>product_height</code> 🇮 The product's height.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: variable name</li>
@@ -1958,7 +1958,7 @@ LiquidProductDiffusion1D</h2>
 </details>
 <details >
 <summary >
-<code>initial_porosity</code> 🇵 Initial porosity of the RVE in the absence of product and liquid.</summary>
+<code>initial_porosity</code> 🇵 Initial porosity in the absence of product and liquid.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar 🔗 </li>
@@ -1966,7 +1966,7 @@ LiquidProductDiffusion1D</h2>
 </details>
 <details >
 <summary >
-<code>inlet_gap</code> 🇮 The width of the RVE's inlet.</summary>
+<code>inlet_gap</code> 🇮 The width of the inlet.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: variable name</li>
@@ -1991,7 +1991,7 @@ LiquidProductDiffusion1D</h2>
 </details>
 <details >
 <summary >
-<code>product_thickness</code> 🇮 Thickness of the product in the RVE.</summary>
+<code>product_thickness</code> 🇮 Thickness of the product.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: variable name</li>
@@ -2008,7 +2008,7 @@ LiquidProductDiffusion1D</h2>
 </details>
 <details >
 <summary >
-<code>representative_pores_size</code> 🇵 Representative pores size of the RVE.</summary>
+<code>representative_pores_size</code> 🇵 Representative pores size.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar 🔗 </li>
@@ -2460,7 +2460,7 @@ PowerLawSlipRule</h2>
 ProductGeometricRelation</h2>
 <p>Relationship between the product height, width and its saturation in mol/V. </p><details >
 <summary >
-<code>inlet_gap</code> 🇮 The width of the RVE's inlet.</summary>
+<code>inlet_gap</code> 🇮 The width of the inlet.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: variable name</li>
@@ -2469,7 +2469,7 @@ ProductGeometricRelation</h2>
 </details>
 <details >
 <summary >
-<code>product_height</code> 🇮 Height of the product in the RVE.</summary>
+<code>product_height</code> 🇮 Height of the product.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: variable name</li>
@@ -2478,7 +2478,7 @@ ProductGeometricRelation</h2>
 </details>
 <details >
 <summary >
-<code>product_molar_volume</code> 🇵 Product's molar volume (mol/V).</summary>
+<code>product_molar_volume</code> 🇵 Product's molar volume, units of molar mass per volume.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar 🔗 </li>
@@ -2486,7 +2486,7 @@ ProductGeometricRelation</h2>
 </details>
 <details >
 <summary >
-<code>product_saturation</code> 🇴 The saturation of the product in mol/V.</summary>
+<code>product_saturation</code> 🇴 The saturation of the product, units of molar mass per volume.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: variable name</li>
@@ -2495,7 +2495,7 @@ ProductGeometricRelation</h2>
 </details>
 <details >
 <summary >
-<code>product_thickness</code> 🇮 Thickness of the product in the RVE.</summary>
+<code>product_thickness</code> 🇮 Thickness of the product.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: variable name</li>
@@ -2507,7 +2507,7 @@ ProductGeometricRelation</h2>
 ProductGrowthWithLiquid</h2>
 <p>Condition to ensure the height of the product increases with the height of the infiltrated liquid </p><details >
 <summary >
-<code>inlet_gap</code> 🇮 The width of the RVE's inlet.</summary>
+<code>inlet_gap</code> 🇮 The width of the inlet.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: variable name</li>
@@ -2516,7 +2516,7 @@ ProductGrowthWithLiquid</h2>
 </details>
 <details >
 <summary >
-<code>liquid_molar_volume</code> 🇵 Infiltrated liquid's molar volume (mol/V).</summary>
+<code>liquid_molar_volume</code> 🇵 Infiltrated liquid's molar volume,units of molar mass per volume.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar 🔗 </li>
@@ -2524,7 +2524,7 @@ ProductGrowthWithLiquid</h2>
 </details>
 <details >
 <summary >
-<code>liquid_saturation</code> 🇮 The current amount of the infiltrated liquid in the RVE.</summary>
+<code>liquid_saturation</code> 🇮 The current amount of the infiltrated liquid.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: variable name</li>
@@ -2542,7 +2542,7 @@ ProductGrowthWithLiquid</h2>
 </details>
 <details >
 <summary >
-<code>product_height</code> 🇮 Height of the product in the RVE.</summary>
+<code>product_height</code> 🇮 Height of the product.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: variable name</li>
@@ -2602,7 +2602,7 @@ ProductThicknessGrowthRate</h2>
 ProductThicknessLimit</h2>
 <p>Maximum allowable thickness for the product. </p><details >
 <summary >
-<code>initial_porosity</code> 🇵 Initial porosity of the RVE in the absence of product and liquid.</summary>
+<code>initial_porosity</code> 🇵 Initial porosity in the absence of product and liquid.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: Scalar 🔗 </li>
@@ -2619,7 +2619,7 @@ ProductThicknessLimit</h2>
 </details>
 <details >
 <summary >
-<code>product_thickness</code> 🇮 Thickness of the product in the RVE</summary>
+<code>product_thickness</code> 🇮 Thickness of the product.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: variable name</li>
@@ -3688,7 +3688,32 @@ SumSlipRates</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1SumSlipRates.html">link</a></p>
 <h2><a class="anchor" id="switchingfunction"></a>
 SwitchingFunction</h2>
-<p>Smooth switching function of the form \( 1 - \sigmoid{x - 1, n} \), where n controls the sharpness of the transition. </p><details >
+<p>Smoothen function \( g \) where \( g(x/xc - x0) \), where n controls the sharpness of the transition. </p><details >
+<summary >
+<code>offset</code> 🇵 x0, offset to the smoothen function.</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Scalar 🔗 </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>one_subtract_condition</code> Whether takes 1 to subtract the function, aka #241 </summary>
+<p></p>
+<ul>
+<li><u>Type</u>: bool</li>
+<li><u>Default</u>: false </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>scale</code> 🇵 xc, rescaling of input variable x.</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: Scalar 🔗 </li>
+</ul>
+</details>
+<details >
 <summary >
 <code>smooth_degree</code> 🇵 n, sharpness of the transition.</summary>
 <p></p>
@@ -3698,7 +3723,16 @@ SwitchingFunction</h2>
 </details>
 <details >
 <summary >
-<code>switch_out</code> 🇴 Smooth switching function.</summary>
+<code>smooth_type</code> Function used. Options are SIGMOID </summary>
+<p></p>
+<ul>
+<li><u>Type</u>: EnumSelection</li>
+<li><u>Default</u>: SIGMOID </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>switch_out</code> 🇴 g, smooth switching function.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: variable name</li>
@@ -3707,7 +3741,7 @@ SwitchingFunction</h2>
 </details>
 <details >
 <summary >
-<code>variable</code> 🇮 x, input to the sigmoid function.</summary>
+<code>variable</code> 🇮 x, input variable.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: variable name</li>

@@ -32,17 +32,17 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">9</td>
-            <td class="headerCovTableEntry">32</td>
-            <td class="headerCovTableEntryLo">28.1 %</td>
+            <td class="headerCovTableEntry">28</td>
+            <td class="headerCovTableEntryLo">32.1 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-19 15:39:20</td>
+            <td class="headerValue">2024-12-19 21:43:22</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntry">5</td>
-            <td class="headerCovTableEntryLo">20.0 %</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntryLo">25.0 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -94,64 +94,51 @@
 <a name="32"><span class="lineNum">      32 </span><span class="lineCov">          5 : LiquidInfiltrationDriver::expected_options()</span></a>
 <a name="33"><span class="lineNum">      33 </span>            : {</a>
 <a name="34"><span class="lineNum">      34 </span><span class="lineCov">          5 :   OptionSet options = TransientDriver::expected_options();</span></a>
-<a name="35"><span class="lineNum">      35 </span><span class="lineCov">          5 :   options.doc() = &quot;Driver for Liquid Infiltration Process&quot;;</span></a>
+<a name="35"><span class="lineNum">      35 </span><span class="lineCov">          5 :   options.doc() = &quot;Driver for the liquid infiltration process&quot;;</span></a>
 <a name="36"><span class="lineNum">      36 </span>            : </a>
-<a name="37"><span class="lineNum">      37 </span><span class="lineCov">          5 :   options.set&lt;CrossRef&lt;torch::Tensor&gt;&gt;(&quot;prescribed_liquid_inlet_rate&quot;);</span></a>
+<a name="37"><span class="lineNum">      37 </span><span class="lineCov">          5 :   options.set&lt;CrossRef&lt;Scalar&gt;&gt;(&quot;prescribed_liquid_inlet_rate&quot;);</span></a>
 <a name="38"><span class="lineNum">      38 </span><span class="lineCov">         10 :   options.set(&quot;prescribed_liquid_inlet_rate&quot;).doc() =</span></a>
-<a name="39"><span class="lineNum">      39 </span><span class="lineCov">          5 :       &quot;Liquid saturate rate (mol/V) introducted to the RVE at the inlet&quot;;</span></a>
+<a name="39"><span class="lineNum">      39 </span><span class="lineCov">          5 :       &quot;Liquid saturate rate, with a units of molar mass per volume, introducted at the inlet&quot;;</span></a>
 <a name="40"><span class="lineNum">      40 </span>            : </a>
-<a name="41"><span class="lineNum">      41 </span><span class="lineCov">          5 :   options.set&lt;VariableName&gt;(&quot;liquid_inlet_rate&quot;) = VariableName(&quot;forces&quot;, &quot;aInDot&quot;);</span></a>
-<a name="42"><span class="lineNum">      42 </span><span class="lineCov">          5 :   options.set(&quot;liquid_inlet_rate&quot;).doc() = &quot;Name of the liquid_inlet_rate.&quot;;</span></a>
+<a name="41"><span class="lineNum">      41 </span><span class="lineCov">          5 :   options.set&lt;VariableName&gt;(&quot;liquid_inlet_rate&quot;) = VariableName(&quot;forces&quot;, &quot;alpha_in_rate&quot;);</span></a>
+<a name="42"><span class="lineNum">      42 </span><span class="lineCov">          5 :   options.set(&quot;liquid_inlet_rate&quot;).doc() = &quot;Name of the variable for inlet mass flow rate.&quot;;</span></a>
 <a name="43"><span class="lineNum">      43 </span>            : </a>
 <a name="44"><span class="lineNum">      44 </span><span class="lineCov">          5 :   return options;</span></a>
 <a name="45"><span class="lineNum">      45 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="46"><span class="lineNum">      46 </span>            : </a>
 <a name="47"><span class="lineNum">      47 </span><span class="lineNoCov">          0 : LiquidInfiltrationDriver::LiquidInfiltrationDriver(const OptionSet &amp; options)</span></a>
-<a name="48"><span class="lineNum">      48 </span><span class="lineNoCov">          0 :   : TransientDriver(options)</span></a>
-<a name="49"><span class="lineNum">      49 </span>            : //_driving_force(options.get&lt;CrossRef&lt;torch::Tensor&gt;&gt;(&quot;Prescribed_Liquid_Inlet_Rate&quot;), 2),</a>
-<a name="50"><span class="lineNum">      50 </span>            : //_driving_force_name(options.get&lt;VariableName&gt;(&quot;Liquid_Inlet_Rate&quot;))</a>
+<a name="48"><span class="lineNum">      48 </span>            :   : TransientDriver(options),</a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineNoCov">          0 :     _inlet_mass_flow_rate(options.get&lt;CrossRef&lt;Scalar&gt;&gt;(&quot;prescribed_liquid_inlet_rate&quot;)),</span></a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineNoCov">          0 :     _inlet_mass_flow_rate_name(options.get&lt;VariableName&gt;(&quot;liquid_inlet_rate&quot;))</span></a>
 <a name="51"><span class="lineNum">      51 </span>            : {</a>
-<a name="52"><span class="lineNum">      52 </span>            :   //_driving_force = _driving_force.to(_device);</a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineNoCov">          0 :   _inlet_mass_flow_rate = _inlet_mass_flow_rate.to(_device);</span></a>
 <a name="53"><span class="lineNum">      53 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="54"><span class="lineNum">      54 </span>            : </a>
 <a name="55"><span class="lineNum">      55 </span>            : void</a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineNoCov">          0 : LiquidInfiltrationDriver::setup()</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineNoCov">          0 : LiquidInfiltrationDriver::diagnose(std::vector&lt;Diagnosis&gt; &amp; diagnoses) const</span></a>
 <a name="57"><span class="lineNum">      57 </span>            : {</a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineNoCov">          0 :   TransientDriver::setup();</span></a>
-<a name="59"><span class="lineNum">      59 </span><span class="lineNoCov">          0 :   _driving_force_name = input_options().get&lt;VariableName&gt;(&quot;liquid_inlet_rate&quot;);</span></a>
-<a name="60"><span class="lineNum">      60 </span>            :   _driving_force =</a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineNoCov">          0 :       Scalar(input_options().get&lt;CrossRef&lt;torch::Tensor&gt;&gt;(&quot;prescribed_liquid_inlet_rate&quot;));</span></a>
-<a name="62"><span class="lineNum">      62 </span><span class="lineNoCov">          0 :   _driving_force = _driving_force.to(_device);</span></a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="64"><span class="lineNum">      64 </span>            : </a>
-<a name="65"><span class="lineNum">      65 </span>            : void</a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineNoCov">          0 : LiquidInfiltrationDriver::diagnose(std::vector&lt;Diagnosis&gt; &amp; diagnoses) const</span></a>
-<a name="67"><span class="lineNum">      67 </span>            : {</a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineNoCov">          0 :   TransientDriver::diagnose(diagnoses);</span></a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineNoCov">          0 :   diagnostic_assert(diagnoses,</span></a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineNoCov">          0 :                     _driving_force.batch_dim() &gt;= 1,</span></a>
-<a name="71"><span class="lineNum">      71 </span>            :                     &quot;Liquid_Inlet_Rate should have at least one batch dimension but instead &quot;</a>
-<a name="72"><span class="lineNum">      72 </span>            :                     &quot;has batch dimension &quot;,</a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineNoCov">          0 :                     _driving_force.batch_dim());</span></a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineNoCov">          0 :   diagnostic_assert(</span></a>
-<a name="75"><span class="lineNum">      75 </span>            :       diagnoses,</a>
-<a name="76"><span class="lineNum">      76 </span><span class="lineNoCov">          0 :       _driving_force.batch_size(0) == _time.batch_size(0),</span></a>
-<a name="77"><span class="lineNum">      77 </span>            :       &quot;Liquid_Inlet_Rate should have the same number of steps as time, but instead has &quot;,</a>
-<a name="78"><span class="lineNum">      78 </span><span class="lineNoCov">          0 :       _driving_force.batch_size(0),</span></a>
-<a name="79"><span class="lineNum">      79 </span>            :       &quot; time steps&quot;);</a>
-<a name="80"><span class="lineNum">      80 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="81"><span class="lineNum">      81 </span>            : </a>
-<a name="82"><span class="lineNum">      82 </span>            : void</a>
-<a name="83"><span class="lineNum">      83 </span><span class="lineNoCov">          0 : LiquidInfiltrationDriver::update_forces()</span></a>
-<a name="84"><span class="lineNum">      84 </span>            : {</a>
-<a name="85"><span class="lineNum">      85 </span><span class="lineNoCov">          0 :   TransientDriver::update_forces();</span></a>
-<a name="86"><span class="lineNum">      86 </span>            : </a>
-<a name="87"><span class="lineNum">      87 </span>            :   // auto current_driving_force = _driving_force.batch_index({_step_count});</a>
-<a name="88"><span class="lineNum">      88 </span>            :   //_in.base_index_put_(_driving_force_name, current_driving_force);</a>
-<a name="89"><span class="lineNum">      89 </span><span class="lineNoCov">          0 :   _in[_driving_force_name] = _driving_force.batch_index({_step_count});</span></a>
-<a name="90"><span class="lineNum">      90 </span>            :   //_in[_temperature_name] = _temperature.batch_index({_step_count});</a>
-<a name="91"><span class="lineNum">      91 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="92"><span class="lineNum">      92 </span>            : }</a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineNoCov">          0 :   TransientDriver::diagnose(diagnoses);</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineNoCov">          0 :   diagnostic_assert(</span></a>
+<a name="60"><span class="lineNum">      60 </span>            :       diagnoses,</a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineNoCov">          0 :       _inlet_mass_flow_rate.batch_dim() &gt;= 1,</span></a>
+<a name="62"><span class="lineNum">      62 </span>            :       &quot;prescribed_liquid_inlet_rate should have at least one batch dimension but instead &quot;</a>
+<a name="63"><span class="lineNum">      63 </span>            :       &quot;has batch dimension &quot;,</a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineNoCov">          0 :       _inlet_mass_flow_rate.batch_dim());</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineNoCov">          0 :   diagnostic_assert(</span></a>
+<a name="66"><span class="lineNum">      66 </span>            :       diagnoses,</a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineNoCov">          0 :       _inlet_mass_flow_rate.batch_size(0) == _time.batch_size(0),</span></a>
+<a name="68"><span class="lineNum">      68 </span>            :       &quot;prescribed_liquid_inlet_rate should have the same number of steps as time, but instead has &quot;,</a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineNoCov">          0 :       _inlet_mass_flow_rate.batch_size(0),</span></a>
+<a name="70"><span class="lineNum">      70 </span>            :       &quot; steps&quot;);</a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="72"><span class="lineNum">      72 </span>            : </a>
+<a name="73"><span class="lineNum">      73 </span>            : void</a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineNoCov">          0 : LiquidInfiltrationDriver::update_forces()</span></a>
+<a name="75"><span class="lineNum">      75 </span>            : {</a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineNoCov">          0 :   TransientDriver::update_forces();</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineNoCov">          0 :   _in[_inlet_mass_flow_rate_name] = _inlet_mass_flow_rate.batch_index({_step_count});</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="79"><span class="lineNum">      79 </span>            : }</a>
 </pre>
       </td>
     </tr>

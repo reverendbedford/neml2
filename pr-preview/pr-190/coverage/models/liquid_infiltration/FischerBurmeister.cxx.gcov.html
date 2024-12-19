@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-19 15:39:20</td>
+            <td class="headerValue">2024-12-19 21:43:22</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -125,19 +125,16 @@
 <a name="63"><span class="lineNum">      63 </span>            : </a>
 <a name="64"><span class="lineNum">      64 </span><span class="lineNoCov">          0 :   if (out)</span></a>
 <a name="65"><span class="lineNum">      65 </span>            :   {</a>
-<a name="66"><span class="lineNum">      66 </span>            :     // std::cout &lt;&lt; &quot;_a = &quot; &lt;&lt; _a.value().item&lt;Real&gt;() &lt;&lt; std::endl;</a>
-<a name="67"><span class="lineNum">      67 </span>            :     // std::cout &lt;&lt; &quot;_b = &quot; &lt;&lt; _b.value().item&lt;Real&gt;() &lt;&lt; std::endl;</a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineNoCov">          0 :     _fb = _a + _b - math::sqrt(_a * _a + _b * _b);</span></a>
-<a name="69"><span class="lineNum">      69 </span>            :     // std::cout &lt;&lt; &quot;_fb = &quot; &lt;&lt; _fb.value().item&lt;Real&gt;() &lt;&lt; std::endl;</a>
-<a name="70"><span class="lineNum">      70 </span>            :   }</a>
-<a name="71"><span class="lineNum">      71 </span>            : </a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineNoCov">          0 :   if (dout_din)</span></a>
-<a name="73"><span class="lineNum">      73 </span>            :   {</a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineNoCov">          0 :     _fb.d(_a) = 1.0 - _a / math::sqrt(_a * _a + _b * _b + machine_precision());</span></a>
-<a name="75"><span class="lineNum">      75 </span><span class="lineNoCov">          0 :     _fb.d(_b) = 1.0 - _b / math::sqrt(_a * _a + _b * _b + machine_precision());</span></a>
-<a name="76"><span class="lineNum">      76 </span>            :   }</a>
-<a name="77"><span class="lineNum">      77 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="78"><span class="lineNum">      78 </span>            : }</a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineNoCov">          0 :     _fb = _a + _b - math::sqrt(_a * _a + _b * _b);</span></a>
+<a name="67"><span class="lineNum">      67 </span>            :   }</a>
+<a name="68"><span class="lineNum">      68 </span>            : </a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineNoCov">          0 :   if (dout_din)</span></a>
+<a name="70"><span class="lineNum">      70 </span>            :   {</a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineNoCov">          0 :     _fb.d(_a) = 1.0 - _a / math::sqrt(_a * _a + _b * _b + machine_precision());</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineNoCov">          0 :     _fb.d(_b) = 1.0 - _b / math::sqrt(_a * _a + _b * _b + machine_precision());</span></a>
+<a name="73"><span class="lineNum">      73 </span>            :   }</a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="75"><span class="lineNum">      75 </span>            : }</a>
 </pre>
       </td>
     </tr>

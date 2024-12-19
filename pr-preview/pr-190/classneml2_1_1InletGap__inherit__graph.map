@@ -1,5 +1,5 @@
 <map id="InletGap" name="InletGap">
-<area shape="rect" id="Node000001" title=" " alt="" coords="488,169,565,194"/>
+<area shape="rect" id="Node000001" title="Define inlet gap where the liquid flows into." alt="" coords="488,169,565,194"/>
 <area shape="rect" id="Node000002" href="$classneml2_1_1Model.html" title="The base class for all constitutive models." alt="" coords="377,169,440,194"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="454,179,488,179,488,184,454,184"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="169,5,323,45"/>

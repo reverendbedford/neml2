@@ -697,7 +697,7 @@ LDISolidMechanicsDriver</h2>
 <p>Detailed documentation <a class="el" href="classneml2_1_1LDISolidMechanicsDriver.html">link</a></p>
 <h2><a class="anchor" id="liquidinfiltrationdriver"></a>
 LiquidInfiltrationDriver</h2>
-<p>Driver for Liquid Infiltration Process </p><details >
+<p>Driver for the liquid infiltration process </p><details >
 <summary >
 <code>device</code> Device on which to evaluate the material model. The string supplied must follow the following schema: (cpu|cuda)[:&lt;device-index&gt;] where cpu or cuda specifies the device type, and :&lt;device-index&gt; optionally specifies a device index. For example, device='cpu' sets the target compute device to be CPU, and device='cuda:1' sets the target compute device to be CUDA with device ID 1.</summary>
 <p></p>
@@ -1044,11 +1044,11 @@ LiquidInfiltrationDriver</h2>
 </details>
 <details >
 <summary >
-<code>liquid_inlet_rate</code> Name of the liquid_inlet_rate.</summary>
+<code>liquid_inlet_rate</code> Name of the variable for inlet mass flow rate.</summary>
 <p></p>
 <ul>
 <li><u>Type</u>: variable name</li>
-<li><u>Default</u>: forces/aInDot </li>
+<li><u>Default</u>: forces/alpha_in_rate </li>
 </ul>
 </details>
 <details >
@@ -1070,10 +1070,10 @@ LiquidInfiltrationDriver</h2>
 </details>
 <details >
 <summary >
-<code>prescribed_liquid_inlet_rate</code> Liquid saturate rate (mol/V) introducted to the RVE at the inlet</summary>
+<code>prescribed_liquid_inlet_rate</code> Liquid saturate rate, with a units of molar mass per volume, introducted at the inlet</summary>
 <p></p>
 <ul>
-<li><u>Type</u>: Tensor 🔗 </li>
+<li><u>Type</u>: Scalar 🔗 </li>
 </ul>
 </details>
 <details >

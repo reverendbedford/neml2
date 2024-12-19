@@ -32,16 +32,16 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">170</td>
+            <td class="headerCovTableEntry">173</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-19 15:39:20</td>
+            <td class="headerValue">2024-12-19 21:43:22</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">35</td>
+            <td class="headerCovTableEntry">36</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
@@ -407,51 +407,58 @@
 <a name="345"><span class="lineNum">     345 </span><span class="lineNoCov">          0 :   return Tensor(torch::pow(a, n), broadcast_batch_dim(a, n));</span></a>
 <a name="346"><span class="lineNum">     346 </span>            : }</a>
 <a name="347"><span class="lineNum">     347 </span>            : </a>
-<a name="348"><span class="lineNum">     348 </span>            : namespace linalg</a>
-<a name="349"><span class="lineNum">     349 </span>            : {</a>
-<a name="350"><span class="lineNum">     350 </span>            : Tensor</a>
-<a name="351"><span class="lineNum">     351 </span><span class="lineNoCov">          0 : vector_norm(const Tensor &amp; v)</span></a>
-<a name="352"><span class="lineNum">     352 </span>            : {</a>
-<a name="353"><span class="lineNum">     353 </span><span class="lineNoCov">          0 :   neml_assert_dbg(v.base_dim() == 0 || v.base_dim() == 1,</span></a>
-<a name="354"><span class="lineNum">     354 </span>            :                   &quot;v in vector_norm has base dimension &quot;,</a>
-<a name="355"><span class="lineNum">     355 </span><span class="lineNoCov">          0 :                   v.base_dim(),</span></a>
-<a name="356"><span class="lineNum">     356 </span>            :                   &quot; instead of 0 or 1.&quot;);</a>
-<a name="357"><span class="lineNum">     357 </span>            : </a>
-<a name="358"><span class="lineNum">     358 </span>            :   // If the vector is a scalar just return its absolute value</a>
-<a name="359"><span class="lineNum">     359 </span><span class="lineNoCov">          0 :   if (v.base_dim() == 0)</span></a>
-<a name="360"><span class="lineNum">     360 </span><span class="lineNoCov">          0 :     return math::abs(v);</span></a>
-<a name="361"><span class="lineNum">     361 </span>            : </a>
-<a name="362"><span class="lineNum">     362 </span><span class="lineNoCov">          0 :   return Tensor(torch::linalg::vector_norm(</span></a>
-<a name="363"><span class="lineNum">     363 </span><span class="lineNoCov">          0 :                     v, /*order=*/2, /*dim=*/-1, /*keepdim=*/false, /*dtype=*/c10::nullopt),</span></a>
-<a name="364"><span class="lineNum">     364 </span><span class="lineNoCov">          0 :                 v.batch_sizes());</span></a>
-<a name="365"><span class="lineNum">     365 </span>            : }</a>
-<a name="366"><span class="lineNum">     366 </span>            : </a>
-<a name="367"><span class="lineNum">     367 </span>            : Tensor</a>
-<a name="368"><span class="lineNum">     368 </span><span class="lineNoCov">          0 : inv(const Tensor &amp; m)</span></a>
-<a name="369"><span class="lineNum">     369 </span>            : {</a>
-<a name="370"><span class="lineNum">     370 </span><span class="lineNoCov">          0 :   return Tensor(torch::linalg::inv(m), m.batch_sizes());</span></a>
-<a name="371"><span class="lineNum">     371 </span>            : }</a>
-<a name="372"><span class="lineNum">     372 </span>            : </a>
-<a name="373"><span class="lineNum">     373 </span>            : Tensor</a>
-<a name="374"><span class="lineNum">     374 </span><span class="lineNoCov">          0 : solve(const Tensor &amp; A, const Tensor &amp; B)</span></a>
-<a name="375"><span class="lineNum">     375 </span>            : {</a>
-<a name="376"><span class="lineNum">     376 </span><span class="lineNoCov">          0 :   return Tensor(torch::linalg::solve(A, B, /*left=*/true), A.batch_sizes());</span></a>
-<a name="377"><span class="lineNum">     377 </span>            : }</a>
-<a name="378"><span class="lineNum">     378 </span>            : </a>
-<a name="379"><span class="lineNum">     379 </span>            : std::tuple&lt;Tensor, Tensor&gt;</a>
-<a name="380"><span class="lineNum">     380 </span><span class="lineNoCov">          0 : lu_factor(const Tensor &amp; A, bool pivot)</span></a>
-<a name="381"><span class="lineNum">     381 </span>            : {</a>
-<a name="382"><span class="lineNum">     382 </span><span class="lineNoCov">          0 :   auto [LU, pivots] = torch::linalg_lu_factor(A, pivot);</span></a>
-<a name="383"><span class="lineNum">     383 </span><span class="lineNoCov">          0 :   return {Tensor(LU, A.batch_sizes()), Tensor(pivots, A.batch_sizes())};</span></a>
-<a name="384"><span class="lineNum">     384 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="348"><span class="lineNum">     348 </span>            : Tensor</a>
+<a name="349"><span class="lineNum">     349 </span><span class="lineNoCov">          0 : sigmoid(const Tensor &amp; a, const Tensor &amp; n)</span></a>
+<a name="350"><span class="lineNum">     350 </span>            : {</a>
+<a name="351"><span class="lineNum">     351 </span><span class="lineNoCov">          0 :   neml_assert_broadcastable_dbg(a, n);</span></a>
+<a name="352"><span class="lineNum">     352 </span><span class="lineNoCov">          0 :   return Tensor(1.0 / 2.0 * (1.0 + tanh(n * a)));</span></a>
+<a name="353"><span class="lineNum">     353 </span>            : }</a>
+<a name="354"><span class="lineNum">     354 </span>            : </a>
+<a name="355"><span class="lineNum">     355 </span>            : namespace linalg</a>
+<a name="356"><span class="lineNum">     356 </span>            : {</a>
+<a name="357"><span class="lineNum">     357 </span>            : Tensor</a>
+<a name="358"><span class="lineNum">     358 </span><span class="lineNoCov">          0 : vector_norm(const Tensor &amp; v)</span></a>
+<a name="359"><span class="lineNum">     359 </span>            : {</a>
+<a name="360"><span class="lineNum">     360 </span><span class="lineNoCov">          0 :   neml_assert_dbg(v.base_dim() == 0 || v.base_dim() == 1,</span></a>
+<a name="361"><span class="lineNum">     361 </span>            :                   &quot;v in vector_norm has base dimension &quot;,</a>
+<a name="362"><span class="lineNum">     362 </span><span class="lineNoCov">          0 :                   v.base_dim(),</span></a>
+<a name="363"><span class="lineNum">     363 </span>            :                   &quot; instead of 0 or 1.&quot;);</a>
+<a name="364"><span class="lineNum">     364 </span>            : </a>
+<a name="365"><span class="lineNum">     365 </span>            :   // If the vector is a scalar just return its absolute value</a>
+<a name="366"><span class="lineNum">     366 </span><span class="lineNoCov">          0 :   if (v.base_dim() == 0)</span></a>
+<a name="367"><span class="lineNum">     367 </span><span class="lineNoCov">          0 :     return math::abs(v);</span></a>
+<a name="368"><span class="lineNum">     368 </span>            : </a>
+<a name="369"><span class="lineNum">     369 </span><span class="lineNoCov">          0 :   return Tensor(torch::linalg::vector_norm(</span></a>
+<a name="370"><span class="lineNum">     370 </span><span class="lineNoCov">          0 :                     v, /*order=*/2, /*dim=*/-1, /*keepdim=*/false, /*dtype=*/c10::nullopt),</span></a>
+<a name="371"><span class="lineNum">     371 </span><span class="lineNoCov">          0 :                 v.batch_sizes());</span></a>
+<a name="372"><span class="lineNum">     372 </span>            : }</a>
+<a name="373"><span class="lineNum">     373 </span>            : </a>
+<a name="374"><span class="lineNum">     374 </span>            : Tensor</a>
+<a name="375"><span class="lineNum">     375 </span><span class="lineNoCov">          0 : inv(const Tensor &amp; m)</span></a>
+<a name="376"><span class="lineNum">     376 </span>            : {</a>
+<a name="377"><span class="lineNum">     377 </span><span class="lineNoCov">          0 :   return Tensor(torch::linalg::inv(m), m.batch_sizes());</span></a>
+<a name="378"><span class="lineNum">     378 </span>            : }</a>
+<a name="379"><span class="lineNum">     379 </span>            : </a>
+<a name="380"><span class="lineNum">     380 </span>            : Tensor</a>
+<a name="381"><span class="lineNum">     381 </span><span class="lineNoCov">          0 : solve(const Tensor &amp; A, const Tensor &amp; B)</span></a>
+<a name="382"><span class="lineNum">     382 </span>            : {</a>
+<a name="383"><span class="lineNum">     383 </span><span class="lineNoCov">          0 :   return Tensor(torch::linalg::solve(A, B, /*left=*/true), A.batch_sizes());</span></a>
+<a name="384"><span class="lineNum">     384 </span>            : }</a>
 <a name="385"><span class="lineNum">     385 </span>            : </a>
-<a name="386"><span class="lineNum">     386 </span>            : Tensor</a>
-<a name="387"><span class="lineNum">     387 </span><span class="lineNoCov">          0 : lu_solve(const Tensor &amp; LU, const Tensor &amp; pivots, const Tensor &amp; B, bool left, bool adjoint)</span></a>
+<a name="386"><span class="lineNum">     386 </span>            : std::tuple&lt;Tensor, Tensor&gt;</a>
+<a name="387"><span class="lineNum">     387 </span><span class="lineNoCov">          0 : lu_factor(const Tensor &amp; A, bool pivot)</span></a>
 <a name="388"><span class="lineNum">     388 </span>            : {</a>
-<a name="389"><span class="lineNum">     389 </span><span class="lineNoCov">          0 :   return Tensor(torch::linalg_lu_solve(LU, pivots, B, left, adjoint), B.batch_sizes());</span></a>
-<a name="390"><span class="lineNum">     390 </span>            : }</a>
-<a name="391"><span class="lineNum">     391 </span>            : } // namespace linalg</a>
-<a name="392"><span class="lineNum">     392 </span>            : } // namespace neml2</a>
+<a name="389"><span class="lineNum">     389 </span><span class="lineNoCov">          0 :   auto [LU, pivots] = torch::linalg_lu_factor(A, pivot);</span></a>
+<a name="390"><span class="lineNum">     390 </span><span class="lineNoCov">          0 :   return {Tensor(LU, A.batch_sizes()), Tensor(pivots, A.batch_sizes())};</span></a>
+<a name="391"><span class="lineNum">     391 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="392"><span class="lineNum">     392 </span>            : </a>
+<a name="393"><span class="lineNum">     393 </span>            : Tensor</a>
+<a name="394"><span class="lineNum">     394 </span><span class="lineNoCov">          0 : lu_solve(const Tensor &amp; LU, const Tensor &amp; pivots, const Tensor &amp; B, bool left, bool adjoint)</span></a>
+<a name="395"><span class="lineNum">     395 </span>            : {</a>
+<a name="396"><span class="lineNum">     396 </span><span class="lineNoCov">          0 :   return Tensor(torch::linalg_lu_solve(LU, pivots, B, left, adjoint), B.batch_sizes());</span></a>
+<a name="397"><span class="lineNum">     397 </span>            : }</a>
+<a name="398"><span class="lineNum">     398 </span>            : } // namespace linalg</a>
+<a name="399"><span class="lineNum">     399 </span>            : } // namespace neml2</a>
 </pre>
       </td>
     </tr>
