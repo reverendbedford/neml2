@@ -178,6 +178,7 @@ $(function(){initNavTree('syntax-models.html',''); initResizable(); });
 <li class="level2"><a href="#quaternionconstantparameter">QuaternionConstantParameter</a></li>
 <li class="level2"><a href="#quaternioninputparameter">QuaternionInputParameter</a></li>
 <li class="level2"><a href="#r2constantparameter">R2ConstantParameter</a></li>
+<li class="level2"><a href="#r2incrementalrate">R2IncrementalRate</a></li>
 <li class="level2"><a href="#r2inputparameter">R2InputParameter</a></li>
 <li class="level2"><a href="#r2tosr2">R2toSR2</a></li>
 <li class="level2"><a href="#r2towr2">R2toWR2</a></li>
@@ -2324,6 +2325,34 @@ R2ConstantParameter</h2>
 </ul>
 </details>
 <p>Detailed documentation <a class="el" href="classneml2_1_1ConstantParameter.html">link</a></p>
+<h2><a class="anchor" id="r2incrementalrate"></a>
+R2IncrementalRate</h2>
+<p>Calculate the first order discrete time derivative of a variable as \( \dot{f} = \frac{\Delta f}{t-t_n} \), where \( \Deltaf \) is the incremental force variable, and \( t \) is time. </p><details >
+<summary >
+<code>rate</code> 🇴 The variable's rate of change</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>time</code> 🇮 Time</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name</li>
+<li><u>Default</u>: forces/t </li>
+</ul>
+</details>
+<details >
+<summary >
+<code>variable</code> 🇮 The variable to take time derivative with</summary>
+<p></p>
+<ul>
+<li><u>Type</u>: variable name </li>
+</ul>
+</details>
+<p>Detailed documentation <a class="el" href="classneml2_1_1IncrementalRate.html">link</a></p>
 <h2><a class="anchor" id="r2inputparameter"></a>
 R2InputParameter</h2>
 <p>A parameter that is defined through an input variable. This essentially converts a nonlinear parameter to an input variable </p><details >
