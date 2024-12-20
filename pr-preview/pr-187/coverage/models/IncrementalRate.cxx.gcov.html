@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-12-20 03:50:46</td>
+            <td class="headerValue">2024-12-20 17:39:47</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -138,7 +138,7 @@
 <a name="76"><span class="lineNum">      76 </span><span class="lineNoCov">          0 :   if (dout_din)</span></a>
 <a name="77"><span class="lineNum">      77 </span>            :   {</a>
 <a name="78"><span class="lineNum">      78 </span><span class="lineNoCov">          0 :     if (_dv.is_dependent())</span></a>
-<a name="79"><span class="lineNum">      79 </span><span class="lineNoCov">          0 :       _dv_dt.d(_dv) = Tensor(torch::eye(_dv.base_storage(), _dv.options()) / dt, dt.batch_dim());</span></a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineNoCov">          0 :       _dv_dt.d(_dv) = T::identity_map(_dv.options()) / dt;</span></a>
 <a name="80"><span class="lineNum">      80 </span><span class="lineNoCov">          0 :     if (_t.is_dependent())</span></a>
 <a name="81"><span class="lineNum">      81 </span><span class="lineNoCov">          0 :       _dv_dt.d(_t) = -_dv / dt / dt;</span></a>
 <a name="82"><span class="lineNum">      82 </span><span class="lineNoCov">          0 :     if (_tn.is_dependent())</span></a>
