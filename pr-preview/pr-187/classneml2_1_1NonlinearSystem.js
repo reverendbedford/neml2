@@ -21,7 +21,7 @@ var classneml2_1_1NonlinearSystem =
     [ "scale", "classneml2_1_1NonlinearSystem.html#a2aa74f18d2289c28d8f4d1a159038579", null ],
     [ "scale", "classneml2_1_1NonlinearSystem.html#aa5fd42d4fc4072093d4b375d79ee9635", null ],
     [ "set_guess", "classneml2_1_1NonlinearSystem.html#abee34d5b44ad17d75366b861d6d96087", null ],
-    [ "set_guess", "classneml2_1_1NonlinearSystem.html#ad07065c6fa5972f40c95e69e648303e2", null ],
+    [ "set_guess", "classneml2_1_1NonlinearSystem.html#a8ec569b584ae26bb5d1ef298f72ce92f", null ],
     [ "unscale", "classneml2_1_1NonlinearSystem.html#a07758c3db52fff6aafc4f7b5ebe54275", null ],
     [ "unscale", "classneml2_1_1NonlinearSystem.html#a21817a8ecd07a39276681e9013a0f3a2", null ],
     [ "unscale", "classneml2_1_1NonlinearSystem.html#afc9e671a2ce54839203af58800c2e626", null ],
