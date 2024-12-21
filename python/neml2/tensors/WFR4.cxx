@@ -22,37 +22,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/tensors/R2.h"
+#include "python/neml2/tensors/PrimitiveTensor.h"
 
-#include "neml2/misc/math.h"
+namespace py = pybind11;
+using namespace neml2;
 
-#include "neml2/tensors/Rot.h"
-#include "neml2/tensors/SR2.h"
-#include "neml2/tensors/WR2.h"
-#include "neml2/tensors/R4.h"
-#include "neml2/tensors/SSR4.h"
-
-namespace neml2
-{
-
-R2::R2(const SR2 & S)
-  : R2(math::mandel_to_full(S))
+void
+def_WFR4(py::class_<WFR4> & /*c*/)
 {
 }
-
-R2::R2(const WR2 & W)
-  : R2(math::skew_to_full(W))
-{
-}
-
-R2::R2(const Rot & r)
-  : R2(r.euler_rodrigues())
-{
-}
-
-R4
-R2::identity_map(const torch::TensorOptions & options)
-{
-  return torch::eye(9, options).view({3, 3, 3, 3});
-}
-} // namespace neml2

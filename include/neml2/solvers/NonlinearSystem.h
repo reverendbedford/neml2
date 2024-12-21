@@ -160,7 +160,7 @@ public:
   Sol<false> unscale(const Sol<true> & u) const;
 
   /// Set the current guess
-  virtual void set_guess(const Sol<true> & x) final;
+  void set_guess(const Sol<true> & x);
   /// Set the _unscaled_ current guess
   virtual void set_guess(const Sol<false> & x) = 0;
   /// Assemble and return the residual

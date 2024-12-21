@@ -22,37 +22,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/tensors/R2.h"
+#pragma once
 
-#include "neml2/misc/math.h"
-
-#include "neml2/tensors/Rot.h"
-#include "neml2/tensors/SR2.h"
-#include "neml2/tensors/WR2.h"
-#include "neml2/tensors/R4.h"
-#include "neml2/tensors/SSR4.h"
+#include "neml2/models/Model.h"
 
 namespace neml2
 {
-
-R2::R2(const SR2 & S)
-  : R2(math::mandel_to_full(S))
+/// Convert symmetric rank two tensor to full
+class SR2toR2 : public Model
 {
-}
+public:
+  static OptionSet expected_options();
 
-R2::R2(const WR2 & W)
-  : R2(math::skew_to_full(W))
-{
-}
+  SR2toR2(const OptionSet & options);
 
-R2::R2(const Rot & r)
-  : R2(r.euler_rodrigues())
-{
-}
+protected:
+  void set_value(bool out, bool dout_din, bool d2out_din2) override;
 
-R4
-R2::identity_map(const torch::TensorOptions & options)
-{
-  return torch::eye(9, options).view({3, 3, 3, 3});
-}
+  /// Input symmetric rank two tensor
+  const Variable<SR2> & _input;
+
+  /// Output full rank two tensor
+  Variable<R2> & _output;
+};
 } // namespace neml2

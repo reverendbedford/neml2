@@ -22,37 +22,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/tensors/R2.h"
+#pragma once
 
-#include "neml2/misc/math.h"
-
-#include "neml2/tensors/Rot.h"
-#include "neml2/tensors/SR2.h"
-#include "neml2/tensors/WR2.h"
-#include "neml2/tensors/R4.h"
-#include "neml2/tensors/SSR4.h"
+#include "neml2/tensors/PrimitiveTensor.h"
 
 namespace neml2
 {
-
-R2::R2(const SR2 & S)
-  : R2(math::mandel_to_full(S))
+/**
+ * @brief The fourth order tensor with symmetry in the first two dimensions.
+ *
+ * Mandel notation is used for the first two symmetry dimensions, and so the storage space
+ * is (6, 3, 3).
+ */
+class SFR4 : public PrimitiveTensor<SFR4, 6, 3, 3>
 {
-}
-
-R2::R2(const WR2 & W)
-  : R2(math::skew_to_full(W))
-{
-}
-
-R2::R2(const Rot & r)
-  : R2(r.euler_rodrigues())
-{
-}
-
-R4
-R2::identity_map(const torch::TensorOptions & options)
-{
-  return torch::eye(9, options).view({3, 3, 3, 3});
-}
+public:
+  using PrimitiveTensor<SFR4, 6, 3, 3>::PrimitiveTensor;
+};
 } // namespace neml2

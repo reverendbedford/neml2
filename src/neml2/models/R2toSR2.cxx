@@ -22,37 +22,48 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "neml2/tensors/R2.h"
+#include "neml2/models/R2toSR2.h"
 
 #include "neml2/misc/math.h"
 
-#include "neml2/tensors/Rot.h"
-#include "neml2/tensors/SR2.h"
-#include "neml2/tensors/WR2.h"
-#include "neml2/tensors/R4.h"
-#include "neml2/tensors/SSR4.h"
-
 namespace neml2
 {
+register_NEML2_object(R2toSR2);
 
-R2::R2(const SR2 & S)
-  : R2(math::mandel_to_full(S))
+OptionSet
+R2toSR2::expected_options()
+{
+  OptionSet options = Model::expected_options();
+  options.doc() = "Extract the symmetric part of a R2 tensor";
+
+  options.set_input("input");
+  options.set("input").doc() = "Rank two tensor to split";
+
+  options.set_output("output");
+  options.set("output").doc() = "Output symmetric rank two tensor";
+
+  return options;
+}
+
+R2toSR2::R2toSR2(const OptionSet & options)
+  : Model(options),
+    _input(declare_input_variable<R2>("input")),
+    _output(declare_output_variable<SR2>("output"))
 {
 }
 
-R2::R2(const WR2 & W)
-  : R2(math::skew_to_full(W))
+void
+R2toSR2::set_value(bool out, bool dout_din, bool d2out_din2)
 {
-}
+  auto A = R2(_input);
 
-R2::R2(const Rot & r)
-  : R2(r.euler_rodrigues())
-{
-}
+  if (out)
+    _output = SR2(A);
 
-R4
-R2::identity_map(const torch::TensorOptions & options)
-{
-  return torch::eye(9, options).view({3, 3, 3, 3});
+  if (dout_din)
+    _output.d(_input) = math::mandel_to_full(SSR4::identity_sym(A.options()), 1);
+
+  // Second derivative is zero
+  (void)d2out_din2;
 }
 } // namespace neml2
